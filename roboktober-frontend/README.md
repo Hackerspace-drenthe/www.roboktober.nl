@@ -1,48 +1,94 @@
-# roboktober-frontend
+# Roboktober Frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+Vue 3 + Vite frontend for Roboktober.
 
-## Recommended IDE Setup
+This app provides the public site pages and consumes the Laravel API.
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Current status
 
-## Recommended Browser Setup
+- Router includes all planned public pages, including dynamic page and 404 routes.
+- API integration uses Axios through a single client module.
+- During development, `/api` calls are proxied to `http://localhost:8000`.
+- Production build output is written to `../roboktober-api/public/app`.
+- Dependency audit status:
+  - `npm audit --omit=dev`: no known vulnerabilities.
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+## Requirements
 
-## Type Support for `.vue` Imports in TS
+- Node.js 22.18+ (or 24.12+)
+- npm 10+
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## Installation (local)
 
-## Customize configuration
+1. Go to the frontend folder:
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+```bash
+cd roboktober-frontend
+```
 
-## Project Setup
+2. Install dependencies:
 
-```sh
+```bash
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+3. Start development server:
 
-```sh
+```bash
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+Default local URL is shown by Vite (usually `http://localhost:5173`).
 
-```sh
+## Backend connection
+
+- The frontend API base path is `/api/v1`.
+- Vite dev server proxies `/api` to `http://localhost:8000`.
+- Make sure the backend is running in `roboktober-api`:
+
+```bash
+php artisan serve
+```
+
+## Build and deploy flow
+
+To produce the deployable frontend bundle into the backend public folder:
+
+```bash
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+This writes files to:
+- `../roboktober-api/public/app`
 
-```sh
+## Useful commands
+
+- Lint (Oxlint + ESLint with auto-fix):
+
+```bash
 npm run lint
 ```
+
+- Type checking:
+
+```bash
+npm run type-check
+```
+
+- Preview production build:
+
+```bash
+npm run preview
+```
+
+- Format source files:
+
+```bash
+npm run format
+```
+
+## Notes for contributors
+
+- Keep all HTTP calls in `src/api/index.ts`.
+- Reuse shared types in `src/types` for API contracts.
+- Keep route-level code split via lazy-loaded views in `src/router/index.ts`.

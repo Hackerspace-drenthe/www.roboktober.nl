@@ -34,5 +34,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
     Route::get('/pages/{slug}', [PageController::class, 'show'])->name('pages.show');
 
     // Team registration (public, write)
-    Route::post('/registratie', [RegistratieController::class, 'store'])->name('registratie.store');
+    Route::post('/registratie', [RegistratieController::class, 'store'])
+        ->middleware('throttle:registratie')
+        ->name('registratie.store');
 });

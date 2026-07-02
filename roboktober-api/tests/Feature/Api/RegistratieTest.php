@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Enums\TeamStatus;
 use App\Models\Team;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\RateLimiter;
 use App\Mail\NieuwTeamAanmelding;
 
 describe('POST /api/v1/registratie', function (): void {
@@ -83,5 +84,43 @@ describe('POST /api/v1/registratie', function (): void {
         ]);
 
         expect($response->getContent())->not->toContain('anna@example.com');
+    });
+
+    it('applies rate limiting to registration requests', function (): void {
+        RateLimiter::clear('registratie-ip:127.0.0.1');
+
+        for ($i = 0; $i < 5; $i++) {
+            $this->postJson('/api/v1/registratie', [
+                'naam' => 'Throttle Team '.$i,
+                'contactpersoon' => 'Contact '.$i,
+                'email' => 'throttle-'.$i.'@example.com',
+                'volwassenen' => 1,
+            ])->assertCreated();
+        }
+
+        $this->postJson('/api/v1/registratie', [
+            'naam' => 'Throttle Team 6',
+            'contactpersoon' => 'Contact 6',
+            'email' => 'throttle-6@example.com',
+            'volwassenen' => 1,
+        ])->assertStatus(429);
+    });
+
+    it('adds security headers to api responses', function (): void {
+        $response = $this->postJson('/api/v1/registratie', [
+            'naam' => 'Header Team',
+            'contactpersoon' => 'Header Contact',
+            'email' => 'header@example.com',
+            'volwassenen' => 1,
+        ]);
+
+        $response->assertCreated()
+            ->assertHeader('X-Content-Type-Options', 'nosniff')
+            ->assertHeader('X-Frame-Options', 'DENY')
+            ->assertHeader('Referrer-Policy', 'no-referrer')
+            ->assertHeader(
+                'Content-Security-Policy',
+                "default-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"
+            );
     });
 });
