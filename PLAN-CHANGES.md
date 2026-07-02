@@ -142,6 +142,54 @@ Toelichting toegevoegd dat sommige arena-video's zwaardere robotklassen tonen, m
 
 ---
 
+### WZ-011 · 2026-07-02 · CHANGE · Sectie 8 / 8.1 — Security baseline concreet geïmplementeerd op publieke registratie-API
+
+**Reden:** PLAN.md eist rate limiting, OWASP-maatregelen en security headers. De publieke endpoint `POST /api/v1/registratie` had nog geen expliciete throttling-policy en geen centrale API security headers.
+
+**Oorspronkelijk (PLAN.md):**
+> API rate limiting voor publieke endpoints.
+> Security: CSP headers, input validation via Form Requests, OWASP Top 10 compliance.
+
+**Gewijzigd naar:**
+- Custom rate limiter `registratie` toegevoegd:
+	- 5 requests/minuut per IP
+	- 20 requests/uur per e-mailadres
+- `POST /api/v1/registratie` gebruikt nu `throttle:registratie`.
+- Nieuwe middleware `ApiSecurityHeaders` voegt standaard API-headers toe:
+	- `X-Content-Type-Options: nosniff`
+	- `X-Frame-Options: DENY`
+	- `Referrer-Policy: no-referrer`
+	- `Permissions-Policy` (restrictief)
+	- `Content-Security-Policy` (restrictief)
+- Feature tests uitgebreid met checks op:
+	- 429-rate-limit gedrag
+	- aanwezigheid van security headers op API-responses.
+
+---
+
+### WZ-012 · 2026-07-02 · ADD · Sectie 8.1 — Projectdocumentatie geactualiseerd (README's + root-overzicht)
+
+**Reden:** De bestaande README-bestanden waren nog framework-templates en weerspiegelden niet de actuele architectuur, setup en securitystatus van Roboktober.
+
+**Oorspronkelijk (PLAN.md):**
+> README.md per module/package
+
+**Gewijzigd naar:**
+- `roboktober-api/README.md` herschreven met:
+	- actuele projectstatus
+	- installatiehandleiding (PHP/Composer/DB/npm)
+	- endpoint-overzicht
+	- security baseline en auditstatus
+	- test/lint commands
+- `roboktober-frontend/README.md` herschreven met:
+	- actuele frontendstatus
+	- lokale setup
+	- backend-koppeling via Vite proxy (`/api` → `http://localhost:8000`)
+	- build/deploy flow naar `roboktober-api/public/app`
+- Nieuwe root `README.md` toegevoegd als monorepo-overzicht met projectdoelen uit PLAN.md en verwijzing naar backend/frontend handleidingen.
+
+---
+
 <!-- TEMPLATE voor een nieuwe wijziging:
 
 ### WZ-001 · 2026-MM-DD · [Type] · Sectie X.X — Korte omschrijving
