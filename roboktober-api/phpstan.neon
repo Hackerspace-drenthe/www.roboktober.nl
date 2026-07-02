@@ -1,0 +1,23 @@
+includes:
+    # NOTE WZ-001: Larastan 3.x crashes on PHP 8.5.x (silent exit code 1).
+    # Re-enable when Larastan adds PHP 8.5 support.
+    # - vendor/larastan/larastan/extension.neon
+
+parameters:
+    # PHPStan level 9 = highest strictness, as required by PLAN.md §8.1
+    level: 9
+
+    paths:
+        - app
+        - database/factories
+        - database/seeders
+
+    # Exclude generated / vendor files
+    excludePaths:
+        - app/Filament
+
+    # No mixed types allowed (level 9 requirement)
+    reportUnmatchedIgnoredErrors: true
+
+    # Ignore baseline items only if absolutely necessary — keep list minimal
+    ignoreErrors: []

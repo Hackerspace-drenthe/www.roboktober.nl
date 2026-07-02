@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /app/
+Disallow: /admin/
+Disallow: /api/admin/
+
+Sitemap: https://roboktober.nl/sitemap.xml

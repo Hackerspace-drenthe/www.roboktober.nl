@@ -1,0 +1,12 @@
+/* Tailwind CSS v4 — @see PLAN.md §5.3 */
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+/* Custom design tokens for Roboktober brand */
+@theme {
+  --color-robo-orange: #f97316;
+  --color-robo-orange-dark: #ea580c;
+  --color-robo-dark: #0f172a;
+  --color-robo-gray: #1e293b;
+  --font-family-display: 'Inter', 'system-ui', sans-serif;
+}
