@@ -58,6 +58,20 @@ Voor lokale ontwikkeling draai je meestal beide projecten tegelijk:
 2. Start de Vite dev server in roboktober-frontend.
 3. Frontend proxyt /api-verkeer naar de backend.
 
+### Snelle start vanuit de root (1 commando)
+
+Je kunt nu ook beide tegelijk starten vanuit de monorepo-root:
+
+```bash
+npm run dev
+```
+
+Dit start parallel:
+- backend op `http://localhost:8000`
+- frontend op `http://localhost:5173/app/`
+
+Let op: dit root-script gebruikt `npx concurrently`, dus internettoegang voor package-resolutie kan nodig zijn bij de eerste run.
+
 ## Bron van waarheid
 
 Voor productkeuzes, doelen, informatie-architectuur en functionele eisen blijft PLAN.md de bron van waarheid.

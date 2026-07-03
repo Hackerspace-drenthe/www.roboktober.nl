@@ -1,0 +1,9 @@
+{
+  "name": "roboktober-monorepo",
+  "private": true,
+  "scripts": {
+    "dev": "npx concurrently -k -n api,frontend -c \"#f59e0b,#06b6d4\" \"npm run dev:api\" \"npm run dev:frontend\"",
+    "dev:api": "cd roboktober-api && php artisan serve",
+    "dev:frontend": "cd roboktober-frontend && npm run dev"
+  }
+}
