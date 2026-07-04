@@ -75,3 +75,12 @@ Let op: dit root-script gebruikt `npx concurrently`, dus internettoegang voor pa
 ## Bron van waarheid
 
 Voor productkeuzes, doelen, informatie-architectuur en functionele eisen blijft PLAN.md de bron van waarheid.
+
+## Deploy op Apache (192.168.1.10)
+
+Er staat nu een kant-en-klare deployset in [deploy/README.md](deploy/README.md):
+
+- [deploy/deploy.sh](deploy/deploy.sh): pull + composer + artisan optimize/migrate
+- [deploy/apache/roboktober.conf](deploy/apache/roboktober.conf): Apache vhost template
+- [deploy/systemd/roboktober-deploy.service](deploy/systemd/roboktober-deploy.service): handmatige systemd deploy
+- [deploy/systemd/roboktober-deploy.timer](deploy/systemd/roboktober-deploy.timer): optionele timer (elke 5 min)

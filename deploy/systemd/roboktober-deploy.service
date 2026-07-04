@@ -1,0 +1,25 @@
+[Unit]
+Description=Roboktober deployment job
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+# Set to the user that owns /var/www/www.roboktober.nl
+User=rein
+Group=www-data
+WorkingDirectory=/var/www/www.roboktober.nl
+Environment=REPO_DIR=/var/www/www.roboktober.nl
+Environment=BRANCH=master
+Environment=RUN_MIGRATIONS=true
+Environment=BUILD_FRONTEND=false
+ExecStart=/usr/bin/env bash /var/www/www.roboktober.nl/deploy/deploy.sh
+
+# Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

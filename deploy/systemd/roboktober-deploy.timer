@@ -1,0 +1,12 @@
+[Unit]
+Description=Run Roboktober deployment every 5 minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+AccuracySec=30s
+Unit=roboktober-deploy.service
+Persistent=true
+
+[Install]
+WantedBy=timers.target
