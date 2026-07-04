@@ -1,6 +1,12 @@
 <script setup lang="ts">
 // Statische pagina — BOM en bouwstappen voor de Roboktober-kit
 import headerImage from '@/assets/headers/header-bouwen.png'
+import stap1Image from '@/assets/headers/header-bouwen.png'
+import stap2Image from '@/assets/headers/header-build-hub.png'
+import stap3Image from '@/assets/headers/header-team-detail.png'
+import stap4Image from '@/assets/headers/header-programma.png'
+import stap5Image from '@/assets/headers/header-teams.png'
+import stap6Image from '@/assets/headers/header-walter.png'
 
 const heroStyle = {
   backgroundImage: `url(${headerImage})`,
@@ -14,6 +20,111 @@ interface VideoItem {
   embedUrl: string
   watchUrl: string
 }
+
+interface BouwStap {
+  nummer: number
+  titel: string
+  doel: string
+  duur: string
+  afbeelding: string
+  alt: string
+  materialen: string[]
+  acties: string[]
+  veiligheid: string
+}
+
+const bouwStappen: BouwStap[] = [
+  {
+    nummer: 1,
+    titel: 'Kies en print je chassis',
+    doel: 'Maak een stevige basis waarin motoren en elektronica strak passen.',
+    duur: '30-60 min',
+    afbeelding: stap1Image,
+    alt: 'Een antweight chassis op de werkbank met onderdelen ernaast',
+    materialen: ['Chassis STL of tekening', 'PLA/PETG of acryl/multiplex', 'M2 boutjes en afstandsbusjes'],
+    acties: [
+      'Download een antweight chassis of teken je eigen basis.',
+      'Print of snijd de plaatdelen en test of de motoren passen.',
+      'Werk scherpe randen weg zodat bedrading niet beschadigt.',
+    ],
+    veiligheid: 'Draag veiligheidsbril bij lasercutten en ontbraam alle randen.',
+  },
+  {
+    nummer: 2,
+    titel: 'Monteer motoren en wielen',
+    doel: 'Zet de aandrijving mechanisch vast zonder speling.',
+    duur: '20-40 min',
+    afbeelding: stap2Image,
+    alt: 'Twee N20 motoren en wielen die in een robotchassis worden geplaatst',
+    materialen: ['2x N20 motor', '2x wiel 32-40 mm', 'Tie-wrap of motorhouder'],
+    acties: [
+      'Plaats beide N20 motoren in dezelfde rijrichting.',
+      'Druk de wielen recht op de assen en controleer vrije loop.',
+      'Fixeer motoren stevig zodat ze niet draaien in het chassis.',
+    ],
+    veiligheid: 'Test met de hand of niets blokkeert voordat je spanning aansluit.',
+  },
+  {
+    nummer: 3,
+    titel: 'Sluit driver, accu en schakelaar aan',
+    doel: 'Maak een betrouwbare basisbedrading voor links/rechts motorsturing.',
+    duur: '30-50 min',
+    afbeelding: stap3Image,
+    alt: 'Bedradingsschema met motordriver, accu en schakelaar voor een antweight robot',
+    materialen: ['DRV8833 of TB6612FNG', '1S LiPo', 'Silicone draad 24AWG', 'Aan/uit schakelaar'],
+    acties: [
+      'Verbind elke motor met een eigen output van de motordriver.',
+      'Plaats de schakelaar tussen accu plus en driver voedingsingang.',
+      'Houd kabels kort en zet ze vast met tie-wrap of tape.',
+    ],
+    veiligheid: 'Controleer polariteit twee keer voordat je de LiPo koppelt.',
+  },
+  {
+    nummer: 4,
+    titel: 'Programmeer de ESP32-C3',
+    doel: 'Laat de robot reageren op stuurinput via Wi-Fi, BLE of ESP-NOW.',
+    duur: '20-45 min',
+    afbeelding: stap4Image,
+    alt: 'ESP32-C3 controller die via USB wordt geflasht op een laptop',
+    materialen: ['ESP32-C3 board', 'USB-kabel', 'Arduino IDE of PlatformIO'],
+    acties: [
+      'Upload een basis sketch met links/rechts motorregeling.',
+      'Koppel de juiste GPIO pinnen aan je motordriver.',
+      'Test of vooruit, achteruit en draaien afzonderlijk werken.',
+    ],
+    veiligheid: 'Laat wielen vrij draaien of zet de robot op een standaard tijdens softwaretest.',
+  },
+  {
+    nummer: 5,
+    titel: 'Kalibreer en maak je testritten',
+    doel: 'Zorg dat de robot recht rijdt, goed remt en betrouwbaar reageert.',
+    duur: '20-30 min',
+    afbeelding: stap5Image,
+    alt: 'Antweight robot die op een testbaan wordt bestuurd',
+    materialen: ['Vlakke testvloer', 'Keukenweegschaal', 'Reserve accu'],
+    acties: [
+      'Rij korte rondes en corrigeer links/rechts motorverschil in software.',
+      'Meet totaalgewicht en blijf onder 150 gram.',
+      'Check of de robot na 3 minuten nog stabiel bestuurbaar is.',
+    ],
+    veiligheid: 'Test eerst op lage snelheid en houd toeschouwers op afstand.',
+  },
+  {
+    nummer: 6,
+    titel: 'Werk af en bereid battle setup voor',
+    doel: 'Maak je robot battle-ready met veilige afwerking en snelle service-toegang.',
+    duur: '20-40 min',
+    afbeelding: stap6Image,
+    alt: 'Afgewerkte antweight robot met beschermkap en duidelijk bereikbare schakelaar',
+    materialen: ['Topcover', 'Foam tape of klittenband', 'Naamsticker / teamlabel'],
+    acties: [
+      'Bescherm elektronica met een lichte cover en zorg voor airflow.',
+      'Maak accu en schakelaar snel bereikbaar voor pit-stop wissels.',
+      'Label robotnaam en voer een laatste volledige functietest uit.',
+    ],
+    veiligheid: 'Controleer dat er geen losse onderdelen of scherpe uitstekende delen zijn.',
+  },
+]
 
 const bouwVideos: VideoItem[] = [
   {
@@ -269,60 +380,72 @@ const actieVideos: VideoItem[] = [
 
     <!-- Bouwstappen -->
     <section class="bg-robo-gray py-20 text-white" aria-labelledby="bouwstappen-title">
-      <div class="mx-auto max-w-3xl px-6">
-        <h2 id="bouwstappen-title" class="mb-10 text-2xl font-black">Bouwstappen</h2>
-        <ol class="relative border-l-2 border-robo-orange/30 space-y-0">
-          <li class="mb-10 ml-8">
-            <span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-robo-orange text-xs font-black text-white" aria-hidden="true">1</span>
-            <h3 class="mb-1 text-lg font-bold">Ontwerp of download een chassis</h3>
-            <p class="text-slate-300">
-              Zoek een bestaand antweight-chassis op
-              <a href="https://www.printables.com/search/models?q=antweight+robot" target="_blank" rel="noopener noreferrer" class="text-robo-orange underline">Printables.com</a>
-              of teken je eigen ontwerp in FreeCAD of Fusion 360.
-              Print in PLA of PETG, of snijd het uit op de lasercutter.
-            </p>
-          </li>
-          <li class="mb-10 ml-8">
-            <span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-robo-orange text-xs font-black text-white" aria-hidden="true">2</span>
-            <h3 class="mb-1 text-lg font-bold">Monteer de motoren</h3>
-            <p class="text-slate-300">
-              Bevestig de N20-motortjes in het chassis. Voeg wieltjes toe — houten, geprinte of rubberen banden werken prima.
-            </p>
-          </li>
-          <li class="mb-10 ml-8">
-            <span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-robo-orange text-xs font-black text-white" aria-hidden="true">3</span>
-            <h3 class="mb-1 text-lg font-bold">Bedrading: motordriver ↔ motoren + accu</h3>
-            <p class="text-slate-300">
-              Verbind de motordriver met de twee motoren. Sluit de LiPo accu aan via een schakelaar.
-              Houd draden kort en fixeer ze — een loszittende draad is je ergste vijand in gevecht.
-            </p>
-          </li>
-          <li class="mb-10 ml-8">
-            <span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-robo-orange text-xs font-black text-white" aria-hidden="true">4</span>
-            <h3 class="mb-1 text-lg font-bold">Flash de ESP32-C3</h3>
-            <p class="text-slate-300">
-              Installeer Arduino IDE of PlatformIO. Flash een eenvoudige rijcode die via Bluetooth of Wi-Fi aangestuurd kan worden.
-              Voorbeeldcode is beschikbaar via de
-              <RouterLink to="/build-hub" class="text-robo-orange underline">Build Hub</RouterLink>.
-            </p>
-          </li>
-          <li class="mb-10 ml-8">
-            <span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-robo-orange text-xs font-black text-white" aria-hidden="true">5</span>
-            <h3 class="mb-1 text-lg font-bold">Testrit</h3>
-            <p class="text-slate-300">
-              Rij je robot een paar minuten op een vlakke ondergrond. Controleer gewicht (max. 150 g),
-              rijden en schakelaar vóór je inschrijft.
-            </p>
-          </li>
-          <li class="ml-8">
-            <span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-robo-orange text-xs font-black text-white" aria-hidden="true">6</span>
-            <h3 class="mb-1 text-lg font-bold">Optioneel: upgrades</h3>
-            <p class="text-slate-300">
-              Wig, spinner of flipper als wapen? Leds? Geluid? Alles mag — zolang het onder de 150 gram blijft
-              en veilig is.
-            </p>
-          </li>
-        </ol>
+      <div class="mx-auto max-w-6xl px-6">
+        <h2 id="bouwstappen-title" class="mb-3 text-2xl font-black">Bouwstappen</h2>
+        <p class="mb-10 max-w-3xl text-slate-300">
+          Volg deze stappen in volgorde. Elke stap heeft een visueel voorbeeld, een korte checklist en een veiligheidscheck.
+          Zo bouw je gecontroleerd naar een battle-ready antweight.
+        </p>
+
+        <div class="grid gap-8 lg:grid-cols-2">
+          <article
+            v-for="stap in bouwStappen"
+            :key="stap.nummer"
+            class="overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-lg backdrop-blur-sm"
+          >
+            <div class="relative h-56 overflow-hidden">
+              <img :src="stap.afbeelding" :alt="stap.alt" class="h-full w-full object-cover" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" aria-hidden="true" />
+              <div class="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-robo-orange px-3 py-1 text-xs font-black uppercase tracking-wide text-white">
+                Stap {{ stap.nummer }}
+              </div>
+              <p class="absolute bottom-4 right-4 rounded bg-black/50 px-2 py-1 text-xs font-semibold text-slate-100">
+                Tijd: {{ stap.duur }}
+              </p>
+            </div>
+
+            <div class="space-y-5 p-5">
+              <div>
+                <h3 class="text-xl font-black text-white">{{ stap.titel }}</h3>
+                <p class="mt-1 text-sm text-slate-300">{{ stap.doel }}</p>
+              </div>
+
+              <div>
+                <h4 class="mb-2 text-xs font-bold uppercase tracking-widest text-robo-orange">Benodigd</h4>
+                <ul class="space-y-1 text-sm text-slate-200">
+                  <li v-for="item in stap.materialen" :key="item" class="flex items-start gap-2">
+                    <span class="mt-1 h-1.5 w-1.5 rounded-full bg-robo-orange" aria-hidden="true" />
+                    <span>{{ item }}</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 class="mb-2 text-xs font-bold uppercase tracking-widest text-robo-orange">Doe dit</h4>
+                <ol class="space-y-1 text-sm text-slate-200">
+                  <li v-for="(actie, idx) in stap.acties" :key="actie" class="flex items-start gap-2">
+                    <span class="mt-0.5 inline-flex min-w-5 items-center justify-center rounded bg-white/10 px-1 text-xs font-bold text-robo-orange">{{ idx + 1 }}</span>
+                    <span>{{ actie }}</span>
+                  </li>
+                </ol>
+              </div>
+
+              <div class="rounded-lg border border-amber-300/40 bg-amber-200/10 p-3 text-sm text-amber-100">
+                <strong class="font-bold">Veiligheidscheck:</strong>
+                {{ stap.veiligheid }}
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="mt-8 rounded-xl border border-robo-orange/40 bg-black/20 p-5">
+          <p class="text-sm text-slate-200">
+            Voor softwarevoorbeelden en extra downloads ga je naar de
+            <RouterLink to="/build-hub" class="font-semibold text-robo-orange underline">
+              Build Hub
+            </RouterLink>.
+          </p>
+        </div>
       </div>
     </section>
 

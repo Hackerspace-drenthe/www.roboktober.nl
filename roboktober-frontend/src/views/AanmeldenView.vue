@@ -17,6 +17,7 @@ type FormulierStatus = 'idle' | 'versturen' | 'succes' | 'fout'
 
 const status = ref<FormulierStatus>('idle')
 const foutmelding = ref<string>('')
+const teamfotoNaam = ref<string>('')
 
 const formulier = reactive<RegistratiePayload>({
   naam: '',
@@ -24,12 +25,45 @@ const formulier = reactive<RegistratiePayload>({
   email: '',
   volwassenen: 1,
   kinderen: undefined,
+  opmerkingen: '',
+  teamfoto: null,
+  robots: [
+    {
+      naam: '',
+      gewichtsklasse: 'antweight',
+      beschrijving: '',
+    },
+  ],
 })
 
 const heroStyle = {
   backgroundImage: `url(${headerImage})`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
+}
+
+function voegRobotToe(): void {
+  formulier.robots.push({
+    naam: '',
+    gewichtsklasse: 'antweight',
+    beschrijving: '',
+  })
+}
+
+function verwijderRobot(index: number): void {
+  if (formulier.robots.length <= 1) {
+    return
+  }
+
+  formulier.robots.splice(index, 1)
+}
+
+function wijzigTeamfoto(event: Event): void {
+  const target = event.target as HTMLInputElement
+  const bestand = target.files?.[0] ?? null
+
+  formulier.teamfoto = bestand
+  teamfotoNaam.value = bestand?.name ?? ''
 }
 
 async function verstuur(): Promise<void> {
@@ -197,6 +231,125 @@ async function verstuur(): Promise<void> {
               class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-white focus:border-robo-orange focus:outline-none focus:ring-2 focus:ring-robo-orange/50 disabled:opacity-50"
             />
           </div>
+        </div>
+
+        <!-- Teamfoto -->
+        <div>
+          <label for="teamfoto" class="mb-2 block font-semibold">
+            Teamfoto <span class="text-slate-400 font-normal">(optioneel)</span>
+          </label>
+          <input
+            id="teamfoto"
+            type="file"
+            accept="image/*"
+            :disabled="status === 'versturen'"
+            class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-sm text-slate-200 file:mr-4 file:rounded file:border-0 file:bg-robo-orange file:px-3 file:py-2 file:font-semibold file:text-white hover:file:bg-robo-orange-dark focus:border-robo-orange focus:outline-none focus:ring-2 focus:ring-robo-orange/50 disabled:opacity-50"
+            @change="wijzigTeamfoto"
+          />
+          <p v-if="teamfotoNaam" class="mt-2 text-sm text-slate-300">
+            Gekozen bestand: {{ teamfotoNaam }}
+          </p>
+        </div>
+
+        <!-- Robots -->
+        <div class="space-y-4 rounded-xl border border-white/15 bg-white/5 p-4">
+          <div class="flex items-center justify-between gap-4">
+            <h2 class="text-lg font-bold">Robots in dit team</h2>
+            <button
+              type="button"
+              :disabled="status === 'versturen'"
+              class="rounded-lg border border-robo-orange px-3 py-2 text-sm font-semibold text-robo-orange transition hover:bg-robo-orange hover:text-white disabled:opacity-60"
+              @click="voegRobotToe"
+            >
+              + Robot toevoegen
+            </button>
+          </div>
+
+          <p class="text-sm text-slate-300">
+            Voeg minimaal 1 robot toe. Een team mag meerdere robots inschrijven.
+          </p>
+
+          <article
+            v-for="(robot, index) in formulier.robots"
+            :key="index"
+            class="space-y-4 rounded-lg border border-white/10 bg-black/20 p-4"
+          >
+            <div class="flex items-center justify-between gap-4">
+              <h3 class="font-semibold">Robot {{ index + 1 }}</h3>
+              <button
+                type="button"
+                :disabled="status === 'versturen' || formulier.robots.length <= 1"
+                class="rounded border border-red-400 px-2 py-1 text-xs font-semibold text-red-300 transition hover:bg-red-500/20 disabled:opacity-40"
+                @click="verwijderRobot(index)"
+              >
+                Verwijder
+              </button>
+            </div>
+
+            <div>
+              <label :for="`robot-naam-${index}`" class="mb-2 block font-semibold">
+                Robotnaam <span aria-hidden="true" class="text-robo-orange">*</span>
+              </label>
+              <input
+                :id="`robot-naam-${index}`"
+                v-model="robot.naam"
+                type="text"
+                required
+                maxlength="255"
+                :disabled="status === 'versturen'"
+                class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-white placeholder-slate-400 focus:border-robo-orange focus:outline-none focus:ring-2 focus:ring-robo-orange/50 disabled:opacity-50"
+                placeholder="Bv. Kecil"
+              />
+            </div>
+
+            <div>
+              <label :for="`robot-klasse-${index}`" class="mb-2 block font-semibold">
+                Gewichtsklasse <span aria-hidden="true" class="text-robo-orange">*</span>
+              </label>
+              <select
+                :id="`robot-klasse-${index}`"
+                v-model="robot.gewichtsklasse"
+                required
+                :disabled="status === 'versturen'"
+                class="w-full rounded-lg border border-white/20 bg-robo-dark px-4 py-3 text-white focus:border-robo-orange focus:outline-none focus:ring-2 focus:ring-robo-orange/50 disabled:opacity-50"
+              >
+                <option value="antweight">Antweight (max. 150 g)</option>
+                <option value="beetleweight">Beetleweight (max. 1,36 kg)</option>
+                <option value="featherweight">Featherweight (max. 13,6 kg)</option>
+              </select>
+            </div>
+
+            <div>
+              <label :for="`robot-beschrijving-${index}`" class="mb-2 block font-semibold">
+                Beschrijving <span class="text-slate-400 font-normal">(optioneel)</span>
+              </label>
+              <textarea
+                :id="`robot-beschrijving-${index}`"
+                v-model="robot.beschrijving"
+                rows="3"
+                maxlength="1000"
+                :disabled="status === 'versturen'"
+                class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-white placeholder-slate-400 focus:border-robo-orange focus:outline-none focus:ring-2 focus:ring-robo-orange/50 disabled:opacity-50"
+                placeholder="Korte uitleg over ontwerp, aandrijving of strategie"
+              />
+            </div>
+          </article>
+        </div>
+
+        <!-- Opmerkingen -->
+        <div>
+          <label for="opmerkingen" class="mb-2 block font-semibold">
+            Opmerkingen <span class="text-slate-400 font-normal">(optioneel)</span>
+          </label>
+          <textarea
+            id="opmerkingen"
+            v-model="formulier.opmerkingen"
+            rows="4"
+            maxlength="2000"
+            :disabled="status === 'versturen'"
+            class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-white placeholder-slate-400 focus:border-robo-orange focus:outline-none focus:ring-2 focus:ring-robo-orange/50 disabled:opacity-50"
+            placeholder="Extra info over beschikbaarheid, hulpvraag of speciale wensen"
+          />
         </div>
 
         <!-- Foutmelding -->

@@ -1,0 +1,1 @@
+var e=`/app/assets/header-programma-CgjrZUAU.png`;export{e as t};

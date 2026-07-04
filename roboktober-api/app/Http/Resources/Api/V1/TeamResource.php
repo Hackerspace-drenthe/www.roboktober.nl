@@ -27,7 +27,7 @@ class TeamResource extends JsonResource
             'naam' => $this->naam,
             'status' => $this->status->value,
             'status_label' => $this->status->label(),
-            'foto' => new MediaResource($this->whenLoaded('media', fn () => $this->featuredMedia())),
+            'foto' => new MediaResource($this->whenLoaded('media', fn () => $this->mediaCollectie('foto')->first())),
             'robots' => RobotResource::collection($this->whenLoaded('robots')),
         ];
     }

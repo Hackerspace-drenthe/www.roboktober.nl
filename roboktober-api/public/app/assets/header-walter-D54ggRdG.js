@@ -1,0 +1,1 @@
+var e=`/app/assets/header-walter-jwNyO565.png`;export{e as t};

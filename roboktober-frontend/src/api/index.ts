@@ -83,7 +83,40 @@ export async function getPage(slug: string): Promise<Page> {
 // ---------------------------------------------------------------------------
 
 export async function registreerTeam(payload: RegistratiePayload): Promise<Team> {
-  const { data } = await api.post<{ data: Team }>('/registratie', payload)
+  const formData = new FormData()
+
+  formData.append('naam', payload.naam)
+  formData.append('contactpersoon', payload.contactpersoon)
+  formData.append('email', payload.email)
+  formData.append('volwassenen', String(payload.volwassenen))
+
+  if (typeof payload.kinderen === 'number') {
+    formData.append('kinderen', String(payload.kinderen))
+  }
+
+  if (payload.opmerkingen) {
+    formData.append('opmerkingen', payload.opmerkingen)
+  }
+
+  payload.robots.forEach((robot, index) => {
+    formData.append(`robots[${index}][naam]`, robot.naam)
+    formData.append(`robots[${index}][gewichtsklasse]`, robot.gewichtsklasse)
+
+    if (robot.beschrijving) {
+      formData.append(`robots[${index}][beschrijving]`, robot.beschrijving)
+    }
+  })
+
+  if (payload.teamfoto instanceof File) {
+    formData.append('teamfoto', payload.teamfoto)
+  }
+
+  const { data } = await api.post<{ data: Team }>('/registratie', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+
   return data.data
 }
 

@@ -151,4 +151,13 @@ export interface RegistratiePayload {
   email: string
   volwassenen: number
   kinderen?: number
+  opmerkingen?: string
+  teamfoto?: File | null
+  robots: RegistratieRobotPayload[]
+}
+
+export interface RegistratieRobotPayload {
+  naam: string
+  gewichtsklasse: Gewichtsklasse
+  beschrijving?: string
 }

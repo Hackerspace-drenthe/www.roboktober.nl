@@ -29,7 +29,7 @@ class RobotResource extends JsonResource
             'status' => $this->status->value,
             'status_label' => $this->status->label(),
             'team' => new TeamResource($this->whenLoaded('team')),
-            'foto' => new MediaResource($this->whenLoaded('media', fn () => $this->featuredMedia())),
+            'foto' => new MediaResource($this->whenLoaded('media', fn () => $this->mediaCollectie('foto')->first())),
             'bijlagen' => MediaResource::collection($this->whenLoaded(
                 'media',
                 fn () => $this->mediaCollectie('bijlagen')->get(),

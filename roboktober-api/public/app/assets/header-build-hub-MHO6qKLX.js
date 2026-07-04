@@ -1,0 +1,1 @@
+var e=`/app/assets/header-pagina-BvMF468W.png`;export{e as t};

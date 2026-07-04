@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Api\V1;
 
+use App\Enums\Gewichtsklasse;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 /**
  * Validation rules for public team registration submissions.
@@ -36,6 +38,14 @@ class StoreTeamRequest extends FormRequest
             'volwassenen' => ['required', 'integer', 'min:1', 'max:20'],
             'kinderen' => ['nullable', 'integer', 'min:0', 'max:50'],
             'opmerkingen' => ['nullable', 'string', 'max:2000'],
+            'teamfoto' => ['nullable', 'image', 'max:5120'],
+            'robots' => ['required', 'array', 'min:1', 'max:10'],
+            'robots.*.naam' => ['required', 'string', 'max:255'],
+            'robots.*.gewichtsklasse' => [
+                'required',
+                Rule::in(array_map(static fn (Gewichtsklasse $klasse): string => $klasse->value, Gewichtsklasse::cases())),
+            ],
+            'robots.*.beschrijving' => ['nullable', 'string', 'max:1000'],
         ];
     }
 
@@ -51,6 +61,11 @@ class StoreTeamRequest extends FormRequest
             'email.email' => 'Geef een geldig e-mailadres op.',
             'volwassenen.required' => 'Geef het aantal volwassen deelnemers op.',
             'volwassenen.min' => 'Er moet minimaal één volwassen deelnemer zijn.',
+            'robots.required' => 'Voeg minimaal één robot toe.',
+            'robots.min' => 'Voeg minimaal één robot toe.',
+            'robots.*.naam.required' => 'Geef voor elke robot een naam op.',
+            'robots.*.gewichtsklasse.required' => 'Kies voor elke robot een gewichtsklasse.',
+            'teamfoto.image' => 'De teamfoto moet een afbeelding zijn.',
         ];
     }
 }

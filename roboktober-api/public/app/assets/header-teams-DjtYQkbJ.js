@@ -1,0 +1,1 @@
+var e=`/app/assets/header-teams-DOOhjklW.png`;export{e as t};

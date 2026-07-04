@@ -10,9 +10,9 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import { getPosts } from '@/api'
 import type { Post } from '@/types/api'
 import headerImage from '@/assets/headers/header-home.png'
-import storyCommunityImage from '@/assets/headers/Gemini_Generated_Image_c4zfybc4zfybc4zf.png'
-import storyTechImage from '@/assets/headers/Gemini_Generated_Image_gyzcg5gyzcg5gyzc.png'
-import storyArenaImage from '@/assets/headers/Gemini_Generated_Image_gqtqkqgqtqkqgqtq.png'
+import storyCommunityImage from '@/assets/headers/header-aanmelden.png'
+import storyTechImage from '@/assets/headers/header-build-hub.png'
+import storyArenaImage from '@/assets/headers/header-programma.png'
 
 const posts = ref<Post[]>([])
 const ladenPosts = ref(true)

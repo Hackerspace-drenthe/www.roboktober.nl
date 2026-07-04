@@ -12,6 +12,14 @@ import { RouterLink, RouterView } from 'vue-router'
 
 const menuOpen = ref(false)
 
+const desktopNavLinkClass =
+  'rounded-md px-3 py-2 text-slate-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-robo-orange/80'
+const desktopNavActiveClass = 'bg-robo-orange/90 text-white shadow-sm'
+
+const mobileNavLinkClass =
+  'block rounded-md px-3 py-2 text-slate-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-robo-orange/80'
+const mobileNavActiveClass = 'bg-white/10 text-white'
+
 function sluitMenu(): void {
   menuOpen.value = false
 }
@@ -47,16 +55,29 @@ function sluitMenu(): void {
         class="hidden items-center gap-6 md:flex"
         role="list"
       >
-        <li><RouterLink to="/programma" class="text-slate-300 hover:text-white">Programma</RouterLink></li>
-        <li><RouterLink to="/teams" class="text-slate-300 hover:text-white">Teams</RouterLink></li>
-        <li><RouterLink to="/nieuws" class="text-slate-300 hover:text-white">Nieuws</RouterLink></li>
-        <li><RouterLink to="/build-hub" class="text-slate-300 hover:text-white">Build Hub</RouterLink></li>
-        <li><RouterLink to="/bouwen" class="text-slate-300 hover:text-white">Bouwen</RouterLink></li>
-        <li><RouterLink to="/walter" class="text-slate-300 hover:text-white">Uw Gastheer</RouterLink></li>
+        <li>
+          <RouterLink to="/programma" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Programma</RouterLink>
+        </li>
+        <li>
+          <RouterLink to="/teams" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Teams</RouterLink>
+        </li>
+        <li>
+          <RouterLink to="/nieuws" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Nieuws</RouterLink>
+        </li>
+        <li>
+          <RouterLink to="/build-hub" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Build Hub</RouterLink>
+        </li>
+        <li>
+          <RouterLink to="/bouwen" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Bouwen</RouterLink>
+        </li>
+        <li>
+          <RouterLink to="/walter" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Uw Gastheer</RouterLink>
+        </li>
         <li>
           <RouterLink
             to="/aanmelden"
             class="rounded-lg bg-robo-orange px-4 py-2 font-bold text-white hover:bg-robo-orange-dark"
+            active-class="bg-robo-orange-dark ring-2 ring-robo-orange/80"
           >
             Aanmelden
           </RouterLink>
@@ -87,16 +108,59 @@ function sluitMenu(): void {
         class="space-y-3"
         role="list"
       >
-        <li><RouterLink to="/programma" class="block py-1 text-slate-300 hover:text-white" @click="sluitMenu">Programma</RouterLink></li>
-        <li><RouterLink to="/teams" class="block py-1 text-slate-300 hover:text-white" @click="sluitMenu">Teams</RouterLink></li>
-        <li><RouterLink to="/nieuws" class="block py-1 text-slate-300 hover:text-white" @click="sluitMenu">Nieuws</RouterLink></li>
-        <li><RouterLink to="/build-hub" class="block py-1 text-slate-300 hover:text-white" @click="sluitMenu">Build Hub</RouterLink></li>
-        <li><RouterLink to="/bouwen" class="block py-1 text-slate-300 hover:text-white" @click="sluitMenu">Bouwen</RouterLink></li>
-        <li><RouterLink to="/walter" class="block py-1 text-slate-300 hover:text-white" @click="sluitMenu">Uw Gastheer</RouterLink></li>
+        <li>
+          <RouterLink
+            to="/programma"
+            :class="mobileNavLinkClass"
+            :active-class="mobileNavActiveClass"
+            @click="sluitMenu"
+          >Programma</RouterLink>
+        </li>
+        <li>
+          <RouterLink
+            to="/teams"
+            :class="mobileNavLinkClass"
+            :active-class="mobileNavActiveClass"
+            @click="sluitMenu"
+          >Teams</RouterLink>
+        </li>
+        <li>
+          <RouterLink
+            to="/nieuws"
+            :class="mobileNavLinkClass"
+            :active-class="mobileNavActiveClass"
+            @click="sluitMenu"
+          >Nieuws</RouterLink>
+        </li>
+        <li>
+          <RouterLink
+            to="/build-hub"
+            :class="mobileNavLinkClass"
+            :active-class="mobileNavActiveClass"
+            @click="sluitMenu"
+          >Build Hub</RouterLink>
+        </li>
+        <li>
+          <RouterLink
+            to="/bouwen"
+            :class="mobileNavLinkClass"
+            :active-class="mobileNavActiveClass"
+            @click="sluitMenu"
+          >Bouwen</RouterLink>
+        </li>
+        <li>
+          <RouterLink
+            to="/walter"
+            :class="mobileNavLinkClass"
+            :active-class="mobileNavActiveClass"
+            @click="sluitMenu"
+          >Uw Gastheer</RouterLink>
+        </li>
         <li>
           <RouterLink
             to="/aanmelden"
             class="block rounded-lg bg-robo-orange px-4 py-2 text-center font-bold text-white hover:bg-robo-orange-dark"
+            active-class="bg-robo-orange-dark ring-2 ring-robo-orange/80"
             @click="sluitMenu"
           >
             Aanmelden
@@ -116,68 +180,3 @@ function sluitMenu(): void {
     <p>© 2026 Roboktober · Hackerspace Drenthe</p>
   </footer>
 </template>
-
-
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>
