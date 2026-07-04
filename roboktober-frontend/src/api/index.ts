@@ -8,6 +8,7 @@
  */
 
 import type {
+  Edition,
   Link,
   Page,
   PaginatedResponse,
@@ -70,6 +71,15 @@ export async function getLinks(params?: { categorie?: string }): Promise<Link[]>
 }
 
 // ---------------------------------------------------------------------------
+// Editions
+// ---------------------------------------------------------------------------
+
+export async function getEditions(): Promise<Edition[]> {
+  const { data } = await api.get<{ data: Edition[] }>('/edities')
+  return data.data
+}
+
+// ---------------------------------------------------------------------------
 // Pages
 // ---------------------------------------------------------------------------
 
@@ -85,6 +95,7 @@ export async function getPage(slug: string): Promise<Page> {
 export async function registreerTeam(payload: RegistratiePayload): Promise<Team> {
   const formData = new FormData()
 
+  formData.append('edition_id', String(payload.edition_id))
   formData.append('naam', payload.naam)
   formData.append('contactpersoon', payload.contactpersoon)
   formData.append('email', payload.email)

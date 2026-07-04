@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Api\V1;
 
 use App\Enums\Gewichtsklasse;
+use App\Models\Edition;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -32,6 +33,13 @@ class StoreTeamRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'edition_id' => [
+                'required',
+                'integer',
+                Rule::exists(Edition::class, 'id')->where(
+                    static fn ($query) => $query->where('is_done', 0)
+                ),
+            ],
             'naam' => ['required', 'string', 'max:255'],
             'contactpersoon' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email:rfc', 'max:255'],
@@ -56,6 +64,8 @@ class StoreTeamRequest extends FormRequest
     {
         return [
             'naam.required' => 'Geef je teamnaam op.',
+            'edition_id.required' => 'Kies de editie waarvoor je wilt aanmelden.',
+            'edition_id.exists' => 'De gekozen editie is niet beschikbaar voor aanmelding.',
             'contactpersoon.required' => 'Geef de naam van de contactpersoon op.',
             'email.required' => 'Geef een e-mailadres op.',
             'email.email' => 'Geef een geldig e-mailadres op.',

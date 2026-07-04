@@ -30,7 +30,7 @@ class TeamController extends Controller
     {
         $teams = Team::query()
             ->where('status', 'approved')
-            ->with(['media', 'robots.media'])
+            ->with(['edition', 'media', 'robots.media'])
             ->orderBy('naam')
             ->get();
 
@@ -45,7 +45,7 @@ class TeamController extends Controller
         $team = Team::query()
             ->where('id', $id)
             ->where('status', 'approved')
-            ->with(['media', 'robots.media'])
+            ->with(['edition', 'media', 'robots.media'])
             ->firstOrFail();
 
         return new TeamResource($team);

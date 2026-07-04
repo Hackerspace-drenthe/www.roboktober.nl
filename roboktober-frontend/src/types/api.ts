@@ -33,10 +33,26 @@ export type TeamStatus = 'pending' | 'approved' | 'rejected'
 export interface Team {
   id: number
   naam: string
+  edition: Edition | null
   status: TeamStatus
   status_label: string
   foto: Media | null
   robots: Robot[]
+}
+
+// ---------------------------------------------------------------------------
+// Edition
+// ---------------------------------------------------------------------------
+
+export interface Edition {
+  id: number
+  naam: string
+  omschrijving: string | null
+  locatie: string
+  afbeelding_url: string | null
+  start_at: string
+  end_at: string | null
+  is_done: boolean
 }
 
 // ---------------------------------------------------------------------------
@@ -146,6 +162,7 @@ export interface PaginatedResponse<T> {
 // ---------------------------------------------------------------------------
 
 export interface RegistratiePayload {
+  edition_id: number
   naam: string
   contactpersoon: string
   email: string

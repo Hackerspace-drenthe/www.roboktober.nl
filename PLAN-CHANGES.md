@@ -190,6 +190,44 @@ Toelichting toegevoegd dat sommige arena-video's zwaardere robotklassen tonen, m
 
 ---
 
+### WZ-013 · 2026-07-04 · CHANGE · Sectie 5.1 / 5.2 — Teamaanmelding nu gekoppeld aan een editie
+
+**Reden:** Er is behoefte aan meerdere Roboktober-edities over meerdere jaren. Registraties moeten daarom expliciet aan een editie hangen in plaats van impliciet aan "de huidige editie".
+
+**Oorspronkelijk (PLAN.md):**
+> Teamregistratie is altijd open, zonder expliciete editie-selectie in de aanmeldflow.
+
+**Gewijzigd naar:**
+- Nieuwe entiteit `Edition` toegevoegd in backend.
+- `teams` tabel uitgebreid met `edition_id` (foreign key).
+- Registratie-endpoint (`POST /api/v1/registratie`) vereist nu `edition_id`.
+- Alleen edities met `is_done = false` zijn geldig voor nieuwe aanmeldingen.
+- Nieuw publiek endpoint: `GET /api/v1/edities` voor open edities.
+- Frontend aanmeldformulier toont editie-keuze en blokkeert submit als er geen open editie beschikbaar is.
+
+---
+
+### WZ-014 · 2026-07-04 · ADD · Sectie 7 / 5.2 — Editiebeheer in admin (incl. done-status)
+
+**Reden:** Organisatie wil zelf edities kunnen beheren: toevoegen, aanpassen en afsluiten zodra een editie is afgerond.
+
+**Oorspronkelijk (PLAN.md):**
+> CMS/admin voor content, teams en robots; editiebeheer nog niet expliciet uitgewerkt.
+
+**Gewijzigd naar:**
+- Nieuwe Filament resource `Edities` toegevoegd met beheer van:
+	- naam editie
+	- omschrijving
+	- locatie
+	- startdatum/tijd
+	- einddatum/tijd
+	- afbeelding
+	- `is_done` toggle (afgesloten)
+- Teambeheer in Filament toont nu ook bij welke editie een team hoort.
+- Seeders uitgebreid met standaard open editie (`Roboktober 2026`) voor lokale ontwikkeling.
+
+---
+
 <!-- TEMPLATE voor een nieuwe wijziging:
 
 ### WZ-001 · 2026-MM-DD · [Type] · Sectie X.X — Korte omschrijving

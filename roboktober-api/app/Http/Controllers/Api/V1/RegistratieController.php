@@ -62,7 +62,7 @@ class RegistratieController extends Controller
             $this->koppelTeamFoto($team, $request->file('teamfoto'));
         }
 
-        $team->load(['media', 'robots.media']);
+        $team->load(['edition', 'media', 'robots.media']);
 
         // Notify organizers — uses MAIL_MAILER=log in local dev (no real email sent)
         Mail::to(config('mail.from.address'))->send(new NieuwTeamAanmelding($team));

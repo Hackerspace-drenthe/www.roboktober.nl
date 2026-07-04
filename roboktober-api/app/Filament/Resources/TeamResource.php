@@ -28,6 +28,12 @@ class TeamResource extends Resource
             ->schema([
                 Forms\Components\Section::make('Teamgegevens')
                     ->schema([
+                        Forms\Components\Select::make('edition_id')
+                            ->label('Editie')
+                            ->relationship('edition', 'naam')
+                            ->searchable()
+                            ->preload()
+                            ->required(),
                         Forms\Components\TextInput::make('naam')
                             ->label('Teamnaam')
                             ->required()
@@ -78,6 +84,10 @@ class TeamResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('naam')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('edition.naam')
+                    ->label('Editie')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('contactpersoon')

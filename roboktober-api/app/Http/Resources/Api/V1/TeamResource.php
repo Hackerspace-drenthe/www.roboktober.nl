@@ -25,6 +25,7 @@ class TeamResource extends JsonResource
         return [
             'id' => $this->id,
             'naam' => $this->naam,
+            'edition' => new EditionResource($this->whenLoaded('edition')),
             'status' => $this->status->value,
             'status_label' => $this->status->label(),
             'foto' => new MediaResource($this->whenLoaded('media', fn () => $this->mediaCollectie('foto')->first())),

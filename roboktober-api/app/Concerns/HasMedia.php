@@ -79,6 +79,10 @@ trait HasMedia
      */
     public function koppelMedia(Media $media, string $collectie = 'default', array $pivot = []): void
     {
+        if (array_key_exists('meta', $pivot) && (is_array($pivot['meta']) || is_object($pivot['meta']))) {
+            $pivot['meta'] = json_encode($pivot['meta'], JSON_THROW_ON_ERROR);
+        }
+
         $this->media()->attach($media->id, array_merge(
             ['collectie' => $collectie],
             $pivot,

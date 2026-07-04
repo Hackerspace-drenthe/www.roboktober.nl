@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Api\V1\LinkController;
+use App\Http\Controllers\Api\V1\EditionController;
 use App\Http\Controllers\Api\V1\PageController;
 use App\Http\Controllers\Api\V1\PostController;
 use App\Http\Controllers\Api\V1\RegistratieController;
@@ -29,6 +30,9 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
 
     // Build Hub links (public, read-only)
     Route::get('/links', [LinkController::class, 'index'])->name('links.index');
+
+    // Event editions (public, read-only)
+    Route::get('/edities', [EditionController::class, 'index'])->name('editions.index');
 
     // CMS pages (public, read-only)
     Route::get('/pages/{slug}', [PageController::class, 'show'])->name('pages.show');

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Enums\TeamStatus;
+use App\Models\Edition;
 use App\Models\Team;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Mail;
@@ -10,11 +11,15 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Storage;
 use App\Mail\NieuwTeamAanmelding;
 
-describe('POST /api/v1/registratie', function (): void {
-    beforeEach(fn () => Mail::fake());
-
-    $basisPayload = fn (array $overschrijvingen = []): array => array_replace_recursive([
+/**
+ * @param array<string, mixed> $overschrijvingen
+ * @return array<string, mixed>
+ */
+function registratieBasisPayload(int $editionId, array $overschrijvingen = []): array
+{
+    return array_replace_recursive([
         'naam' => 'Team Robotica',
+        'edition_id' => $editionId,
         'contactpersoon' => 'Jan Jansen',
         'email' => 'jan@example.com',
         'volwassenen' => 2,
@@ -26,9 +31,20 @@ describe('POST /api/v1/registratie', function (): void {
             ],
         ],
     ], $overschrijvingen);
+}
+
+describe('POST /api/v1/registratie', function (): void {
+    beforeEach(function (): void {
+        Mail::fake();
+
+        $this->edition = Edition::factory()->create([
+            'naam' => 'Roboktober 2026',
+            'is_done' => false,
+        ]);
+    });
 
     it('creates a team with pending status', function (): void {
-        $response = $this->postJson('/api/v1/registratie', $basisPayload());
+        $response = $this->postJson('/api/v1/registratie', registratieBasisPayload($this->edition->id));
 
         $response->assertCreated()
             ->assertJsonPath('data.naam', 'Team Robotica')
@@ -47,7 +63,7 @@ describe('POST /api/v1/registratie', function (): void {
     });
 
     it('sends email notification after registration', function (): void {
-        $this->postJson('/api/v1/registratie', $basisPayload([
+        $this->postJson('/api/v1/registratie', registratieBasisPayload($this->edition->id, [
             'naam' => 'Email Test Team',
             'contactpersoon' => 'Piet',
             'email' => 'piet@example.com',
@@ -58,7 +74,7 @@ describe('POST /api/v1/registratie', function (): void {
     });
 
     it('accepts optional opmerkingen', function (): void {
-        $response = $this->postJson('/api/v1/registratie', $basisPayload([
+        $response = $this->postJson('/api/v1/registratie', registratieBasisPayload($this->edition->id, [
             'naam' => 'Team Met Opmerking',
             'contactpersoon' => 'Klaas',
             'email' => 'klaas@example.com',
@@ -74,8 +90,18 @@ describe('POST /api/v1/registratie', function (): void {
         $this->postJson('/api/v1/registratie', [])->assertUnprocessable();
     });
 
+    it('rejects registration for closed edition', function (): void {
+        $geslotenEditie = Edition::factory()->create([
+            'is_done' => true,
+        ]);
+
+        $this->postJson('/api/v1/registratie', registratieBasisPayload($this->edition->id, [
+            'edition_id' => $geslotenEditie->id,
+        ]))->assertUnprocessable();
+    });
+
     it('rejects invalid email', function (): void {
-        $this->postJson('/api/v1/registratie', $basisPayload([
+        $this->postJson('/api/v1/registratie', registratieBasisPayload($this->edition->id, [
             'naam' => 'Team',
             'contactpersoon' => 'Naam',
             'email' => 'geen-email',
@@ -84,7 +110,7 @@ describe('POST /api/v1/registratie', function (): void {
     });
 
     it('rejects zero adults', function (): void {
-        $this->postJson('/api/v1/registratie', $basisPayload([
+        $this->postJson('/api/v1/registratie', registratieBasisPayload($this->edition->id, [
             'naam' => 'Team',
             'contactpersoon' => 'Naam',
             'email' => 'test@example.com',
@@ -93,13 +119,14 @@ describe('POST /api/v1/registratie', function (): void {
     });
 
     it('rejects registration without robots', function (): void {
-        $this->postJson('/api/v1/registratie', $basisPayload([
-            'robots' => [],
-        ]))->assertUnprocessable();
+        $payload = registratieBasisPayload($this->edition->id);
+        $payload['robots'] = [];
+
+        $this->postJson('/api/v1/registratie', $payload)->assertUnprocessable();
     });
 
     it('does not expose email in response', function (): void {
-        $response = $this->postJson('/api/v1/registratie', $basisPayload([
+        $response = $this->postJson('/api/v1/registratie', registratieBasisPayload($this->edition->id, [
             'naam' => 'Team Privacy',
             'contactpersoon' => 'Anna',
             'email' => 'anna@example.com',
@@ -113,7 +140,7 @@ describe('POST /api/v1/registratie', function (): void {
         RateLimiter::clear('registratie-ip:127.0.0.1');
 
         for ($i = 0; $i < 5; $i++) {
-            $this->postJson('/api/v1/registratie', $basisPayload([
+            $this->postJson('/api/v1/registratie', registratieBasisPayload($this->edition->id, [
                 'naam' => 'Throttle Team '.$i,
                 'contactpersoon' => 'Contact '.$i,
                 'email' => 'throttle-'.$i.'@example.com',
@@ -121,7 +148,7 @@ describe('POST /api/v1/registratie', function (): void {
             ]))->assertCreated();
         }
 
-        $this->postJson('/api/v1/registratie', $basisPayload([
+        $this->postJson('/api/v1/registratie', registratieBasisPayload($this->edition->id, [
             'naam' => 'Throttle Team 6',
             'contactpersoon' => 'Contact 6',
             'email' => 'throttle-6@example.com',
@@ -130,7 +157,7 @@ describe('POST /api/v1/registratie', function (): void {
     });
 
     it('adds security headers to api responses', function (): void {
-        $response = $this->postJson('/api/v1/registratie', $basisPayload([
+        $response = $this->postJson('/api/v1/registratie', registratieBasisPayload($this->edition->id, [
             'naam' => 'Header Team',
             'contactpersoon' => 'Header Contact',
             'email' => 'header@example.com',
@@ -150,8 +177,8 @@ describe('POST /api/v1/registratie', function (): void {
     it('stores uploaded team photo', function (): void {
         Storage::fake('public');
 
-        $response = $this->post('/api/v1/registratie', $basisPayload([
-            'teamfoto' => UploadedFile::fake()->image('teamfoto.jpg', 1200, 800),
+        $response = $this->post('/api/v1/registratie', registratieBasisPayload($this->edition->id, [
+            'teamfoto' => UploadedFile::fake()->create('teamfoto.jpg', 256, 'image/jpeg'),
         ]));
 
         $response->assertCreated();

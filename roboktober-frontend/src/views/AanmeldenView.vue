@@ -8,9 +8,9 @@
  * @see PLAN.md §5.1 — registratie altijd open
  * @see PLAN.md §6.x — Aanmelden page design
  */
-import { reactive, ref } from 'vue'
-import { registreerTeam } from '@/api'
-import type { RegistratiePayload } from '@/types/api'
+import { onMounted, reactive, ref } from 'vue'
+import { getEditions, registreerTeam } from '@/api'
+import type { Edition, RegistratiePayload } from '@/types/api'
 import headerImage from '@/assets/headers/header-aanmelden.png'
 
 type FormulierStatus = 'idle' | 'versturen' | 'succes' | 'fout'
@@ -18,8 +18,11 @@ type FormulierStatus = 'idle' | 'versturen' | 'succes' | 'fout'
 const status = ref<FormulierStatus>('idle')
 const foutmelding = ref<string>('')
 const teamfotoNaam = ref<string>('')
+const editions = ref<Edition[]>([])
+const editionsLaden = ref(true)
 
 const formulier = reactive<RegistratiePayload>({
+  edition_id: 0,
   naam: '',
   contactpersoon: '',
   email: '',
@@ -34,6 +37,22 @@ const formulier = reactive<RegistratiePayload>({
       beschrijving: '',
     },
   ],
+})
+
+onMounted(async (): Promise<void> => {
+  try {
+    const data = await getEditions()
+    editions.value = data
+
+    const eersteEditie = data.at(0)
+    if (eersteEditie) {
+      formulier.edition_id = eersteEditie.id
+    }
+  } catch {
+    foutmelding.value = 'Edities konden niet geladen worden. Herlaad de pagina en probeer opnieuw.'
+  } finally {
+    editionsLaden.value = false
+  }
 })
 
 const heroStyle = {
@@ -131,6 +150,36 @@ async function verstuur(): Promise<void> {
           class="space-y-6"
           @submit.prevent="verstuur"
         >
+        <!-- Editie -->
+        <div>
+          <label
+            for="edition_id"
+            class="mb-2 block font-semibold"
+          >
+            Editie <span aria-hidden="true" class="text-robo-orange">*</span>
+          </label>
+          <select
+            id="edition_id"
+            v-model.number="formulier.edition_id"
+            required
+            :disabled="status === 'versturen' || editionsLaden || editions.length === 0"
+            class="w-full rounded-lg border border-white/20 bg-robo-dark px-4 py-3 text-white focus:border-robo-orange focus:outline-none focus:ring-2 focus:ring-robo-orange/50 disabled:opacity-50"
+          >
+            <option disabled value="0">Kies een editie</option>
+            <option
+              v-for="edition in editions"
+              :key="edition.id"
+              :value="edition.id"
+            >
+              {{ edition.naam }} · {{ edition.locatie }}
+            </option>
+          </select>
+          <p v-if="editionsLaden" class="mt-2 text-sm text-slate-400">Edities laden...</p>
+          <p v-else-if="editions.length === 0" class="mt-2 text-sm text-amber-300">
+            Er zijn momenteel geen open edities beschikbaar voor aanmelding.
+          </p>
+        </div>
+
         <!-- Teamnaam -->
         <div>
           <label
@@ -364,7 +413,7 @@ async function verstuur(): Promise<void> {
         <!-- Submit -->
         <button
           type="submit"
-          :disabled="status === 'versturen'"
+          :disabled="status === 'versturen' || editionsLaden || editions.length === 0"
           class="w-full rounded-lg bg-robo-orange px-8 py-4 text-lg font-bold text-white transition hover:bg-robo-orange-dark focus:outline-none focus:ring-4 focus:ring-robo-orange/50 disabled:opacity-60"
         >
           <span v-if="status === 'versturen'">Aanmelden...</span>

@@ -8,6 +8,7 @@ use App\Concerns\HasMedia;
 use App\Enums\TeamStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * Registration is always open; organizer approves via status workflow.
  *
  * @property int $id
+ * @property int|null $edition_id
  * @property string $naam
  * @property string $contactpersoon
  * @property string $email
@@ -40,6 +42,7 @@ class Team extends Model
      * @var list<string>
      */
     protected $fillable = [
+        'edition_id',
         'naam',
         'contactpersoon',
         'email',
@@ -69,6 +72,16 @@ class Team extends Model
     public function robots(): HasMany
     {
         return $this->hasMany(Robot::class);
+    }
+
+    /**
+     * The edition this team registered for.
+     *
+     * @return BelongsTo<Edition, $this>
+     */
+    public function edition(): BelongsTo
+    {
+        return $this->belongsTo(Edition::class);
     }
 
     /**
