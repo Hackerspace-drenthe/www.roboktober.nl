@@ -67,9 +67,9 @@ function loadWebhookConfig(): array
     }
 
     return [
-        'secret' => getenv('GITHUB_WEBHOOK_SECRET') ?: ($fileValues['GITHUB_WEBHOOK_SECRET'] ?? ''),
-        'branch' => getenv('GITHUB_DEPLOY_BRANCH') ?: ($fileValues['GITHUB_DEPLOY_BRANCH'] ?? 'master'),
-        'service' => getenv('GITHUB_DEPLOY_SERVICE') ?: ($fileValues['GITHUB_DEPLOY_SERVICE'] ?? 'roboktober-deploy.service'),
+        'secret' => ($fileValues['GITHUB_WEBHOOK_SECRET'] ?? '') ?: (getenv('GITHUB_WEBHOOK_SECRET') ?: ''),
+        'branch' => ($fileValues['GITHUB_DEPLOY_BRANCH'] ?? '') ?: (getenv('GITHUB_DEPLOY_BRANCH') ?: 'master'),
+        'service' => ($fileValues['GITHUB_DEPLOY_SERVICE'] ?? '') ?: (getenv('GITHUB_DEPLOY_SERVICE') ?: 'roboktober-deploy.service'),
     ];
 }
 
