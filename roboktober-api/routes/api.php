@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\V1\EditionController;
 use App\Http\Controllers\Api\V1\PageController;
 use App\Http\Controllers\Api\V1\PostController;
 use App\Http\Controllers\Api\V1\RegistratieController;
+use App\Http\Controllers\Api\V1\RobotVoteController;
 use App\Http\Controllers\Api\V1\RichMediaController;
 use App\Http\Controllers\Api\V1\TeamRegistrationUpdateController;
 use App\Http\Controllers\Api\V1\TeamRegistrationEditController;
@@ -100,6 +101,9 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
 
         Route::post('/teams/{team}/membership-requests', [TeamMembershipController::class, 'apply'])
             ->name('teams.membership.apply');
+
+        Route::post('/robots/{robot}/vote', [RobotVoteController::class, 'store'])
+            ->name('robots.vote.store');
 
         Route::get('/teams/mijn/lidmaatschappen', [TeamMembershipController::class, 'myMemberships'])
             ->name('teams.membership.mine.index');

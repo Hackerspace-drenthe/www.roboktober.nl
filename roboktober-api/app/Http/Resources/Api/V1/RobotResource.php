@@ -28,6 +28,8 @@ class RobotResource extends JsonResource
             'beschrijving' => $this->beschrijving,
             'status' => $this->status->value,
             'status_label' => $this->status->label(),
+            'awesomeness_score' => (float) $this->awesomeness_score,
+            'awesomeness_votes_count' => (int) $this->awesomeness_votes_count,
             'team' => new TeamResource($this->whenLoaded('team')),
             'foto' => new MediaResource($this->whenLoaded('media', fn () => $this->mediaCollectie('foto')->first())),
             'bijlagen' => MediaResource::collection($this->whenLoaded(

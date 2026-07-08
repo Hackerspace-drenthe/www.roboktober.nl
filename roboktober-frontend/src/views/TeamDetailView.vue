@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { applyForTeamMembership, getTeam } from '@/api'
+import { applyForTeamMembership, getTeam, voteRobot } from '@/api'
 import { useAuth } from '@/composables/useAuth'
 import type { Team } from '@/types/api'
 import { onMounted, ref } from 'vue'
@@ -16,6 +16,10 @@ const aanvraagMelding = ref('')
 const aanvraagStatus = ref<'idle' | 'opslaan'>('idle')
 const aanvraagFout = ref('')
 const aanvraagSucces = ref('')
+const voteStatus = ref<Record<number, 'idle' | 'saving'>>({})
+const voteError = ref<Record<number, string>>({})
+const voteSuccess = ref<Record<number, string>>({})
+const sterren = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 const statusKleur: Record<string, string> = {
   approved: 'bg-green-100 text-green-800',
@@ -96,6 +100,47 @@ async function verstuurLidmaatschapAanvraag(): Promise<void> {
     }
   } finally {
     aanvraagStatus.value = 'idle'
+  }
+}
+
+async function stemOpRobot(robotId: number, stars: number): Promise<void> {
+  if (!team.value) {
+    return
+  }
+
+  voteStatus.value[robotId] = 'saving'
+  voteError.value[robotId] = ''
+  voteSuccess.value[robotId] = ''
+
+  try {
+    const result = await voteRobot(robotId, stars)
+    const robot = team.value.robots.find((item) => item.id === robotId)
+
+    if (robot) {
+      robot.awesomeness_score = result.awesomeness_score
+      robot.awesomeness_votes_count = result.awesomeness_votes_count
+    }
+
+    voteSuccess.value[robotId] = `Je stem (${result.my_stars} sterren) is opgeslagen.`
+  } catch (error: unknown) {
+    if (
+      error !== null &&
+      typeof error === 'object' &&
+      'response' in error &&
+      error.response !== null &&
+      typeof error.response === 'object' &&
+      'data' in error.response &&
+      error.response.data !== null &&
+      typeof error.response.data === 'object' &&
+      'message' in error.response.data &&
+      typeof error.response.data.message === 'string'
+    ) {
+      voteError.value[robotId] = error.response.data.message
+    } else {
+      voteError.value[robotId] = 'Stem opslaan mislukt. Probeer het opnieuw.'
+    }
+  } finally {
+    voteStatus.value[robotId] = 'idle'
   }
 }
 </script>
@@ -286,6 +331,38 @@ async function verstuurLidmaatschapAanvraag(): Promise<void> {
                 </span>
               </div>
               <p v-if="robot.beschrijving" class="text-slate-600">{{ robot.beschrijving }}</p>
+
+              <div class="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
+                <p class="text-sm font-semibold text-robo-dark">
+                  Awesomeness score:
+                  <span v-if="robot.awesomeness_votes_count > 0">{{ robot.awesomeness_score.toFixed(1) }}/10</span>
+                  <span v-else>Nog geen stemmen</span>
+                </p>
+                <p class="text-xs text-slate-500">{{ robot.awesomeness_votes_count }} stem(men)</p>
+
+                <div v-if="auth.isAuthenticated.value" class="mt-3">
+                  <p class="mb-2 text-sm text-slate-700">Geef deze robot 1-10 sterren:</p>
+                  <div class="flex flex-wrap gap-2">
+                    <button
+                      v-for="star in sterren"
+                      :key="star"
+                      type="button"
+                      :disabled="voteStatus[robot.id] === 'saving'"
+                      class="rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-semibold text-slate-700 hover:border-robo-orange hover:text-robo-orange disabled:cursor-not-allowed disabled:opacity-50"
+                      @click="stemOpRobot(robot.id, star)"
+                    >
+                      {{ star }}★
+                    </button>
+                  </div>
+
+                  <p v-if="voteError[robot.id]" class="mt-2 text-sm text-red-700">{{ voteError[robot.id] }}</p>
+                  <p v-if="voteSuccess[robot.id]" class="mt-2 text-sm text-green-700">{{ voteSuccess[robot.id] }}</p>
+                </div>
+
+                <p v-else class="mt-3 text-sm text-slate-600">
+                  Log in om op deze robot te stemmen.
+                </p>
+              </div>
             </li>
           </ul>
         </div>

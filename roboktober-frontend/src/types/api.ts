@@ -92,6 +92,8 @@ export interface Robot {
   beschrijving: string | null
   status: RobotStatus
   status_label: string
+  awesomeness_score: number
+  awesomeness_votes_count: number
   team: Team | null
   foto: Media | null
   bijlagen: Media[]

@@ -24,6 +24,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property Gewichtsklasse $gewichtsklasse
  * @property string|null $beschrijving
  * @property RobotStatus $status
+ * @property float $awesomeness_score
+ * @property int $awesomeness_votes_count
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
@@ -44,6 +46,8 @@ class Robot extends Model
         'gewichtsklasse',
         'beschrijving',
         'status',
+        'awesomeness_score',
+        'awesomeness_votes_count',
     ];
 
     /**
@@ -54,6 +58,8 @@ class Robot extends Model
         return [
             'gewichtsklasse' => Gewichtsklasse::class,
             'status' => RobotStatus::class,
+            'awesomeness_score' => 'float',
+            'awesomeness_votes_count' => 'integer',
         ];
     }
 
@@ -75,6 +81,16 @@ class Robot extends Model
     public function battleRegistraties(): HasMany
     {
         return $this->hasMany(BattleRegistration::class);
+    }
+
+    /**
+     * Public votes for this robot.
+     *
+     * @return HasMany<RobotVote, $this>
+     */
+    public function votes(): HasMany
+    {
+        return $this->hasMany(RobotVote::class);
     }
 
     /**

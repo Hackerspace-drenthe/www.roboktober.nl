@@ -103,6 +103,21 @@ export async function getTeam(id: number): Promise<Team> {
   return data.data
 }
 
+export interface RobotVoteResult {
+  robot_id: number
+  my_stars: number
+  awesomeness_score: number
+  awesomeness_votes_count: number
+}
+
+export async function voteRobot(robotId: number, stars: number): Promise<RobotVoteResult> {
+  const { data } = await api.post<{ data: RobotVoteResult }>(`/robots/${robotId}/vote`, {
+    stars,
+  })
+
+  return data.data
+}
+
 export async function applyForTeamMembership(teamId: number, requestMessage?: string): Promise<TeamMembership> {
   const { data } = await api.post<{ data: TeamMembership }>(`/teams/${teamId}/membership-requests`, {
     request_message: requestMessage,
