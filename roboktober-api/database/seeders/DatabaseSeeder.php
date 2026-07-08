@@ -7,16 +7,21 @@ namespace Database\Seeders;
 use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        User::factory()->create([
-            'name' => 'Roboktober Admin',
-            'email' => 'admin@hackerspacedrenthe.nl',
-            'role' => UserRole::Admin,
-        ]);
+        User::query()->updateOrCreate(
+            ['email' => 'admin@hackerspacedrenthe.nl'],
+            [
+                'name' => 'Roboktober Admin',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password'),
+                'role' => UserRole::Admin,
+            ]
+        );
 
         $this->call([
             EditionSeeder::class,
