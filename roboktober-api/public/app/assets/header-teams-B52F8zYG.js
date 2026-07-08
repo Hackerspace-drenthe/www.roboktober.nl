@@ -1,1 +1,0 @@
-var e=`/app/assets/header-teams-BF2sAUtA.png`;export{e as t};
