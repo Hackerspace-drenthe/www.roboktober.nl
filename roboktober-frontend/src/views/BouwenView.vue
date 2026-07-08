@@ -403,8 +403,8 @@ const actieVideos: VideoItem[] = [
             :key="stap.nummer"
             class="overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-lg backdrop-blur-sm"
           >
-            <div class="relative h-56 overflow-hidden">
-              <img :src="stap.afbeelding" :alt="stap.alt" class="h-full w-full object-cover" loading="lazy" />
+            <div class="relative overflow-hidden bg-slate-900/40">
+              <img :src="stap.afbeelding" :alt="stap.alt" class="block h-auto w-full object-contain" loading="lazy" />
               <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" aria-hidden="true" />
               <div class="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-robo-orange px-3 py-1 text-xs font-black uppercase tracking-wide text-white">
                 Stap {{ stap.nummer }}
