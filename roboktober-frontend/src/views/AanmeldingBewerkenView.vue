@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import {
-  createRegistratieUpdateByToken,
+  createMijnRegistratieUpdate,
+  getCaptainTeamMembershipRequests,
   getEditions,
-  getRegistratieByToken,
-  getRegistratieUpdatesByToken,
-  updateRegistratieByToken,
+  getMijnRegistratie,
+  getMijnRegistratieUpdates,
+  reviewCaptainTeamMembershipRequest,
+  updateMijnRegistratieUpdate,
+  uploadRichMedia,
+  updateMijnRegistratie,
 } from '@/api'
 import ContentResourcePanel from '@/components/editor/ContentResourcePanel.vue'
 import EditorFormattingToolbar from '@/components/editor/EditorFormattingToolbar.vue'
 import { useContentInsertion } from '@/composables/useContentInsertion'
 import { useAuth } from '@/composables/useAuth'
-import type { Edition, Gewichtsklasse, TeamUpdate, UpdateRegistratiePayload } from '@/types/api'
+import type { Edition, Gewichtsklasse, TeamMembership, TeamUpdate, UpdateRegistratiePayload } from '@/types/api'
 import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -18,7 +22,6 @@ type Status = 'laden' | 'klaar' | 'opslaan' | 'succes' | 'fout'
 
 const route = useRoute()
 const auth = useAuth()
-const token = computed(() => String(route.params.token ?? ''))
 const magWijzigen = computed(() => auth.isAuthenticated.value)
 
 const status = ref<Status>('laden')
@@ -30,12 +33,21 @@ const teamfotoFout = ref('')
 const teamfotoBestand = ref<File | null>(null)
 const teamfotoPreviewUrl = ref<string | null>(null)
 const huidigeFotoUrl = ref<string | null>(null)
+const robotFotoUrls = ref<Record<number, string>>({})
+const robotFotoStatus = ref<Record<number, 'idle' | 'uploaden'>>({})
+const robotFotoFouten = ref<Record<number, string>>({})
+const robotFotoSuccess = ref<Record<number, string>>({})
 const teamUpdates = ref<TeamUpdate[]>([])
+const membershipRequests = ref<TeamMembership[]>([])
+const membershipStatus = ref<'idle' | 'opslaan'>('idle')
+const membershipFout = ref('')
 const updateStatus = ref<'idle' | 'opslaan'>('idle')
 const updateFout = ref('')
 const updateSucces = ref('')
 const updateAfbeeldingNamen = ref<string[]>([])
 const updateAfbeeldingen = ref<File[]>([])
+const bewerkUpdateId = ref<number | null>(null)
+const verwijderUpdateAfbeeldingIds = ref<number[]>([])
 const updateContentTextarea = ref<HTMLTextAreaElement | null>(null)
 const updateContentRef = ref('')
 
@@ -192,6 +204,101 @@ function wijzigUpdateAfbeeldingen(event: Event): void {
   updateAfbeeldingNamen.value = bestanden.map((bestand) => bestand.name)
 }
 
+function startBewerkUpdate(update: TeamUpdate): void {
+  bewerkUpdateId.value = update.id
+  updateForm.titel = update.titel
+  updateForm.excerpt = update.excerpt ?? ''
+  updateForm.content = update.content
+  updateForm.content_format = update.content_format
+  updateAfbeeldingen.value = []
+  updateAfbeeldingNamen.value = []
+  verwijderUpdateAfbeeldingIds.value = []
+  updateFout.value = ''
+  updateSucces.value = ''
+}
+
+function annuleerBewerkUpdate(): void {
+  bewerkUpdateId.value = null
+  updateForm.titel = ''
+  updateForm.excerpt = ''
+  updateForm.content = ''
+  updateForm.content_format = 'html'
+  updateAfbeeldingen.value = []
+  updateAfbeeldingNamen.value = []
+  verwijderUpdateAfbeeldingIds.value = []
+  updateFout.value = ''
+  updateSucces.value = ''
+}
+
+function toggleVerwijderUpdateAfbeelding(mediaId: number): void {
+  if (verwijderUpdateAfbeeldingIds.value.includes(mediaId)) {
+    verwijderUpdateAfbeeldingIds.value = verwijderUpdateAfbeeldingIds.value.filter((id) => id !== mediaId)
+    return
+  }
+
+  verwijderUpdateAfbeeldingIds.value = [...verwijderUpdateAfbeeldingIds.value, mediaId]
+}
+
+async function uploadRobotFoto(robotId: number, event: Event): Promise<void> {
+  const target = event.target as HTMLInputElement
+  const bestand = target.files?.[0] ?? null
+
+  robotFotoFouten.value[robotId] = ''
+  robotFotoSuccess.value[robotId] = ''
+
+  if (!bestand) {
+    return
+  }
+
+  if (!TOEGESTANE_TEAMFOTO_MIME_TYPES.has(bestand.type)) {
+    robotFotoFouten.value[robotId] = 'Gebruik een JPG, PNG of WEBP bestand.'
+    target.value = ''
+    return
+  }
+
+  if (bestand.size > TEAMFOTO_MAX_BYTES) {
+    robotFotoFouten.value[robotId] = 'De robotfoto mag maximaal 50 MB groot zijn.'
+    target.value = ''
+    return
+  }
+
+  robotFotoStatus.value[robotId] = 'uploaden'
+
+  try {
+    const result = await uploadRichMedia({
+      bestand,
+      target_type: 'robot',
+      target_id: robotId,
+      collectie: 'foto',
+      alt_tekst: 'Robotfoto',
+      onderschrift: 'Geupload via teambeheer',
+    })
+
+    robotFotoUrls.value[robotId] = result.data.url
+    robotFotoSuccess.value[robotId] = 'Robotfoto bijgewerkt.'
+    target.value = ''
+  } catch (error: unknown) {
+    if (
+      error !== null &&
+      typeof error === 'object' &&
+      'response' in error &&
+      error.response !== null &&
+      typeof error.response === 'object' &&
+      'data' in error.response &&
+      error.response.data !== null &&
+      typeof error.response.data === 'object' &&
+      'message' in error.response.data &&
+      typeof error.response.data.message === 'string'
+    ) {
+      robotFotoFouten.value[robotId] = error.response.data.message
+    } else {
+      robotFotoFouten.value[robotId] = 'Uploaden van robotfoto is mislukt.'
+    }
+  } finally {
+    robotFotoStatus.value[robotId] = 'idle'
+  }
+}
+
 function formatDatum(iso: string | null): string {
   if (!iso) return ''
 
@@ -275,9 +382,11 @@ onMounted(async (): Promise<void> => {
   try {
     const [editieData, registratie, updates] = await Promise.all([
       getEditions(),
-      getRegistratieByToken(token.value),
-      getRegistratieUpdatesByToken(token.value),
+      getMijnRegistratie(),
+      getMijnRegistratieUpdates(),
     ])
+
+    membershipRequests.value = await getCaptainTeamMembershipRequests()
 
     editions.value = editieData
 
@@ -295,6 +404,13 @@ onMounted(async (): Promise<void> => {
       beschrijving: robot.beschrijving ?? '',
     }))
 
+    robotFotoUrls.value = {}
+    for (const robot of registratie.robots) {
+      if (robot.foto?.url) {
+        robotFotoUrls.value[robot.id] = robot.foto.url
+      }
+    }
+
     if (!formulier.robots.length) {
       formulier.robots = [{ naam: '', gewichtsklasse: 'antweight', beschrijving: '' }]
     }
@@ -305,9 +421,23 @@ onMounted(async (): Promise<void> => {
     status.value = 'klaar'
   } catch {
     status.value = 'fout'
-    foutmelding.value = 'De bewerklink is ongeldig of verlopen.'
+    foutmelding.value = 'Je hebt nog geen team gekoppeld aan dit account of laden is mislukt.'
   }
 })
+
+async function beoordeelAanvraag(id: number, status: 'approved' | 'rejected'): Promise<void> {
+  membershipStatus.value = 'opslaan'
+  membershipFout.value = ''
+
+  try {
+    const beoordeeld = await reviewCaptainTeamMembershipRequest(id, status)
+    membershipRequests.value = membershipRequests.value.filter((item) => item.id !== beoordeeld.id)
+  } catch {
+    membershipFout.value = 'Bijwerken van lidmaatschapsaanvraag mislukt.'
+  } finally {
+    membershipStatus.value = 'idle'
+  }
+}
 
 async function opslaan(): Promise<void> {
   if (!magWijzigen.value) {
@@ -327,7 +457,7 @@ async function opslaan(): Promise<void> {
   successMelding.value = ''
 
   try {
-    const resultaat = await updateRegistratieByToken(token.value, {
+    const resultaat = await updateMijnRegistratie({
       ...formulier,
       teamfoto: teamfotoBestand.value,
     })
@@ -407,22 +537,38 @@ async function plaatsUpdate(): Promise<void> {
   updateStatus.value = 'opslaan'
 
   try {
-    const nieuw = await createRegistratieUpdateByToken(token.value, {
-      titel: updateForm.titel,
-      excerpt: updateForm.excerpt || undefined,
-      content: updateForm.content,
-      content_format: updateForm.content_format,
-      afbeeldingen: updateAfbeeldingen.value,
-    })
+    if (bewerkUpdateId.value !== null) {
+      const bijgewerkt = await updateMijnRegistratieUpdate(bewerkUpdateId.value, {
+        titel: updateForm.titel,
+        excerpt: updateForm.excerpt || undefined,
+        content: updateForm.content,
+        content_format: updateForm.content_format,
+        afbeeldingen: updateAfbeeldingen.value,
+        verwijder_afbeelding_ids: verwijderUpdateAfbeeldingIds.value,
+      })
 
-    teamUpdates.value = [nieuw, ...teamUpdates.value]
-    updateForm.titel = ''
-    updateForm.excerpt = ''
-    updateForm.content = ''
-    updateForm.content_format = 'html'
-    updateAfbeeldingen.value = []
-    updateAfbeeldingNamen.value = []
-    updateSucces.value = 'Voortgangsbericht geplaatst.'
+      teamUpdates.value = teamUpdates.value.map((item) => (item.id === bijgewerkt.id ? bijgewerkt : item))
+      annuleerBewerkUpdate()
+      updateSucces.value = 'Voortgangsbericht bijgewerkt.'
+    } else {
+      const nieuw = await createMijnRegistratieUpdate({
+        titel: updateForm.titel,
+        excerpt: updateForm.excerpt || undefined,
+        content: updateForm.content,
+        content_format: updateForm.content_format,
+        afbeeldingen: updateAfbeeldingen.value,
+      })
+
+      teamUpdates.value = [nieuw, ...teamUpdates.value]
+      updateForm.titel = ''
+      updateForm.excerpt = ''
+      updateForm.content = ''
+      updateForm.content_format = 'html'
+      updateAfbeeldingen.value = []
+      updateAfbeeldingNamen.value = []
+      verwijderUpdateAfbeeldingIds.value = []
+      updateSucces.value = 'Voortgangsbericht geplaatst.'
+    }
   } catch (error: unknown) {
     if (
       error !== null &&
@@ -476,6 +622,42 @@ async function plaatsUpdate(): Promise<void> {
       </div>
 
       <form v-else class="space-y-6" @submit.prevent="opslaan">
+        <section class="rounded-xl border border-white/15 bg-white/5 p-4">
+          <h2 class="mb-3 text-lg font-bold">Lidmaatschapsaanvragen</h2>
+          <p v-if="membershipFout" class="mb-3 rounded border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+            {{ membershipFout }}
+          </p>
+
+          <p v-if="membershipRequests.length === 0" class="text-sm text-slate-300">
+            Er zijn geen openstaande aanvragen.
+          </p>
+
+          <ul v-else class="space-y-3">
+            <li v-for="request in membershipRequests" :key="request.id" class="rounded-lg border border-white/10 bg-black/20 p-3">
+              <p class="font-semibold">{{ request.user?.name }} <span class="text-xs text-slate-400">({{ request.user?.email }})</span></p>
+              <p v-if="request.request_message" class="mt-1 text-sm text-slate-300">{{ request.request_message }}</p>
+              <div class="mt-3 flex gap-2">
+                <button
+                  type="button"
+                  class="rounded border border-green-400/60 px-3 py-1 text-sm font-semibold text-green-300 disabled:opacity-60"
+                  :disabled="membershipStatus === 'opslaan'"
+                  @click="beoordeelAanvraag(request.id, 'approved')"
+                >
+                  Goedkeuren
+                </button>
+                <button
+                  type="button"
+                  class="rounded border border-red-400/60 px-3 py-1 text-sm font-semibold text-red-300 disabled:opacity-60"
+                  :disabled="membershipStatus === 'opslaan'"
+                  @click="beoordeelAanvraag(request.id, 'rejected')"
+                >
+                  Afwijzen
+                </button>
+              </div>
+            </li>
+          </ul>
+        </section>
+
         <fieldset :disabled="status === 'opslaan' || !magWijzigen" class="space-y-6">
         <div>
           <label for="edition_id" class="mb-2 block font-semibold">Editie</label>
@@ -603,6 +785,42 @@ async function plaatsUpdate(): Promise<void> {
             </select>
 
             <textarea v-model="robot.beschrijving" rows="3" maxlength="1000" placeholder="Beschrijving" class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3" />
+
+            <div class="rounded-lg border border-white/10 bg-white/5 p-3">
+              <p class="mb-2 text-sm font-semibold text-slate-200">Robotfoto</p>
+
+              <img
+                v-if="robot.id && robotFotoUrls[robot.id]"
+                :src="robotFotoUrls[robot.id]"
+                alt="Robotfoto"
+                class="mb-3 h-32 w-32 rounded-lg border border-white/20 object-cover"
+              />
+
+              <p v-else class="mb-3 text-xs text-slate-400">
+                Nog geen robotfoto geupload.
+              </p>
+
+              <div v-if="robot.id" class="space-y-2">
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  class="w-full rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-xs"
+                  :disabled="robotFotoStatus[robot.id] === 'uploaden'"
+                  @change="uploadRobotFoto(robot.id, $event)"
+                />
+
+                <p v-if="robotFotoFouten[robot.id]" class="text-xs text-red-300">
+                  {{ robotFotoFouten[robot.id] }}
+                </p>
+                <p v-if="robotFotoSuccess[robot.id]" class="text-xs text-green-300">
+                  {{ robotFotoSuccess[robot.id] }}
+                </p>
+              </div>
+
+              <p v-else class="text-xs text-slate-400">
+                Sla eerst de aanmelding op om een robotfoto te kunnen uploaden.
+              </p>
+            </div>
           </article>
         </div>
 
@@ -628,10 +846,21 @@ async function plaatsUpdate(): Promise<void> {
 
       <section class="mt-10 space-y-6 rounded-xl border border-white/15 bg-white/5 p-6">
         <div>
-          <h2 class="text-2xl font-black">Voortgang posten op je teampagina</h2>
+          <h2 class="text-2xl font-black">
+            {{ bewerkUpdateId ? 'Voortgangsbericht bewerken' : 'Voortgang posten op je teampagina' }}
+          </h2>
           <p class="mt-2 text-sm text-slate-300">
             Plaats updates met opmaak en resources (afbeeldingen, video, STL). Deze worden zichtbaar op jullie publieke teampagina.
           </p>
+          <div v-if="bewerkUpdateId" class="mt-3">
+            <button
+              type="button"
+              class="rounded border border-white/30 px-3 py-1 text-sm text-slate-200 hover:bg-white/10"
+              @click="annuleerBewerkUpdate"
+            >
+              Bewerken annuleren
+            </button>
+          </div>
         </div>
 
         <form class="space-y-4" @submit.prevent="plaatsUpdate">
@@ -706,6 +935,35 @@ async function plaatsUpdate(): Promise<void> {
             </ul>
           </div>
 
+          <div v-if="bewerkUpdateId" class="space-y-2 rounded-lg border border-white/10 bg-black/20 p-3">
+            <p class="text-sm font-semibold text-slate-200">Bestaande afbeeldingen verwijderen</p>
+
+            <p
+              v-if="!teamUpdates.find((item) => item.id === bewerkUpdateId)?.afbeeldingen?.length"
+              class="text-xs text-slate-400"
+            >
+              Dit voortgangsbericht heeft geen bestaande afbeeldingen.
+            </p>
+
+            <ul v-else class="space-y-2">
+              <li
+                v-for="afbeelding in teamUpdates.find((item) => item.id === bewerkUpdateId)?.afbeeldingen ?? []"
+                :key="afbeelding.id"
+                class="flex items-center gap-3"
+              >
+                <img :src="afbeelding.url" alt="Bestaande update-afbeelding" class="h-12 w-12 rounded object-cover" />
+                <label class="inline-flex items-center gap-2 text-xs text-slate-300">
+                  <input
+                    type="checkbox"
+                    :checked="verwijderUpdateAfbeeldingIds.includes(afbeelding.id)"
+                    @change="toggleVerwijderUpdateAfbeelding(afbeelding.id)"
+                  />
+                  Verwijderen
+                </label>
+              </li>
+            </ul>
+          </div>
+
           <div v-if="updateFout" class="rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-red-300">
             {{ updateFout }}
           </div>
@@ -719,8 +977,9 @@ async function plaatsUpdate(): Promise<void> {
             :disabled="updateStatus === 'opslaan' || !magWijzigen"
             class="rounded-lg bg-robo-orange px-6 py-3 font-bold text-white transition hover:bg-robo-orange-dark disabled:opacity-60"
           >
-            <span v-if="updateStatus === 'opslaan'">Plaatsen...</span>
+            <span v-if="updateStatus === 'opslaan'">Opslaan...</span>
             <span v-else-if="!magWijzigen">Log in om te plaatsen</span>
+            <span v-else-if="bewerkUpdateId">Voortgang bijwerken</span>
             <span v-else>Voortgang plaatsen</span>
           </button>
           </fieldset>
@@ -735,6 +994,13 @@ async function plaatsUpdate(): Promise<void> {
               <p class="font-semibold">{{ update.titel }}</p>
               <p v-if="update.published_at" class="text-xs text-slate-400">{{ formatDatum(update.published_at) }}</p>
               <p v-if="update.excerpt" class="mt-1 text-sm text-slate-300">{{ update.excerpt }}</p>
+              <button
+                type="button"
+                class="mt-3 rounded border border-robo-orange px-3 py-1 text-xs font-semibold text-robo-orange hover:bg-robo-orange/10"
+                @click="startBewerkUpdate(update)"
+              >
+                Bewerk bericht
+              </button>
             </li>
           </ul>
         </div>

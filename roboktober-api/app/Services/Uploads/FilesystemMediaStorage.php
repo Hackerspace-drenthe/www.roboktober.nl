@@ -8,13 +8,19 @@ use App\Contracts\Uploads\MediaStorage;
 use App\Data\Uploads\StoredUpload;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 final class FilesystemMediaStorage implements MediaStorage
 {
     public function storeUploadedFile(UploadedFile $file, string $directory, ?string $disk = null): StoredUpload
     {
         $resolvedDisk = $this->resolveDisk($disk);
-        $path = $file->store($directory, $resolvedDisk);
+        $originalExtension = strtolower($file->getClientOriginalExtension());
+        $detectedExtension = strtolower((string) $file->extension());
+        $extension = $originalExtension !== '' ? $originalExtension : ($detectedExtension !== '' ? $detectedExtension : 'bin');
+
+        $fileName = Str::uuid()->toString().'.'.$extension;
+        $path = $file->storeAs($directory, $fileName, $resolvedDisk);
 
         $realPath = $file->getRealPath();
         $sha256 = is_string($realPath) ? hash_file('sha256', $realPath) : null;
@@ -24,7 +30,7 @@ final class FilesystemMediaStorage implements MediaStorage
             disk: $resolvedDisk,
             originalName: $file->getClientOriginalName(),
             mimeType: $file->getMimeType() ?? 'application/octet-stream',
-            extension: strtolower($file->getClientOriginalExtension()),
+            extension: $extension,
             size: $file->getSize() ?? 0,
             sha256: $sha256,
         );

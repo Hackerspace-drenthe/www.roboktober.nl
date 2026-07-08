@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { getTeam } from '@/api'
+import { applyForTeamMembership, getTeam } from '@/api'
+import { useAuth } from '@/composables/useAuth'
 import type { Team } from '@/types/api'
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -7,9 +8,14 @@ import headerImage from '@/assets/headers/header-team-detail.png'
 
 const route = useRoute()
 const router = useRouter()
+const auth = useAuth()
 const team = ref<Team | null>(null)
 const laden = ref(true)
 const fout = ref<string | null>(null)
+const aanvraagMelding = ref('')
+const aanvraagStatus = ref<'idle' | 'opslaan'>('idle')
+const aanvraagFout = ref('')
+const aanvraagSucces = ref('')
 
 const statusKleur: Record<string, string> = {
   approved: 'bg-green-100 text-green-800',
@@ -40,6 +46,11 @@ function formatDatum(iso: string | null): string {
 
 onMounted(async () => {
   const id = Number(route.params.id)
+
+  if (!auth.initialized.value) {
+    await auth.initAuth()
+  }
+
   if (isNaN(id)) {
     router.replace('/niet-gevonden')
     return
@@ -52,6 +63,41 @@ onMounted(async () => {
     laden.value = false
   }
 })
+
+async function verstuurLidmaatschapAanvraag(): Promise<void> {
+  if (!team.value) {
+    return
+  }
+
+  aanvraagStatus.value = 'opslaan'
+  aanvraagFout.value = ''
+  aanvraagSucces.value = ''
+
+  try {
+    await applyForTeamMembership(team.value.id, aanvraagMelding.value.trim() || undefined)
+    aanvraagSucces.value = 'Aanvraag verstuurd. De teamcaptain kan deze nu beoordelen.'
+    aanvraagMelding.value = ''
+  } catch (error: unknown) {
+    if (
+      error !== null &&
+      typeof error === 'object' &&
+      'response' in error &&
+      error.response !== null &&
+      typeof error.response === 'object' &&
+      'data' in error.response &&
+      error.response.data !== null &&
+      typeof error.response.data === 'object' &&
+      'message' in error.response.data &&
+      typeof error.response.data.message === 'string'
+    ) {
+      aanvraagFout.value = error.response.data.message
+    } else {
+      aanvraagFout.value = 'Aanvraag versturen mislukt. Controleer je rechten of probeer later opnieuw.'
+    }
+  } finally {
+    aanvraagStatus.value = 'idle'
+  }
+}
 </script>
 
 <template>
@@ -113,6 +159,39 @@ onMounted(async () => {
       <section class="bg-white py-16" aria-labelledby="team-info-title">
         <div class="mx-auto max-w-3xl px-6">
           <h2 id="team-info-title" class="mb-8 text-2xl font-black text-robo-dark">Teaminformatie</h2>
+
+          <article class="mb-8 rounded-xl border border-slate-200 p-6">
+            <h3 class="mb-2 text-lg font-bold text-robo-dark">Lid worden van dit team</h3>
+
+            <p v-if="!auth.isAuthenticated.value" class="text-slate-600">
+              Log in om een lidmaatschapsaanvraag naar de teamcaptain te sturen.
+            </p>
+
+            <form v-else class="space-y-3" @submit.prevent="verstuurLidmaatschapAanvraag">
+              <textarea
+                v-model="aanvraagMelding"
+                rows="3"
+                maxlength="500"
+                placeholder="Korte motivatie (optioneel)"
+                class="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-800"
+              />
+
+              <p v-if="aanvraagFout" class="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+                {{ aanvraagFout }}
+              </p>
+              <p v-if="aanvraagSucces" class="rounded border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-700">
+                {{ aanvraagSucces }}
+              </p>
+
+              <button
+                type="submit"
+                :disabled="aanvraagStatus === 'opslaan'"
+                class="rounded-lg bg-robo-orange px-4 py-2 font-semibold text-white hover:bg-robo-orange-dark disabled:opacity-60"
+              >
+                {{ aanvraagStatus === 'opslaan' ? 'Versturen...' : 'Lidmaatschap aanvragen' }}
+              </button>
+            </form>
+          </article>
 
           <div class="grid gap-8 md:grid-cols-[1.2fr_0.8fr]">
             <article class="rounded-xl border border-slate-200 p-6">

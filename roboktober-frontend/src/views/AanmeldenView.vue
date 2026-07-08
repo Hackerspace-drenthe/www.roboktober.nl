@@ -10,12 +10,14 @@
  */
 import { onMounted, onUnmounted, reactive, ref } from 'vue'
 import { getEditions, registreerTeam } from '@/api'
+import { useAuth } from '@/composables/useAuth'
 import type { Edition, RegistratiePayload } from '@/types/api'
 import headerImage from '@/assets/headers/header-aanmelden.png'
 
 type FormulierStatus = 'idle' | 'versturen' | 'succes' | 'fout'
 
 const status = ref<FormulierStatus>('idle')
+const auth = useAuth()
 const foutmelding = ref<string>('')
 const teamfotoNaam = ref<string>('')
 const teamfotoFout = ref<string>('')
@@ -47,6 +49,14 @@ const formulier = reactive<RegistratiePayload>({
 })
 
 onMounted(async (): Promise<void> => {
+  if (!auth.initialized.value) {
+    await auth.initAuth()
+  }
+
+  if (auth.user.value?.email) {
+    formulier.email = auth.user.value.email
+  }
+
   try {
     const data = await getEditions()
     editions.value = data
@@ -416,10 +426,14 @@ async function verstuur(): Promise<void> {
               required
               maxlength="255"
               autocomplete="email"
+              readonly
               :disabled="status === 'versturen'"
               class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-white placeholder-slate-400 focus:border-robo-orange focus:outline-none focus:ring-2 focus:ring-robo-orange/50 disabled:opacity-50"
               placeholder="jouw@email.nl"
             />
+            <p class="mt-2 text-xs text-slate-400">
+              Dit e-mailadres komt uit je account en wordt gebruikt als teamcaptain/registrator contact.
+            </p>
           </div>
 
           <div class="grid gap-6 sm:grid-cols-2">

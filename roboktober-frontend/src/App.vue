@@ -157,6 +157,7 @@ async function handleLogout(): Promise<void> {
             >
               <p class="px-3 py-2 text-xs font-bold uppercase tracking-wide text-slate-400">Persoonlijk</p>
 
+              <RouterLink to="/account" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Mijn Account</RouterLink>
               <RouterLink to="/aanmelding/wijzigen" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Mijn Aanmelding</RouterLink>
 
               <template v-if="!auth.isAuthenticated.value">
@@ -273,6 +274,14 @@ async function handleLogout(): Promise<void> {
         </li>
 
         <li class="mt-4 border-t border-white/15 pt-4 text-xs font-bold uppercase tracking-wide text-slate-400">Persoonlijk</li>
+        <li>
+          <RouterLink
+            to="/account"
+            :class="mobileNavLinkClass"
+            :active-class="mobileNavActiveClass"
+            @click="sluitMenu"
+          >Mijn Account</RouterLink>
+        </li>
         <li>
           <RouterLink
             to="/aanmelding/wijzigen"

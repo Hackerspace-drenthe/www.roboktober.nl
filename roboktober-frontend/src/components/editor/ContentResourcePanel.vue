@@ -94,7 +94,13 @@ onMounted(async () => {
     <div class="grid gap-3 rounded-lg border border-white/10 bg-white/5 p-3 md:grid-cols-2">
       <div>
         <label class="mb-1 block text-sm font-semibold">Bestand</label>
-        <input type="file" class="w-full rounded border border-white/20 bg-white/5 px-3 py-2 text-sm" :disabled="disabled || uploading" @change="onBestandChange" />
+        <input
+          type="file"
+          accept=".jpg,.jpeg,.png,.webp,.gif,.mp4,.webm,.mov,.stl,.obj,.3mf,.pdf,.zip,.txt,.md"
+          class="w-full rounded border border-white/20 bg-white/5 px-3 py-2 text-sm"
+          :disabled="disabled || uploading"
+          @change="onBestandChange"
+        />
       </div>
 
       <div>

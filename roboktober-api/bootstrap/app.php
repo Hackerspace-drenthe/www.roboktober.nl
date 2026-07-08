@@ -20,7 +20,6 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->alias([
-            'registration.edit-token' => \App\Http\Middleware\EnsureValidRegistrationEditToken::class,
             'role' => \App\Http\Middleware\EnsureUserHasRole::class,
         ]);
     })

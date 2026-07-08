@@ -63,6 +63,11 @@ async function handleSubmit(): Promise<void> {
           autocomplete="current-password"
           class="w-full rounded-lg border border-white/15 bg-slate-900 px-3 py-2 text-white outline-none ring-robo-orange/70 transition focus:ring-2"
         />
+        <div class="mt-2 text-right">
+          <RouterLink class="text-sm font-semibold text-robo-orange hover:text-robo-orange-dark" to="/wachtwoord-vergeten">
+            Wachtwoord vergeten?
+          </RouterLink>
+        </div>
       </div>
 
       <p v-if="errorMessage" class="rounded-md border border-red-400/40 bg-red-950/30 px-3 py-2 text-sm text-red-200">

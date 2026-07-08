@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Enums\UserRole;
 use App\Enums\RobotStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\UpdateTeamRegistrationRequest;
 use App\Http\Resources\Api\V1\EditableTeamRegistrationResource;
 use App\Models\Robot;
 use App\Models\Team;
+use App\Models\User;
 use App\Services\Uploads\TeamPhotoUploadService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -24,18 +24,17 @@ class TeamRegistrationEditController extends Controller
     {
     }
 
-    public function show(string $token): EditableTeamRegistrationResource
+    public function show(Request $request): EditableTeamRegistrationResource
     {
-        $team = $this->resolveTeamByToken($token);
-        $team->load(['media', 'robots']);
+        $team = $this->resolveTeamForUser($this->resolveAuthenticatedUser($request));
+        $team->load(['media', 'robots.media']);
 
         return new EditableTeamRegistrationResource($team);
     }
 
-    public function update(UpdateTeamRegistrationRequest $request, string $token): JsonResponse
+    public function update(UpdateTeamRegistrationRequest $request): JsonResponse
     {
-        $team = $this->resolveTeamByToken($token);
-        $this->authorizeTeamMutation($request, $team);
+        $team = $this->resolveTeamForUser($this->resolveAuthenticatedUser($request));
 
         /** @var array<string, mixed> $validated */
         $validated = $request->validated();
@@ -101,43 +100,32 @@ class TeamRegistrationEditController extends Controller
                     team: $team,
                     photo: $request->file('teamfoto'),
                     source: 'team_registratie_update',
-                    caption: 'Bijgewerkt via teambewerklink',
+                    caption: 'Bijgewerkt via accountbeheer',
                 );
             }
         });
 
-        $team->load(['media', 'robots']);
+        $team->load(['media', 'robots.media']);
 
         return (new EditableTeamRegistrationResource($team))
             ->response()
             ->setStatusCode(Response::HTTP_OK);
     }
 
-    private function authorizeTeamMutation(Request $request, Team $team): void
+    private function resolveAuthenticatedUser(Request $request): User
     {
+        /** @var User|null $user */
         $user = $request->user();
 
         if ($user === null) {
             abort(Response::HTTP_UNAUTHORIZED);
         }
 
-        if ($user->hasAnyRole(UserRole::Admin, UserRole::Moderator)) {
-            return;
-        }
-
-        if ($team->captain_user_id !== $user->id) {
-            abort(Response::HTTP_FORBIDDEN, 'Alleen de gekoppelde teamcaptain mag wijzigingen doorvoeren.');
-        }
+        return $user;
     }
 
-    private function resolveTeamByToken(string $token): Team
+    private function resolveTeamForUser(User $user): Team
     {
-        $tokenHash = hash('sha256', $token);
-
-        return Team::query()
-            ->where('edit_token_hash', $tokenHash)
-            ->whereNotNull('edit_token_expires_at')
-            ->where('edit_token_expires_at', '>', now())
-            ->firstOrFail();
+        return Team::query()->where('captain_user_id', $user->id)->firstOrFail();
     }
 }

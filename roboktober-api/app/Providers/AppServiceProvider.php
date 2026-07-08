@@ -25,12 +25,28 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         RateLimiter::for('registratie', function (Request $request): array {
-            $emailInput = $request->input('email');
-            $email = is_string($emailInput) ? mb_strtolower($emailInput) : '';
+            if ($request->routeIs('registratie.store')) {
+                $emailInput = $request->input('email');
+                $email = is_string($emailInput) ? mb_strtolower($emailInput) : '';
+
+                return [
+                    Limit::perMinute(5)->by('registratie-store-ip:'.$request->ip()),
+                    Limit::perHour(20)->by('registratie-store-email:'.$email),
+                ];
+            }
+
+            $user = $request->user();
+
+            if ($user !== null) {
+                return [
+                    Limit::perMinute(60)->by('registratie-account-user:'.$user->id),
+                    Limit::perHour(600)->by('registratie-account-user:'.$user->id),
+                ];
+            }
 
             return [
-                Limit::perMinute(5)->by('registratie-ip:'.$request->ip()),
-                Limit::perHour(20)->by('registratie-email:'.$email),
+                Limit::perMinute(30)->by('registratie-account-ip:'.$request->ip()),
+                Limit::perHour(300)->by('registratie-account-ip:'.$request->ip()),
             ];
         });
     }

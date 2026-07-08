@@ -77,10 +77,13 @@ const router = createRouter({
       },
     },
     {
-      path: '/aanmelding/bewerken/:token',
+      path: '/aanmelding/bewerken',
       name: 'aanmelding-bewerken',
       component: () => import('../views/AanmeldingBewerkenView.vue'),
-      meta: { title: 'Aanmelding bewerken — Roboktober' },
+      meta: {
+        title: 'Aanmelding bewerken — Roboktober',
+        requiresAuth: true,
+      },
     },
     {
       path: '/aanmelding/wijzigen',
@@ -98,10 +101,31 @@ const router = createRouter({
       meta: { title: 'Inloggen — Roboktober' },
     },
     {
+      path: '/wachtwoord-vergeten',
+      name: 'wachtwoord-vergeten',
+      component: () => import('../views/ForgotPasswordView.vue'),
+      meta: { title: 'Wachtwoord vergeten — Roboktober' },
+    },
+    {
+      path: '/wachtwoord-reset',
+      name: 'wachtwoord-reset',
+      component: () => import('../views/ResetPasswordView.vue'),
+      meta: { title: 'Wachtwoord resetten — Roboktober' },
+    },
+    {
       path: '/registreren',
       name: 'registreren',
       component: () => import('../views/RegisterView.vue'),
       meta: { title: 'Registreren — Roboktober' },
+    },
+    {
+      path: '/account',
+      name: 'account',
+      component: () => import('../views/AccountView.vue'),
+      meta: {
+        title: 'Mijn account — Roboktober',
+        requiresAuth: true,
+      },
     },
     {
       path: '/admin',

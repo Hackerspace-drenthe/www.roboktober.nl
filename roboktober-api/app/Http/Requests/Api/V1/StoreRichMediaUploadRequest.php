@@ -19,7 +19,7 @@ class StoreRichMediaUploadRequest extends FormRequest
      */
     public function rules(): array
     {
-        $targetTypes = ['post', 'page', 'team', 'team_update'];
+        $targetTypes = ['post', 'page', 'team', 'team_update', 'robot'];
         $collections = ['featured', 'gallery', 'bijlagen', 'hero', 'foto', 'default'];
 
         return [
@@ -28,7 +28,9 @@ class StoreRichMediaUploadRequest extends FormRequest
                 'file',
                 // 100MB
                 'max:102400',
-                'mimes:jpg,jpeg,png,webp,gif,mp4,webm,mov,stl,obj,3mf,pdf,zip,txt,md',
+                // Keep extension checks for predictable UX, and accept STL/OBJ MIME variants.
+                'extensions:jpg,jpeg,png,webp,gif,mp4,webm,mov,stl,obj,3mf,pdf,zip,txt,md',
+                'mimetypes:image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime,model/stl,application/sla,model/obj,text/plain,application/vnd.ms-pki.stl,application/octet-stream,application/pdf,application/zip,text/markdown',
             ],
             'naam' => ['sometimes', 'string', 'max:255'],
             'target_type' => ['nullable', 'string', Rule::in($targetTypes)],

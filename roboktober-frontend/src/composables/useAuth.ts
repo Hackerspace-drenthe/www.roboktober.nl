@@ -1,6 +1,5 @@
 import { computed, ref } from 'vue'
 import {
-  claimTeam,
   getCurrentUser,
   loginUser,
   logoutUser,
@@ -106,11 +105,6 @@ export function useAuth() {
     return rolePriority[user.value.role] >= rolePriority[requiredRole]
   }
 
-  async function claimTeamByToken(editToken: string): Promise<void> {
-    await claimTeam(editToken)
-    await refreshMe()
-  }
-
   return {
     user,
     loading,
@@ -122,6 +116,5 @@ export function useAuth() {
     logout,
     refreshMe,
     hasRole,
-    claimTeamByToken,
   }
 }

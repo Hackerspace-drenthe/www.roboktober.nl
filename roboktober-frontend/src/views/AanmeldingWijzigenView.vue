@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { issueTeamEditLink } from '@/api'
 import headerImage from '@/assets/headers/header-aanmelden.png'
 import { useAuth } from '@/composables/useAuth'
+import { useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue'
 
 const auth = useAuth()
+const router = useRouter()
 const uitgifteStatus = ref<'idle' | 'laden'>('idle')
 const uitgifteFout = ref('')
 
@@ -23,8 +24,7 @@ async function openMijnBewerkLink(): Promise<void> {
   uitgifteFout.value = ''
 
   try {
-    const data = await issueTeamEditLink()
-    window.location.assign(data.edit_url)
+    await router.replace('/aanmelding/bewerken')
   } catch (error: unknown) {
     if (
       error !== null &&
@@ -40,7 +40,7 @@ async function openMijnBewerkLink(): Promise<void> {
     ) {
       uitgifteFout.value = error.response.data.message
     } else {
-      uitgifteFout.value = 'Bewerklink ophalen mislukt. Probeer het opnieuw.'
+      uitgifteFout.value = 'Bewerkpagina openen mislukt. Probeer het opnieuw.'
     }
   } finally {
     uitgifteStatus.value = 'idle'
@@ -61,7 +61,7 @@ const heroStyle = {
       <div class="relative z-10 mx-auto max-w-3xl px-6 text-center">
         <h1 class="mb-4 text-4xl font-black">Aanmelding <span class="text-robo-orange">wijzigen</span></h1>
         <p class="text-slate-300">
-          Je wordt automatisch doorgestuurd naar je eigen bewerkomgeving.
+          Je wordt automatisch doorgestuurd naar je eigen bewerkomgeving in je account.
         </p>
       </div>
     </section>

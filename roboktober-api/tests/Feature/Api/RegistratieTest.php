@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Storage;
 use App\Mail\NieuwTeamAanmelding;
-use App\Mail\TeamBewerkLink;
 
 /**
  * @param array<string, mixed> $overschrijvingen
@@ -74,13 +73,24 @@ describe('POST /api/v1/registratie', function (): void {
             'captain_user_id' => $this->user->id,
         ]);
 
-        $team = Team::query()->where('naam', 'Team Robotica')->firstOrFail();
-        expect($team->edit_token_hash)->not->toBeNull();
-        expect($team->edit_token_expires_at)->not->toBeNull();
-
         $this->assertDatabaseHas('robots', [
             'naam' => 'Kecil',
             'gewichtsklasse' => 'antweight',
+        ]);
+    });
+
+    it('uses account email as team contact email on registration', function (): void {
+        $response = postRegistratieAs($this->user, registratieBasisPayload($this->edition->id, [
+            'naam' => 'Captain Email Team',
+            'email' => 'afwijkend@example.test',
+        ]));
+
+        $response->assertCreated();
+
+        $this->assertDatabaseHas('teams', [
+            'naam' => 'Captain Email Team',
+            'email' => $this->user->email,
+            'captain_user_id' => $this->user->id,
         ]);
     });
 
@@ -93,7 +103,6 @@ describe('POST /api/v1/registratie', function (): void {
         ]));
 
         Mail::assertSent(NieuwTeamAanmelding::class);
-        Mail::assertSent(TeamBewerkLink::class);
     });
 
     it('accepts optional opmerkingen', function (): void {

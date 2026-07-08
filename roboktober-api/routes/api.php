@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\V1\RegistratieController;
 use App\Http\Controllers\Api\V1\RichMediaController;
 use App\Http\Controllers\Api\V1\TeamRegistrationUpdateController;
 use App\Http\Controllers\Api\V1\TeamRegistrationEditController;
+use App\Http\Controllers\Api\V1\TeamMembershipController;
 use App\Http\Controllers\Api\V1\TeamController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,6 +39,14 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
     Route::post('/auth/login', [AuthController::class, 'login'])
         ->middleware('throttle:10,1')
         ->name('auth.login');
+
+    Route::post('/auth/forgot-password', [AuthController::class, 'forgotPassword'])
+        ->middleware('throttle:6,1')
+        ->name('auth.forgot-password');
+
+    Route::post('/auth/reset-password', [AuthController::class, 'resetPassword'])
+        ->middleware('throttle:6,1')
+        ->name('auth.reset-password');
 
     // Blog posts (public, read-only)
     Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
@@ -62,30 +71,46 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         ->middleware(['auth:sanctum', 'throttle:registratie'])
         ->name('registratie.store');
 
-    Route::get('/registratie/{token}', [TeamRegistrationEditController::class, 'show'])
-        ->middleware(['throttle:registratie', 'registration.edit-token'])
-        ->name('registratie.show');
-
-    Route::put('/registratie/{token}', [TeamRegistrationEditController::class, 'update'])
-        ->middleware(['auth:sanctum', 'throttle:registratie', 'registration.edit-token'])
-        ->name('registratie.update');
-
-    Route::get('/registratie/{token}/updates', [TeamRegistrationUpdateController::class, 'index'])
-        ->middleware(['throttle:registratie', 'registration.edit-token'])
-        ->name('registratie.updates.index');
-
-    Route::post('/registratie/{token}/updates', [TeamRegistrationUpdateController::class, 'store'])
-        ->middleware(['auth:sanctum', 'throttle:registratie', 'registration.edit-token'])
-        ->name('registratie.updates.store');
-
     // Authenticated user API
     Route::middleware('auth:sanctum')->group(function (): void {
         Route::get('/auth/me', [AuthController::class, 'me'])->name('auth.me');
         Route::post('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
-        Route::post('/auth/claim-team', [AuthController::class, 'claimTeam'])
-            ->name('auth.claim-team');
-        Route::post('/auth/team-edit-link', [AuthController::class, 'teamEditLink'])
-            ->name('auth.team-edit-link');
+        Route::patch('/auth/account', [AuthController::class, 'updateAccount'])->name('auth.account.update');
+        Route::patch('/auth/password', [AuthController::class, 'updatePassword'])->name('auth.password.update');
+
+        Route::get('/registratie/mijn', [TeamRegistrationEditController::class, 'show'])
+            ->middleware(['throttle:registratie'])
+            ->name('registratie.mine.show');
+
+        Route::put('/registratie/mijn', [TeamRegistrationEditController::class, 'update'])
+            ->middleware(['throttle:registratie'])
+            ->name('registratie.mine.update');
+
+        Route::get('/registratie/mijn/updates', [TeamRegistrationUpdateController::class, 'index'])
+            ->middleware(['throttle:registratie'])
+            ->name('registratie.mine.updates.index');
+
+        Route::post('/registratie/mijn/updates', [TeamRegistrationUpdateController::class, 'store'])
+            ->middleware(['throttle:registratie'])
+            ->name('registratie.mine.updates.store');
+
+        Route::patch('/registratie/mijn/updates/{teamUpdate}', [TeamRegistrationUpdateController::class, 'update'])
+            ->middleware(['throttle:registratie'])
+            ->name('registratie.mine.updates.update');
+
+        Route::post('/teams/{team}/membership-requests', [TeamMembershipController::class, 'apply'])
+            ->name('teams.membership.apply');
+
+        Route::get('/teams/mijn/lidmaatschappen', [TeamMembershipController::class, 'myMemberships'])
+            ->name('teams.membership.mine.index');
+
+        Route::get('/teams/mijn/membership-requests', [TeamMembershipController::class, 'captainRequests'])
+            ->middleware('role:teamcaptain,moderator,admin')
+            ->name('teams.membership.captain.index');
+
+        Route::patch('/teams/mijn/membership-requests/{teamMembership}', [TeamMembershipController::class, 'review'])
+            ->middleware('role:teamcaptain,moderator,admin')
+            ->name('teams.membership.captain.review');
 
         Route::prefix('media')->name('media.')->middleware('role:teamcaptain,moderator,admin')->group(function (): void {
             Route::get('/', [RichMediaController::class, 'index'])->name('index');

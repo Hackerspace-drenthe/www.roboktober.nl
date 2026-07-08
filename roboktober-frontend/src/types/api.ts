@@ -179,7 +179,7 @@ export interface PaginatedResponse<T> {
   }
 }
 
-export type RichMediaTargetType = 'post' | 'page' | 'team' | 'team_update'
+export type RichMediaTargetType = 'post' | 'page' | 'team' | 'team_update' | 'robot'
 
 export interface RichMediaItem {
   id: number
@@ -248,6 +248,7 @@ export interface TeamRegistratieRobot {
   gewichtsklasse: Gewichtsklasse
   gewichtsklasse_label: string
   beschrijving: string | null
+  foto: Media | null
 }
 
 export interface UpdateRegistratiePayload {
@@ -275,6 +276,31 @@ export interface TeamUpdatePayload {
   afbeeldingen?: File[]
 }
 
+export interface UpdateTeamUpdatePayload extends TeamUpdatePayload {
+  verwijder_afbeelding_ids?: number[]
+}
+
+export type TeamMembershipStatus = 'pending' | 'approved' | 'rejected'
+
+export interface TeamMembership {
+  id: number
+  status: TeamMembershipStatus
+  status_label: string
+  request_message: string | null
+  team: {
+    id: number
+    naam: string
+  } | null
+  user: {
+    id: number
+    name: string
+    email: string
+  } | null
+  reviewed_at: string | null
+  created_at: string | null
+  updated_at: string | null
+}
+
 // ---------------------------------------------------------------------------
 // Auth & Admin
 // ---------------------------------------------------------------------------
@@ -295,11 +321,6 @@ export interface AuthResponse {
   token_type: 'Bearer'
 }
 
-export interface TeamEditLinkResponse {
-  edit_url: string
-  edit_token_expires_at: string | null
-}
-
 export interface RegisterPayload {
   name: string
   email: string
@@ -311,6 +332,28 @@ export interface LoginPayload {
   email: string
   password: string
   device_name?: string
+}
+
+export interface UpdateAccountPayload {
+  name: string
+  email: string
+}
+
+export interface UpdatePasswordPayload {
+  current_password: string
+  password: string
+  password_confirmation: string
+}
+
+export interface ForgotPasswordPayload {
+  email: string
+}
+
+export interface ResetPasswordPayload {
+  email: string
+  token: string
+  password: string
+  password_confirmation: string
 }
 
 export interface AdminTeam {

@@ -36,7 +36,7 @@ it('exposes user registration mutations only on api v1 routes', function (): voi
         ->all();
 
     expect($apiMutations)->toContain('api/v1/registratie');
-    expect($apiMutations)->toContain('api/v1/registratie/{token}');
+    expect($apiMutations)->toContain('api/v1/registratie/mijn');
 
     $webRegistrationMutations = $allRoutes
         ->filter(function ($route): bool {

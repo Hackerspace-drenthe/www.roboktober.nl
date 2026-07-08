@@ -21,20 +21,25 @@ import type {
   AuthResponse,
   AuthUser,
   Edition,
+  ForgotPasswordPayload,
   Link,
   LoginPayload,
   Page,
   PaginatedResponse,
   Post,
   RegisterPayload,
+  ResetPasswordPayload,
   RichMediaItem,
   RichMediaUploadPayload,
   RegistratiePayload,
   TeamUpdate,
+  TeamMembership,
   TeamUpdatePayload,
+  UpdateTeamUpdatePayload,
   Team,
-  TeamEditLinkResponse,
   TeamRegistratie,
+  UpdateAccountPayload,
+  UpdatePasswordPayload,
   UpdateRegistratiePayload,
 } from '@/types/api'
 import axios from 'axios'
@@ -95,6 +100,32 @@ export async function getTeams(): Promise<Team[]> {
 
 export async function getTeam(id: number): Promise<Team> {
   const { data } = await api.get<{ data: Team }>(`/teams/${id}`)
+  return data.data
+}
+
+export async function applyForTeamMembership(teamId: number, requestMessage?: string): Promise<TeamMembership> {
+  const { data } = await api.post<{ data: TeamMembership }>(`/teams/${teamId}/membership-requests`, {
+    request_message: requestMessage,
+  })
+
+  return data.data
+}
+
+export async function getMijnTeamMemberships(): Promise<TeamMembership[]> {
+  const { data } = await api.get<{ data: TeamMembership[] }>('/teams/mijn/lidmaatschappen')
+  return data.data
+}
+
+export async function getCaptainTeamMembershipRequests(): Promise<TeamMembership[]> {
+  const { data } = await api.get<{ data: TeamMembership[] }>('/teams/mijn/membership-requests')
+  return data.data
+}
+
+export async function reviewCaptainTeamMembershipRequest(
+  id: number,
+  status: 'approved' | 'rejected',
+): Promise<TeamMembership> {
+  const { data } = await api.patch<{ data: TeamMembership }>(`/teams/mijn/membership-requests/${id}`, { status })
   return data.data
 }
 
@@ -166,16 +197,13 @@ export async function registreerTeam(payload: RegistratiePayload): Promise<Team>
   return data.data
 }
 
-export async function getRegistratieByToken(token: string): Promise<TeamRegistratie> {
-  const { data } = await api.get<{ data: TeamRegistratie }>(`/registratie/${token}`)
+export async function getMijnRegistratie(): Promise<TeamRegistratie> {
+  const { data } = await api.get<{ data: TeamRegistratie }>('/registratie/mijn')
 
   return data.data
 }
 
-export async function updateRegistratieByToken(
-  token: string,
-  payload: UpdateRegistratiePayload,
-): Promise<TeamRegistratie> {
+export async function updateMijnRegistratie(payload: UpdateRegistratiePayload): Promise<TeamRegistratie> {
   const formData = new FormData()
   const volwassenen = Number(payload.volwassenen)
   const kinderen = Number(payload.kinderen)
@@ -214,21 +242,18 @@ export async function updateRegistratieByToken(
 
   formData.append('_method', 'PUT')
 
-  const { data } = await api.post<{ data: TeamRegistratie }>(`/registratie/${token}`, formData)
+  const { data } = await api.post<{ data: TeamRegistratie }>('/registratie/mijn', formData)
 
   return data.data
 }
 
-export async function getRegistratieUpdatesByToken(token: string): Promise<TeamUpdate[]> {
-  const { data } = await api.get<{ data: TeamUpdate[] }>(`/registratie/${token}/updates`)
+export async function getMijnRegistratieUpdates(): Promise<TeamUpdate[]> {
+  const { data } = await api.get<{ data: TeamUpdate[] }>('/registratie/mijn/updates')
 
   return data.data
 }
 
-export async function createRegistratieUpdateByToken(
-  token: string,
-  payload: TeamUpdatePayload,
-): Promise<TeamUpdate> {
+export async function createMijnRegistratieUpdate(payload: TeamUpdatePayload): Promise<TeamUpdate> {
   const formData = new FormData()
 
   formData.append('titel', payload.titel)
@@ -243,7 +268,31 @@ export async function createRegistratieUpdateByToken(
     formData.append(`afbeeldingen[${index}]`, bestand)
   })
 
-  const { data } = await api.post<{ data: TeamUpdate }>(`/registratie/${token}/updates`, formData)
+  const { data } = await api.post<{ data: TeamUpdate }>('/registratie/mijn/updates', formData)
+
+  return data.data
+}
+
+export async function updateMijnRegistratieUpdate(id: number, payload: UpdateTeamUpdatePayload): Promise<TeamUpdate> {
+  const formData = new FormData()
+
+  formData.append('titel', payload.titel)
+  formData.append('content', payload.content)
+  formData.append('content_format', payload.content_format)
+
+  if (payload.excerpt) {
+    formData.append('excerpt', payload.excerpt)
+  }
+
+  payload.afbeeldingen?.forEach((bestand, index) => {
+    formData.append(`afbeeldingen[${index}]`, bestand)
+  })
+
+  payload.verwijder_afbeelding_ids?.forEach((mediaId, index) => {
+    formData.append(`verwijder_afbeelding_ids[${index}]`, String(mediaId))
+  })
+
+  const { data } = await api.patch<{ data: TeamUpdate }>(`/registratie/mijn/updates/${id}`, formData)
 
   return data.data
 }
@@ -273,15 +322,21 @@ export async function logoutUser(): Promise<void> {
   await api.post('/auth/logout')
 }
 
-export async function claimTeam(editToken: string): Promise<void> {
-  await api.post('/auth/claim-team', {
-    edit_token: editToken,
-  })
+export async function updateAccount(payload: UpdateAccountPayload): Promise<AuthUser> {
+  const { data } = await api.patch<{ data: AuthUser }>('/auth/account', payload)
+  return data.data
 }
 
-export async function issueTeamEditLink(): Promise<TeamEditLinkResponse> {
-  const { data } = await api.post<{ data: TeamEditLinkResponse }>('/auth/team-edit-link')
-  return data.data
+export async function updatePassword(payload: UpdatePasswordPayload): Promise<void> {
+  await api.patch('/auth/password', payload)
+}
+
+export async function requestPasswordReset(payload: ForgotPasswordPayload): Promise<void> {
+  await api.post('/auth/forgot-password', payload)
+}
+
+export async function resetPassword(payload: ResetPasswordPayload): Promise<void> {
+  await api.post('/auth/reset-password', payload)
 }
 
 // ---------------------------------------------------------------------------

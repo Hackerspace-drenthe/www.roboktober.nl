@@ -10,7 +10,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\StoreTeamRequest;
 use App\Http\Resources\Api\V1\TeamResource;
 use App\Mail\NieuwTeamAanmelding;
-use App\Mail\TeamBewerkLink;
 use App\Models\Robot;
 use App\Models\Team;
 use App\Models\User;
@@ -56,14 +55,11 @@ class RegistratieController extends Controller
 
         /** @var Team $team */
         $team = DB::transaction(function () use ($validated, $robots, $request, $user): Team {
-            $editToken = bin2hex(random_bytes(32));
-
             /** @var Team $team */
             $team = Team::query()->create([
                 ...$validated,
+                'email' => mb_strtolower($user->email),
                 'status' => TeamStatus::Pending,
-                'edit_token_hash' => hash('sha256', $editToken),
-                'edit_token_expires_at' => now()->addDays(30),
                 'captain_user_id' => $user->id,
             ]);
 
@@ -86,8 +82,6 @@ class RegistratieController extends Controller
                 );
             }
 
-            $team->setAttribute('edit_token_plain', $editToken);
-
             return $team;
         });
 
@@ -100,17 +94,6 @@ class RegistratieController extends Controller
             Mail::to(config('mail.from.address'))->send(new NieuwTeamAanmelding($team));
         } catch (\Throwable $exception) {
             Log::warning('Registratie mail kon niet worden verstuurd.', [
-                'team_id' => $team->id,
-                'exception' => $exception->getMessage(),
-            ]);
-        }
-
-        try {
-            /** @var string $editToken */
-            $editToken = (string) $team->getAttribute('edit_token_plain');
-            Mail::to($team->email)->send(new TeamBewerkLink($team, $editToken));
-        } catch (\Throwable $exception) {
-            Log::warning('Bewerklink mail kon niet worden verstuurd.', [
                 'team_id' => $team->id,
                 'exception' => $exception->getMessage(),
             ]);

@@ -12,6 +12,7 @@ use App\Http\Resources\Api\V1\RichMediaResource;
 use App\Models\Media;
 use App\Models\Page;
 use App\Models\Post;
+use App\Models\Robot;
 use App\Models\Team;
 use App\Models\TeamUpdate;
 use App\Models\User;
@@ -87,6 +88,15 @@ class RichMediaController extends Controller
             $this->authorizeTargetMutation($actor, $target);
 
             $collectie = (string) ($validated['collectie'] ?? 'default');
+
+            if ($target instanceof Robot && $collectie === 'foto') {
+                $existingFotoIds = $target->mediaCollectie('foto')->pluck('media.id')->all();
+
+                if ($existingFotoIds !== []) {
+                    $target->media()->detach($existingFotoIds);
+                }
+            }
+
             $target->koppelMedia($media, $collectie, [
                 'alt_tekst' => $validated['alt_tekst'] ?? null,
                 'onderschrift' => $validated['onderschrift'] ?? null,
@@ -160,6 +170,7 @@ class RichMediaController extends Controller
             'post' => Post::query()->findOrFail($id),
             'page' => Page::query()->findOrFail($id),
             'team' => Team::query()->findOrFail($id),
+            'robot' => Robot::query()->with('team')->findOrFail($id),
             'team_update' => TeamUpdate::query()->with('team')->findOrFail($id),
             default => abort(Response::HTTP_UNPROCESSABLE_ENTITY, 'Onbekend target_type.'),
         };
@@ -176,6 +187,10 @@ class RichMediaController extends Controller
         }
 
         if ($target instanceof TeamUpdate && $target->team?->captain_user_id === $actor->id) {
+            return;
+        }
+
+        if ($target instanceof Robot && $target->team?->captain_user_id === $actor->id) {
             return;
         }
 

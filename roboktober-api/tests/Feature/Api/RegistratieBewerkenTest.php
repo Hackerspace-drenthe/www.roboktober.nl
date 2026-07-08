@@ -9,21 +9,10 @@ use App\Models\Robot;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Storage;
 
-function maakBewerkTokenVoorTeam(Team $team): string
-{
-    $token = bin2hex(random_bytes(32));
-
-    $team->forceFill([
-        'edit_token_hash' => hash('sha256', $token),
-        'edit_token_expires_at' => now()->addDays(30),
-    ])->save();
-
-    return $token;
-}
-
-describe('Registratie bewerken via token', function (): void {
+describe('Registratie bewerken via account', function (): void {
     beforeEach(function (): void {
         $this->edition = Edition::factory()->create([
             'naam' => 'Roboktober 2026',
@@ -53,12 +42,13 @@ describe('Registratie bewerken via token', function (): void {
             'naam' => 'Oude Robot',
             'gewichtsklasse' => 'antweight',
         ]);
-
-        $this->token = maakBewerkTokenVoorTeam($this->team);
     });
 
-    it('returns editable registration data for valid token', function (): void {
-        $response = $this->getJson('/api/v1/registratie/'.$this->token);
+    it('returns editable registration data for authenticated captain', function (): void {
+        $accessToken = $this->captain->createToken('pest-read')->plainTextToken;
+
+        $response = $this->withHeader('Authorization', 'Bearer '.$accessToken)
+            ->getJson('/api/v1/registratie/mijn');
 
         $response->assertOk()
             ->assertJsonPath('data.naam', 'Bestaand Team')
@@ -67,7 +57,7 @@ describe('Registratie bewerken via token', function (): void {
             ->assertJsonPath('data.robots.0.naam', 'Oude Robot');
     });
 
-    it('updates team and robots for valid token', function (): void {
+    it('updates team and robots for authenticated captain', function (): void {
         $accessToken = $this->captain->createToken('pest-edit')->plainTextToken;
 
         $payload = [
@@ -90,7 +80,7 @@ describe('Registratie bewerken via token', function (): void {
         ];
 
         $response = $this->withHeader('Authorization', 'Bearer '.$accessToken)
-            ->putJson('/api/v1/registratie/'.$this->token, $payload);
+            ->putJson('/api/v1/registratie/mijn', $payload);
 
         $response->assertOk()
             ->assertJsonPath('data.naam', 'Nieuw Team')
@@ -117,12 +107,47 @@ describe('Registratie bewerken via token', function (): void {
         ]);
     });
 
+    it('allows editing own team even when status is rejected', function (): void {
+        $this->team->forceFill([
+            'status' => TeamStatus::Rejected,
+        ])->save();
+
+        $accessToken = $this->captain->createToken('pest-edit-rejected')->plainTextToken;
+
+        $payload = [
+            'edition_id' => $this->edition->id,
+            'naam' => 'Rejected Maar Bewerkbaar',
+            'contactpersoon' => 'Captain Rejected',
+            'email' => 'rejected@example.com',
+            'volwassenen' => 2,
+            'robots' => [
+                [
+                    'naam' => 'Doorzetten',
+                    'gewichtsklasse' => 'antweight',
+                ],
+            ],
+        ];
+
+        $response = $this->withHeader('Authorization', 'Bearer '.$accessToken)
+            ->putJson('/api/v1/registratie/mijn', $payload);
+
+        $response->assertOk()
+            ->assertJsonPath('data.naam', 'Rejected Maar Bewerkbaar');
+
+        $this->assertDatabaseHas('teams', [
+            'id' => $this->team->id,
+            'naam' => 'Rejected Maar Bewerkbaar',
+            'status' => TeamStatus::Rejected->value,
+            'captain_user_id' => $this->captain->id,
+        ]);
+    });
+
     it('can replace team photo', function (): void {
         Storage::fake('public');
         $accessToken = $this->captain->createToken('pest-edit-photo')->plainTextToken;
 
         $response = $this->withHeader('Authorization', 'Bearer '.$accessToken)
-            ->post('/api/v1/registratie/'.$this->token, [
+            ->post('/api/v1/registratie/mijn', [
                 '_method' => 'PUT',
                 'edition_id' => $this->edition->id,
                 'naam' => 'Bestaand Team',
@@ -144,19 +169,31 @@ describe('Registratie bewerken via token', function (): void {
         expect($team->mediaCollectie('foto')->count())->toBe(1);
     });
 
-    it('rejects expired token', function (): void {
-        $accessToken = $this->captain->createToken('pest-expired')->plainTextToken;
+    it('returns 404 when authenticated user has no team', function (): void {
+        $andereUser = User::factory()->create([
+            'role' => UserRole::Visitor,
+        ]);
 
-        $this->team->forceFill([
-            'edit_token_expires_at' => now()->subMinute(),
-        ])->save();
+        $accessToken = $andereUser->createToken('pest-no-team')->plainTextToken;
 
-        $this->getJson('/api/v1/registratie/'.$this->token)->assertNotFound();
         $this->withHeader('Authorization', 'Bearer '.$accessToken)
-            ->putJson('/api/v1/registratie/'.$this->token, [])->assertNotFound();
+            ->getJson('/api/v1/registratie/mijn')
+            ->assertNotFound();
     });
 
     it('blocks unauthenticated write access', function (): void {
-        $this->putJson('/api/v1/registratie/'.$this->token, [])->assertUnauthorized();
+        $this->putJson('/api/v1/registratie/mijn', [])->assertUnauthorized();
+    });
+
+    it('does not quickly throttle repeated reads of own registration', function (): void {
+        RateLimiter::clear('registratie-account-user:'.$this->captain->id);
+
+        $accessToken = $this->captain->createToken('pest-read-burst')->plainTextToken;
+
+        for ($i = 0; $i < 10; $i++) {
+            $this->withHeader('Authorization', 'Bearer '.$accessToken)
+                ->getJson('/api/v1/registratie/mijn')
+                ->assertOk();
+        }
     });
 });

@@ -112,7 +112,12 @@ onMounted(async () => {
       <div class="grid gap-4 md:grid-cols-2">
         <div>
           <label class="mb-1 block text-sm text-slate-300">Bestand</label>
-          <input type="file" class="w-full rounded-md border border-white/20 bg-white/5 px-3 py-2 text-sm" @change="onBestandChange" />
+          <input
+            type="file"
+            accept=".jpg,.jpeg,.png,.webp,.gif,.mp4,.webm,.mov,.stl,.obj,.3mf,.pdf,.zip,.txt,.md"
+            class="w-full rounded-md border border-white/20 bg-white/5 px-3 py-2 text-sm"
+            @change="onBestandChange"
+          />
         </div>
 
         <div>

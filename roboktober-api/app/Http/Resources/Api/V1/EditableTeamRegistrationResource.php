@@ -18,6 +18,8 @@ class EditableTeamRegistrationResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $teamFoto = $this->whenLoaded('media', fn () => $this->mediaCollectie('foto')->first());
+
         return [
             'id' => $this->id,
             'edition_id' => $this->edition_id,
@@ -29,14 +31,17 @@ class EditableTeamRegistrationResource extends JsonResource
             'opmerkingen' => $this->opmerkingen,
             'status' => $this->status->value,
             'status_label' => $this->status->label(),
-            'foto' => new MediaResource($this->whenLoaded('media', fn () => $this->mediaCollectie('foto')->first())),
+            'foto' => $teamFoto !== null ? new MediaResource($teamFoto) : null,
             'robots' => $this->robots->map(static function ($robot): array {
+                $robotFoto = $robot->mediaCollectie('foto')->first();
+
                 return [
                     'id' => $robot->id,
                     'naam' => $robot->naam,
                     'gewichtsklasse' => $robot->gewichtsklasse->value,
                     'gewichtsklasse_label' => $robot->gewichtsklasse->label(),
                     'beschrijving' => $robot->beschrijving,
+                    'foto' => $robotFoto !== null ? new MediaResource($robotFoto) : null,
                 ];
             })->values(),
         ];
