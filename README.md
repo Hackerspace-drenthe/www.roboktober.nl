@@ -16,7 +16,7 @@ Roboktober is een oktober-evenement rond combat robots, met focus op bouwen, ler
 - Eerste editie: 2026.
 - Publieke domeinnaam: https://roboktober.nl.
 - Website-taal: Nederlands.
-- Teamregistratie: altijd open.
+- Teamregistratie: account-first (ingelogde gebruiker maakt/beheert eigen team).
 
 ## Architectuur
 
@@ -38,7 +38,9 @@ Deze scheiding maakt het mogelijk om frontend en backend onafhankelijk te ontwik
 ## Huidige scope (MVP richting)
 
 - Publieke pagina's voor home, programma, aanmelden, teams, nieuws en build-hub
-- Teamregistratie via API
+- Teamregistratie via API (auth vereist)
+- Accountbeheer via API (account wijzigen, wachtwoord wijzigen, wachtwoord reset)
+- Teamlidmaatschap-flow via API (aanvragen, captain review)
 - Nieuws, pagina's en links via API
 - Beheer via Filament
 - Frontend build naar backend public map

@@ -10,6 +10,8 @@ This app provides the public site pages and consumes the Laravel API.
 - API integration uses Axios through a single client module.
 - During development, `/api` calls are proxied to `http://localhost:8000`.
 - Production build output is written to `../roboktober-api/public/app`.
+- Account-first routes are active for registration edit/account/password flows.
+- Team detail includes lidmaatschapsaanvraag voor ingelogde gebruikers.
 - Dependency audit status:
   - `npm audit --omit=dev`: no known vulnerabilities.
 
@@ -44,6 +46,7 @@ Default local URL is shown by Vite (usually `http://localhost:5173`).
 
 - The frontend API base path is `/api/v1`.
 - Vite dev server proxies `/api` to `http://localhost:8000`.
+- Optional: set `VITE_API_PROXY_TARGET` when backend runs on another port (e.g. `http://127.0.0.1:8010`).
 - Make sure the backend is running in `roboktober-api`:
 
 ```bash
@@ -92,3 +95,4 @@ npm run format
 - Keep all HTTP calls in `src/api/index.ts`.
 - Reuse shared types in `src/types` for API contracts.
 - Keep route-level code split via lazy-loaded views in `src/router/index.ts`.
+- Auth-required routes use `requiresAuth` in router meta and depend on `useAuth` initialization.

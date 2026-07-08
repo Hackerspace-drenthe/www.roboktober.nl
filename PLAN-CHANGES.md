@@ -519,6 +519,147 @@ Toelichting toegevoegd dat sommige arena-video's zwaardere robotklassen tonen, m
 
 ---
 
+### WZ-028 · 2026-07-08 · CHANGE · Sectie 5.2 / Auth — Account lifecycle en password reset toegevoegd
+
+**Reden:** De gewenste gebruikersflow vereist volledig accountbeheer zonder afhankelijkheid van token-gebaseerde bewerklinks.
+
+**Gewijzigd naar:**
+- Nieuwe auth/account endpoints toegevoegd:
+	- `POST /api/v1/auth/forgot-password`
+	- `POST /api/v1/auth/reset-password`
+	- `PATCH /api/v1/auth/account`
+	- `PATCH /api/v1/auth/password`
+- Frontend routes/views toegevoegd voor:
+	- `/app/account`
+	- `/app/wachtwoord-vergeten`
+	- `/app/wachtwoord-reset`
+- Reset-mail URL wordt API-first gegenereerd naar frontend resetroute.
+
+**Validatie:**
+- `AuthApiTest` uitgebreid en groen.
+- Frontend build groen.
+
+---
+
+### WZ-029 · 2026-07-08 · CHANGE · Sectie 5.2 / Registration — Tokenflow verwijderd, eigenaarschap via account
+
+**Reden:** Teambeheer moet altijd aan een geauthenticeerd account gekoppeld zijn en niet langer afhankelijk zijn van losse edit tokens.
+
+**Oorspronkelijk (PLAN.md):**
+> Bewerkflow via token-link en claim endpoint.
+
+**Gewijzigd naar:**
+- Token-gerelateerde middleware/request/mail verwijderd (`EnsureValidRegistrationEditToken`, `ClaimTeamRequest`, `TeamBewerkLink`).
+- Eigen registratiebeheer verloopt via:
+	- `GET /api/v1/registratie/mijn`
+	- `PUT /api/v1/registratie/mijn`
+	- `GET /api/v1/registratie/mijn/updates`
+	- `POST /api/v1/registratie/mijn/updates`
+- Teamregistratie gebruikt accountownership (`teams.captain_user_id`) als bron van autorisatie.
+
+**Validatie:**
+- `RegistratieBewerkenTest`, `TeamUpdatesTest`, `UserFormsApiOnlyTest` aangepast en groen.
+
+---
+
+### WZ-030 · 2026-07-08 · CHANGE · Sectie 5.2 / Data-integriteit — Team e-mailadres wordt afgeleid van captain account
+
+**Reden:** Teamcontact moet consistent zijn met de ingelogde registrator/captain en niet afwijken door client-input.
+
+**Gewijzigd naar:**
+- Backend forceert bij registratie `teams.email = authenticated_user.email`.
+- Frontend prefillt het registratie-e-mailadres vanuit ingelogde user en toont dit read-only.
+
+**Validatie:**
+- Nieuwe assertie in `RegistratieTest` voor captain-email mapping.
+
+---
+
+### WZ-031 · 2026-07-08 · ADD · Sectie 5.2 / Roles — Teammembership domein en captain reviewflow
+
+**Reden:** Gebruikers moeten zich kunnen aanmelden als teamlid bij bestaande teams, met beoordeling door de captain.
+
+**Toegevoegd:**
+- Nieuwe database-entiteit + migratie:
+	- `team_memberships`
+	- model `TeamMembership`
+	- enum `TeamMembershipStatus`
+- Nieuwe endpoints:
+	- `POST /api/v1/teams/{team}/membership-requests`
+	- `GET /api/v1/teams/mijn/lidmaatschappen`
+	- `GET /api/v1/teams/mijn/membership-requests`
+	- `PATCH /api/v1/teams/mijn/membership-requests/{teamMembership}`
+- Frontend-integratie:
+	- teamdetail: lidmaatschapsaanvraag versturen
+	- captain bewerkpagina: pending aanvragen goedkeuren/afwijzen
+
+**Validatie:**
+- Nieuwe `TeamMembershipApiTest` toegevoegd en groen.
+
+---
+
+### WZ-032 · 2026-07-08 · CHANGE · Sectie 8 / Throttling — Registratie-limiter gesplitst per route-context
+
+**Reden:** Account-gebonden bewerk/endpoints vielen onterecht onder e-mailgebaseerde throttle-keys zonder e-mailpayload, waardoor legitieme reads/writes te snel 429 konden geven.
+
+**Gewijzigd naar:**
+- `registratie.store` behoudt strikte limitering per IP + e-mail.
+- `registratie.mijn*` gebruikt user-based limitering voor ingelogde accountflows.
+- Fallback voor niet-auth context blijft IP-gebaseerd.
+
+**Validatie:**
+- Regressietest toegevoegd voor herhaalde `GET /api/v1/registratie/mijn` zonder snelle throttle-hit.
+
+---
+
+### WZ-033 · 2026-07-08 · CHANGE · Sectie 5.2 / Teammembership — Aanvragen toegestaan voor bestaande niet-afgewezen teams
+
+**Reden:** In praktijk gaf lidmaatschapsaanvraag onnodige fouten bij bestaande teams zonder captain-account of met pending status.
+
+**Gewijzigd naar:**
+- Aanvragen zijn toegestaan voor `pending` en `approved` teams.
+- Alleen `rejected` teams blokkeren nieuwe aanvragen.
+- Frontend toont backend-foutmelding direct bij mislukte aanvraag.
+
+**Validatie:**
+- `TeamMembershipApiTest` uitgebreid met pending/no-captain/rejected scenario's en groen.
+
+---
+
+### WZ-028 · 2026-07-08 · CHANGE · Sectie 5.1 / 5.2 / 6.x — Edit-token verwijderd, account-only beheer + account lifecycle
+
+**Reden:**
+De edit-token flow zorgde voor extra complexiteit en inconsistente ownership. Gewenst model: account-first, team gekoppeld aan account, en volledige account lifecycle (registreren, wijzigen, wachtwoord resetten).
+
+**Oorspronkelijk (PLAN.md):**
+> Teamwijzigingen via token-gebaseerde bewerkflow.
+
+**Gewijzigd naar:**
+- API tokenroutes verwijderd voor team bewerken en team updates (`/api/v1/registratie/{token}` varianten).
+- Nieuwe account-only endpoints toegevoegd:
+	- `GET/PUT /api/v1/registratie/mijn`
+	- `GET/POST /api/v1/registratie/mijn/updates`
+- Legacy auth token-acties verwijderd:
+	- `/api/v1/auth/claim-team`
+	- `/api/v1/auth/team-edit-link`
+- Auth/account lifecycle uitgebreid met:
+	- `PATCH /api/v1/auth/account`
+	- `PATCH /api/v1/auth/password`
+	- `POST /api/v1/auth/forgot-password`
+	- `POST /api/v1/auth/reset-password`
+- Frontend migratie naar account-only flow:
+	- `AanmeldingBewerkenView` gebruikt nu `/registratie/mijn` contract.
+	- Route `/app/aanmelding/bewerken` vereist login (geen tokenparameter).
+	- Nieuwe views: account beheren, wachtwoord vergeten, wachtwoord reset.
+	- Navigatie uitgebreid met "Mijn account".
+- Overbodige token-componenten verwijderd uit source (middleware/request/mailclass).
+
+**Validatie:**
+- Backend focused suite groen: 29 tests, 85 assertions.
+- Frontend type-check + build groen.
+
+---
+
 <!-- TEMPLATE voor een nieuwe wijziging:
 
 ### WZ-001 · 2026-MM-DD · [Type] · Sectie X.X — Korte omschrijving
