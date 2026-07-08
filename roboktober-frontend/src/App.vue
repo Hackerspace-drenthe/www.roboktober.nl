@@ -11,7 +11,7 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
 
-const siteGatePassword = 'secret'
+const siteGatePassword = 'Drenthe'
 const siteGateSessionKey = 'roboktober-site-gate-unlocked'
 
 const menuOpen = ref(false)
