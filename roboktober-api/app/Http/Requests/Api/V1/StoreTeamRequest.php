@@ -10,7 +10,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 /**
- * Validation rules for public team registration submissions.
+ * Validation rules for authenticated team registration submissions.
  *
  * OWASP A03: Input Validation — all user-submitted data is strictly validated.
  * Email is stored as-is (not hashed) for organizer contact use.
@@ -20,7 +20,7 @@ use Illuminate\Validation\Rule;
 class StoreTeamRequest extends FormRequest
 {
     /**
-     * All registrations are publicly accessible (no auth required).
+     * Registration endpoint enforces auth via route middleware.
      */
     public function authorize(): bool
     {
@@ -46,7 +46,7 @@ class StoreTeamRequest extends FormRequest
             'volwassenen' => ['required', 'integer', 'min:1', 'max:20'],
             'kinderen' => ['nullable', 'integer', 'min:0', 'max:50'],
             'opmerkingen' => ['nullable', 'string', 'max:2000'],
-            'teamfoto' => ['nullable', 'image', 'max:5120'],
+            'teamfoto' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:51200'],
             'robots' => ['required', 'array', 'min:1', 'max:10'],
             'robots.*.naam' => ['required', 'string', 'max:255'],
             'robots.*.gewichtsklasse' => [
@@ -76,6 +76,8 @@ class StoreTeamRequest extends FormRequest
             'robots.*.naam.required' => 'Geef voor elke robot een naam op.',
             'robots.*.gewichtsklasse.required' => 'Kies voor elke robot een gewichtsklasse.',
             'teamfoto.image' => 'De teamfoto moet een afbeelding zijn.',
+            'teamfoto.mimes' => 'De teamfoto moet een JPG, PNG of WEBP bestand zijn.',
+            'teamfoto.max' => 'De teamfoto mag maximaal 50 MB groot zijn.',
         ];
     }
 }

@@ -10,17 +10,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\StoreTeamRequest;
 use App\Http\Resources\Api\V1\TeamResource;
 use App\Mail\NieuwTeamAanmelding;
-use App\Models\Media;
+use App\Mail\TeamBewerkLink;
 use App\Models\Robot;
 use App\Models\Team;
+use App\Models\User;
+use App\Services\Uploads\TeamPhotoUploadService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Controller for public team registration submissions.
+ * Controller for authenticated team registration submissions.
  *
  * Routes:
  * - POST /api/v1/registratie → RegistratieController@store
@@ -29,8 +31,12 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class RegistratieController extends Controller
 {
+    public function __construct(private readonly TeamPhotoUploadService $teamPhotoUploads)
+    {
+    }
+
     /**
-     * Accepts a new team registration.
+    * Accepts a new team registration.
      *
      * New registrations always start with status 'pending' — an organizer must approve.
      * Sends email notification to organizer after successful registration.
@@ -38,6 +44,9 @@ class RegistratieController extends Controller
      */
     public function store(StoreTeamRequest $request): JsonResponse
     {
+        /** @var User $user */
+        $user = $request->user();
+
         /** @var array<string, mixed> $validated */
         $validated = $request->validated();
 
@@ -46,61 +55,70 @@ class RegistratieController extends Controller
         unset($validated['robots'], $validated['teamfoto']);
 
         /** @var Team $team */
-        $team = Team::query()->create([...$validated, 'status' => TeamStatus::Pending]);
+        $team = DB::transaction(function () use ($validated, $robots, $request, $user): Team {
+            $editToken = bin2hex(random_bytes(32));
 
-        foreach ($robots as $robotData) {
-            Robot::query()->create([
-                'team_id' => $team->id,
-                'naam' => $robotData['naam'],
-                'gewichtsklasse' => $robotData['gewichtsklasse'],
-                'beschrijving' => $robotData['beschrijving'] ?? null,
-                'status' => RobotStatus::InOntwikkeling,
+            /** @var Team $team */
+            $team = Team::query()->create([
+                ...$validated,
+                'status' => TeamStatus::Pending,
+                'edit_token_hash' => hash('sha256', $editToken),
+                'edit_token_expires_at' => now()->addDays(30),
+                'captain_user_id' => $user->id,
             ]);
-        }
 
-        if ($request->hasFile('teamfoto')) {
-            $this->koppelTeamFoto($team, $request->file('teamfoto'));
-        }
+            foreach ($robots as $robotData) {
+                Robot::query()->create([
+                    'team_id' => $team->id,
+                    'naam' => $robotData['naam'],
+                    'gewichtsklasse' => $robotData['gewichtsklasse'],
+                    'beschrijving' => $robotData['beschrijving'] ?? null,
+                    'status' => RobotStatus::InOntwikkeling,
+                ]);
+            }
+
+            if ($request->hasFile('teamfoto')) {
+                $this->teamPhotoUploads->attach(
+                    team: $team,
+                    photo: $request->file('teamfoto'),
+                    source: 'team_registratie',
+                    caption: 'Ingestuurd via teamregistratie',
+                );
+            }
+
+            $team->setAttribute('edit_token_plain', $editToken);
+
+            return $team;
+        });
+
+        $user->promoteToTeamCaptainIfVisitor();
 
         $team->load(['edition', 'media', 'robots.media']);
 
-        // Notify organizers — uses MAIL_MAILER=log in local dev (no real email sent)
-        Mail::to(config('mail.from.address'))->send(new NieuwTeamAanmelding($team));
+        // Notify organizers
+        try {
+            Mail::to(config('mail.from.address'))->send(new NieuwTeamAanmelding($team));
+        } catch (\Throwable $exception) {
+            Log::warning('Registratie mail kon niet worden verstuurd.', [
+                'team_id' => $team->id,
+                'exception' => $exception->getMessage(),
+            ]);
+        }
+
+        try {
+            /** @var string $editToken */
+            $editToken = (string) $team->getAttribute('edit_token_plain');
+            Mail::to($team->email)->send(new TeamBewerkLink($team, $editToken));
+        } catch (\Throwable $exception) {
+            Log::warning('Bewerklink mail kon niet worden verstuurd.', [
+                'team_id' => $team->id,
+                'exception' => $exception->getMessage(),
+            ]);
+        }
 
         return (new TeamResource($team))
             ->response()
             ->setStatusCode(Response::HTTP_CREATED);
-    }
-
-    private function koppelTeamFoto(Team $team, UploadedFile $foto): void
-    {
-        $pad = $foto->store('team-fotos', 'public');
-        $realPath = $foto->getRealPath();
-        $hash = is_string($realPath) ? hash_file('sha256', $realPath) : null;
-
-        $media = Media::query()->create([
-            'naam' => 'Teamfoto '.$team->naam,
-            'bestandsnaam' => $foto->getClientOriginalName(),
-            'pad' => $pad,
-            'disk' => 'public',
-            'mime_type' => $foto->getMimeType() ?? 'application/octet-stream',
-            'extensie' => strtolower($foto->getClientOriginalExtension()),
-            'grootte' => $foto->getSize() ?? 0,
-            'hash' => $hash,
-            'meta' => [
-                'bron' => 'team_registratie',
-                'orig_name' => $foto->getClientOriginalName(),
-            ],
-            'versie' => '1.0.0',
-            'downloads' => 0,
-        ]);
-
-        $team->koppelMedia($media, 'foto', [
-            'alt_tekst' => 'Teamfoto van '.$team->naam,
-            'onderschrift' => 'Ingestuurd via teamregistratie',
-            'volgorde' => 0,
-            'meta' => ['uuid' => (string) Str::uuid()],
-        ]);
     }
 }
 

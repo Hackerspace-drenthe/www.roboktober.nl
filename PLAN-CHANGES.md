@@ -226,6 +226,297 @@ Toelichting toegevoegd dat sommige arena-video's zwaardere robotklassen tonen, m
 - Teambeheer in Filament toont nu ook bij welke editie een team hoort.
 - Seeders uitgebreid met standaard open editie (`Roboktober 2026`) voor lokale ontwikkeling.
 
+### WZ-015 · 2026-07-06 · CHANGE · Sectie 8 / Uploads — Teamfoto uploadlimiet verhoogd naar 50 MB
+
+**Reden:** Praktische use-case: teamfoto's en mobiele beelden zijn regelmatig groter dan 5 MB. De oude limiet veroorzaakte onnodige 422/413 fouten voor geldige gebruikersuploads.
+
+**Oorspronkelijk (PLAN.md):**
+> Uploadlimieten niet expliciet op 50 MB vastgelegd.
+
+**Gewijzigd naar:**
+- Backend validatie verhoogd naar `max:51200` (50 MB) voor teamfoto uploads bij registratie én bewerken.
+- Runtime uploadlimieten verhoogd:
+	- `roboktober-api/public/.user.ini`: `upload_max_filesize=50M`, `post_max_size=52M`
+	- root `package.json` dev API command: `-d upload_max_filesize=50M -d post_max_size=52M`
+- Frontend client-side guard verhoogd naar 50 MB, inclusief foutmeldingen in zowel `/aanmelden` als `/aanmelding/bewerken/:token`.
+
+---
+
+### WZ-016 · 2026-07-06 · CHANGE · Sectie 2.2 / 5.2 — API-only auth + role-based admin via frontend
+
+**Reden:** De architectuurdoelstelling is een backend die volledig API-first blijft, inclusief admin-acties. Filament is daarmee niet langer de primaire beheervorm voor operationele workflows.
+
+**Oorspronkelijk (PLAN.md):**
+> Admin: Laravel Filament 3.x als admin-paneel (draait binnen Laravel).
+
+**Gewijzigd naar:**
+- API-auth endpoints toegevoegd (`/api/v1/auth/register`, `/api/v1/auth/login`, `/api/v1/auth/me`, `/api/v1/auth/logout`, `/api/v1/auth/claim-team`) op Sanctum bearer tokens.
+- Rollenmodel geïntroduceerd met vier rollen: `visitor`, `teamcaptain`, `moderator`, `admin`.
+- Team ownership gekoppeld aan useraccounts via `teams.captain_user_id` en claim-flow op basis van bestaande registration edit tokens.
+- Eerste admin API-only module geïmplementeerd: `/api/v1/admin/teams` (lijst/detail/status-moderatie), beveiligd met `auth:sanctum` + role middleware (`moderator|admin`).
+- Frontend uitgebreid met:
+	- auth composable/state
+	- login/registratiepagina's
+	- role-based route guards
+	- admin teams view (`/admin/teams`) volledig via API.
+
+**Impact:**
+- Beheerflows kunnen stapsgewijs van Filament naar API+SPA worden gemigreerd zonder public site regressie.
+- Dit vormt de fundering voor volledige backend API-only governance.
+
+---
+
+### WZ-017 · 2026-07-06 · CHANGE · Sectie 5.2 / 7 — Admin contentmoderatie uitgebreid naar API-only modules
+
+**Reden:** Na de teams-module moest contentbeheer hetzelfde API-only pad volgen zodat publicatiebeheer niet meer afhankelijk is van server-side panelroutes.
+
+**Oorspronkelijk (PLAN.md):**
+> Write operations are primarily managed via Filament admin resources.
+
+**Gewijzigd naar:**
+- Nieuwe admin API modules toegevoegd voor:
+	- posts (`/api/v1/admin/posts`)
+	- pages (`/api/v1/admin/pages`)
+	- team updates (`/api/v1/admin/team-updates`)
+- Voor alle drie zijn list/detail/status endpoints aanwezig met `auth:sanctum` + `role:moderator,admin`.
+- Uniforme publish-state request geïntroduceerd voor `is_published` en `published_at`.
+- Frontend adminroutes en views toegevoegd:
+	- `/app/admin/posts`
+	- `/app/admin/pages`
+	- `/app/admin/team-updates`
+- Navigatie toont deze modules alleen voor moderator/admin gebruikers.
+
+**Validatie:**
+- Feature tests voor auth + teammoderatie + contentmoderatie zijn groen.
+- Frontend `npm run build` slaagt met nieuwe admin modules.
+
+---
+
+### WZ-018 · 2026-07-06 · CHANGE · Sectie 5.2 / User management — Admin-only rolbeheer via API
+
+**Reden:** Voor volledige API-only governance moest ook gebruikers- en rollenbeheer uit server-side panelworkflows gehaald worden.
+
+**Oorspronkelijk (PLAN.md):**
+> User management was onderdeel van backend admin tooling, zonder expliciete API-only rolbeheerflow.
+
+**Gewijzigd naar:**
+- Nieuwe admin-only user endpoints:
+	- `GET /api/v1/admin/users`
+	- `PATCH /api/v1/admin/users/{user}/role`
+- Extra beveiliging:
+	- endpointgroep alleen voor `role:admin`
+	- self-role wijziging geblokkeerd (admin kan zichzelf niet per ongeluk degraderen)
+- Frontend adminmodule toegevoegd:
+	- route `/app/admin/users`
+	- gebruikerslijst met directe rolwissel (visitor/teamcaptain/moderator/admin)
+	- alleen zichtbaar/toegankelijk voor admin-rol.
+
+**Validatie:**
+- Nieuwe `AdminUserManagementApiTest` slaagt.
+- Volledige auth/admin testset groen.
+- Frontend build groen met admin user management view.
+
+---
+
+### WZ-019 · 2026-07-06 · CHANGE · Sectie 7 / Governance — Filament write-lock + audit logging
+
+**Reden:** Om API-only beheer af te dwingen moest server-side admin write-capaciteit worden uitgezet voor gemigreerde modules. Daarnaast is traceability vereist voor moderatie- en rolwijzigingen.
+
+**Oorspronkelijk (PLAN.md):**
+> Filament resources verzorgen CRUD voor teams/posts/pages/updates.
+
+**Gewijzigd naar:**
+- Filament resources voor teams, posts, pagina's en team updates zijn read-only gemaakt:
+	- create/edit/delete acties verwijderd
+	- create/edit routes niet meer gepubliceerd
+	- `canCreate/canEdit/canDelete` returns op `false`
+- Write-acties lopen nu uitsluitend via API endpoints onder `/api/v1/admin/*`.
+- Nieuwe auditlog-infrastructuur toegevoegd:
+	- tabel `audit_logs`
+	- logregels voor:
+		- team status updates
+		- post/page/team-update publish state updates
+		- user role updates
+	- actor + action + subject + before/after context opgeslagen.
+
+**Validatie:**
+- Auth/admin API testset groen (incl. audit assertions).
+- Frontend build groen.
+
+---
+
+### WZ-020 · 2026-07-06 · ADD · Sectie 7 / Governance — Admin audit log viewer via API + SPA
+
+**Reden:** Audit logging was aanwezig in de database, maar zonder beheerinterface was operationele controle beperkt. Admins moeten mutaties kunnen filteren en inspecteren in de API-first admin.
+
+**Oorspronkelijk (PLAN.md):**
+> Governance en logging niet uitgewerkt als dedicated admin module.
+
+**Toegevoegd:**
+- Nieuwe admin-only endpoint:
+	- `GET /api/v1/admin/audit-logs`
+	- filtermogelijkheden: `action`, `actor_user_id`, `subject_type`
+- Nieuwe API resource voor audit log records met actor metadata en before/after payload.
+- Frontend adminmodule toegevoegd:
+	- route `/app/admin/audit-logs`
+	- filterformulier + tabelweergave van actor/actie/subject/before/after
+	- alleen toegankelijk voor admin users.
+
+**Validatie:**
+- Nieuwe `AdminAuditLogApiTest` slaagt.
+- Volledige auth/admin suite groen.
+- Frontend build groen met audit logs view.
+
+---
+
+### WZ-021 · 2026-07-06 · ADD · Sectie 7 / Admin UX — Dashboard summary voor moderatieprioriteiten
+
+**Reden:** Na module-splitsing (teams/posts/pages/updates/users/audit) was er behoefte aan één startscherm met prioriteiten en recente activiteit.
+
+**Toegevoegd:**
+- Nieuwe endpoint:
+	- `GET /api/v1/admin/dashboard-summary`
+	- toegankelijk voor `moderator` en `admin`
+- Response bevat:
+	- KPI stats (`pending_teams`, `draft_posts`, `draft_pages`, `draft_team_updates`)
+	- top 5 pending teams
+	- recente auditactiviteiten
+- Frontend route en view toegevoegd:
+	- `/app/admin` → dashboard overzicht
+	- navigatielink "Dashboard" zichtbaar voor moderator/admin.
+
+**Validatie:**
+- Nieuwe `AdminDashboardSummaryApiTest` slaagt.
+- Volledige auth/admin suite groen.
+- Frontend build groen met dashboard view.
+
+---
+
+### WZ-022 · 2026-07-06 · CHANGE · Sectie 5.2 / Security — Registratie-bewerkflow read-only publiek, writes alleen ingelogd
+
+**Reden:** De bewerklink mocht niet langer anonieme wijzigingen toestaan. Bezoekers moeten kunnen lezen, maar mutaties (registratie opslaan en team-updates plaatsen) alleen na inloggen.
+
+**Oorspronkelijk (PLAN.md):**
+> Teamregistratie heeft een edit-token flow voor bewerken.
+
+**Gewijzigd naar:**
+- Publiek blijft read-only:
+	- `GET /api/v1/registratie/{token}`
+	- `GET /api/v1/registratie/{token}/updates`
+- Write endpoints vereisen nu `auth:sanctum`:
+	- `PUT /api/v1/registratie/{token}`
+	- `POST /api/v1/registratie/{token}/updates`
+- Extra autorisatie op controller-niveau:
+	- alleen gekoppelde `teamcaptain` van het team mag muteren
+	- `moderator`/`admin` behouden override-rechten
+- Frontend bewerkpagina toont read-only melding met login-CTA en blokkeert submitknoppen zolang gebruiker niet ingelogd is.
+
+**Validatie:**
+- `RegistratieBewerkenTest`, `TeamUpdatesTest`, `AuthApiTest` groen (14 tests, 51 assertions).
+- Frontend build groen.
+
+---
+
+### WZ-023 · 2026-07-06 · ADD · Sectie 5.2 / 6.x — Rich-media library voor content (afbeelding, video, STL, bijlagen)
+
+**Reden:** Contentteams moeten media-assets (afbeeldingen, video, STL/3D, documenten) kunnen uploaden, hergebruiken en koppelen aan pages/blogs/team-content via API-first workflows.
+
+**Toegevoegd:**
+- Nieuwe authenticated rich-media API endpoints:
+	- `GET /api/v1/media` (library lijst)
+	- `POST /api/v1/media/upload` (upload + optionele directe koppeling)
+	- `POST /api/v1/media/{media}/attach` (bestaand bestand koppelen)
+- Rollenbeleid:
+	- upload/attach toegestaan voor `teamcaptain`, `moderator`, `admin`
+	- `moderator/admin` mogen koppelen aan `post`, `page`, `team`, `team_update`
+	- `teamcaptain` alleen aan eigen `team` en eigen `team_update`
+- Uploadvalidatie en bestandssoorten:
+	- afbeeldingen, video, STL/OBJ/3MF, PDF/ZIP/TXT/MD
+	- max 100MB per bestand
+- Response bevat direct gebruikbare snippets:
+	- `html_snippet`
+	- `markdown_snippet`
+- Nieuwe frontend admin module:
+	- route `/app/admin/media`
+	- uploadformulier met target-koppeling (type/id/collectie)
+	- snippet-copy voor direct gebruik in content.
+
+**Validatie:**
+- Nieuwe `RichMediaUploadApiTest` groen.
+- Regressies `AdminContentModerationApiTest` en `AuthApiTest` groen.
+- Frontend build groen met `AdminMediaLibraryView`.
+
+---
+
+### WZ-024 · 2026-07-08 · CHANGE · Sectie 5.2 / Security — Nieuwe teamaanmelding alleen met ingelogd account
+
+**Reden:** De gewenste flow is dat een gebruiker eerst een account heeft en daarna pas een team kan aanmaken. Dit voorkomt anonieme teamcreatie en maakt ownership direct expliciet.
+
+**Oorspronkelijk (PLAN.md):**
+> Teamregistratie is publiek toegankelijk en altijd open.
+
+**Gewijzigd naar:**
+- `POST /api/v1/registratie` vereist nu `auth:sanctum` naast throttling.
+- Nieuwe teams worden direct gekoppeld aan de ingelogde gebruiker via `teams.captain_user_id`.
+- Gebruikers met rol `visitor` worden bij registratie gepromoveerd naar `teamcaptain`.
+- Frontend route `/app/aanmelden` vereist login (`requiresAuth`).
+- Registratiecopy aangepast naar account-gebaseerde flow (geen claim meer dat een bewerklink altijd per e-mail wordt uitgegeven).
+
+**Validatie:**
+- `RegistratieTest` aangepast met unauthenticated blokkering + authenticated creatiepad.
+- Frontend build groen.
+
+---
+
+### WZ-025 · 2026-07-08 · CHANGE · Sectie 6.x / UX — Account-gebaseerde "Mijn aanmelding" redirectflow
+
+**Reden:** Gebruikers verwachtten dat `/app/aanmelding/wijzigen` direct naar hun eigen bewerkomgeving gaat in plaats van een uitlegpagina met handmatige stap.
+
+**Oorspronkelijk (PLAN.md):**
+> Wijzigflow primair via tokenlink-gedrag.
+
+**Gewijzigd naar:**
+- Route `/app/aanmelding/wijzigen` vereist login.
+- Pagina `AanmeldingWijzigenView` doet bij openen automatisch `issueTeamEditLink()` en redirect direct naar de persoonlijke bewerk-URL.
+- Bij ontbrekende teamkoppeling/fout blijft een fallback met retry + CTA naar nieuwe aanmelding.
+
+**Validatie:**
+- Frontend diagnostics foutvrij op router/view.
+- Frontend build groen.
+
+---
+
+### WZ-026 · 2026-07-08 · ADD · Sectie 6.x / Editor UX — Gebruiksvriendelijke content-opmaak + resource insert
+
+**Reden:** Editpagina's moesten gebruiksvriendelijker worden, met directe invoeging van media (video, STL, afbeeldingen) en minder handmatig schrijven van markup.
+
+**Oorspronkelijk (PLAN.md):**
+> Content-editing zonder expliciete WYSIWYG-achtige opmaaktoolbar.
+
+**Toegevoegd/Gewijzigd:**
+- Nieuwe herbruikbare formatting-toolbar component voor editors.
+- `useContentInsertion` uitgebreid met selectie-gebaseerde format-acties (bold/italic/headings/lijsten/link/quote/code/divider).
+- Toolbar gekoppeld in admin editors (posts/pages/team updates) en team-update sectie van de captain-bewerkpagina.
+- Teamfoto UX verbeterd met live preview in `/app/aanmelden` en "huidige vs nieuwe" preview in `/app/aanmelding/bewerken/:token`.
+
+**Validatie:**
+- Frontend diagnostics foutvrij op aangepaste editor/views.
+- Frontend build groen.
+
+---
+
+### WZ-027 · 2026-07-08 · DECISION · Sectie 8.1 / Process — Clarify-first AI werkwijze verplicht bij complexe taken
+
+**Reden:** Om misinterpretatie te voorkomen bij grotere wijzigingen is expliciet vastgelegd dat onduidelijke en middel/hoge complexiteitstaken eerst worden bevestigd met gerichte vragen.
+
+**Oorspronkelijk (PLAN.md):**
+> Geen expliciete workflowregel voor verplichte verduidelijkingsvragen in AI-assisted development.
+
+**Gewijzigd naar:**
+- Workspace-instructie `.github/copilot-instructions.md` toegevoegd/aangescherpt met clarify-first regels.
+- User-instructie `clarify-first.instructions.md` aangescherpt met mandatory confirmation bij middel/hoge complexiteit.
+- Uitzondering gedefinieerd voor lage complexiteit en expliciete "direct uitvoeren" opdracht.
+
 ---
 
 <!-- TEMPLATE voor een nieuwe wijziging:

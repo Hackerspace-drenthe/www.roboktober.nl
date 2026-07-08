@@ -7,6 +7,13 @@
  * @see PLAN.md §6.x — page designs
  */
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuth } from '@/composables/useAuth'
+
+type AppRouteMeta = {
+  title?: string
+  requiresAuth?: boolean
+  minRole?: 'visitor' | 'teamcaptain' | 'moderator' | 'admin'
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -64,7 +71,153 @@ const router = createRouter({
       path: '/aanmelden',
       name: 'aanmelden',
       component: () => import('../views/AanmeldenView.vue'),
-      meta: { title: 'Aanmelden — Roboktober' },
+      meta: {
+        title: 'Aanmelden — Roboktober',
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/aanmelding/bewerken/:token',
+      name: 'aanmelding-bewerken',
+      component: () => import('../views/AanmeldingBewerkenView.vue'),
+      meta: { title: 'Aanmelding bewerken — Roboktober' },
+    },
+    {
+      path: '/aanmelding/wijzigen',
+      name: 'aanmelding-wijzigen',
+      component: () => import('../views/AanmeldingWijzigenView.vue'),
+      meta: {
+        title: 'Aanmelding wijzigen — Roboktober',
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/LoginView.vue'),
+      meta: { title: 'Inloggen — Roboktober' },
+    },
+    {
+      path: '/registreren',
+      name: 'registreren',
+      component: () => import('../views/RegisterView.vue'),
+      meta: { title: 'Registreren — Roboktober' },
+    },
+    {
+      path: '/admin',
+      name: 'admin-dashboard',
+      component: () => import('../views/AdminDashboardView.vue'),
+      meta: {
+        title: 'Admin Dashboard — Roboktober',
+        requiresAuth: true,
+        minRole: 'moderator',
+      },
+    },
+    {
+      path: '/admin/teams',
+      name: 'admin-teams',
+      component: () => import('../views/AdminTeamsView.vue'),
+      meta: {
+        title: 'Admin Teams — Roboktober',
+        requiresAuth: true,
+        minRole: 'moderator',
+      },
+    },
+    {
+      path: '/admin/posts',
+      name: 'admin-posts',
+      component: () => import('../views/AdminPostsView.vue'),
+      meta: {
+        title: 'Admin Posts — Roboktober',
+        requiresAuth: true,
+        minRole: 'moderator',
+      },
+    },
+    {
+      path: '/admin/posts/:id/edit',
+      name: 'admin-post-edit',
+      component: () => import('../views/AdminPostEditView.vue'),
+      meta: {
+        title: 'Admin Post Bewerken — Roboktober',
+        requiresAuth: true,
+        minRole: 'moderator',
+      },
+    },
+    {
+      path: '/admin/pages',
+      name: 'admin-pages',
+      component: () => import('../views/AdminPagesView.vue'),
+      meta: {
+        title: 'Admin Pagina\'s — Roboktober',
+        requiresAuth: true,
+        minRole: 'moderator',
+      },
+    },
+    {
+      path: '/admin/pages/:id/edit',
+      name: 'admin-page-edit',
+      component: () => import('../views/AdminPageEditView.vue'),
+      meta: {
+        title: 'Admin Pagina Bewerken — Roboktober',
+        requiresAuth: true,
+        minRole: 'moderator',
+      },
+    },
+    {
+      path: '/admin/team-updates',
+      name: 'admin-team-updates',
+      component: () => import('../views/AdminTeamUpdatesView.vue'),
+      meta: {
+        title: 'Admin Team Updates — Roboktober',
+        requiresAuth: true,
+        minRole: 'moderator',
+      },
+    },
+    {
+      path: '/admin/team-updates/:id/edit',
+      name: 'admin-team-update-edit',
+      component: () => import('../views/AdminTeamUpdateEditView.vue'),
+      meta: {
+        title: 'Admin Team Update Bewerken — Roboktober',
+        requiresAuth: true,
+        minRole: 'moderator',
+      },
+    },
+    {
+      path: '/admin/media',
+      name: 'admin-media',
+      component: () => import('../views/AdminMediaLibraryView.vue'),
+      meta: {
+        title: 'Admin Media Library — Roboktober',
+        requiresAuth: true,
+        minRole: 'moderator',
+      },
+    },
+    {
+      path: '/admin/users',
+      name: 'admin-users',
+      component: () => import('../views/AdminUsersView.vue'),
+      meta: {
+        title: 'Admin Gebruikers — Roboktober',
+        requiresAuth: true,
+        minRole: 'admin',
+      },
+    },
+    {
+      path: '/admin/audit-logs',
+      name: 'admin-audit-logs',
+      component: () => import('../views/AdminAuditLogsView.vue'),
+      meta: {
+        title: 'Admin Audit Logs — Roboktober',
+        requiresAuth: true,
+        minRole: 'admin',
+      },
+    },
+    {
+      path: '/forbidden',
+      name: 'forbidden',
+      component: () => import('../views/ForbiddenView.vue'),
+      meta: { title: 'Geen toegang — Roboktober' },
     },
     {
       path: '/walter',
@@ -90,6 +243,31 @@ const router = createRouter({
       meta: { title: 'Pagina niet gevonden — Roboktober' },
     },
   ],
+})
+
+router.beforeEach(async (to) => {
+  const auth = useAuth()
+
+  if (!auth.initialized.value) {
+    await auth.initAuth()
+  }
+
+  const meta = (to.meta ?? {}) as AppRouteMeta
+
+  if (meta.requiresAuth && !auth.isAuthenticated.value) {
+    return {
+      name: 'login',
+      query: { redirect: to.fullPath },
+    }
+  }
+
+  if (meta.minRole && !auth.hasRole(meta.minRole)) {
+    return {
+      name: 'forbidden',
+    }
+  }
+
+  return true
 })
 
 // Update document title on route change

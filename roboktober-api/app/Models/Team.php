@@ -26,6 +26,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int|null $kinderen
  * @property TeamStatus $status
  * @property string|null $opmerkingen
+ * @property string|null $edit_token_hash
+ * @property \Illuminate\Support\Carbon|null $edit_token_expires_at
+ * @property int|null $captain_user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Robot> $robots
@@ -50,6 +53,9 @@ class Team extends Model
         'kinderen',
         'status',
         'opmerkingen',
+        'edit_token_hash',
+        'edit_token_expires_at',
+        'captain_user_id',
     ];
 
     /**
@@ -61,6 +67,7 @@ class Team extends Model
             'status' => TeamStatus::class,
             'volwassenen' => 'integer',
             'kinderen' => 'integer',
+            'edit_token_expires_at' => 'datetime',
         ];
     }
 
@@ -82,6 +89,26 @@ class Team extends Model
     public function edition(): BelongsTo
     {
         return $this->belongsTo(Edition::class);
+    }
+
+    /**
+     * Authenticated team captain account for this team.
+     *
+     * @return BelongsTo<User, $this>
+     */
+    public function captain(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'captain_user_id');
+    }
+
+    /**
+     * Progress updates posted by this team.
+     *
+     * @return HasMany<TeamUpdate, $this>
+     */
+    public function updates(): HasMany
+    {
+        return $this->hasMany(TeamUpdate::class);
     }
 
     /**

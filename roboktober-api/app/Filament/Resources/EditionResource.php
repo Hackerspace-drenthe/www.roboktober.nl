@@ -46,6 +46,8 @@ class EditionResource extends Resource
                         Forms\Components\FileUpload::make('afbeelding')
                             ->label('Afbeelding')
                             ->image()
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->maxSize((int) config('uploads.admin.image_max_kb', 102400))
                             ->disk('public')
                             ->directory('edities')
                             ->imageEditor()

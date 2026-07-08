@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\UserRole;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -13,7 +14,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'role'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -34,6 +35,37 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'role' => UserRole::class,
         ];
+    }
+
+    public function hasRole(UserRole $role): bool
+    {
+        return $this->role === $role;
+    }
+
+    public function hasAnyRole(UserRole ...$roles): bool
+    {
+        return in_array($this->role, $roles, true);
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function tokenAbilities(): array
+    {
+        return match ($this->role) {
+            UserRole::Admin => ['*'],
+            UserRole::Moderator => ['public', 'moderation:teams', 'moderation:content'],
+            UserRole::TeamCaptain => ['public', 'team:self', 'team:updates'],
+            UserRole::Visitor => ['public'],
+        };
+    }
+
+    public function promoteToTeamCaptainIfVisitor(): void
+    {
+        if ($this->role === UserRole::Visitor) {
+            $this->forceFill(['role' => UserRole::TeamCaptain])->save();
+        }
     }
 }

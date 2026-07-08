@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * MediaVariant model — auto-generated thumbnail and resized variants of a media file.
@@ -66,6 +67,8 @@ class MediaVariant extends Model
      */
     public function url(): string
     {
-        return asset('storage/'.$this->pad);
+        $disk = $this->media()->value('disk') ?? 'public';
+
+        return Storage::disk($disk)->url($this->pad);
     }
 }

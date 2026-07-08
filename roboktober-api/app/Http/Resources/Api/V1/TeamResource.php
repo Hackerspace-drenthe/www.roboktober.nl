@@ -25,11 +25,23 @@ class TeamResource extends JsonResource
         return [
             'id' => $this->id,
             'naam' => $this->naam,
+            'beschrijving' => $this->opmerkingen,
             'edition' => new EditionResource($this->whenLoaded('edition')),
             'status' => $this->status->value,
             'status_label' => $this->status->label(),
+            'captain' => [
+                'naam' => $this->contactpersoon,
+            ],
+            'leden' => [
+                'volwassenen' => $this->volwassenen,
+                'kinderen' => $this->kinderen ?? 0,
+                'totaal' => $this->volwassenen + ($this->kinderen ?? 0),
+            ],
             'foto' => new MediaResource($this->whenLoaded('media', fn () => $this->mediaCollectie('foto')->first())),
+            'captain_foto' => new MediaResource($this->whenLoaded('media', fn () => $this->mediaCollectie('captain')->first())),
+            'leden_fotos' => MediaResource::collection($this->whenLoaded('media', fn () => $this->mediaCollectie('leden')->get())),
             'robots' => RobotResource::collection($this->whenLoaded('robots')),
+            'updates' => TeamUpdateResource::collection($this->whenLoaded('updates')),
         ];
     }
 }

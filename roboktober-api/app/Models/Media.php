@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Contracts\Uploads\MediaStorage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -108,7 +109,13 @@ class Media extends Model
      */
     public function url(): string
     {
-        return asset('storage/'.$this->pad);
+        /** @var MediaStorage $storage */
+        $storage = app(MediaStorage::class);
+
+        return $storage->publicUrl(
+            path: $this->pad,
+            disk: is_string($this->disk) ? $this->disk : null,
+        );
     }
 
     /**

@@ -45,7 +45,18 @@ class TeamController extends Controller
         $team = Team::query()
             ->where('id', $id)
             ->where('status', 'approved')
-            ->with(['edition', 'media', 'robots.media'])
+            ->with([
+                'edition',
+                'media',
+                'robots.media',
+                'updates' => static function ($query): void {
+                    $query
+                        ->where('is_published', true)
+                        ->with('media')
+                        ->latest('published_at')
+                        ->latest('id');
+                },
+            ])
             ->firstOrFail();
 
         return new TeamResource($team);

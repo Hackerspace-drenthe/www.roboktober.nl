@@ -7,10 +7,14 @@
  *
  * @see PLAN.md §4 — WCAG 2.2 AA compliance
  */
-import { ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
+import { useAuth } from '@/composables/useAuth'
 
 const menuOpen = ref(false)
+const accountMenuOpen = ref(false)
+const accountMenuRef = ref<HTMLElement | null>(null)
+const auth = useAuth()
 
 const desktopNavLinkClass =
   'rounded-md px-3 py-2 text-slate-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-robo-orange/80'
@@ -22,6 +26,54 @@ const mobileNavActiveClass = 'bg-white/10 text-white'
 
 function sluitMenu(): void {
   menuOpen.value = false
+}
+
+function openAccountMenu(): void {
+  accountMenuOpen.value = true
+}
+
+function closeAccountMenu(): void {
+  accountMenuOpen.value = false
+}
+
+function toggleAccountMenu(): void {
+  accountMenuOpen.value = !accountMenuOpen.value
+}
+
+function handleDocumentPointerDown(event: MouseEvent): void {
+  const target = event.target
+
+  if (!(target instanceof Node)) {
+    return
+  }
+
+  if (!accountMenuRef.value?.contains(target)) {
+    closeAccountMenu()
+  }
+}
+
+function handleDocumentKeydown(event: KeyboardEvent): void {
+  if (event.key === 'Escape') {
+    closeAccountMenu()
+  }
+}
+
+void auth.initAuth()
+
+onMounted(() => {
+  document.addEventListener('mousedown', handleDocumentPointerDown)
+  document.addEventListener('keydown', handleDocumentKeydown)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('mousedown', handleDocumentPointerDown)
+  document.removeEventListener('keydown', handleDocumentKeydown)
+})
+
+async function handleLogout(): Promise<void> {
+  await auth.logout()
+  closeAccountMenu()
+  sluitMenu()
 }
 </script>
 
@@ -51,38 +103,91 @@ function sluitMenu(): void {
       </RouterLink>
 
       <!-- Desktop navigatie -->
-      <ul
-        class="hidden items-center gap-6 md:flex"
-        role="list"
-      >
-        <li>
-          <RouterLink to="/programma" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Programma</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/teams" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Teams</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/nieuws" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Nieuws</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/build-hub" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Build Hub</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/bouwen" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Bouwen</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/walter" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Uw Gastheer</RouterLink>
-        </li>
-        <li>
-          <RouterLink
-            to="/aanmelden"
-            class="rounded-lg bg-robo-orange px-4 py-2 font-bold text-white hover:bg-robo-orange-dark"
-            active-class="bg-robo-orange-dark ring-2 ring-robo-orange/80"
+      <div class="hidden items-center gap-6 md:flex">
+        <ul class="flex items-center gap-3" role="list">
+          <li>
+            <RouterLink to="/programma" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Programma</RouterLink>
+          </li>
+          <li>
+            <RouterLink to="/teams" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Teams</RouterLink>
+          </li>
+          <li>
+            <RouterLink to="/nieuws" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Nieuws</RouterLink>
+          </li>
+          <li>
+            <RouterLink to="/build-hub" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Build Hub</RouterLink>
+          </li>
+          <li>
+            <RouterLink to="/bouwen" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Bouwen</RouterLink>
+          </li>
+          <li>
+            <RouterLink to="/walter" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Uw Gastheer</RouterLink>
+          </li>
+          <li>
+            <RouterLink
+              to="/aanmelden"
+              class="rounded-lg bg-robo-orange px-4 py-2 font-bold text-white hover:bg-robo-orange-dark"
+              active-class="bg-robo-orange-dark ring-2 ring-robo-orange/80"
+            >
+              Aanmelden
+            </RouterLink>
+          </li>
+        </ul>
+
+        <div class="h-6 w-px bg-white/15" aria-hidden="true" />
+
+        <div ref="accountMenuRef" class="relative">
+          <button
+            type="button"
+            class="rounded-md px-3 py-2 text-slate-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-robo-orange/80"
+            aria-haspopup="menu"
+            :aria-expanded="accountMenuOpen"
+            aria-controls="desktop-account-menu"
+            @click="toggleAccountMenu"
+            @focus="openAccountMenu"
           >
-            Aanmelden
-          </RouterLink>
-        </li>
-      </ul>
+              Mijn account
+          </button>
+
+            <div
+              v-if="accountMenuOpen"
+              id="desktop-account-menu"
+              role="menu"
+              class="absolute right-0 mt-2 w-64 space-y-1 rounded-xl border border-white/15 bg-robo-dark p-2 shadow-xl"
+            >
+              <p class="px-3 py-2 text-xs font-bold uppercase tracking-wide text-slate-400">Persoonlijk</p>
+
+              <RouterLink to="/aanmelding/wijzigen" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Mijn Aanmelding</RouterLink>
+
+              <template v-if="!auth.isAuthenticated.value">
+                <RouterLink to="/login" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Inloggen</RouterLink>
+                <RouterLink to="/registreren" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Registreren</RouterLink>
+              </template>
+
+              <template v-else>
+                <div v-if="auth.hasRole('moderator')" class="my-2 border-t border-white/10" />
+
+                <RouterLink v-if="auth.hasRole('moderator')" to="/admin" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Dashboard</RouterLink>
+                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/teams" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Teams</RouterLink>
+                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/posts" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Posts</RouterLink>
+                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/pages" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Pagina's</RouterLink>
+                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/team-updates" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Updates</RouterLink>
+                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/media" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Media Library</RouterLink>
+                <RouterLink v-if="auth.hasRole('admin')" to="/admin/users" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Users</RouterLink>
+                <RouterLink v-if="auth.hasRole('admin')" to="/admin/audit-logs" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Audit Logs</RouterLink>
+
+                <div class="my-2 border-t border-white/10" />
+                <button
+                  type="button"
+                  :class="desktopNavLinkClass + ' w-full text-left'"
+                  @click="handleLogout"
+                >
+                  Uitloggen
+                </button>
+              </template>
+            </div>
+        </div>
+      </div>
 
       <!-- Mobiel hamburger knop -->
       <button
@@ -166,6 +271,109 @@ function sluitMenu(): void {
             Aanmelden
           </RouterLink>
         </li>
+
+        <li class="mt-4 border-t border-white/15 pt-4 text-xs font-bold uppercase tracking-wide text-slate-400">Persoonlijk</li>
+        <li>
+          <RouterLink
+            to="/aanmelding/wijzigen"
+            :class="mobileNavLinkClass"
+            :active-class="mobileNavActiveClass"
+            @click="sluitMenu"
+          >Mijn Aanmelding</RouterLink>
+        </li>
+        <template v-if="!auth.isAuthenticated.value">
+          <li>
+            <RouterLink
+              to="/login"
+              :class="mobileNavLinkClass"
+              :active-class="mobileNavActiveClass"
+              @click="sluitMenu"
+            >Inloggen</RouterLink>
+          </li>
+          <li>
+            <RouterLink
+              to="/registreren"
+              :class="mobileNavLinkClass"
+              :active-class="mobileNavActiveClass"
+              @click="sluitMenu"
+            >Registreren</RouterLink>
+          </li>
+        </template>
+        <template v-else>
+          <li v-if="auth.hasRole('moderator')">
+            <RouterLink
+              to="/admin"
+              :class="mobileNavLinkClass"
+              :active-class="mobileNavActiveClass"
+              @click="sluitMenu"
+            >Dashboard</RouterLink>
+          </li>
+          <li v-if="auth.hasRole('moderator')">
+            <RouterLink
+              to="/admin/teams"
+              :class="mobileNavLinkClass"
+              :active-class="mobileNavActiveClass"
+              @click="sluitMenu"
+            >Admin Teams</RouterLink>
+          </li>
+          <li v-if="auth.hasRole('moderator')">
+            <RouterLink
+              to="/admin/posts"
+              :class="mobileNavLinkClass"
+              :active-class="mobileNavActiveClass"
+              @click="sluitMenu"
+            >Admin Posts</RouterLink>
+          </li>
+          <li v-if="auth.hasRole('moderator')">
+            <RouterLink
+              to="/admin/pages"
+              :class="mobileNavLinkClass"
+              :active-class="mobileNavActiveClass"
+              @click="sluitMenu"
+            >Admin Pagina's</RouterLink>
+          </li>
+          <li v-if="auth.hasRole('moderator')">
+            <RouterLink
+              to="/admin/team-updates"
+              :class="mobileNavLinkClass"
+              :active-class="mobileNavActiveClass"
+              @click="sluitMenu"
+            >Admin Updates</RouterLink>
+          </li>
+          <li v-if="auth.hasRole('moderator')">
+            <RouterLink
+              to="/admin/media"
+              :class="mobileNavLinkClass"
+              :active-class="mobileNavActiveClass"
+              @click="sluitMenu"
+            >Media Library</RouterLink>
+          </li>
+          <li v-if="auth.hasRole('admin')">
+            <RouterLink
+              to="/admin/users"
+              :class="mobileNavLinkClass"
+              :active-class="mobileNavActiveClass"
+              @click="sluitMenu"
+            >Admin Users</RouterLink>
+          </li>
+          <li v-if="auth.hasRole('admin')">
+            <RouterLink
+              to="/admin/audit-logs"
+              :class="mobileNavLinkClass"
+              :active-class="mobileNavActiveClass"
+              @click="sluitMenu"
+            >Audit Logs</RouterLink>
+          </li>
+          <li>
+            <button
+              type="button"
+              :class="mobileNavLinkClass"
+              @click="handleLogout"
+            >
+              Uitloggen
+            </button>
+          </li>
+        </template>
       </ul>
     </div>
   </header>
