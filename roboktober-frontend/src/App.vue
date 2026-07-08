@@ -34,11 +34,29 @@ function sluitMenu(): void {
   menuOpen.value = false
 }
 
+function setGateUnlockedInSession(): void {
+  try {
+    sessionStorage.setItem(siteGateSessionKey, '1')
+  } catch {
+    // Ignore storage failures (e.g. strict privacy mode) and keep in-memory unlock.
+  }
+}
+
+function getGateUnlockedFromSession(): boolean {
+  try {
+    return sessionStorage.getItem(siteGateSessionKey) === '1'
+  } catch {
+    return false
+  }
+}
+
 function submitSiteGate(): void {
-  if (gatePasswordInput.value === siteGatePassword) {
+  const normalizedInput = gatePasswordInput.value.trim()
+
+  if (normalizedInput === siteGatePassword) {
     gateUnlocked.value = true
     gateError.value = ''
-    sessionStorage.setItem(siteGateSessionKey, '1')
+    setGateUnlockedInSession()
     return
   }
 
@@ -78,7 +96,7 @@ function handleDocumentKeydown(event: KeyboardEvent): void {
 void auth.initAuth()
 
 onMounted(() => {
-  gateUnlocked.value = sessionStorage.getItem(siteGateSessionKey) === '1'
+  gateUnlocked.value = getGateUnlockedFromSession()
   document.addEventListener('mousedown', handleDocumentPointerDown)
   document.addEventListener('keydown', handleDocumentKeydown)
 })
@@ -114,6 +132,7 @@ async function handleLogout(): Promise<void> {
         <input
           id="site-gate-password"
           v-model="gatePasswordInput"
+          @input="gateError = ''"
           type="password"
           class="w-full rounded-lg border border-white/25 bg-slate-950/70 px-3 py-2 text-white placeholder:text-slate-500 focus:border-robo-orange focus:outline-none"
           placeholder="Voer wachtwoord in"
