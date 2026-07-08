@@ -86,3 +86,70 @@ Er staat nu een kant-en-klare deployset in [deploy/README.md](deploy/README.md):
 - [deploy/apache/roboktober.conf](deploy/apache/roboktober.conf): Apache vhost template
 - [deploy/systemd/roboktober-deploy.service](deploy/systemd/roboktober-deploy.service): handmatige systemd deploy
 - [deploy/systemd/roboktober-deploy.timer](deploy/systemd/roboktober-deploy.timer): optionele timer (elke 5 min)
+
+## Deploy op Railway (publieke container)
+
+Wil je snel publiek testen met een container, gebruik Railway met de root-Dockerfile in deze repo.
+
+### Waarom deze setup veilig is
+
+- Deploys gebeuren handmatig via GitHub Actions (`workflow_dispatch`), niet automatisch op elke push.
+- Secrets blijven in GitHub/Railway en staan niet in de code.
+- Migrations zijn opt-in via `RUN_MIGRATIONS=true`.
+
+### 1. Railway service aanmaken
+
+1. Maak in Railway een nieuw project en koppel deze GitHub-repository.
+2. Laat Railway bouwen met de `Dockerfile` op repo-root.
+3. Voeg een managed database toe (MySQL/Postgres) of gebruik een externe database.
+
+### 2. Railway environment variables
+
+Zet minimaal deze variabelen:
+
+- `APP_ENV=production`
+- `APP_DEBUG=false`
+- `APP_URL=https://<jouw-railway-url>`
+- `APP_KEY=<base64:...>`
+- `LOG_CHANNEL=stack`
+- `LOG_LEVEL=info`
+- `DB_CONNECTION=mysql` (of postgres, passend bij je database)
+- `DB_HOST=...`
+- `DB_PORT=...`
+- `DB_DATABASE=...`
+- `DB_USERNAME=...`
+- `DB_PASSWORD=...`
+
+Optioneel:
+
+- `RUN_MIGRATIONS=true` om bij elke start automatisch `php artisan migrate --force` uit te voeren.
+
+### 3. Deploy hook aanmaken in Railway
+
+1. Open je service in Railway.
+2. Maak een Deploy Hook aan.
+3. Kopieer de hook URL.
+
+### 4. GitHub secret toevoegen
+
+Voeg in GitHub repository secrets toe:
+
+- `RAILWAY_DEPLOY_HOOK_URL` = de deploy hook URL uit Railway.
+
+### 5. Handmatig deployen via GitHub
+
+1. Ga naar Actions in GitHub.
+2. Start workflow `Deploy to Railway (manual)`.
+3. Vul eventueel een reden in en run de workflow.
+
+De workflow staat in [`.github/workflows/deploy-railway.yml`](.github/workflows/deploy-railway.yml).
+
+### 6. Eerste productie-checklist
+
+1. Zet `APP_KEY` (vereist).
+2. Controleer dat database bereikbaar is vanuit Railway.
+3. Draai 1 keer migrations (met `RUN_MIGRATIONS=true` of handmatig in Railway shell).
+4. Verifieer:
+	- `/` of `/app/` laadt
+	- `/api/v1/posts` geeft 200
+	- admin login werkt op `/admin`
