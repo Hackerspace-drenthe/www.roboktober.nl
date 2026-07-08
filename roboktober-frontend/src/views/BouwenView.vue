@@ -1,12 +1,13 @@
 <script setup lang="ts">
 // Statische pagina — BOM en bouwstappen voor de Roboktober-kit
 import headerImage from '@/assets/headers/header-bouwen.png'
-import stap1Image from '@/assets/headers/header-bouwen.png'
-import stap2Image from '@/assets/headers/header-build-hub.png'
-import stap3Image from '@/assets/headers/header-team-detail.png'
-import stap4Image from '@/assets/headers/header-programma.png'
-import stap5Image from '@/assets/headers/header-teams.png'
-import stap6Image from '@/assets/headers/header-walter.png'
+import stap1Image from '@/assets/instructions/stap1-het-chassis.png'
+import stap2Image from '@/assets/instructions/stap2-motoren-en-wielen.png'
+import stap3Image from '@/assets/instructions/stap3-driver-accu-schakelaar.png'
+import stap4Image from '@/assets/instructions/stap4-programmeer-de-esp32c3.png'
+import stap5Image from '@/assets/instructions/stap5-testen-en-aanpassen.png'
+import stap6Image from '@/assets/instructions/stap6-voorbereiden-voor-competitie.png'
+import onderdelenLijstImage from '@/assets/onderdelen/onderdelenlijst.png'
 
 const heroStyle = {
   backgroundImage: `url(${headerImage})`,
@@ -183,6 +184,15 @@ const actieVideos: VideoItem[] = [
       <div class="mx-auto max-w-4xl px-6">
         <h2 id="bom-title" class="mb-2 text-2xl font-black text-robo-dark">Bill of Materials</h2>
         <p class="mb-8 text-slate-500">De minimale onderdelen voor een rijdende antweight (≤ 150 gram).</p>
+
+        <figure class="mb-8 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <img
+            :src="onderdelenLijstImage"
+            alt="Overzicht van onderdelen voor de Roboktober antweight build"
+            class="w-full object-cover"
+            loading="lazy"
+          />
+        </figure>
 
         <div class="overflow-x-auto rounded-xl border border-slate-200">
           <table class="min-w-full text-sm">
