@@ -30,6 +30,7 @@ fail() {
 resolve_php_bin() {
   if [[ -n "$PHP_BIN" ]]; then
     command -v "$PHP_BIN" >/dev/null 2>&1 || fail "PHP_BIN not found: $PHP_BIN"
+    ensure_php_extensions "$PHP_BIN"
     command -v "$PHP_BIN"
     return 0
   fi
@@ -37,12 +38,16 @@ resolve_php_bin() {
   local candidate
   for candidate in $PHP_CANDIDATES; do
     if command -v "$candidate" >/dev/null 2>&1; then
-      command -v "$candidate"
-      return 0
+      local candidate_path
+      candidate_path="$(command -v "$candidate")"
+      if ensure_php_extensions "$candidate_path"; then
+        command -v "$candidate"
+        return 0
+      fi
     fi
   done
 
-  fail "No PHP binary found. Checked: $PHP_CANDIDATES"
+  fail "No PHP binary with required extensions found. Checked: $PHP_CANDIDATES"
 }
 
 resolve_composer_bin() {
@@ -73,19 +78,22 @@ resolve_composer_bin() {
   fail "Composer not found. Set COMPOSER_BIN explicitly."
 }
 
-check_php_extensions() {
+ensure_php_extensions() {
+  local php_bin="$1"
   local missing=()
   local ext
 
   for ext in $REQUIRED_PHP_EXTENSIONS; do
-    if ! "$PHP_BIN" -r "exit(extension_loaded('$ext') ? 0 : 1);"; then
+    if ! "$php_bin" -r "exit(extension_loaded('$ext') ? 0 : 1);"; then
       missing+=("$ext")
     fi
   done
 
   if (( ${#missing[@]} > 0 )); then
-    fail "Missing required PHP extensions: ${missing[*]}"
+    return 1
   fi
+
+  return 0
 }
 
 run_composer() {
@@ -101,8 +109,6 @@ COMPOSER_BIN="$(resolve_composer_bin)"
 if [[ "$(id -u)" -eq 0 ]]; then
   export COMPOSER_ALLOW_SUPERUSER=1
 fi
-
-check_php_extensions
 
 log "Deploy start"
 log "Repository: $REPO_DIR"
