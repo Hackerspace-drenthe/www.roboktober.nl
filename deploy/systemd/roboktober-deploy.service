@@ -13,6 +13,7 @@ Environment=REPO_DIR=/var/www/www.roboktober.nl
 Environment=BRANCH=master
 Environment=RUN_MIGRATIONS=true
 Environment=BUILD_FRONTEND=false
+Environment=PHP_CANDIDATES=php8.6 php8.5 php8.4 php8.3 php
 ExecStart=/usr/bin/env bash /var/www/www.roboktober.nl/deploy/deploy.sh
 
 # Hardening
