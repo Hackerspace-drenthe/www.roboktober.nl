@@ -19,12 +19,12 @@ class EditionFactory extends Factory
      */
     public function definition(): array
     {
-        $start = fake()->dateTimeBetween('now', '+6 months');
+        $start = $this->faker->dateTimeBetween('now', '+6 months');
         $end = (clone $start)->modify('+1 day');
 
         return [
             'naam' => 'Roboktober '.$start->format('Y'),
-            'omschrijving' => fake()->sentence(16),
+            'omschrijving' => $this->faker->sentence(16),
             'locatie' => 'Hackerspace Drenthe',
             'afbeelding' => null,
             'start_at' => $start,
