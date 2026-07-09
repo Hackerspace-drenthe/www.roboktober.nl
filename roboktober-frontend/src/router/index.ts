@@ -39,15 +39,19 @@ const router = createRouter({
     },
     {
       path: '/competitie',
-      name: 'competitie',
-      component: () => import('../views/CompetitieView.vue'),
-      meta: { title: 'Competitieklassement — Roboktober' },
+      redirect: '/teams/competitie',
     },
     {
       path: '/teams',
       name: 'teams',
-      component: () => import('../views/TeamsView.vue'),
+      component: () => import('../views/TeamsCompetitionView.vue'),
       meta: { title: 'Teams & Robots — Roboktober' },
+    },
+    {
+      path: '/teams/competitie',
+      name: 'teams-competitie',
+      component: () => import('../views/TeamsCompetitionView.vue'),
+      meta: { title: 'Competitieklassement — Roboktober' },
     },
     {
       path: '/teams/:id',

@@ -187,9 +187,6 @@ async function handleLogout(): Promise<void> {
             <RouterLink to="/teams" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Teams</RouterLink>
           </li>
           <li>
-            <RouterLink to="/competitie" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Competitie</RouterLink>
-          </li>
-          <li>
             <RouterLink to="/nieuws" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Nieuws</RouterLink>
           </li>
           <li>
@@ -313,14 +310,6 @@ async function handleLogout(): Promise<void> {
             :active-class="mobileNavActiveClass"
             @click="sluitMenu"
           >Teams</RouterLink>
-        </li>
-        <li>
-          <RouterLink
-            to="/competitie"
-            :class="mobileNavLinkClass"
-            :active-class="mobileNavActiveClass"
-            @click="sluitMenu"
-          >Competitie</RouterLink>
         </li>
         <li>
           <RouterLink
