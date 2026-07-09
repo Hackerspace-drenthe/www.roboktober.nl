@@ -231,7 +231,7 @@ async function handleLogout(): Promise<void> {
               v-if="accountMenuOpen"
               id="desktop-account-menu"
               role="menu"
-              class="absolute right-0 mt-2 w-64 space-y-1 rounded-xl border border-white/15 bg-robo-dark p-2 shadow-xl"
+              class="absolute right-0 mt-2 w-60 space-y-1 rounded-xl border border-white/15 bg-robo-dark p-2 shadow-xl"
             >
               <p class="px-3 py-2 text-xs font-bold uppercase tracking-wide text-slate-400">Persoonlijk</p>
 
@@ -245,20 +245,21 @@ async function handleLogout(): Promise<void> {
 
               <template v-else>
                 <div v-if="auth.hasRole('moderator')" class="my-2 border-t border-white/10" />
+                <p v-if="auth.hasRole('moderator')" class="px-3 py-1 text-xs font-bold uppercase tracking-wide text-slate-400">Beheer</p>
 
-                <RouterLink v-if="auth.hasRole('moderator')" to="/admin" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Dashboard</RouterLink>
-                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/teams" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Teams</RouterLink>
-                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/edities" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Edities</RouterLink>
-                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/robots" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Robots</RouterLink>
-                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/links" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Links</RouterLink>
-                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/competitie" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Competitie</RouterLink>
-                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/posts" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Posts</RouterLink>
-                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/pages" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Pagina's</RouterLink>
-                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/team-updates" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Updates</RouterLink>
-                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/media" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Media Library</RouterLink>
-                <RouterLink v-if="auth.hasRole('admin')" to="/admin/users" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Users</RouterLink>
-                <RouterLink v-if="auth.hasRole('admin')" to="/admin/audit-logs" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Audit Logs</RouterLink>
-                <RouterLink v-if="auth.hasRole('admin')" to="/admin/page-analytics" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Page Analytics</RouterLink>
+                <RouterLink v-if="auth.hasRole('moderator')" to="/admin" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu"><span class="inline-flex w-full items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] font-bold text-slate-200">D</span><span>Dashboard</span></span></RouterLink>
+                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/teams" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu"><span class="inline-flex w-full items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] font-bold text-slate-200">T</span><span>Teams</span></span></RouterLink>
+                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/edities" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu"><span class="inline-flex w-full items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] font-bold text-slate-200">E</span><span>Edities</span></span></RouterLink>
+                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/robots" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu"><span class="inline-flex w-full items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] font-bold text-slate-200">R</span><span>Robots</span></span></RouterLink>
+                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/links" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu"><span class="inline-flex w-full items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] font-bold text-slate-200">L</span><span>Links</span></span></RouterLink>
+                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/competitie" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu"><span class="inline-flex w-full items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] font-bold text-slate-200">C</span><span>Competitie</span></span></RouterLink>
+                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/posts" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu"><span class="inline-flex w-full items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] font-bold text-slate-200">P</span><span>Posts</span></span></RouterLink>
+                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/pages" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu"><span class="inline-flex w-full items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] font-bold text-slate-200">G</span><span>Pagina's</span></span></RouterLink>
+                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/team-updates" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu"><span class="inline-flex w-full items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] font-bold text-slate-200">U</span><span>Updates</span></span></RouterLink>
+                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/media" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu"><span class="inline-flex w-full items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] font-bold text-slate-200">M</span><span>Media</span></span></RouterLink>
+                <RouterLink v-if="auth.hasRole('admin')" to="/admin/users" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu"><span class="inline-flex w-full items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] font-bold text-slate-200">A</span><span>Gebruikers</span></span></RouterLink>
+                <RouterLink v-if="auth.hasRole('admin')" to="/admin/audit-logs" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu"><span class="inline-flex w-full items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] font-bold text-slate-200">X</span><span>Audit</span></span></RouterLink>
+                <RouterLink v-if="auth.hasRole('admin')" to="/admin/page-analytics" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu"><span class="inline-flex w-full items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] font-bold text-slate-200">N</span><span>Analytics</span></span></RouterLink>
 
                 <div class="my-2 border-t border-white/10" />
                 <button
@@ -414,7 +415,7 @@ async function handleLogout(): Promise<void> {
               :class="mobileNavLinkClass"
               :active-class="mobileNavActiveClass"
               @click="sluitMenu"
-            >Admin Teams</RouterLink>
+            >Teams</RouterLink>
           </li>
           <li v-if="auth.hasRole('moderator')">
             <RouterLink
@@ -422,7 +423,7 @@ async function handleLogout(): Promise<void> {
               :class="mobileNavLinkClass"
               :active-class="mobileNavActiveClass"
               @click="sluitMenu"
-            >Admin Edities</RouterLink>
+            >Edities</RouterLink>
           </li>
           <li v-if="auth.hasRole('moderator')">
             <RouterLink
@@ -430,7 +431,7 @@ async function handleLogout(): Promise<void> {
               :class="mobileNavLinkClass"
               :active-class="mobileNavActiveClass"
               @click="sluitMenu"
-            >Admin Robots</RouterLink>
+            >Robots</RouterLink>
           </li>
           <li v-if="auth.hasRole('moderator')">
             <RouterLink
@@ -438,7 +439,7 @@ async function handleLogout(): Promise<void> {
               :class="mobileNavLinkClass"
               :active-class="mobileNavActiveClass"
               @click="sluitMenu"
-            >Admin Links</RouterLink>
+            >Links</RouterLink>
           </li>
           <li v-if="auth.hasRole('moderator')">
             <RouterLink
@@ -454,7 +455,7 @@ async function handleLogout(): Promise<void> {
               :class="mobileNavLinkClass"
               :active-class="mobileNavActiveClass"
               @click="sluitMenu"
-            >Admin Posts</RouterLink>
+            >Posts</RouterLink>
           </li>
           <li v-if="auth.hasRole('moderator')">
             <RouterLink
@@ -462,7 +463,7 @@ async function handleLogout(): Promise<void> {
               :class="mobileNavLinkClass"
               :active-class="mobileNavActiveClass"
               @click="sluitMenu"
-            >Admin Pagina's</RouterLink>
+            >Pagina's</RouterLink>
           </li>
           <li v-if="auth.hasRole('moderator')">
             <RouterLink
@@ -470,7 +471,7 @@ async function handleLogout(): Promise<void> {
               :class="mobileNavLinkClass"
               :active-class="mobileNavActiveClass"
               @click="sluitMenu"
-            >Admin Updates</RouterLink>
+            >Updates</RouterLink>
           </li>
           <li v-if="auth.hasRole('moderator')">
             <RouterLink
@@ -486,7 +487,7 @@ async function handleLogout(): Promise<void> {
               :class="mobileNavLinkClass"
               :active-class="mobileNavActiveClass"
               @click="sluitMenu"
-            >Admin Users</RouterLink>
+            >Gebruikers</RouterLink>
           </li>
           <li v-if="auth.hasRole('admin')">
             <RouterLink
