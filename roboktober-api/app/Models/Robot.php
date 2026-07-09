@@ -94,6 +94,16 @@ class Robot extends Model
     }
 
     /**
+     * Competition scores for this robot across all battles.
+     *
+     * @return HasMany<CompetitionBattleScore, $this>
+     */
+    public function competitionScores(): HasMany
+    {
+        return $this->hasMany(CompetitionBattleScore::class);
+    }
+
+    /**
      * Returns true if this robot has passed technical inspection and is cleared.
      */
     public function isBattleReady(): bool

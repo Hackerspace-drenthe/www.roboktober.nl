@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\V1\Admin\TeamUpdateModerationController;
 use App\Http\Controllers\Api\V1\Admin\UserManagementController;
 use App\Http\Controllers\Api\V1\Admin\AuditLogController;
 use App\Http\Controllers\Api\V1\Admin\AdminDashboardController;
+use App\Http\Controllers\Api\V1\Admin\CompetitionManagementController;
+use App\Http\Controllers\Api\V1\CompetitionController;
 use App\Http\Controllers\Api\V1\EditionController;
 use App\Http\Controllers\Api\V1\PageController;
 use App\Http\Controllers\Api\V1\PostController;
@@ -63,6 +65,8 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
 
     // Event editions (public, read-only)
     Route::get('/edities', [EditionController::class, 'index'])->name('editions.index');
+    Route::get('/edities/{edition}/competitie', [CompetitionController::class, 'leaderboard'])
+        ->name('competition.leaderboard');
 
     // CMS pages (public, read-only)
     Route::get('/pages/{slug}', [PageController::class, 'show'])->name('pages.show');
@@ -130,6 +134,19 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
             Route::get('/teams/{team}', [TeamModerationController::class, 'show'])->name('teams.show');
             Route::patch('/teams/{team}/status', [TeamModerationController::class, 'updateStatus'])
                 ->name('teams.update-status');
+
+            Route::get('/edities/{edition}/competitie', [CompetitionManagementController::class, 'index'])
+                ->name('competition.index');
+            Route::post('/edities/{edition}/competitie/categories', [CompetitionManagementController::class, 'storeCategory'])
+                ->name('competition.categories.store');
+            Route::patch('/competitie/categories/{competitionCategory}', [CompetitionManagementController::class, 'updateCategory'])
+                ->name('competition.categories.update');
+            Route::post('/competitie/categories/{competitionCategory}/battles', [CompetitionManagementController::class, 'storeBattle'])
+                ->name('competition.battles.store');
+            Route::patch('/competitie/battles/{competitionBattle}', [CompetitionManagementController::class, 'updateBattle'])
+                ->name('competition.battles.update');
+            Route::put('/competitie/battles/{competitionBattle}/scores', [CompetitionManagementController::class, 'upsertScores'])
+                ->name('competition.battles.scores.upsert');
 
             Route::get('/posts', [PostModerationController::class, 'index'])->name('posts.index');
             Route::get('/posts/{post:id}', [PostModerationController::class, 'show'])->name('posts.show');

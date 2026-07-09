@@ -187,6 +187,9 @@ async function handleLogout(): Promise<void> {
             <RouterLink to="/teams" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Teams</RouterLink>
           </li>
           <li>
+            <RouterLink to="/competitie" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Competitie</RouterLink>
+          </li>
+          <li>
             <RouterLink to="/nieuws" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Nieuws</RouterLink>
           </li>
           <li>
@@ -245,6 +248,7 @@ async function handleLogout(): Promise<void> {
 
                 <RouterLink v-if="auth.hasRole('moderator')" to="/admin" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Dashboard</RouterLink>
                 <RouterLink v-if="auth.hasRole('moderator')" to="/admin/teams" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Teams</RouterLink>
+                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/competitie" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Competitie</RouterLink>
                 <RouterLink v-if="auth.hasRole('moderator')" to="/admin/posts" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Posts</RouterLink>
                 <RouterLink v-if="auth.hasRole('moderator')" to="/admin/pages" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Pagina's</RouterLink>
                 <RouterLink v-if="auth.hasRole('moderator')" to="/admin/team-updates" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Updates</RouterLink>
@@ -304,6 +308,14 @@ async function handleLogout(): Promise<void> {
             :active-class="mobileNavActiveClass"
             @click="sluitMenu"
           >Teams</RouterLink>
+        </li>
+        <li>
+          <RouterLink
+            to="/competitie"
+            :class="mobileNavLinkClass"
+            :active-class="mobileNavActiveClass"
+            @click="sluitMenu"
+          >Competitie</RouterLink>
         </li>
         <li>
           <RouterLink
@@ -399,6 +411,14 @@ async function handleLogout(): Promise<void> {
               :active-class="mobileNavActiveClass"
               @click="sluitMenu"
             >Admin Teams</RouterLink>
+          </li>
+          <li v-if="auth.hasRole('moderator')">
+            <RouterLink
+              to="/admin/competitie"
+              :class="mobileNavLinkClass"
+              :active-class="mobileNavActiveClass"
+              @click="sluitMenu"
+            >Admin Competitie</RouterLink>
           </li>
           <li v-if="auth.hasRole('moderator')">
             <RouterLink

@@ -8,8 +8,12 @@
  */
 
 import type {
+  AdminCompetitionBattlePayload,
+  AdminCompetitionBattleScoreEntryPayload,
+  AdminCompetitionCategoryPayload,
   AdminAuditLog,
   AdminDashboardSummary,
+  AdminEditionCompetitionData,
   AdminPage,
   AdminPageContentUpdatePayload,
   AdminPost,
@@ -20,7 +24,10 @@ import type {
   AdminUser,
   AuthResponse,
   AuthUser,
+  CompetitionBattle,
+  CompetitionCategory,
   Edition,
+  EditionCompetitionLeaderboard,
   ForgotPasswordPayload,
   Link,
   LoginPayload,
@@ -159,6 +166,11 @@ export async function getLinks(params?: { categorie?: string }): Promise<Link[]>
 
 export async function getEditions(): Promise<Edition[]> {
   const { data } = await api.get<{ data: Edition[] }>('/edities')
+  return data.data
+}
+
+export async function getEditionCompetitionLeaderboard(editionId: number): Promise<EditionCompetitionLeaderboard> {
+  const { data } = await api.get<{ data: EditionCompetitionLeaderboard }>(`/edities/${editionId}/competitie`)
   return data.data
 }
 
@@ -498,6 +510,53 @@ export async function getAdminAuditLogs(params?: {
 
 export async function getAdminDashboardSummary(): Promise<AdminDashboardSummary> {
   const { data } = await api.get<{ data: AdminDashboardSummary }>('/admin/dashboard-summary')
+  return data.data
+}
+
+export async function getAdminEditionCompetition(editionId: number): Promise<AdminEditionCompetitionData> {
+  const { data } = await api.get<{ data: AdminEditionCompetitionData }>(`/admin/edities/${editionId}/competitie`)
+  return data.data
+}
+
+export async function createAdminCompetitionCategory(
+  editionId: number,
+  payload: AdminCompetitionCategoryPayload,
+): Promise<CompetitionCategory> {
+  const { data } = await api.post<{ data: CompetitionCategory }>(`/admin/edities/${editionId}/competitie/categories`, payload)
+  return data.data
+}
+
+export async function updateAdminCompetitionCategory(
+  categoryId: number,
+  payload: Partial<AdminCompetitionCategoryPayload>,
+): Promise<CompetitionCategory> {
+  const { data } = await api.patch<{ data: CompetitionCategory }>(`/admin/competitie/categories/${categoryId}`, payload)
+  return data.data
+}
+
+export async function createAdminCompetitionBattle(
+  categoryId: number,
+  payload: AdminCompetitionBattlePayload,
+): Promise<CompetitionBattle> {
+  const { data } = await api.post<{ data: CompetitionBattle }>(`/admin/competitie/categories/${categoryId}/battles`, payload)
+  return data.data
+}
+
+export async function updateAdminCompetitionBattle(
+  battleId: number,
+  payload: Partial<AdminCompetitionBattlePayload>,
+): Promise<CompetitionBattle> {
+  const { data } = await api.patch<{ data: CompetitionBattle }>(`/admin/competitie/battles/${battleId}`, payload)
+  return data.data
+}
+
+export async function upsertAdminCompetitionBattleScores(
+  battleId: number,
+  entries: AdminCompetitionBattleScoreEntryPayload[],
+): Promise<CompetitionBattle> {
+  const { data } = await api.put<{ data: CompetitionBattle }>(`/admin/competitie/battles/${battleId}/scores`, {
+    entries,
+  })
   return data.data
 }
 

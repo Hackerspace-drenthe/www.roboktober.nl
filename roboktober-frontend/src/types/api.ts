@@ -64,6 +64,109 @@ export interface TeamUpdate {
 }
 
 // ---------------------------------------------------------------------------
+// Competition
+// ---------------------------------------------------------------------------
+
+export type CompetitionBattleMode = 'solo' | 'multi'
+
+export interface CompetitionRobotSummary {
+  id: number
+  naam: string
+  status: RobotStatus
+  team: {
+    id: number
+    naam: string
+  } | null
+}
+
+export interface CompetitionBattleScore {
+  id: number
+  punten: number
+  opmerkingen: string | null
+  robot: CompetitionRobotSummary | null
+  created_at: string | null
+  updated_at: string | null
+}
+
+export interface CompetitionBattle {
+  id: number
+  competition_category_id: number
+  naam: string
+  battle_mode: CompetitionBattleMode
+  omschrijving: string | null
+  volgorde: number
+  scores: CompetitionBattleScore[]
+  created_at: string | null
+  updated_at: string | null
+}
+
+export interface CompetitionCategory {
+  id: number
+  edition_id: number
+  naam: string
+  slug: string
+  omschrijving: string | null
+  volgorde: number
+  battles: CompetitionBattle[]
+  created_at: string | null
+  updated_at: string | null
+}
+
+export interface CompetitionRankingEntry {
+  positie: number
+  punten: number
+  robot: CompetitionRobotSummary
+}
+
+export interface EditionCompetitionLeaderboard {
+  edition: {
+    id: number
+    naam: string
+    start_at: string | null
+    end_at: string | null
+  }
+  categories: Array<{
+    id: number
+    naam: string
+    slug: string
+    omschrijving: string | null
+    volgorde: number
+    battles_count: number
+    winner: CompetitionRankingEntry | null
+    ranking: CompetitionRankingEntry[]
+  }>
+  overall: CompetitionRankingEntry[]
+}
+
+export interface AdminEditionCompetitionData {
+  edition: {
+    id: number
+    naam: string
+  }
+  categories: CompetitionCategory[]
+  available_robots: Array<CompetitionRobotSummary & { is_battle_ready: boolean }>
+}
+
+export interface AdminCompetitionCategoryPayload {
+  naam: string
+  omschrijving?: string
+  volgorde?: number
+}
+
+export interface AdminCompetitionBattlePayload {
+  naam: string
+  battle_mode: CompetitionBattleMode
+  omschrijving?: string
+  volgorde?: number
+}
+
+export interface AdminCompetitionBattleScoreEntryPayload {
+  robot_id: number
+  punten: number
+  opmerkingen?: string
+}
+
+// ---------------------------------------------------------------------------
 // Edition
 // ---------------------------------------------------------------------------
 

@@ -45,4 +45,12 @@ class Edition extends Model
     {
         return $this->hasMany(Team::class);
     }
+
+    /**
+     * @return HasMany<CompetitionCategory, $this>
+     */
+    public function competitionCategories(): HasMany
+    {
+        return $this->hasMany(CompetitionCategory::class)->orderBy('volgorde')->orderBy('id');
+    }
 }

@@ -38,6 +38,12 @@ const router = createRouter({
       meta: { title: 'Programma — Roboktober' },
     },
     {
+      path: '/competitie',
+      name: 'competitie',
+      component: () => import('../views/CompetitieView.vue'),
+      meta: { title: 'Competitieklassement — Roboktober' },
+    },
+    {
       path: '/teams',
       name: 'teams',
       component: () => import('../views/TeamsView.vue'),
@@ -143,6 +149,16 @@ const router = createRouter({
       component: () => import('../views/AdminTeamsView.vue'),
       meta: {
         title: 'Admin Teams — Roboktober',
+        requiresAuth: true,
+        minRole: 'moderator',
+      },
+    },
+    {
+      path: '/admin/competitie',
+      name: 'admin-competitie',
+      component: () => import('../views/AdminCompetitionView.vue'),
+      meta: {
+        title: 'Admin Competitie — Roboktober',
         requiresAuth: true,
         minRole: 'moderator',
       },
