@@ -22,6 +22,7 @@ class CompetitionBattle extends Model
         'naam',
         'battle_mode',
         'omschrijving',
+        'scheduled_at',
         'volgorde',
     ];
 
@@ -31,6 +32,7 @@ class CompetitionBattle extends Model
     protected function casts(): array
     {
         return [
+            'scheduled_at' => 'datetime',
             'volgorde' => 'integer',
         ];
     }

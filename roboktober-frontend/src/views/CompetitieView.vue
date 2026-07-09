@@ -9,6 +9,20 @@ const leaderboard = ref<EditionCompetitionLeaderboard | null>(null)
 const loading = ref(false)
 const error = ref('')
 
+function formatDatumTijd(iso: string | null): string {
+  if (!iso) {
+    return 'Tijd volgt nog'
+  }
+
+  return new Date(iso).toLocaleString('nl-NL', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+}
+
 async function loadEditions(): Promise<void> {
   editions.value = await getEditions()
   const eersteEditie = editions.value[0]
@@ -101,6 +115,13 @@ onMounted(async () => {
           <h3 class="text-lg font-black text-white">{{ category.naam }}</h3>
           <p v-if="category.omschrijving" class="mt-1 text-sm text-slate-300">{{ category.omschrijving }}</p>
           <p class="mt-2 text-xs text-slate-400">Battles: {{ category.battles_count }}</p>
+
+          <ul v-if="category.battles.length > 0" class="mt-3 space-y-1 text-xs text-slate-300">
+            <li v-for="battle in category.battles" :key="battle.id">
+              {{ battle.naam }} ({{ battle.battle_mode }}) · {{ formatDatumTijd(battle.scheduled_at) }}
+            </li>
+          </ul>
+          <p v-else class="mt-3 text-xs text-slate-400">Nog geen wedstrijdtijden ingepland.</p>
 
           <div class="mt-3 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2">
             <p class="text-xs uppercase tracking-wide text-amber-200">Beste robot</p>

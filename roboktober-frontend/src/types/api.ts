@@ -94,6 +94,7 @@ export interface CompetitionBattle {
   naam: string
   battle_mode: CompetitionBattleMode
   omschrijving: string | null
+  scheduled_at: string | null
   volgorde: number
   scores: CompetitionBattleScore[]
   created_at: string | null
@@ -132,6 +133,12 @@ export interface EditionCompetitionLeaderboard {
     omschrijving: string | null
     volgorde: number
     battles_count: number
+    battles: Array<{
+      id: number
+      naam: string
+      battle_mode: CompetitionBattleMode
+      scheduled_at: string | null
+    }>
     winner: CompetitionRankingEntry | null
     ranking: CompetitionRankingEntry[]
   }>
@@ -157,6 +164,7 @@ export interface AdminCompetitionBattlePayload {
   naam: string
   battle_mode: CompetitionBattleMode
   omschrijving?: string
+  scheduled_at?: string
   volgorde?: number
 }
 

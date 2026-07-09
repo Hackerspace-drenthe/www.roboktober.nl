@@ -1,12 +1,149 @@
 <script setup lang="ts">
-// Geen API-aanroep nodig — programma is statische content tot het gepubliceerd wordt
+import { getEditions } from '@/api'
 import headerImage from '@/assets/headers/header-programma.png'
+import type { Edition } from '@/types/api'
+import { computed, onMounted, ref } from 'vue'
 
 const heroStyle = {
   backgroundImage: `url(${headerImage})`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
 }
+
+const editie = ref<Edition | null>(null)
+const mapCoords = ref<{ lat: number; lon: number } | null>(null)
+const loading = ref(false)
+const error = ref('')
+
+function kiesProgrammaEditie(edities: Edition[]): Edition | null {
+  if (edities.length === 0) {
+    return null
+  }
+
+  const openEditie = [...edities]
+    .filter((item) => !item.is_done)
+    .sort((a, b) => a.start_at.localeCompare(b.start_at))[0]
+
+  return openEditie ?? [...edities].sort((a, b) => a.start_at.localeCompare(b.start_at))[0] ?? null
+}
+
+async function geocodeLocatie(locatie: string): Promise<void> {
+  mapCoords.value = null
+
+  try {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(locatie)}`,
+    )
+
+    if (!response.ok) {
+      return
+    }
+
+    const payload = await response.json() as Array<{ lat?: string; lon?: string }>
+    const lat = Number(payload[0]?.lat)
+    const lon = Number(payload[0]?.lon)
+
+    if (Number.isFinite(lat) && Number.isFinite(lon)) {
+      mapCoords.value = { lat, lon }
+    }
+  } catch {
+    mapCoords.value = null
+  }
+}
+
+function formatDatum(iso: string | null): string {
+  if (!iso) {
+    return 'Datum volgt'
+  }
+
+  return new Date(iso).toLocaleDateString('nl-NL', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+  })
+}
+
+function formatEditiePeriode(item: Edition | null): string {
+  if (!item) {
+    return 'Programma wordt binnenkort bekendgemaakt.'
+  }
+
+  const start = formatDatum(item.start_at)
+  const end = item.end_at ? formatDatum(item.end_at) : ''
+  return end ? `${start} t/m ${end}` : start
+}
+
+const mapEmbedUrl = computed(() => {
+  if (!mapCoords.value) {
+    return ''
+  }
+
+  const lat = mapCoords.value.lat
+  const lon = mapCoords.value.lon
+  const delta = 0.01
+  const left = lon - delta
+  const right = lon + delta
+  const top = lat + delta
+  const bottom = lat - delta
+
+  return `https://www.openstreetmap.org/export/embed.html?bbox=${left}%2C${bottom}%2C${right}%2C${top}&layer=mapnik&marker=${lat}%2C${lon}`
+})
+
+const mapFallbackUrl = computed(() => {
+  if (!editie.value) {
+    return 'https://www.openstreetmap.org'
+  }
+
+  return `https://www.openstreetmap.org/search?query=${encodeURIComponent(editie.value.locatie)}`
+})
+
+async function openRouteInOpenStreetMap(): Promise<void> {
+  if (!editie.value) {
+    return
+  }
+
+  if (!mapCoords.value || !('geolocation' in navigator)) {
+    window.open(mapFallbackUrl.value, '_blank', 'noopener,noreferrer')
+    return
+  }
+
+  const destination = `${mapCoords.value.lat},${mapCoords.value.lon}`
+
+  const currentPosition = await new Promise<GeolocationPosition | null>((resolve) => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => resolve(position),
+      () => resolve(null),
+      { timeout: 5000, enableHighAccuracy: false },
+    )
+  })
+
+  if (!currentPosition) {
+    window.open(mapFallbackUrl.value, '_blank', 'noopener,noreferrer')
+    return
+  }
+
+  const origin = `${currentPosition.coords.latitude},${currentPosition.coords.longitude}`
+  const routeUrl = `https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=${encodeURIComponent(`${origin};${destination}`)}`
+  window.open(routeUrl, '_blank', 'noopener,noreferrer')
+}
+
+onMounted(async () => {
+  loading.value = true
+  error.value = ''
+
+  try {
+    const edities = await getEditions()
+    editie.value = kiesProgrammaEditie(edities)
+
+    if (editie.value?.locatie) {
+      await geocodeLocatie(editie.value.locatie)
+    }
+  } catch {
+    error.value = 'Programma-informatie laden mislukt.'
+  } finally {
+    loading.value = false
+  }
+})
 </script>
 
 <template>
@@ -17,9 +154,43 @@ const heroStyle = {
       <div class="relative z-10 mx-auto max-w-3xl px-6 text-center">
         <h1 class="mb-4 text-4xl font-black md:text-5xl">Programma</h1>
         <p class="text-lg text-slate-300">
-          Roboktober vindt plaats in <strong>oktober 2026</strong> bij Hackerspace Drenthe.
-          Het volledige programma wordt binnenkort bekendgemaakt.
+          Roboktober vindt plaats op <strong>{{ formatEditiePeriode(editie) }}</strong>
+          bij <strong>{{ editie?.locatie ?? 'locatie volgt' }}</strong>.
         </p>
+      </div>
+    </section>
+
+    <section class="bg-slate-100 py-12" aria-labelledby="locatie-title">
+      <div class="mx-auto max-w-5xl px-6">
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <h2 id="locatie-title" class="text-2xl font-black text-robo-dark">Locatie en route</h2>
+          <button
+            type="button"
+            class="rounded-lg bg-robo-orange px-4 py-2 text-sm font-bold text-white transition hover:bg-robo-orange-dark"
+            :disabled="!editie"
+            @click="openRouteInOpenStreetMap"
+          >
+            Open route in OpenStreetMap
+          </button>
+        </div>
+
+        <p v-if="loading" class="text-slate-600">Locatie laden...</p>
+        <p v-else-if="error" class="text-red-700">{{ error }}</p>
+        <p v-else-if="editie" class="mb-3 text-slate-700">
+          <strong class="text-robo-dark">{{ editie.naam }}</strong> · {{ editie.locatie }}
+        </p>
+
+        <div v-if="mapEmbedUrl" class="overflow-hidden rounded-xl border border-slate-300 bg-white shadow-sm">
+          <iframe
+            title="Locatiekaart Roboktober"
+            :src="mapEmbedUrl"
+            class="h-80 w-full"
+            loading="lazy"
+          />
+        </div>
+        <div v-else class="rounded-xl border border-slate-300 bg-white p-6 text-slate-700">
+          Kaart laden is niet gelukt. Gebruik de routeknop om de locatie direct in OpenStreetMap te openen.
+        </div>
       </div>
     </section>
 
@@ -79,7 +250,7 @@ const heroStyle = {
         <div class="mt-12 rounded-xl border border-robo-orange/30 bg-orange-50 p-6">
           <p class="text-sm text-slate-600">
             <strong class="text-robo-dark">Let op:</strong> Exacte data, tijden en locatiedetails
-            worden binnenkort gepubliceerd. Volg onze
+            kunnen nog wijzigen. Volg onze
             <a
               href="https://hackerspacedrenthe.nl"
               target="_blank"

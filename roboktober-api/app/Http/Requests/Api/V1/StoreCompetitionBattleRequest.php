@@ -23,6 +23,7 @@ class StoreCompetitionBattleRequest extends FormRequest
             'naam' => ['required', 'string', 'max:120'],
             'battle_mode' => ['required', 'string', Rule::in(['solo', 'multi'])],
             'omschrijving' => ['nullable', 'string', 'max:2000'],
+            'scheduled_at' => ['nullable', 'date'],
             'volgorde' => ['nullable', 'integer', 'min:0', 'max:999'],
         ];
     }

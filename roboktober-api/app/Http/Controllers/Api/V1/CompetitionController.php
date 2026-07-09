@@ -69,6 +69,19 @@ class CompetitionController extends Controller
                 'omschrijving' => $category->omschrijving,
                 'volgorde' => $category->volgorde,
                 'battles_count' => $category->battles->count(),
+                'battles' => $category->battles
+                    ->sortBy([
+                        [static fn ($battle): string => $battle->scheduled_at?->toIso8601String() ?? '9999-12-31T23:59:59+00:00', 'asc'],
+                        ['volgorde', 'asc'],
+                        ['id', 'asc'],
+                    ])
+                    ->values()
+                    ->map(static fn ($battle): array => [
+                        'id' => $battle->id,
+                        'naam' => $battle->naam,
+                        'battle_mode' => $battle->battle_mode,
+                        'scheduled_at' => $battle->scheduled_at?->toIso8601String(),
+                    ]),
                 'winner' => $ranking[0] ?? null,
                 'ranking' => $ranking,
             ];

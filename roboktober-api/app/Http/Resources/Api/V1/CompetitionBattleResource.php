@@ -24,6 +24,7 @@ class CompetitionBattleResource extends JsonResource
             'naam' => $this->naam,
             'battle_mode' => $this->battle_mode,
             'omschrijving' => $this->omschrijving,
+            'scheduled_at' => $this->scheduled_at?->toIso8601String(),
             'volgorde' => $this->volgorde,
             'scores' => CompetitionBattleScoreResource::collection($this->whenLoaded('scores')),
             'created_at' => $this->created_at?->toISOString(),

@@ -107,13 +107,14 @@ class CompetitionManagementController extends Controller
 
     public function storeBattle(StoreCompetitionBattleRequest $request, CompetitionCategory $competitionCategory): CompetitionBattleResource
     {
-        /** @var array{naam: string, battle_mode: string, omschrijving?: string|null, volgorde?: int|null} $validated */
+        /** @var array{naam: string, battle_mode: string, omschrijving?: string|null, scheduled_at?: string|null, volgorde?: int|null} $validated */
         $validated = $request->validated();
 
         $battle = $competitionCategory->battles()->create([
             'naam' => $validated['naam'],
             'battle_mode' => $validated['battle_mode'],
             'omschrijving' => $validated['omschrijving'] ?? null,
+            'scheduled_at' => $validated['scheduled_at'] ?? null,
             'volgorde' => (int) ($validated['volgorde'] ?? 0),
         ]);
 
@@ -124,11 +125,12 @@ class CompetitionManagementController extends Controller
 
     public function updateBattle(Request $request, CompetitionBattle $competitionBattle): CompetitionBattleResource
     {
-        /** @var array{naam?: string, battle_mode?: string, omschrijving?: string|null, volgorde?: int|null} $validated */
+        /** @var array{naam?: string, battle_mode?: string, omschrijving?: string|null, scheduled_at?: string|null, volgorde?: int|null} $validated */
         $validated = $request->validate([
             'naam' => ['sometimes', 'string', 'max:120'],
             'battle_mode' => ['sometimes', 'string', 'in:solo,multi'],
             'omschrijving' => ['sometimes', 'nullable', 'string', 'max:2000'],
+            'scheduled_at' => ['sometimes', 'nullable', 'date'],
             'volgorde' => ['sometimes', 'integer', 'min:0', 'max:999'],
         ]);
 

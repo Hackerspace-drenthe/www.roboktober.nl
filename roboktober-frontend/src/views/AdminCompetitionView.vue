@@ -27,7 +27,13 @@ const nieuweCategorie = reactive({
   volgorde: 0,
 })
 
-const battleForms = reactive<Record<number, { naam: string; battle_mode: CompetitionBattleMode; omschrijving: string; volgorde: number }>>({})
+const battleForms = reactive<Record<number, {
+  naam: string
+  battle_mode: CompetitionBattleMode
+  omschrijving: string
+  scheduled_at: string
+  volgorde: number
+}>>({})
 const scoreForms = reactive<Record<number, { robot_id: number | null; punten: number; opmerkingen: string }>>({})
 
 async function loadEditions(): Promise<void> {
@@ -91,9 +97,24 @@ function ensureBattleForm(categoryId: number): void {
       naam: '',
       battle_mode: 'solo',
       omschrijving: '',
+      scheduled_at: '',
       volgorde: 0,
     }
   }
+}
+
+function formatDatumTijd(iso: string | null): string {
+  if (!iso) {
+    return 'Nog niet gepland'
+  }
+
+  return new Date(iso).toLocaleString('nl-NL', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
 }
 
 function ensureScoreForm(battleId: number): void {
@@ -120,6 +141,7 @@ async function addBattle(categoryId: number): Promise<void> {
       naam: form.naam.trim(),
       battle_mode: form.battle_mode,
       omschrijving: form.omschrijving.trim() || undefined,
+      scheduled_at: form.scheduled_at || undefined,
       volgorde: form.volgorde,
     })
 
@@ -133,6 +155,7 @@ async function addBattle(categoryId: number): Promise<void> {
       naam: '',
       battle_mode: 'solo',
       omschrijving: '',
+      scheduled_at: '',
       volgorde: 0,
     }
     success.value = 'Battle toegevoegd.'
@@ -232,7 +255,7 @@ onMounted(async () => {
 
         <div class="mt-4 rounded-lg border border-white/10 bg-slate-900/60 p-3">
           <p class="mb-2 text-sm font-semibold text-slate-200">Nieuwe battle in {{ category.naam }}</p>
-          <div class="grid gap-2 md:grid-cols-5">
+          <div class="grid gap-2 md:grid-cols-6">
             <input
               :value="battleForms[category.id]?.naam ?? ''"
               class="rounded-lg border border-white/15 bg-slate-900 px-3 py-2 text-white"
@@ -257,6 +280,13 @@ onMounted(async () => {
               @input="ensureBattleForm(category.id); battleForms[category.id]!.omschrijving = ($event.target as HTMLInputElement).value"
             >
             <input
+              :value="battleForms[category.id]?.scheduled_at ?? ''"
+              type="datetime-local"
+              class="rounded-lg border border-white/15 bg-slate-900 px-3 py-2 text-white"
+              @focus="ensureBattleForm(category.id)"
+              @input="ensureBattleForm(category.id); battleForms[category.id]!.scheduled_at = ($event.target as HTMLInputElement).value"
+            >
+            <input
               :value="battleForms[category.id]?.volgorde ?? 0"
               type="number"
               min="0"
@@ -275,6 +305,7 @@ onMounted(async () => {
             <h4 class="font-bold text-white">{{ battle.naam }} <span class="text-xs text-slate-400">({{ battle.battle_mode }})</span></h4>
             <span class="text-xs text-slate-400">Volgorde: {{ battle.volgorde }}</span>
           </div>
+          <p class="mb-2 text-xs text-slate-400">Tijd: {{ formatDatumTijd(battle.scheduled_at) }}</p>
 
           <div class="grid gap-2 md:grid-cols-5">
             <select
