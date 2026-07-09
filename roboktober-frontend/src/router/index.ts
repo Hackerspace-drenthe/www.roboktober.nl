@@ -254,6 +254,16 @@ const router = createRouter({
       },
     },
     {
+      path: '/admin/page-analytics',
+      name: 'admin-page-analytics',
+      component: () => import('../views/AdminPageAnalyticsView.vue'),
+      meta: {
+        title: 'Admin Page Analytics — Roboktober',
+        requiresAuth: true,
+        minRole: 'admin',
+      },
+    },
+    {
       path: '/forbidden',
       name: 'forbidden',
       component: () => import('../views/ForbiddenView.vue'),

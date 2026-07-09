@@ -255,6 +255,7 @@ async function handleLogout(): Promise<void> {
                 <RouterLink v-if="auth.hasRole('moderator')" to="/admin/media" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Media Library</RouterLink>
                 <RouterLink v-if="auth.hasRole('admin')" to="/admin/users" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Users</RouterLink>
                 <RouterLink v-if="auth.hasRole('admin')" to="/admin/audit-logs" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Audit Logs</RouterLink>
+                <RouterLink v-if="auth.hasRole('admin')" to="/admin/page-analytics" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Page Analytics</RouterLink>
 
                 <div class="my-2 border-t border-white/10" />
                 <button
@@ -467,6 +468,14 @@ async function handleLogout(): Promise<void> {
               :active-class="mobileNavActiveClass"
               @click="sluitMenu"
             >Audit Logs</RouterLink>
+          </li>
+          <li v-if="auth.hasRole('admin')">
+            <RouterLink
+              to="/admin/page-analytics"
+              :class="mobileNavLinkClass"
+              :active-class="mobileNavActiveClass"
+              @click="sluitMenu"
+            >Page Analytics</RouterLink>
           </li>
           <li>
             <button

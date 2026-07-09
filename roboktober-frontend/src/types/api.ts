@@ -285,6 +285,24 @@ export interface PaginatedResponse<T> {
   }
 }
 
+export type PageVisitGranularity = 'hourly' | 'daily'
+
+export interface AdminPageVisitAnalytics {
+  granularity: PageVisitGranularity
+  from: string
+  to: string
+  labels: string[]
+  series: Array<{
+    page_path: string
+    total: number
+    points: number[]
+  }>
+  totals: {
+    overall_visits: number
+    pages_tracked: number
+  }
+}
+
 export type RichMediaTargetType = 'post' | 'page' | 'team' | 'team_update' | 'robot' | 'user'
 
 export interface RichMediaItem {

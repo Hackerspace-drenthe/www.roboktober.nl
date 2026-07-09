@@ -12,8 +12,10 @@ use App\Http\Controllers\Api\V1\Admin\UserManagementController;
 use App\Http\Controllers\Api\V1\Admin\AuditLogController;
 use App\Http\Controllers\Api\V1\Admin\AdminDashboardController;
 use App\Http\Controllers\Api\V1\Admin\CompetitionManagementController;
+use App\Http\Controllers\Api\V1\Admin\PageVisitAnalyticsController;
 use App\Http\Controllers\Api\V1\CompetitionController;
 use App\Http\Controllers\Api\V1\EditionController;
+use App\Http\Controllers\Api\V1\PageVisitController;
 use App\Http\Controllers\Api\V1\PageController;
 use App\Http\Controllers\Api\V1\PostController;
 use App\Http\Controllers\Api\V1\RegistratieController;
@@ -70,6 +72,9 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
 
     // CMS pages (public, read-only)
     Route::get('/pages/{slug}', [PageController::class, 'show'])->name('pages.show');
+    Route::post('/analytics/page-visits', [PageVisitController::class, 'store'])
+        ->middleware('throttle:120,1')
+        ->name('analytics.page-visits.store');
 
     // Team registration (authenticated, write)
     Route::post('/registratie', [RegistratieController::class, 'store'])
@@ -176,6 +181,10 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
 
             Route::prefix('audit-logs')->name('audit-logs.')->middleware('role:admin')->group(function (): void {
                 Route::get('/', [AuditLogController::class, 'index'])->name('index');
+            });
+
+            Route::prefix('analytics')->name('analytics.')->middleware('role:admin')->group(function (): void {
+                Route::get('/page-visits', [PageVisitAnalyticsController::class, 'index'])->name('page-visits');
             });
         });
     });

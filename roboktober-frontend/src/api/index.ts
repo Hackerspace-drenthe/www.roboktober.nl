@@ -14,6 +14,7 @@ import type {
   AdminAuditLog,
   AdminDashboardSummary,
   AdminEditionCompetitionData,
+  AdminPageVisitAnalytics,
   AdminPage,
   AdminPageContentUpdatePayload,
   AdminPost,
@@ -38,6 +39,7 @@ import type {
   ResetPasswordPayload,
   RichMediaItem,
   RichMediaUploadPayload,
+  PageVisitGranularity,
   RegistratiePayload,
   TeamUpdate,
   TeamMembership,
@@ -181,6 +183,12 @@ export async function getEditionCompetitionLeaderboard(editionId: number): Promi
 export async function getPage(slug: string): Promise<Page> {
   const { data } = await api.get<{ data: Page }>(`/pages/${slug}`)
   return data.data
+}
+
+export async function trackPageVisit(pagePath: string): Promise<void> {
+  await api.post('/analytics/page-visits', {
+    page_path: pagePath,
+  })
 }
 
 // ---------------------------------------------------------------------------
@@ -510,6 +518,16 @@ export async function getAdminAuditLogs(params?: {
 
 export async function getAdminDashboardSummary(): Promise<AdminDashboardSummary> {
   const { data } = await api.get<{ data: AdminDashboardSummary }>('/admin/dashboard-summary')
+  return data.data
+}
+
+export async function getAdminPageVisitAnalytics(params?: {
+  granularity?: PageVisitGranularity
+  from?: string
+  to?: string
+  limit_pages?: number
+}): Promise<AdminPageVisitAnalytics> {
+  const { data } = await api.get<{ data: AdminPageVisitAnalytics }>('/admin/analytics/page-visits', { params })
   return data.data
 }
 
