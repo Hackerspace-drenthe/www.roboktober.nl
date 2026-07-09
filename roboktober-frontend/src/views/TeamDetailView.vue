@@ -2,7 +2,7 @@
 import { applyForTeamMembership, getTeam, voteRobot } from '@/api'
 import { useAuth } from '@/composables/useAuth'
 import type { Team } from '@/types/api'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import headerImage from '@/assets/headers/header-team-detail.png'
 
@@ -38,6 +38,25 @@ const heroStyle = {
   backgroundSize: 'cover',
   backgroundPosition: 'center',
 }
+
+const captainFoto = computed(() => team.value?.captain.foto ?? team.value?.captain_foto ?? null)
+
+const captainInitialen = computed(() => {
+  const naam = team.value?.captain?.naam?.trim() ?? ''
+  if (naam === '') {
+    return 'RC'
+  }
+
+  const delen = naam.split(/\s+/).filter(Boolean)
+  if (delen.length === 1) {
+    return (delen[0] ?? 'RC').slice(0, 2).toUpperCase()
+  }
+
+  const eerste = delen[0]?.[0] ?? 'R'
+  const laatste = delen[delen.length - 1]?.[0] ?? 'C'
+
+  return (eerste + laatste).toUpperCase()
+})
 
 function formatDatum(iso: string | null): string {
   if (!iso) return ''
@@ -167,46 +186,75 @@ async function stemOpRobot(robotId: number, stars: number): Promise<void> {
     </div>
 
     <template v-else-if="team">
-      <!-- Hero -->
-      <section class="relative overflow-hidden py-20 text-white" :style="heroStyle">
-        <div class="absolute inset-0 bg-robo-dark/75" aria-hidden="true" />
-        <div class="relative z-10 mx-auto max-w-3xl px-6">
-          <RouterLink to="/teams" class="mb-6 inline-block text-sm text-slate-400 hover:text-white">
+      <section class="relative overflow-hidden text-white" :style="heroStyle">
+        <div class="absolute inset-0 bg-gradient-to-br from-robo-dark/90 via-robo-dark/80 to-black/75" aria-hidden="true" />
+        <div class="relative z-10 mx-auto max-w-6xl px-6 py-16 md:py-20">
+          <RouterLink to="/teams" class="mb-6 inline-block text-sm font-semibold text-slate-300 hover:text-white">
             &larr; Alle teams
           </RouterLink>
-          <div class="flex flex-col gap-6 md:flex-row md:items-start">
-            <img
-              v-if="team.foto"
-              :src="team.foto.url"
-              :alt="team.foto.alt_tekst ?? `Teamfoto van ${team.naam}`"
-              class="h-36 w-36 rounded-xl border border-white/20 object-cover shadow-lg"
-            />
-            <div
-              v-else
-              class="flex h-36 w-36 items-center justify-center rounded-xl border border-dashed border-white/30 bg-white/10 text-xs font-medium text-slate-300"
-            >
-              Geen teamfoto
-            </div>
+
+          <div class="grid gap-10 lg:grid-cols-[1.4fr_0.9fr] lg:items-end">
             <div>
-              <h1 class="mb-2 text-4xl font-black md:text-5xl">{{ team.naam }}</h1>
-              <span
-                class="inline-block rounded-full px-3 py-1 text-xs font-semibold"
-                :class="statusKleur[team.status] ?? 'bg-slate-100 text-slate-700'"
-              >
-                {{ team.status_label }}
-              </span>
+              <div class="mb-5 flex flex-wrap items-center gap-3">
+                <span
+                  class="inline-flex rounded-full px-3 py-1 text-xs font-semibold"
+                  :class="statusKleur[team.status] ?? 'bg-slate-100 text-slate-700'"
+                >
+                  {{ team.status_label }}
+                </span>
+                <span class="inline-flex rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-semibold text-slate-200">
+                  {{ team.leden.totaal }} teamleden
+                </span>
+                <span class="inline-flex rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-semibold text-slate-200">
+                  {{ team.robots.length }} robots
+                </span>
+              </div>
+
+              <h1 class="text-4xl font-black leading-tight md:text-6xl">{{ team.naam }}</h1>
+
+              <p v-if="team.beschrijving" class="mt-4 max-w-2xl whitespace-pre-wrap text-slate-200/95">
+                {{ team.beschrijving }}
+              </p>
+              <p v-else class="mt-4 max-w-2xl text-slate-300/90">
+                Dit team werkt hard aan hun robots en bouwt stap voor stap richting de arena.
+              </p>
+            </div>
+
+            <div class="rounded-2xl border border-white/20 bg-white/10 p-5 backdrop-blur">
+              <div class="flex items-center gap-4">
+                <img
+                  v-if="captainFoto"
+                  :src="captainFoto.url"
+                  :alt="captainFoto.alt_tekst ?? `Captain van ${team.naam}`"
+                  class="h-16 w-16 rounded-full border border-white/35 object-cover"
+                  loading="lazy"
+                />
+                <div
+                  v-else
+                  class="flex h-16 w-16 items-center justify-center rounded-full border border-white/35 bg-white/15 text-sm font-black text-white"
+                >
+                  {{ captainInitialen }}
+                </div>
+                <div>
+                  <p class="text-xs uppercase tracking-wide text-slate-300">Team captain</p>
+                  <p class="text-lg font-bold text-white">{{ team.captain.naam }}</p>
+                </div>
+              </div>
+
+              <dl class="mt-5 space-y-2 text-sm text-slate-100">
+                <div class="flex justify-between gap-3"><dt>Volwassenen</dt><dd class="font-semibold">{{ team.leden.volwassenen }}</dd></div>
+                <div class="flex justify-between gap-3"><dt>Kinderen</dt><dd class="font-semibold">{{ team.leden.kinderen }}</dd></div>
+                <div class="flex justify-between gap-3 border-t border-white/20 pt-2"><dt>Totaal</dt><dd class="font-semibold">{{ team.leden.totaal }}</dd></div>
+              </dl>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Team info -->
-      <section class="bg-white py-16" aria-labelledby="team-info-title">
-        <div class="mx-auto max-w-3xl px-6">
-          <h2 id="team-info-title" class="mb-8 text-2xl font-black text-robo-dark">Teaminformatie</h2>
-
-          <article class="mb-8 rounded-xl border border-slate-200 p-6">
-            <h3 class="mb-2 text-lg font-bold text-robo-dark">Lid worden van dit team</h3>
+      <section class="bg-white py-14">
+        <div class="mx-auto grid max-w-6xl gap-8 px-6 lg:grid-cols-[1.1fr_1fr]">
+          <article class="rounded-2xl border border-slate-200 p-6 shadow-sm">
+            <h2 class="mb-3 text-xl font-black text-robo-dark">Word lid van dit team</h2>
 
             <p v-if="!auth.isAuthenticated.value" class="text-slate-600">
               Log in om een lidmaatschapsaanvraag naar de teamcaptain te sturen.
@@ -218,7 +266,7 @@ async function stemOpRobot(robotId: number, stars: number): Promise<void> {
                 rows="3"
                 maxlength="500"
                 placeholder="Korte motivatie (optioneel)"
-                class="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-800"
+                class="w-full rounded-xl border border-slate-300 px-3 py-2 text-slate-800"
               />
 
               <p v-if="aanvraagFout" class="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
@@ -238,66 +286,26 @@ async function stemOpRobot(robotId: number, stars: number): Promise<void> {
             </form>
           </article>
 
-          <div class="grid gap-8 md:grid-cols-[1.2fr_0.8fr]">
-            <article class="rounded-xl border border-slate-200 p-6">
-              <h3 class="mb-3 text-lg font-bold text-robo-dark">Volledige beschrijving</h3>
-              <p v-if="team.beschrijving" class="whitespace-pre-wrap text-slate-700">{{ team.beschrijving }}</p>
-              <p v-else class="text-slate-500">Dit team heeft nog geen uitgebreide beschrijving geplaatst.</p>
-            </article>
-
-            <article class="space-y-4 rounded-xl border border-slate-200 p-6">
-              <h3 class="text-lg font-bold text-robo-dark">Team captain</h3>
-              <div class="flex items-center gap-4">
-                <img
-                  v-if="team.captain_foto"
-                  :src="team.captain_foto.url"
-                  :alt="team.captain_foto.alt_tekst ?? `Captain van ${team.naam}`"
-                  class="h-16 w-16 rounded-full border border-slate-200 object-cover"
-                  loading="lazy"
-                />
-                <div
-                  v-else
-                  class="flex h-16 w-16 items-center justify-center rounded-full border border-dashed border-slate-300 bg-slate-50 text-xs text-slate-500"
-                >
-                  Geen foto
-                </div>
-                <div>
-                  <p class="font-semibold text-robo-dark">{{ team.captain.naam }}</p>
-                  <p class="text-sm text-slate-500">Captain</p>
-                </div>
-              </div>
-
-              <h3 class="pt-2 text-lg font-bold text-robo-dark">Teamleden</h3>
-              <dl class="space-y-1 text-sm text-slate-700">
-                <div class="flex justify-between gap-3">
-                  <dt>Volwassenen</dt>
-                  <dd class="font-semibold">{{ team.leden.volwassenen }}</dd>
-                </div>
-                <div class="flex justify-between gap-3">
-                  <dt>Kinderen</dt>
-                  <dd class="font-semibold">{{ team.leden.kinderen }}</dd>
-                </div>
-                <div class="flex justify-between gap-3 border-t border-slate-200 pt-2">
-                  <dt>Totaal</dt>
-                  <dd class="font-semibold">{{ team.leden.totaal }}</dd>
-                </div>
-              </dl>
-            </article>
-          </div>
-
-          <article class="mt-8 rounded-xl border border-slate-200 p-6">
-            <h3 class="mb-4 text-lg font-bold text-robo-dark">Ledenfoto's</h3>
+          <article class="rounded-2xl border border-slate-200 p-6 shadow-sm">
+            <h2 class="mb-3 text-xl font-black text-robo-dark">Teamgalerij</h2>
+            <div v-if="team.foto" class="mb-4 overflow-hidden rounded-xl border border-slate-200">
+              <img
+                :src="team.foto.url"
+                :alt="team.foto.alt_tekst ?? `Teamfoto van ${team.naam}`"
+                class="h-56 w-full object-cover"
+              />
+            </div>
 
             <p v-if="!team.leden_fotos.length" class="text-slate-500">
               Nog geen ledenfoto's beschikbaar.
             </p>
 
-            <ul v-else class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3" role="list">
-              <li v-for="foto in team.leden_fotos" :key="foto.id">
+            <ul v-else class="grid grid-cols-2 gap-3 sm:grid-cols-3" role="list">
+              <li v-for="foto in team.leden_fotos" :key="foto.id" class="overflow-hidden rounded-lg border border-slate-200">
                 <img
                   :src="foto.url"
                   :alt="foto.alt_tekst ?? `Ledenfoto van ${team.naam}`"
-                  class="h-44 w-full rounded-lg border border-slate-200 object-cover"
+                  class="h-28 w-full object-cover transition hover:scale-105"
                   loading="lazy"
                 />
               </li>
@@ -306,23 +314,22 @@ async function stemOpRobot(robotId: number, stars: number): Promise<void> {
         </div>
       </section>
 
-      <!-- Robots -->
-      <section class="bg-white py-16" aria-labelledby="robots-title">
-        <div class="mx-auto max-w-3xl px-6">
-          <h2 id="robots-title" class="mb-8 text-2xl font-black text-robo-dark">Robots</h2>
+      <section class="bg-slate-50 py-16" aria-labelledby="robots-title">
+        <div class="mx-auto max-w-6xl px-6">
+          <h2 id="robots-title" class="mb-8 text-3xl font-black text-robo-dark">Robots in de pit</h2>
 
           <p v-if="!team.robots.length" class="text-slate-500">
             Dit team heeft nog geen robots ingeschreven.
           </p>
 
-          <ul v-else class="space-y-6" role="list">
+          <ul v-else class="grid gap-6 md:grid-cols-2" role="list">
             <li
               v-for="robot in team.robots"
               :key="robot.id"
-              class="rounded-xl border border-slate-200 p-6"
+              class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
             >
-              <div class="mb-2 flex flex-wrap items-center gap-3">
-                <h3 class="text-xl font-bold text-robo-dark">{{ robot.naam }}</h3>
+              <div class="mb-3 flex flex-wrap items-center gap-2">
+                <h3 class="text-2xl font-black text-robo-dark">{{ robot.naam }}</h3>
                 <span class="rounded-full bg-robo-orange/10 px-3 py-0.5 text-xs font-bold text-robo-orange">
                   {{ robot.gewichtsklasse_label }}
                 </span>
@@ -330,9 +337,10 @@ async function stemOpRobot(robotId: number, stars: number): Promise<void> {
                   {{ robotStatusLabel[robot.status] ?? robot.status }}
                 </span>
               </div>
+
               <p v-if="robot.beschrijving" class="text-slate-600">{{ robot.beschrijving }}</p>
 
-              <div class="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
+              <div class="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4">
                 <p class="text-sm font-semibold text-robo-dark">
                   Awesomeness score:
                   <span v-if="robot.awesomeness_votes_count > 0">{{ robot.awesomeness_score.toFixed(1) }}/10</span>
@@ -368,9 +376,8 @@ async function stemOpRobot(robotId: number, stars: number): Promise<void> {
         </div>
       </section>
 
-      <!-- Team updates -->
-      <section class="bg-slate-50 py-16" aria-labelledby="team-updates-title">
-        <div class="mx-auto max-w-3xl px-6">
+      <section class="bg-white py-16" aria-labelledby="team-updates-title">
+        <div class="mx-auto max-w-6xl px-6">
           <h2 id="team-updates-title" class="mb-8 text-2xl font-black text-robo-dark">Voortgang van het team</h2>
 
           <p v-if="!team.updates?.length" class="text-slate-500">

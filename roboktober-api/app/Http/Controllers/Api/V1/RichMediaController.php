@@ -97,6 +97,14 @@ class RichMediaController extends Controller
                 }
             }
 
+            if ($target instanceof User && $collectie === 'foto') {
+                $existingFotoIds = $target->mediaCollectie('foto')->pluck('media.id')->all();
+
+                if ($existingFotoIds !== []) {
+                    $target->media()->detach($existingFotoIds);
+                }
+            }
+
             $target->koppelMedia($media, $collectie, [
                 'alt_tekst' => $validated['alt_tekst'] ?? null,
                 'onderschrift' => $validated['onderschrift'] ?? null,
@@ -172,6 +180,7 @@ class RichMediaController extends Controller
             'team' => Team::query()->findOrFail($id),
             'robot' => Robot::query()->with('team')->findOrFail($id),
             'team_update' => TeamUpdate::query()->with('team')->findOrFail($id),
+            'user' => User::query()->findOrFail($id),
             default => abort(Response::HTTP_UNPROCESSABLE_ENTITY, 'Onbekend target_type.'),
         };
     }
@@ -191,6 +200,10 @@ class RichMediaController extends Controller
         }
 
         if ($target instanceof Robot && $target->team?->captain_user_id === $actor->id) {
+            return;
+        }
+
+        if ($target instanceof User && $target->id === $actor->id) {
             return;
         }
 

@@ -76,6 +76,8 @@ class AuthController extends Controller
         /** @var User $user */
         $user = $request->user();
 
+        $user->load('media');
+
         return new AuthUserResource($user);
     }
 
@@ -104,9 +106,11 @@ class AuthController extends Controller
             'email' => mb_strtolower($validated['email']),
         ])->save();
 
+        $user->load('media');
+
         return response()->json([
             'message' => 'Account bijgewerkt.',
-            'data' => new AuthUserResource($user->fresh() ?? $user),
+            'data' => new AuthUserResource(($user->fresh() ?? $user)->load('media')),
         ], Response::HTTP_OK);
     }
 

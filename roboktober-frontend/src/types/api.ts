@@ -39,6 +39,7 @@ export interface Team {
   status_label: string
   captain: {
     naam: string
+    foto?: Media | null
   }
   leden: {
     volwassenen: number
@@ -181,7 +182,7 @@ export interface PaginatedResponse<T> {
   }
 }
 
-export type RichMediaTargetType = 'post' | 'page' | 'team' | 'team_update' | 'robot'
+export type RichMediaTargetType = 'post' | 'page' | 'team' | 'team_update' | 'robot' | 'user'
 
 export interface RichMediaItem {
   id: number
@@ -315,6 +316,7 @@ export interface AuthUser {
   email: string
   role: UserRole
   role_label: string
+  profile_photo: Media | null
 }
 
 export interface AuthResponse {

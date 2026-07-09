@@ -29,8 +29,18 @@ class TeamResource extends JsonResource
             'edition' => new EditionResource($this->whenLoaded('edition')),
             'status' => $this->status->value,
             'status_label' => $this->status->label(),
+            'captain_foto' => $this->whenLoaded(
+                'captain',
+                fn () => new MediaResource($this->captain?->mediaCollectie('foto')->first()),
+                null,
+            ),
             'captain' => [
                 'naam' => $this->contactpersoon,
+                'foto' => $this->whenLoaded(
+                    'captain',
+                    fn () => new MediaResource($this->captain?->mediaCollectie('foto')->first()),
+                    null,
+                ),
             ],
             'leden' => [
                 'volwassenen' => $this->volwassenen,
@@ -38,7 +48,6 @@ class TeamResource extends JsonResource
                 'totaal' => $this->volwassenen + ($this->kinderen ?? 0),
             ],
             'foto' => new MediaResource($this->whenLoaded('media', fn () => $this->mediaCollectie('foto')->first())),
-            'captain_foto' => new MediaResource($this->whenLoaded('media', fn () => $this->mediaCollectie('captain')->first())),
             'leden_fotos' => MediaResource::collection($this->whenLoaded('media', fn () => $this->mediaCollectie('leden')->get())),
             'robots' => RobotResource::collection($this->whenLoaded('robots')),
             'updates' => TeamUpdateResource::collection($this->whenLoaded('updates')),

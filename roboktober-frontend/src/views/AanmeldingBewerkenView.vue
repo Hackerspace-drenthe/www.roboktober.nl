@@ -19,12 +19,14 @@ import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 type Status = 'laden' | 'klaar' | 'opslaan' | 'succes' | 'fout'
+type BewerkSectie = 'basis' | 'robots' | 'foto' | 'leden' | 'updates'
 
 const route = useRoute()
 const auth = useAuth()
 const magWijzigen = computed(() => auth.isAuthenticated.value)
 
 const status = ref<Status>('laden')
+const actieveSectie = ref<BewerkSectie>('basis')
 const foutmelding = ref('')
 const successMelding = ref('')
 const editions = ref<Edition[]>([])
@@ -72,6 +74,12 @@ const updateForm = reactive({
 const TOEGESTANE_TEAMFOTO_MIME_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp'])
 const TEAMFOTO_MAX_BYTES = 50 * 1024 * 1024
 const UPDATE_MAX_IMAGES = 12
+
+const heeftOpenAanvragen = computed(() => membershipRequests.value.length > 0)
+
+function gaNaarSectie(sectie: BewerkSectie): void {
+  actieveSectie.value = sectie
+}
 
 const formulier = reactive<UpdateRegistratiePayload>({
   edition_id: 0,
@@ -603,7 +611,51 @@ async function plaatsUpdate(): Promise<void> {
   <main class="min-h-screen bg-robo-dark py-12 text-white">
     <section class="mx-auto max-w-3xl px-6">
       <h1 class="mb-3 text-3xl font-black">Teamaanmelding bewerken</h1>
-      <p class="mb-8 text-slate-300">Je kunt de gegevens lezen. Voor opslaan of posten moet je ingelogd zijn.</p>
+      <p class="mb-6 text-slate-300">Bewerk alleen wat nu relevant is. Alles is opgedeeld in duidelijke secties.</p>
+
+      <nav class="mb-8 grid gap-2 sm:grid-cols-5" aria-label="Secties teamaanmelding">
+        <button
+          type="button"
+          class="rounded-lg border px-3 py-2 text-sm font-semibold text-left"
+          :class="actieveSectie === 'basis' ? 'border-robo-orange bg-robo-orange/15 text-white' : 'border-white/15 text-slate-300 hover:border-white/40'"
+          @click="gaNaarSectie('basis')"
+        >
+          Teamgegevens
+        </button>
+        <button
+          type="button"
+          class="rounded-lg border px-3 py-2 text-sm font-semibold text-left"
+          :class="actieveSectie === 'robots' ? 'border-robo-orange bg-robo-orange/15 text-white' : 'border-white/15 text-slate-300 hover:border-white/40'"
+          @click="gaNaarSectie('robots')"
+        >
+          Robots
+        </button>
+        <button
+          type="button"
+          class="rounded-lg border px-3 py-2 text-sm font-semibold text-left"
+          :class="actieveSectie === 'foto' ? 'border-robo-orange bg-robo-orange/15 text-white' : 'border-white/15 text-slate-300 hover:border-white/40'"
+          @click="gaNaarSectie('foto')"
+        >
+          Teamfoto
+        </button>
+        <button
+          type="button"
+          class="rounded-lg border px-3 py-2 text-sm font-semibold text-left"
+          :class="actieveSectie === 'leden' ? 'border-robo-orange bg-robo-orange/15 text-white' : 'border-white/15 text-slate-300 hover:border-white/40'"
+          @click="gaNaarSectie('leden')"
+        >
+          Teamleden
+          <span v-if="heeftOpenAanvragen" class="ml-1 rounded bg-robo-orange px-1.5 py-0.5 text-xs text-white">{{ membershipRequests.length }}</span>
+        </button>
+        <button
+          type="button"
+          class="rounded-lg border px-3 py-2 text-sm font-semibold text-left"
+          :class="actieveSectie === 'updates' ? 'border-robo-orange bg-robo-orange/15 text-white' : 'border-white/15 text-slate-300 hover:border-white/40'"
+          @click="gaNaarSectie('updates')"
+        >
+          Voortgang
+        </button>
+      </nav>
 
       <div v-if="!magWijzigen" class="mb-6 rounded-xl border border-amber-400/30 bg-amber-500/10 p-4 text-amber-100">
         Je bekijkt deze pagina in read-only modus. Log in om wijzigingen door te voeren.
@@ -621,230 +673,236 @@ async function plaatsUpdate(): Promise<void> {
         {{ foutmelding }}
       </div>
 
-      <form v-else class="space-y-6" @submit.prevent="opslaan">
-        <section class="rounded-xl border border-white/15 bg-white/5 p-4">
-          <h2 class="mb-3 text-lg font-bold">Lidmaatschapsaanvragen</h2>
-          <p v-if="membershipFout" class="mb-3 rounded border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
-            {{ membershipFout }}
-          </p>
-
-          <p v-if="membershipRequests.length === 0" class="text-sm text-slate-300">
-            Er zijn geen openstaande aanvragen.
-          </p>
-
-          <ul v-else class="space-y-3">
-            <li v-for="request in membershipRequests" :key="request.id" class="rounded-lg border border-white/10 bg-black/20 p-3">
-              <p class="font-semibold">{{ request.user?.name }} <span class="text-xs text-slate-400">({{ request.user?.email }})</span></p>
-              <p v-if="request.request_message" class="mt-1 text-sm text-slate-300">{{ request.request_message }}</p>
-              <div class="mt-3 flex gap-2">
-                <button
-                  type="button"
-                  class="rounded border border-green-400/60 px-3 py-1 text-sm font-semibold text-green-300 disabled:opacity-60"
-                  :disabled="membershipStatus === 'opslaan'"
-                  @click="beoordeelAanvraag(request.id, 'approved')"
-                >
-                  Goedkeuren
-                </button>
-                <button
-                  type="button"
-                  class="rounded border border-red-400/60 px-3 py-1 text-sm font-semibold text-red-300 disabled:opacity-60"
-                  :disabled="membershipStatus === 'opslaan'"
-                  @click="beoordeelAanvraag(request.id, 'rejected')"
-                >
-                  Afwijzen
-                </button>
-              </div>
-            </li>
-          </ul>
-        </section>
-
+      <form v-else-if="actieveSectie !== 'updates'" class="space-y-6" @submit.prevent="opslaan">
         <fieldset :disabled="status === 'opslaan' || !magWijzigen" class="space-y-6">
-        <div>
-          <label for="edition_id" class="mb-2 block font-semibold">Editie</label>
-          <select
-            id="edition_id"
-            v-model.number="formulier.edition_id"
-            required
-            class="w-full rounded-lg border border-white/20 bg-robo-dark px-4 py-3 text-white"
-          >
-            <option v-for="edition in editions" :key="edition.id" :value="edition.id">
-              {{ edition.naam }} · {{ edition.locatie }}
-            </option>
-          </select>
-        </div>
+          <section v-if="actieveSectie === 'basis'" class="space-y-6 rounded-xl border border-white/15 bg-white/5 p-5">
+            <h2 class="text-lg font-bold">Teamgegevens</h2>
 
-        <div class="grid gap-6 sm:grid-cols-2">
-          <div>
-            <label for="naam" class="mb-2 block font-semibold">Teamnaam</label>
-            <input id="naam" v-model="formulier.naam" required maxlength="255" class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3" />
-          </div>
-          <div>
-            <label for="contactpersoon" class="mb-2 block font-semibold">Contactpersoon</label>
-            <input id="contactpersoon" v-model="formulier.contactpersoon" required maxlength="255" class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3" />
-          </div>
-        </div>
-
-        <div class="grid gap-6 sm:grid-cols-2">
-          <div>
-            <label for="email" class="mb-2 block font-semibold">E-mailadres</label>
-            <input id="email" v-model="formulier.email" type="email" required maxlength="255" class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3" />
-          </div>
-          <div class="grid grid-cols-2 gap-4">
             <div>
-              <label for="volwassenen" class="mb-2 block font-semibold">Volwassenen</label>
-              <input id="volwassenen" v-model.number="formulier.volwassenen" type="number" min="1" max="20" required class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3" />
-            </div>
-            <div>
-              <label for="kinderen" class="mb-2 block font-semibold">Kinderen</label>
-              <input id="kinderen" v-model.number="formulier.kinderen" type="number" min="0" max="50" class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3" />
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <label for="opmerkingen" class="mb-2 block font-semibold">Opmerkingen</label>
-          <textarea id="opmerkingen" v-model="formulier.opmerkingen" rows="4" maxlength="2000" class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3" />
-        </div>
-
-        <div class="space-y-3 rounded-xl border border-white/15 bg-white/5 p-4">
-          <h2 class="text-lg font-bold">Teamfoto</h2>
-
-          <div class="grid gap-3 sm:grid-cols-2">
-            <div>
-              <p class="mb-2 text-sm font-semibold text-slate-200">Huidige foto</p>
-              <img
-                v-if="huidigeFotoUrl && !formulier.teamfoto_verwijderen"
-                :src="huidigeFotoUrl"
-                alt="Huidige teamfoto"
-                class="h-40 w-40 rounded-lg object-cover"
-              />
-              <div
-                v-else
-                class="flex h-40 w-40 items-center justify-center rounded-lg border border-dashed border-white/25 bg-white/5 text-xs text-slate-300"
+              <label for="edition_id" class="mb-2 block font-semibold">Editie</label>
+              <select
+                id="edition_id"
+                v-model.number="formulier.edition_id"
+                required
+                class="w-full rounded-lg border border-white/20 bg-robo-dark px-4 py-3 text-white"
               >
-                Geen huidige foto
+                <option v-for="edition in editions" :key="edition.id" :value="edition.id">
+                  {{ edition.naam }} · {{ edition.locatie }}
+                </option>
+              </select>
+            </div>
+
+            <div class="grid gap-6 sm:grid-cols-2">
+              <div>
+                <label for="naam" class="mb-2 block font-semibold">Teamnaam</label>
+                <input id="naam" v-model="formulier.naam" required maxlength="255" class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3" />
+              </div>
+              <div>
+                <label for="contactpersoon" class="mb-2 block font-semibold">Contactpersoon</label>
+                <input id="contactpersoon" v-model="formulier.contactpersoon" required maxlength="255" class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3" />
+              </div>
+            </div>
+
+            <div class="grid gap-6 sm:grid-cols-2">
+              <div>
+                <label for="email" class="mb-2 block font-semibold">E-mailadres</label>
+                <input id="email" v-model="formulier.email" type="email" required maxlength="255" class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3" />
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label for="volwassenen" class="mb-2 block font-semibold">Volwassenen</label>
+                  <input id="volwassenen" v-model.number="formulier.volwassenen" type="number" min="1" max="20" required class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3" />
+                </div>
+                <div>
+                  <label for="kinderen" class="mb-2 block font-semibold">Kinderen</label>
+                  <input id="kinderen" v-model.number="formulier.kinderen" type="number" min="0" max="50" class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3" />
+                </div>
               </div>
             </div>
 
             <div>
-              <p class="mb-2 text-sm font-semibold text-slate-200">Nieuwe foto</p>
-              <img
-                v-if="teamfotoPreviewUrl"
-                :src="teamfotoPreviewUrl"
-                alt="Nieuwe teamfoto preview"
-                class="h-40 w-40 rounded-lg border border-white/20 object-cover"
-              />
-              <div
-                v-else
-                class="flex h-40 w-40 items-center justify-center rounded-lg border border-dashed border-white/25 bg-white/5 text-xs text-slate-300"
-              >
-                Nog geen nieuwe foto gekozen
-              </div>
+              <label for="opmerkingen" class="mb-2 block font-semibold">Opmerkingen</label>
+              <textarea id="opmerkingen" v-model="formulier.opmerkingen" rows="4" maxlength="2000" class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3" />
             </div>
-          </div>
+          </section>
 
-          <label class="inline-flex items-center gap-2 text-sm">
-            <input v-model="formulier.teamfoto_verwijderen" type="checkbox" class="h-4 w-4" />
-            Huidige teamfoto verwijderen
-          </label>
-
-          <input
-            id="teamfoto"
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-sm"
-            @change="wijzigTeamfoto"
-          />
-
-          <p v-if="teamfotoNaam" class="text-sm text-slate-300">Nieuw bestand: {{ teamfotoNaam }}</p>
-          <p v-if="teamfotoFout" class="text-sm text-red-300">{{ teamfotoFout }}</p>
-        </div>
-
-        <div class="space-y-4 rounded-xl border border-white/15 bg-white/5 p-4">
-          <div class="flex items-center justify-between">
-            <h2 class="text-lg font-bold">Robots</h2>
-            <button type="button" class="rounded border border-robo-orange px-3 py-2 text-sm font-semibold text-robo-orange" @click="voegRobotToe">
-              + Robot toevoegen
-            </button>
-          </div>
-
-          <article v-for="(robot, index) in formulier.robots" :key="robot.id ?? index" class="space-y-3 rounded-lg border border-white/10 bg-black/20 p-4">
+          <section v-if="actieveSectie === 'robots'" class="space-y-4 rounded-xl border border-white/15 bg-white/5 p-5">
             <div class="flex items-center justify-between">
-              <h3 class="font-semibold">Robot {{ index + 1 }}</h3>
-              <button type="button" class="rounded border border-red-400 px-2 py-1 text-xs font-semibold text-red-300" @click="verwijderRobot(index)">
-                Verwijder
+              <h2 class="text-lg font-bold">Robots</h2>
+              <button type="button" class="rounded border border-robo-orange px-3 py-2 text-sm font-semibold text-robo-orange" @click="voegRobotToe">
+                + Robot toevoegen
               </button>
             </div>
 
-            <input v-model="robot.naam" required maxlength="255" placeholder="Robotnaam" class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3" />
-
-            <select v-model="robot.gewichtsklasse" required class="w-full rounded-lg border border-white/20 bg-robo-dark px-4 py-3">
-              <option value="antweight">Antweight (max. 150 g)</option>
-              <option value="beetleweight">Beetleweight (max. 1,36 kg)</option>
-              <option value="featherweight">Featherweight (max. 13,6 kg)</option>
-            </select>
-
-            <textarea v-model="robot.beschrijving" rows="3" maxlength="1000" placeholder="Beschrijving" class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3" />
-
-            <div class="rounded-lg border border-white/10 bg-white/5 p-3">
-              <p class="mb-2 text-sm font-semibold text-slate-200">Robotfoto</p>
-
-              <img
-                v-if="robot.id && robotFotoUrls[robot.id]"
-                :src="robotFotoUrls[robot.id]"
-                alt="Robotfoto"
-                class="mb-3 h-32 w-32 rounded-lg border border-white/20 object-cover"
-              />
-
-              <p v-else class="mb-3 text-xs text-slate-400">
-                Nog geen robotfoto geupload.
-              </p>
-
-              <div v-if="robot.id" class="space-y-2">
-                <input
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  class="w-full rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-xs"
-                  :disabled="robotFotoStatus[robot.id] === 'uploaden'"
-                  @change="uploadRobotFoto(robot.id, $event)"
-                />
-
-                <p v-if="robotFotoFouten[robot.id]" class="text-xs text-red-300">
-                  {{ robotFotoFouten[robot.id] }}
-                </p>
-                <p v-if="robotFotoSuccess[robot.id]" class="text-xs text-green-300">
-                  {{ robotFotoSuccess[robot.id] }}
-                </p>
+            <article v-for="(robot, index) in formulier.robots" :key="robot.id ?? index" class="space-y-3 rounded-lg border border-white/10 bg-black/20 p-4">
+              <div class="flex items-center justify-between">
+                <h3 class="font-semibold">Robot {{ index + 1 }}</h3>
+                <button type="button" class="rounded border border-red-400 px-2 py-1 text-xs font-semibold text-red-300" @click="verwijderRobot(index)">
+                  Verwijder
+                </button>
               </div>
 
-              <p v-else class="text-xs text-slate-400">
-                Sla eerst de aanmelding op om een robotfoto te kunnen uploaden.
-              </p>
+              <input v-model="robot.naam" required maxlength="255" placeholder="Robotnaam" class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3" />
+
+              <select v-model="robot.gewichtsklasse" required class="w-full rounded-lg border border-white/20 bg-robo-dark px-4 py-3">
+                <option value="antweight">Antweight (max. 150 g)</option>
+                <option value="beetleweight">Beetleweight (max. 1,36 kg)</option>
+                <option value="featherweight">Featherweight (max. 13,6 kg)</option>
+              </select>
+
+              <textarea v-model="robot.beschrijving" rows="3" maxlength="1000" placeholder="Beschrijving" class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3" />
+
+              <div class="rounded-lg border border-white/10 bg-white/5 p-3">
+                <p class="mb-2 text-sm font-semibold text-slate-200">Robotfoto</p>
+
+                <img
+                  v-if="robot.id && robotFotoUrls[robot.id]"
+                  :src="robotFotoUrls[robot.id]"
+                  alt="Robotfoto"
+                  class="mb-3 h-32 w-32 rounded-lg border border-white/20 object-cover"
+                />
+
+                <p v-else class="mb-3 text-xs text-slate-400">
+                  Nog geen robotfoto geupload.
+                </p>
+
+                <div v-if="robot.id" class="space-y-2">
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    class="w-full rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-xs"
+                    :disabled="robotFotoStatus[robot.id] === 'uploaden'"
+                    @change="uploadRobotFoto(robot.id, $event)"
+                  />
+
+                  <p v-if="robotFotoFouten[robot.id]" class="text-xs text-red-300">
+                    {{ robotFotoFouten[robot.id] }}
+                  </p>
+                  <p v-if="robotFotoSuccess[robot.id]" class="text-xs text-green-300">
+                    {{ robotFotoSuccess[robot.id] }}
+                  </p>
+                </div>
+
+                <p v-else class="text-xs text-slate-400">
+                  Sla eerst de aanmelding op om een robotfoto te kunnen uploaden.
+                </p>
+              </div>
+            </article>
+          </section>
+
+          <section v-if="actieveSectie === 'foto'" class="space-y-3 rounded-xl border border-white/15 bg-white/5 p-5">
+            <h2 class="text-lg font-bold">Teamfoto</h2>
+
+            <div class="grid gap-3 sm:grid-cols-2">
+              <div>
+                <p class="mb-2 text-sm font-semibold text-slate-200">Huidige foto</p>
+                <img
+                  v-if="huidigeFotoUrl && !formulier.teamfoto_verwijderen"
+                  :src="huidigeFotoUrl"
+                  alt="Huidige teamfoto"
+                  class="h-40 w-40 rounded-lg object-cover"
+                />
+                <div
+                  v-else
+                  class="flex h-40 w-40 items-center justify-center rounded-lg border border-dashed border-white/25 bg-white/5 text-xs text-slate-300"
+                >
+                  Geen huidige foto
+                </div>
+              </div>
+
+              <div>
+                <p class="mb-2 text-sm font-semibold text-slate-200">Nieuwe foto</p>
+                <img
+                  v-if="teamfotoPreviewUrl"
+                  :src="teamfotoPreviewUrl"
+                  alt="Nieuwe teamfoto preview"
+                  class="h-40 w-40 rounded-lg border border-white/20 object-cover"
+                />
+                <div
+                  v-else
+                  class="flex h-40 w-40 items-center justify-center rounded-lg border border-dashed border-white/25 bg-white/5 text-xs text-slate-300"
+                >
+                  Nog geen nieuwe foto gekozen
+                </div>
+              </div>
             </div>
-          </article>
-        </div>
 
-        <div v-if="status === 'fout'" class="rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-red-300">
-          {{ foutmelding }}
-        </div>
+            <label class="inline-flex items-center gap-2 text-sm">
+              <input v-model="formulier.teamfoto_verwijderen" type="checkbox" class="h-4 w-4" />
+              Huidige teamfoto verwijderen
+            </label>
 
-        <div v-if="successMelding" class="rounded-lg border border-green-500/30 bg-green-500/10 p-4 text-green-300">
-          {{ successMelding }}
-        </div>
+            <input
+              id="teamfoto"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              class="w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-sm"
+              @change="wijzigTeamfoto"
+            />
 
-        <button
-          type="submit"
-          :disabled="status === 'opslaan' || !magWijzigen"
-          class="w-full rounded-lg bg-robo-orange px-8 py-4 text-lg font-bold text-white transition hover:bg-robo-orange-dark disabled:opacity-60"
-        >
-          <span v-if="status === 'opslaan'">Opslaan...</span>
-          <span v-else-if="!magWijzigen">Log in om op te slaan</span>
-          <span v-else>Aanmelding opslaan</span>
-        </button>
+            <p v-if="teamfotoNaam" class="text-sm text-slate-300">Nieuw bestand: {{ teamfotoNaam }}</p>
+            <p v-if="teamfotoFout" class="text-sm text-red-300">{{ teamfotoFout }}</p>
+          </section>
+
+          <section v-if="actieveSectie === 'leden'" class="rounded-xl border border-white/15 bg-white/5 p-5">
+            <h2 class="mb-3 text-lg font-bold">Lidmaatschapsaanvragen</h2>
+            <p v-if="membershipFout" class="mb-3 rounded border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+              {{ membershipFout }}
+            </p>
+
+            <p v-if="membershipRequests.length === 0" class="text-sm text-slate-300">
+              Er zijn geen openstaande aanvragen.
+            </p>
+
+            <ul v-else class="space-y-3">
+              <li v-for="request in membershipRequests" :key="request.id" class="rounded-lg border border-white/10 bg-black/20 p-3">
+                <p class="font-semibold">{{ request.user?.name }} <span class="text-xs text-slate-400">({{ request.user?.email }})</span></p>
+                <p v-if="request.request_message" class="mt-1 text-sm text-slate-300">{{ request.request_message }}</p>
+                <div class="mt-3 flex gap-2">
+                  <button
+                    type="button"
+                    class="rounded border border-green-400/60 px-3 py-1 text-sm font-semibold text-green-300 disabled:opacity-60"
+                    :disabled="membershipStatus === 'opslaan'"
+                    @click="beoordeelAanvraag(request.id, 'approved')"
+                  >
+                    Goedkeuren
+                  </button>
+                  <button
+                    type="button"
+                    class="rounded border border-red-400/60 px-3 py-1 text-sm font-semibold text-red-300 disabled:opacity-60"
+                    :disabled="membershipStatus === 'opslaan'"
+                    @click="beoordeelAanvraag(request.id, 'rejected')"
+                  >
+                    Afwijzen
+                  </button>
+                </div>
+              </li>
+            </ul>
+          </section>
+
+          <div v-if="status === 'fout'" class="rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-red-300">
+            {{ foutmelding }}
+          </div>
+
+          <div v-if="successMelding" class="rounded-lg border border-green-500/30 bg-green-500/10 p-4 text-green-300">
+            {{ successMelding }}
+          </div>
+
+          <div class="sticky bottom-3 z-10 rounded-xl border border-white/20 bg-robo-dark/95 p-3 backdrop-blur">
+            <button
+              type="submit"
+              :disabled="status === 'opslaan' || !magWijzigen"
+              class="w-full rounded-lg bg-robo-orange px-8 py-4 text-lg font-bold text-white transition hover:bg-robo-orange-dark disabled:opacity-60"
+            >
+              <span v-if="status === 'opslaan'">Opslaan...</span>
+              <span v-else-if="!magWijzigen">Log in om op te slaan</span>
+              <span v-else>Aanmelding opslaan</span>
+            </button>
+          </div>
         </fieldset>
       </form>
 
-      <section class="mt-10 space-y-6 rounded-xl border border-white/15 bg-white/5 p-6">
+      <section v-else class="mt-2 space-y-6 rounded-xl border border-white/15 bg-white/5 p-6">
         <div>
           <h2 class="text-2xl font-black">
             {{ bewerkUpdateId ? 'Voortgangsbericht bewerken' : 'Voortgang posten op je teampagina' }}

@@ -19,7 +19,7 @@ class StoreRichMediaUploadRequest extends FormRequest
      */
     public function rules(): array
     {
-        $targetTypes = ['post', 'page', 'team', 'team_update', 'robot'];
+        $targetTypes = ['post', 'page', 'team', 'team_update', 'robot', 'user'];
         $collections = ['featured', 'gallery', 'bijlagen', 'hero', 'foto', 'default'];
 
         return [

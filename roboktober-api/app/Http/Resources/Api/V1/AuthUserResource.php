@@ -24,6 +24,7 @@ class AuthUserResource extends JsonResource
             'email' => $this->email,
             'role' => $this->role->value,
             'role_label' => $this->role->label(),
+            'profile_photo' => new MediaResource($this->whenLoaded('media', fn () => $this->mediaCollectie('foto')->first())),
         ];
     }
 }

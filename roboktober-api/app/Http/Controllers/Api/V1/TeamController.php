@@ -30,7 +30,7 @@ class TeamController extends Controller
     {
         $teams = Team::query()
             ->where('status', 'approved')
-            ->with(['edition', 'media', 'robots.media'])
+            ->with(['edition', 'media', 'robots.media', 'captain.media'])
             ->orderBy('naam')
             ->get();
 
@@ -49,6 +49,7 @@ class TeamController extends Controller
                 'edition',
                 'media',
                 'robots.media',
+                'captain.media',
                 'updates' => static function ($query): void {
                     $query
                         ->where('is_published', true)
