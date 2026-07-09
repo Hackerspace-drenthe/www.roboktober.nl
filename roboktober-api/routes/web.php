@@ -18,6 +18,17 @@ Route::get('/app/{any?}', function () {
 
 // Support direct frontend URLs (e.g. /aanmelden) by redirecting them to /app/*.
 Route::get('/{any}', function (string $any) {
+    $incomingPath = request()->path();
+    $basePath = request()->getBasePath();
+
+    // Some local server setups route /app/* through this fallback; serve SPA directly to avoid /app/app/* redirects.
+    if ($basePath === '/app' || str_starts_with($incomingPath, 'app/')) {
+        $spaIndex = public_path('app/index.html');
+        abort_unless(file_exists($spaIndex), 404);
+
+        return response()->file($spaIndex);
+    }
+
     $target = '/app/'.$any;
     $query = request()->getQueryString();
 

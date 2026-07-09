@@ -363,7 +363,7 @@ async function verstuur(): Promise<void> {
                 :key="edition.id"
                 :value="edition.id"
               >
-                {{ edition.naam }} · {{ edition.locatie }}
+                {{ edition.naam }} · {{ edition.location?.full_address ?? edition.location?.name ?? '-' }}
               </option>
             </select>
             <p v-if="editionsLaden" class="mt-2 text-sm text-slate-400">Edities laden...</p>

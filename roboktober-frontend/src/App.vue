@@ -248,6 +248,9 @@ async function handleLogout(): Promise<void> {
 
                 <RouterLink v-if="auth.hasRole('moderator')" to="/admin" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Dashboard</RouterLink>
                 <RouterLink v-if="auth.hasRole('moderator')" to="/admin/teams" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Teams</RouterLink>
+                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/edities" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Edities</RouterLink>
+                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/robots" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Robots</RouterLink>
+                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/links" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Links</RouterLink>
                 <RouterLink v-if="auth.hasRole('moderator')" to="/admin/competitie" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Competitie</RouterLink>
                 <RouterLink v-if="auth.hasRole('moderator')" to="/admin/posts" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Posts</RouterLink>
                 <RouterLink v-if="auth.hasRole('moderator')" to="/admin/pages" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu">Admin Pagina's</RouterLink>
@@ -412,6 +415,30 @@ async function handleLogout(): Promise<void> {
               :active-class="mobileNavActiveClass"
               @click="sluitMenu"
             >Admin Teams</RouterLink>
+          </li>
+          <li v-if="auth.hasRole('moderator')">
+            <RouterLink
+              to="/admin/edities"
+              :class="mobileNavLinkClass"
+              :active-class="mobileNavActiveClass"
+              @click="sluitMenu"
+            >Admin Edities</RouterLink>
+          </li>
+          <li v-if="auth.hasRole('moderator')">
+            <RouterLink
+              to="/admin/robots"
+              :class="mobileNavLinkClass"
+              :active-class="mobileNavActiveClass"
+              @click="sluitMenu"
+            >Admin Robots</RouterLink>
+          </li>
+          <li v-if="auth.hasRole('moderator')">
+            <RouterLink
+              to="/admin/links"
+              :class="mobileNavLinkClass"
+              :active-class="mobileNavActiveClass"
+              @click="sluitMenu"
+            >Admin Links</RouterLink>
           </li>
           <li v-if="auth.hasRole('moderator')">
             <RouterLink

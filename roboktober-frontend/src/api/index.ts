@@ -13,13 +13,18 @@ import type {
   AdminCompetitionCategoryPayload,
   AdminAuditLog,
   AdminDashboardSummary,
+  AdminEditionPayload,
   AdminEditionCompetitionData,
+  AdminLink,
+  AdminLinkPayload,
   AdminPageVisitAnalytics,
   AdminPage,
   AdminPageContentUpdatePayload,
   AdminPost,
   AdminPostContentUpdatePayload,
   AdminTeam,
+  AdminRobot,
+  AdminRobotPayload,
   AdminTeamUpdate,
   AdminTeamUpdateContentUpdatePayload,
   AdminUser,
@@ -50,6 +55,7 @@ import type {
   UpdateAccountPayload,
   UpdatePasswordPayload,
   UpdateRegistratiePayload,
+  EditionLocation,
 } from '@/types/api'
 import axios from 'axios'
 
@@ -519,6 +525,117 @@ export async function getAdminAuditLogs(params?: {
 export async function getAdminDashboardSummary(): Promise<AdminDashboardSummary> {
   const { data } = await api.get<{ data: AdminDashboardSummary }>('/admin/dashboard-summary')
   return data.data
+}
+
+export async function getAdminRobots(params?: {
+  status?: 'in_ontwikkeling' | 'gereed' | 'battle_ready'
+  gewichtsklasse?: 'antweight' | 'beetleweight' | 'featherweight'
+  q?: string
+  page?: number
+}): Promise<PaginatedResponse<AdminRobot>> {
+  const { data } = await api.get<PaginatedResponse<AdminRobot>>('/admin/robots', { params })
+  return data
+}
+
+export async function createAdminRobot(payload: AdminRobotPayload): Promise<AdminRobot> {
+  const { data } = await api.post<{ data: AdminRobot }>('/admin/robots', payload)
+  return data.data
+}
+
+export async function updateAdminRobot(id: number, payload: Partial<AdminRobotPayload>): Promise<AdminRobot> {
+  const { data } = await api.patch<{ data: AdminRobot }>(`/admin/robots/${id}`, payload)
+  return data.data
+}
+
+export async function deleteAdminRobot(id: number): Promise<void> {
+  await api.delete(`/admin/robots/${id}`)
+}
+
+export async function getAdminLinks(params?: {
+  categorie?: 'wallie' | 'community' | 'competitie' | 'tools' | 'onderdelen' | 'documentatie'
+  q?: string
+  page?: number
+}): Promise<PaginatedResponse<AdminLink>> {
+  const { data } = await api.get<PaginatedResponse<AdminLink>>('/admin/links', { params })
+  return data
+}
+
+export async function createAdminLink(payload: AdminLinkPayload): Promise<AdminLink> {
+  const { data } = await api.post<{ data: AdminLink }>('/admin/links', payload)
+  return data.data
+}
+
+export async function updateAdminLink(id: number, payload: Partial<AdminLinkPayload>): Promise<AdminLink> {
+  const { data } = await api.patch<{ data: AdminLink }>(`/admin/links/${id}`, payload)
+  return data.data
+}
+
+export async function deleteAdminLink(id: number): Promise<void> {
+  await api.delete(`/admin/links/${id}`)
+}
+
+export async function getAdminLocations(params?: {
+  q?: string
+  page?: number
+}): Promise<PaginatedResponse<EditionLocation>> {
+  const { data } = await api.get<PaginatedResponse<EditionLocation>>('/admin/locations', { params })
+  return data
+}
+
+function buildEditionFormData(payload: Partial<AdminEditionPayload>): FormData {
+  const formData = new FormData()
+
+  if (typeof payload.naam === 'string') formData.append('naam', payload.naam)
+  if (payload.location) {
+    formData.append('location[name]', payload.location.name)
+    formData.append('location[address]', payload.location.address)
+    formData.append('location[place]', payload.location.place)
+    formData.append('location[zipcode]', payload.location.zipcode)
+    if (payload.location.osm_url !== undefined) {
+      formData.append('location[osm_url]', payload.location.osm_url ?? '')
+    }
+
+    if (payload.location.instructions !== undefined) {
+      formData.append('location[instructions]', payload.location.instructions ?? '')
+    }
+  }
+  if (payload.omschrijving !== undefined) formData.append('omschrijving', payload.omschrijving ?? '')
+  if (typeof payload.start_at === 'string') formData.append('start_at', payload.start_at)
+  if (payload.end_at !== undefined) formData.append('end_at', payload.end_at ?? '')
+  if (typeof payload.is_done === 'boolean') formData.append('is_done', payload.is_done ? '1' : '0')
+  if (payload.afbeelding instanceof File) formData.append('afbeelding', payload.afbeelding)
+  if (typeof payload.afbeelding_verwijderen === 'boolean') {
+    formData.append('afbeelding_verwijderen', payload.afbeelding_verwijderen ? '1' : '0')
+  }
+
+  return formData
+}
+
+export async function getAdminEditions(params?: {
+  status?: 'open' | 'done'
+  q?: string
+  page?: number
+}): Promise<PaginatedResponse<Edition>> {
+  const { data } = await api.get<PaginatedResponse<Edition>>('/admin/edities', { params })
+  return data
+}
+
+export async function createAdminEdition(payload: AdminEditionPayload): Promise<Edition> {
+  const formData = buildEditionFormData(payload)
+  const { data } = await api.post<{ data: Edition }>('/admin/edities', formData)
+  return data.data
+}
+
+export async function updateAdminEdition(id: number, payload: Partial<AdminEditionPayload>): Promise<Edition> {
+  const formData = buildEditionFormData(payload)
+  formData.append('_method', 'PATCH')
+
+  const { data } = await api.post<{ data: Edition }>(`/admin/edities/${id}`, formData)
+  return data.data
+}
+
+export async function deleteAdminEdition(id: number): Promise<void> {
+  await api.delete(`/admin/edities/${id}`)
 }
 
 export async function getAdminPageVisitAnalytics(params?: {

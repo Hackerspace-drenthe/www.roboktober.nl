@@ -687,7 +687,7 @@ async function plaatsUpdate(): Promise<void> {
                 class="w-full rounded-lg border border-white/20 bg-robo-dark px-4 py-3 text-white"
               >
                 <option v-for="edition in editions" :key="edition.id" :value="edition.id">
-                  {{ edition.naam }} · {{ edition.locatie }}
+                  {{ edition.naam }} · {{ edition.location?.full_address ?? edition.location?.name ?? '-' }}
                 </option>
               </select>
             </div>

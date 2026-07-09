@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\Edition;
+use App\Models\Location;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -25,7 +26,7 @@ class EditionFactory extends Factory
         return [
             'naam' => 'Roboktober '.$start->format('Y'),
             'omschrijving' => $this->faker->sentence(16),
-            'locatie' => 'Hackerspace Drenthe',
+            'location_id' => Location::factory(),
             'afbeelding' => null,
             'start_at' => $start,
             'end_at' => $end,

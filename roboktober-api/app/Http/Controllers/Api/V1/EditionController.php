@@ -15,6 +15,7 @@ class EditionController extends Controller
     {
         $editions = Edition::query()
             ->where('is_done', false)
+            ->with('location')
             ->orderBy('start_at')
             ->get();
 

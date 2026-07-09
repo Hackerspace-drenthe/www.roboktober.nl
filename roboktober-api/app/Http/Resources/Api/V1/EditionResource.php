@@ -23,7 +23,7 @@ class EditionResource extends JsonResource
             'id' => $this->id,
             'naam' => $this->naam,
             'omschrijving' => $this->omschrijving,
-            'locatie' => $this->locatie,
+            'location' => new LocationResource($this->whenLoaded('location')),
             'afbeelding_url' => is_string($this->afbeelding)
                 ? Storage::disk('public')->url($this->afbeelding)
                 : null,

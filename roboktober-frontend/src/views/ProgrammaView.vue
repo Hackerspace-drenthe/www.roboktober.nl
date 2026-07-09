@@ -15,6 +15,35 @@ const mapCoords = ref<{ lat: number; lon: number } | null>(null)
 const loading = ref(false)
 const error = ref('')
 
+function editieOsmUrl(item: Edition | null): string | null {
+  const value = item?.location?.osm_url
+  return typeof value === 'string' && value.trim() !== '' ? value.trim() : null
+}
+
+function editieLocatieZoektekst(item: Edition | null): string {
+  if (!item?.location) {
+    return ''
+  }
+
+  return item.location.full_address || [item.location.name, item.location.address, `${item.location.zipcode} ${item.location.place}`].join(', ')
+}
+
+function editieLocatieTitel(item: Edition | null): string {
+  if (!item?.location) {
+    return 'locatie volgt'
+  }
+
+  return item.location.name
+}
+
+function editieLocatieSubtitel(item: Edition | null): string {
+  if (!item?.location) {
+    return '-'
+  }
+
+  return item.location.full_address || [item.location.address, `${item.location.zipcode} ${item.location.place}`].join(', ')
+}
+
 function kiesProgrammaEditie(edities: Edition[]): Edition | null {
   if (edities.length === 0) {
     return null
@@ -48,6 +77,40 @@ async function geocodeLocatie(locatie: string): Promise<void> {
     }
   } catch {
     mapCoords.value = null
+  }
+}
+
+function extractNodeId(osmUrl: string): string | null {
+  const match = osmUrl.match(/\/node\/(\d+)/)
+  return match?.[1] ?? null
+}
+
+async function geocodeOsmNodeUrl(osmUrl: string): Promise<void> {
+  const nodeId = extractNodeId(osmUrl)
+
+  if (!nodeId) {
+    return
+  }
+
+  try {
+    const response = await fetch(`https://www.openstreetmap.org/api/0.6/node/${nodeId}.json`)
+
+    if (!response.ok) {
+      return
+    }
+
+    const payload = await response.json() as {
+      elements?: Array<{ lat?: number; lon?: number }>
+    }
+
+    const lat = Number(payload.elements?.[0]?.lat)
+    const lon = Number(payload.elements?.[0]?.lon)
+
+    if (Number.isFinite(lat) && Number.isFinite(lon)) {
+      mapCoords.value = { lat, lon }
+    }
+  } catch {
+    // Keep fallback behavior if node lookup fails.
   }
 }
 
@@ -94,7 +157,12 @@ const mapFallbackUrl = computed(() => {
     return 'https://www.openstreetmap.org'
   }
 
-  return `https://www.openstreetmap.org/search?query=${encodeURIComponent(editie.value.locatie)}`
+  const osmUrl = editieOsmUrl(editie.value)
+  if (osmUrl) {
+    return osmUrl
+  }
+
+  return `https://www.openstreetmap.org/search?query=${encodeURIComponent(editieLocatieZoektekst(editie.value))}`
 })
 
 async function openRouteInOpenStreetMap(): Promise<void> {
@@ -135,8 +203,16 @@ onMounted(async () => {
     const edities = await getEditions()
     editie.value = kiesProgrammaEditie(edities)
 
-    if (editie.value?.locatie) {
-      await geocodeLocatie(editie.value.locatie)
+    const geocodeQuery = editieLocatieZoektekst(editie.value)
+    if (geocodeQuery) {
+      await geocodeLocatie(geocodeQuery)
+    }
+
+    if (!mapCoords.value) {
+      const osmUrl = editieOsmUrl(editie.value)
+      if (osmUrl) {
+        await geocodeOsmNodeUrl(osmUrl)
+      }
     }
   } catch {
     error.value = 'Programma-informatie laden mislukt.'
@@ -155,7 +231,7 @@ onMounted(async () => {
         <h1 class="mb-4 text-4xl font-black md:text-5xl">Programma</h1>
         <p class="text-lg text-slate-300">
           Roboktober vindt plaats op <strong>{{ formatEditiePeriode(editie) }}</strong>
-          bij <strong>{{ editie?.locatie ?? 'locatie volgt' }}</strong>.
+          bij <strong>{{ editieLocatieTitel(editie) }}</strong>.
         </p>
       </div>
     </section>
@@ -177,7 +253,7 @@ onMounted(async () => {
         <p v-if="loading" class="text-slate-600">Locatie laden...</p>
         <p v-else-if="error" class="text-red-700">{{ error }}</p>
         <p v-else-if="editie" class="mb-3 text-slate-700">
-          <strong class="text-robo-dark">{{ editie.naam }}</strong> · {{ editie.locatie }}
+          <strong class="text-robo-dark">{{ editie.naam }}</strong> · {{ editieLocatieSubtitel(editie) }}
         </p>
 
         <div v-if="mapEmbedUrl" class="overflow-hidden rounded-xl border border-slate-300 bg-white shadow-sm">

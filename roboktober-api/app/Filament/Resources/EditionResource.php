@@ -31,10 +31,13 @@ class EditionResource extends Resource
                             ->label('Naam editie')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('locatie')
+                        Forms\Components\Select::make('location_id')
                             ->label('Locatie')
+                            ->relationship('location', 'name')
+                            ->searchable()
+                            ->preload()
                             ->required()
-                            ->maxLength(255),
+                            ->native(false),
                         Forms\Components\DateTimePicker::make('start_at')
                             ->label('Startdatum/tijd')
                             ->required()
@@ -76,7 +79,8 @@ class EditionResource extends Resource
                 Tables\Columns\TextColumn::make('naam')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('locatie')
+                Tables\Columns\TextColumn::make('location.name')
+                    ->label('Locatie')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('start_at')
                     ->label('Start')

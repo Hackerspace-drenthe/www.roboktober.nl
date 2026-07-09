@@ -178,15 +178,44 @@ export interface AdminCompetitionBattleScoreEntryPayload {
 // Edition
 // ---------------------------------------------------------------------------
 
+export interface EditionLocation {
+  id: number
+  name: string
+  address: string
+  place: string
+  zipcode: string
+  osm_url: string | null
+  instructions: string | null
+  full_address: string
+}
+
 export interface Edition {
   id: number
   naam: string
   omschrijving: string | null
-  locatie: string
+  location: EditionLocation | null
   afbeelding_url: string | null
   start_at: string
   end_at: string | null
   is_done: boolean
+}
+
+export interface AdminEditionPayload {
+  naam: string
+  location: {
+    name: string
+    address: string
+    place: string
+    zipcode: string
+    osm_url?: string | null
+    instructions?: string | null
+  }
+  omschrijving?: string | null
+  start_at: string
+  end_at?: string | null
+  is_done?: boolean
+  afbeelding?: File | null
+  afbeelding_verwijderen?: boolean
 }
 
 // ---------------------------------------------------------------------------
@@ -507,6 +536,55 @@ export interface AdminTeam {
   robots: Robot[]
   created_at: string | null
   updated_at: string | null
+}
+
+export interface AdminRobot {
+  id: number
+  team_id: number
+  team: {
+    id: number
+    naam: string
+  } | null
+  naam: string
+  gewichtsklasse: Gewichtsklasse
+  gewichtsklasse_label: string
+  status: RobotStatus
+  status_label: string
+  beschrijving: string | null
+  awesomeness_score: number
+  awesomeness_votes_count: number
+  created_at: string | null
+  updated_at: string | null
+}
+
+export interface AdminRobotPayload {
+  team_id: number
+  naam: string
+  gewichtsklasse: Gewichtsklasse
+  status: RobotStatus
+  beschrijving?: string | null
+}
+
+export interface AdminLink {
+  id: number
+  titel: string
+  url: string
+  beschrijving: string | null
+  categorie: LinkCategorie
+  categorie_label: string
+  eigenaar: string | null
+  verified_at: string | null
+  created_at: string | null
+  updated_at: string | null
+}
+
+export interface AdminLinkPayload {
+  titel: string
+  url: string
+  beschrijving?: string | null
+  categorie: LinkCategorie
+  eigenaar?: string | null
+  verified_at?: string | null
 }
 
 export interface AdminPost {

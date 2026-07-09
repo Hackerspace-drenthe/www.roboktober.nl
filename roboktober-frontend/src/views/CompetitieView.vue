@@ -82,7 +82,7 @@ onMounted(async () => {
         class="w-full rounded-lg border border-white/15 bg-slate-900 px-3 py-2 text-white outline-none ring-robo-orange/70 transition focus:ring-2"
       >
         <option v-for="edition in editions" :key="edition.id" :value="edition.id">
-          {{ edition.naam }} · {{ edition.locatie }}
+          {{ edition.naam }} · {{ edition.location?.full_address ?? edition.location?.name ?? '-' }}
         </option>
       </select>
     </section>

@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Edition extends Model
@@ -19,7 +20,7 @@ class Edition extends Model
     protected $fillable = [
         'naam',
         'omschrijving',
-        'locatie',
+        'location_id',
         'afbeelding',
         'start_at',
         'end_at',
@@ -44,6 +45,14 @@ class Edition extends Model
     public function teams(): HasMany
     {
         return $this->hasMany(Team::class);
+    }
+
+    /**
+     * @return BelongsTo<Location, $this>
+     */
+    public function location(): BelongsTo
+    {
+        return $this->belongsTo(Location::class);
     }
 
     /**

@@ -6,12 +6,16 @@ use App\Http\Controllers\Api\V1\LinkController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\Admin\PageModerationController;
 use App\Http\Controllers\Api\V1\Admin\PostModerationController;
+use App\Http\Controllers\Api\V1\Admin\RobotManagementController;
+use App\Http\Controllers\Api\V1\Admin\LinkManagementController;
+use App\Http\Controllers\Api\V1\Admin\LocationManagementController;
 use App\Http\Controllers\Api\V1\Admin\TeamModerationController;
 use App\Http\Controllers\Api\V1\Admin\TeamUpdateModerationController;
 use App\Http\Controllers\Api\V1\Admin\UserManagementController;
 use App\Http\Controllers\Api\V1\Admin\AuditLogController;
 use App\Http\Controllers\Api\V1\Admin\AdminDashboardController;
 use App\Http\Controllers\Api\V1\Admin\CompetitionManagementController;
+use App\Http\Controllers\Api\V1\Admin\EditionManagementController;
 use App\Http\Controllers\Api\V1\Admin\PageVisitAnalyticsController;
 use App\Http\Controllers\Api\V1\CompetitionController;
 use App\Http\Controllers\Api\V1\EditionController;
@@ -139,6 +143,36 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
             Route::get('/teams/{team}', [TeamModerationController::class, 'show'])->name('teams.show');
             Route::patch('/teams/{team}/status', [TeamModerationController::class, 'updateStatus'])
                 ->name('teams.update-status');
+
+            Route::get('/robots', [RobotManagementController::class, 'index'])
+                ->name('robots.index');
+            Route::post('/robots', [RobotManagementController::class, 'store'])
+                ->name('robots.store');
+            Route::patch('/robots/{robot}', [RobotManagementController::class, 'update'])
+                ->name('robots.update');
+            Route::delete('/robots/{robot}', [RobotManagementController::class, 'destroy'])
+                ->name('robots.destroy');
+
+            Route::get('/links', [LinkManagementController::class, 'index'])
+                ->name('links.index');
+            Route::post('/links', [LinkManagementController::class, 'store'])
+                ->name('links.store');
+            Route::patch('/links/{link}', [LinkManagementController::class, 'update'])
+                ->name('links.update');
+            Route::delete('/links/{link}', [LinkManagementController::class, 'destroy'])
+                ->name('links.destroy');
+
+            Route::get('/locations', [LocationManagementController::class, 'index'])
+                ->name('locations.index');
+
+            Route::get('/edities', [EditionManagementController::class, 'index'])
+                ->name('editions.index');
+            Route::post('/edities', [EditionManagementController::class, 'store'])
+                ->name('editions.store');
+            Route::patch('/edities/{edition}', [EditionManagementController::class, 'update'])
+                ->name('editions.update');
+            Route::delete('/edities/{edition}', [EditionManagementController::class, 'destroy'])
+                ->name('editions.destroy');
 
             Route::get('/edities/{edition}/competitie', [CompetitionManagementController::class, 'index'])
                 ->name('competition.index');

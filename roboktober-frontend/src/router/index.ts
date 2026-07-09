@@ -154,6 +154,36 @@ const router = createRouter({
       },
     },
     {
+      path: '/admin/edities',
+      name: 'admin-edities',
+      component: () => import('../views/AdminEditionsView.vue'),
+      meta: {
+        title: 'Admin Edities — Roboktober',
+        requiresAuth: true,
+        minRole: 'moderator',
+      },
+    },
+    {
+      path: '/admin/robots',
+      name: 'admin-robots',
+      component: () => import('../views/AdminRobotsView.vue'),
+      meta: {
+        title: 'Admin Robots — Roboktober',
+        requiresAuth: true,
+        minRole: 'moderator',
+      },
+    },
+    {
+      path: '/admin/links',
+      name: 'admin-links',
+      component: () => import('../views/AdminLinksView.vue'),
+      meta: {
+        title: 'Admin Links — Roboktober',
+        requiresAuth: true,
+        minRole: 'moderator',
+      },
+    },
+    {
       path: '/admin/competitie',
       name: 'admin-competitie',
       component: () => import('../views/AdminCompetitionView.vue'),
