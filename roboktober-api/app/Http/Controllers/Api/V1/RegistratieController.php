@@ -99,9 +99,25 @@ class RegistratieController extends Controller
             ]);
         }
 
-        return (new TeamResource($team))
-            ->response()
-            ->setStatusCode(Response::HTTP_CREATED);
+        try {
+            return (new TeamResource($team))
+                ->response()
+                ->setStatusCode(Response::HTTP_CREATED);
+        } catch (\Throwable $exception) {
+            Log::error('Registratie opgeslagen, maar response kon niet worden opgebouwd.', [
+                'team_id' => $team->id,
+                'exception' => $exception->getMessage(),
+            ]);
+
+            return response()->json([
+                'data' => [
+                    'id' => $team->id,
+                    'naam' => $team->naam,
+                    'status' => $team->status->value,
+                    'status_label' => $team->status->label(),
+                ],
+            ], Response::HTTP_CREATED);
+        }
     }
 }
 
