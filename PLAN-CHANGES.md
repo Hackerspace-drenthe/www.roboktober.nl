@@ -660,6 +660,50 @@ De edit-token flow zorgde voor extra complexiteit en inconsistente ownership. Ge
 
 ---
 
+### WZ-034 · 2026-07-09 · CHANGE · Sectie 5 / 6.x — Teams en Competitie samengevoegd tot tabbed pagina
+
+**Reden:**
+Publieke navigatie en content overlapten sterk tussen `Teams` en `Competitie`. Gewenst was een eenduidige gebruikersflow met twee subpagina's/tabs binnen dezelfde context.
+
+**Oorspronkelijk (PLAN.md):**
+> `Teams en Robots` en `Competitie` als losse publiekspagina's.
+
+**Gewijzigd naar:**
+- Nieuwe gecombineerde pagina met tabs in de frontend:
+	- `GET /app/teams` -> tab `Teams`
+	- `GET /app/teams/competitie` -> tab `Competitie`
+- Oude route `GET /app/competitie` redirect nu naar `GET /app/teams/competitie`.
+- Nieuwe viewcomponent toegevoegd: `TeamsCompetitionView`.
+- Hoofdmenu opgeschoond: losse `Competitie`-entry verwijderd omdat deze nu onder `Teams` beschikbaar is.
+
+**Validatie:**
+- Frontend `npm run type-check` groen.
+- Frontend build groen.
+- Live deploy op server bevestigd op commit `88c915a`.
+
+---
+
+### WZ-035 · 2026-07-09 · DECISION · Sectie 2.2 / Deploy — Server runtime voor frontend builds vastgezet op Node 24 + npm 12
+
+**Reden:**
+Server-side frontend builds faalden op oudere Node-versie (`v18`) omdat Vite 8 en diverse dependencies minimaal Node 20+ vereisen.
+
+**Oorspronkelijk (PLAN.md):**
+> Frontend build/deploy flow beschreven zonder expliciete server Node-runtimeversie.
+
+**Gewijzigd naar:**
+- Server runtime geüpdatet naar:
+	- Node `v24.18.0`
+	- npm `12.0.0`
+- Build/deploy command gebruikt expliciet nvm-context (`nvm use 24`) voordat `npm run build` wordt uitgevoerd.
+- Dit is nu de operationele baseline voor production deploys van `roboktober-frontend`.
+
+**Validatie:**
+- Productiebuild draait succesvol op server met Node 24.
+- Deployflow (`git pull` -> `npm run build` -> `php artisan optimize:clear`) succesvol uitgevoerd.
+
+---
+
 <!-- TEMPLATE voor een nieuwe wijziging:
 
 ### WZ-001 · 2026-MM-DD · [Type] · Sectie X.X — Korte omschrijving
