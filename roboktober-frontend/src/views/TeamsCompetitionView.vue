@@ -2,10 +2,11 @@
 import { getEditionCompetitionLeaderboard, getEditions, getTeams } from '@/api'
 import type { Edition, EditionCompetitionLeaderboard, Team } from '@/types/api'
 import { computed, onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import headerImage from '@/assets/headers/header-teams.png'
 
 const route = useRoute()
+const router = useRouter()
 
 const actieveTab = computed<'teams' | 'competitie'>(() => {
   return route.name === 'teams-competitie' ? 'competitie' : 'teams'
@@ -22,6 +23,7 @@ const sortering = ref<'naam-asc' | 'naam-desc' | 'robots-desc'>('naam-asc')
 const editions = ref<Edition[]>([])
 const selectedEditionId = ref<number | null>(null)
 const leaderboard = ref<EditionCompetitionLeaderboard | null>(null)
+const leaderboardCache = ref<Record<number, EditionCompetitionLeaderboard>>({})
 const competitionLoading = ref(false)
 const competitionError = ref('')
 
@@ -74,6 +76,51 @@ function formatDatumTijd(iso: string | null): string {
   })
 }
 
+function upsertMetaTag(attribute: 'name' | 'property', key: string, content: string): void {
+  const selector = `meta[${attribute}="${key}"]`
+  let tag = document.head.querySelector(selector) as HTMLMetaElement | null
+
+  if (!tag) {
+    tag = document.createElement('meta')
+    tag.setAttribute(attribute, key)
+    document.head.appendChild(tag)
+  }
+
+  tag.setAttribute('content', content)
+}
+
+function upsertCanonical(url: string): void {
+  let tag = document.head.querySelector('link[rel="canonical"]') as HTMLLinkElement | null
+
+  if (!tag) {
+    tag = document.createElement('link')
+    tag.setAttribute('rel', 'canonical')
+    document.head.appendChild(tag)
+  }
+
+  tag.setAttribute('href', url)
+}
+
+function applySeoMeta(): void {
+  if (typeof window === 'undefined') {
+    return
+  }
+
+  const isCompetitie = actieveTab.value === 'competitie'
+  const title = isCompetitie ? 'Competitieklassement — Roboktober' : 'Teams & Robots — Roboktober'
+  const description = isCompetitie
+    ? 'Bekijk het actuele competitieklassement van Roboktober per editie, categorie en robot.'
+    : 'Bekijk alle teams en robots die meedoen aan Roboktober, inclusief filters en teamdetails.'
+  const canonicalUrl = `${window.location.origin}${route.fullPath}`
+
+  document.title = title
+  upsertMetaTag('name', 'description', description)
+  upsertMetaTag('property', 'og:title', title)
+  upsertMetaTag('property', 'og:description', description)
+  upsertMetaTag('property', 'og:url', canonicalUrl)
+  upsertCanonical(canonicalUrl)
+}
+
 async function loadTeams(): Promise<void> {
   try {
     teams.value = await getTeams()
@@ -103,17 +150,39 @@ async function loadLeaderboard(): Promise<void> {
     return
   }
 
+  const cachedResult = leaderboardCache.value[selectedEditionId.value]
+  if (cachedResult) {
+    leaderboard.value = cachedResult
+    competitionError.value = ''
+    return
+  }
+
   competitionLoading.value = true
   competitionError.value = ''
 
   try {
-    leaderboard.value = await getEditionCompetitionLeaderboard(selectedEditionId.value)
+    const result = await getEditionCompetitionLeaderboard(selectedEditionId.value)
+    leaderboard.value = result
+    leaderboardCache.value[selectedEditionId.value] = result
   } catch {
     competitionError.value = 'Competitieklassement laden mislukt.'
     leaderboard.value = null
   } finally {
     competitionLoading.value = false
   }
+}
+
+async function refreshLeaderboard(): Promise<void> {
+  if (!selectedEditionId.value) {
+    return
+  }
+
+  delete leaderboardCache.value[selectedEditionId.value]
+  await loadLeaderboard()
+}
+
+async function openCompetitieTab(): Promise<void> {
+  await router.push('/teams/competitie')
 }
 
 watch(selectedEditionId, async () => {
@@ -123,12 +192,22 @@ watch(selectedEditionId, async () => {
 })
 
 watch(actieveTab, async (tab) => {
+  applySeoMeta()
+
   if (tab === 'competitie' && !leaderboard.value && !competitionLoading.value) {
     await loadLeaderboard()
   }
 })
 
+watch(
+  () => route.fullPath,
+  () => {
+    applySeoMeta()
+  },
+)
+
 onMounted(async () => {
+  applySeoMeta()
   await Promise.all([loadTeams(), loadEditions()])
 
   if (actieveTab.value === 'competitie') {
@@ -150,18 +229,22 @@ onMounted(async () => {
           Volg de actuele stand per editie, categorie en robot.
         </p>
 
-        <div class="mx-auto mt-8 inline-flex rounded-xl border border-white/15 bg-robo-dark/70 p-1">
+        <div class="mx-auto mt-8 inline-flex rounded-xl border border-white/15 bg-robo-dark/70 p-1" role="tablist" aria-label="Teams en competitie tabs">
           <RouterLink
             to="/teams"
-            class="rounded-lg px-5 py-2 text-sm font-semibold transition"
-            :class="actieveTab === 'teams' ? 'bg-white text-robo-dark' : 'text-slate-200 hover:bg-white/10'"
+            role="tab"
+            :aria-selected="actieveTab === 'teams'"
+            class="rounded-lg px-5 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-robo-orange"
+            :class="actieveTab === 'teams' ? 'bg-white text-robo-dark shadow-sm' : 'text-slate-200 hover:bg-white/10'"
           >
             Teams
           </RouterLink>
           <RouterLink
             to="/teams/competitie"
-            class="rounded-lg px-5 py-2 text-sm font-semibold transition"
-            :class="actieveTab === 'competitie' ? 'bg-white text-robo-dark' : 'text-slate-200 hover:bg-white/10'"
+            role="tab"
+            :aria-selected="actieveTab === 'competitie'"
+            class="rounded-lg px-5 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-robo-orange"
+            :class="actieveTab === 'competitie' ? 'bg-white text-robo-dark shadow-sm' : 'text-slate-200 hover:bg-white/10'"
           >
             Competitie
           </RouterLink>
@@ -169,9 +252,23 @@ onMounted(async () => {
       </div>
     </section>
 
-    <section v-if="actieveTab === 'teams'" class="bg-white py-20" aria-labelledby="teams-title">
+    <Transition name="tab-fade" mode="out-in">
+      <section v-if="actieveTab === 'teams'" key="teams" class="bg-white py-20" aria-labelledby="teams-title">
       <div class="mx-auto max-w-4xl px-6">
         <h2 id="teams-title" class="sr-only">Teamoverzicht</h2>
+
+        <div class="mb-8 rounded-xl border border-robo-orange/20 bg-robo-orange/5 p-4 text-center">
+          <p class="text-sm text-slate-700">
+            Wil je direct de stand bekijken?
+            <button
+              type="button"
+              class="ml-1 font-semibold text-robo-orange underline decoration-transparent transition hover:decoration-robo-orange"
+              @click="openCompetitieTab"
+            >
+              Open Competitie-tab
+            </button>
+          </p>
+        </div>
 
         <div class="mb-8 grid gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 md:grid-cols-4">
           <input
@@ -267,29 +364,50 @@ onMounted(async () => {
           </RouterLink>
         </div>
       </div>
-    </section>
+      </section>
 
-    <section v-else class="bg-robo-dark py-16">
+      <section v-else key="competitie" class="bg-robo-dark py-16">
       <div class="mx-auto max-w-6xl px-6">
         <section class="mb-6 rounded-xl border border-white/10 bg-robo-dark/60 p-4">
-          <label for="edition_id" class="mb-2 block text-sm font-semibold text-slate-200">Editie</label>
-          <select
-            id="edition_id"
-            v-model.number="selectedEditionId"
-            class="w-full rounded-lg border border-white/15 bg-slate-900 px-3 py-2 text-white outline-none ring-robo-orange/70 transition focus:ring-2"
-          >
-            <option v-for="edition in editions" :key="edition.id" :value="edition.id">
-              {{ edition.naam }} · {{ edition.location?.full_address ?? edition.location?.name ?? '-' }}
-            </option>
-          </select>
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div class="w-full">
+              <label for="edition_id" class="mb-2 block text-sm font-semibold text-slate-200">Editie</label>
+              <select
+                id="edition_id"
+                v-model.number="selectedEditionId"
+                class="w-full rounded-lg border border-white/15 bg-slate-900 px-3 py-2 text-white outline-none ring-robo-orange/70 transition focus:ring-2"
+              >
+                <option v-for="edition in editions" :key="edition.id" :value="edition.id">
+                  {{ edition.naam }} · {{ edition.location?.full_address ?? edition.location?.name ?? '-' }}
+                </option>
+              </select>
+            </div>
+
+            <button
+              type="button"
+              class="rounded-lg border border-white/20 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-robo-orange"
+              @click="refreshLeaderboard"
+            >
+              Ververs klassement
+            </button>
+          </div>
         </section>
 
         <p v-if="competitionError" class="mb-6 rounded border border-red-500/40 bg-red-950/30 px-3 py-2 text-sm text-red-200">
           {{ competitionError }}
         </p>
 
-        <section v-if="competitionLoading" class="rounded-xl border border-white/10 bg-robo-dark/60 px-4 py-6 text-slate-300">
-          Klassement laden...
+        <section v-if="competitionLoading" class="space-y-4" aria-busy="true" aria-label="Klassement laden">
+          <div class="animate-pulse rounded-xl border border-white/10 bg-robo-dark/60 p-5">
+            <div class="mb-3 h-6 w-1/3 rounded bg-white/10" />
+            <div class="h-4 w-2/3 rounded bg-white/10" />
+          </div>
+          <div class="grid gap-4 md:grid-cols-2">
+            <div v-for="n in 2" :key="n" class="animate-pulse rounded-xl border border-white/10 bg-robo-dark/60 p-5">
+              <div class="mb-3 h-5 w-1/2 rounded bg-white/10" />
+              <div class="h-4 w-3/4 rounded bg-white/10" />
+            </div>
+          </div>
         </section>
 
         <template v-else-if="leaderboard">
@@ -339,6 +457,20 @@ onMounted(async () => {
           </section>
         </template>
       </div>
-    </section>
+      </section>
+    </Transition>
   </main>
 </template>
+
+<style scoped>
+.tab-fade-enter-active,
+.tab-fade-leave-active {
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.tab-fade-enter-from,
+.tab-fade-leave-to {
+  opacity: 0;
+  transform: translateY(8px);
+}
+</style>
