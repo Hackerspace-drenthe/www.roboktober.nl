@@ -97,7 +97,9 @@ Regressierisico verlagen op backend en frontend.
 - Uitgevoerd: Vitest + jsdom + Vue Test Utils testinfrastructuur toegevoegd.
 - Uitgevoerd: Playwright smoke e2e infrastructuur toegevoegd met lokale webserverconfig.
 - Uitgevoerd: eerste unit tests voor routercontracten en auth-composable.
-- Uitgevoerd: eerste publieke smoke e2e tests voor home en programma routes.
+- Uitgevoerd: publieke smoke e2e tests voor home en programma routes.
+- Uitgevoerd: auth-guard smoke e2e tests voor `/aanmelden` en `/admin/users` redirect naar login.
+- Uitgevoerd: CI workflow toegevoegd voor backend tests en frontend unit+e2e tests.
 - Gevalideerd: unit tests en e2e smoke tests slagen lokaal.
 
 ## 4. Risico's en mitigaties

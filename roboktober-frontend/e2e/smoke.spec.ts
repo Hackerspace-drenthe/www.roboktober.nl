@@ -15,4 +15,16 @@ test.describe('public smoke flows', () => {
     await expect(page).toHaveURL(/\/app\/programma$/)
     await expect(page.locator('body')).toContainText(/.+/)
   })
+
+  test('aanmelden route redirects unauthenticated visitor to login', async ({ page }) => {
+    await page.goto('aanmelden')
+
+    await expect(page).toHaveURL(/\/app\/login\?redirect=\/aanmelden$/)
+  })
+
+  test('admin route redirects unauthenticated visitor to login', async ({ page }) => {
+    await page.goto('admin/users')
+
+    await expect(page).toHaveURL(/\/app\/login\?redirect=\/admin\/users$/)
+  })
 })

@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  backend-tests:
+    name: Backend Tests (Laravel)
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: roboktober-api
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, dom, fileinfo, sqlite3, pdo_sqlite
+          tools: composer:v2
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Run backend tests
+        run: php artisan test
+
+  frontend-tests:
+    name: Frontend Tests (Vitest + Playwright)
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: roboktober-frontend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.18.0'
+          cache: npm
+          cache-dependency-path: roboktober-frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run frontend test suite
+        run: npm test
