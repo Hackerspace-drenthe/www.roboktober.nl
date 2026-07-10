@@ -24,6 +24,8 @@ class RobotManagementController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
+        $this->authorize('viewAny', Robot::class);
+
         $status = request()->query('status');
         $gewichtsklasse = request()->query('gewichtsklasse');
         $zoekterm = request()->query('q');
@@ -48,6 +50,8 @@ class RobotManagementController extends Controller
 
     public function store(StoreAdminRobotRequest $request): AdminRobotResource
     {
+        $this->authorize('create', Robot::class);
+
         /** @var User $actor */
         $actor = $request->user();
 
@@ -84,6 +88,8 @@ class RobotManagementController extends Controller
 
     public function update(UpdateAdminRobotRequest $request, Robot $robot): AdminRobotResource
     {
+        $this->authorize('update', $robot);
+
         /** @var User $actor */
         $actor = $request->user();
 
@@ -122,6 +128,8 @@ class RobotManagementController extends Controller
 
     public function destroy(Request $request, Robot $robot): JsonResponse
     {
+        $this->authorize('delete', $robot);
+
         /** @var User $actor */
         $actor = $request->user();
 

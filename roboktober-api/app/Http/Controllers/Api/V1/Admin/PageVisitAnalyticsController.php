@@ -15,6 +15,8 @@ class PageVisitAnalyticsController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', AnalyticsEvent::class);
+
         /** @var array{granularity?: string, from?: string, to?: string, limit_pages?: int} $validated */
         $validated = $request->validate([
             'granularity' => ['nullable', 'string', 'in:hourly,daily'],

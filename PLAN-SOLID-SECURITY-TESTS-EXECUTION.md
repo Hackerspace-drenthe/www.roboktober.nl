@@ -52,7 +52,10 @@ Autorisatie consistenter maken met policy-driven checks i.p.v. alleen route-role
 2. Authz tests dekken moderator/admin/visitor paden.
 
 ### Status
-- Gepland
+- In uitvoering
+- Uitgevoerd: policy-classes toegevoegd voor admin-resources (content, programma, editie, competitie, robots, links, users, audit, analytics).
+- Uitgevoerd: expliciete authorize-checks toegevoegd in admin-controllers bovenop route-middleware.
+- Gevalideerd: bestaande admin feature tests slagen met policy-checks actief.
 
 ## Fase 3 - SOLID refactor
 

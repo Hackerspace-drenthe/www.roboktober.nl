@@ -21,6 +21,8 @@ class PageModerationController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
+        $this->authorize('viewAny', Page::class);
+
         $status = request()->query('status');
         $zoekterm = request()->query('q');
 
@@ -43,6 +45,8 @@ class PageModerationController extends Controller
 
     public function show(Page $page): AdminPageResource
     {
+        $this->authorize('view', $page);
+
         $page->load('media');
 
         return new AdminPageResource($page);
@@ -50,6 +54,8 @@ class PageModerationController extends Controller
 
     public function updateStatus(UpdatePublishStateRequest $request, Page $page): AdminPageResource
     {
+        $this->authorize('update', $page);
+
         /** @var User $actor */
         $actor = $request->user();
 
@@ -88,6 +94,8 @@ class PageModerationController extends Controller
 
     public function updateContent(UpdateAdminPageContentRequest $request, Page $page): AdminPageResource
     {
+        $this->authorize('update', $page);
+
         /** @var User $actor */
         $actor = $request->user();
 

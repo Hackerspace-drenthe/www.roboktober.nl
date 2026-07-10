@@ -21,6 +21,8 @@ class UserManagementController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
+        $this->authorize('viewAny', User::class);
+
         $zoekterm = request()->query('q');
 
         $users = User::query()
@@ -38,6 +40,8 @@ class UserManagementController extends Controller
 
     public function updateRole(UpdateUserRoleRequest $request, User $user): AdminUserResource|JsonResponse
     {
+        $this->authorize('updateRole', $user);
+
         /** @var User $actor */
         $actor = $request->user();
 

@@ -13,6 +13,8 @@ class AuditLogController extends Controller
 {
     public function index(): AnonymousResourceCollection
     {
+        $this->authorize('viewAny', AuditLog::class);
+
         $action = request()->query('action');
         $actorId = request()->query('actor_user_id');
         $subjectType = request()->query('subject_type');

@@ -21,6 +21,8 @@ class TeamUpdateModerationController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
+        $this->authorize('viewAny', TeamUpdate::class);
+
         $status = request()->query('status');
         $zoekterm = request()->query('q');
 
@@ -41,6 +43,8 @@ class TeamUpdateModerationController extends Controller
 
     public function show(TeamUpdate $teamUpdate): AdminTeamUpdateResource
     {
+        $this->authorize('view', $teamUpdate);
+
         $teamUpdate->load(['team', 'media']);
 
         return new AdminTeamUpdateResource($teamUpdate);
@@ -48,6 +52,8 @@ class TeamUpdateModerationController extends Controller
 
     public function updateStatus(UpdatePublishStateRequest $request, TeamUpdate $teamUpdate): AdminTeamUpdateResource
     {
+        $this->authorize('update', $teamUpdate);
+
         /** @var User $actor */
         $actor = $request->user();
 
@@ -86,6 +92,8 @@ class TeamUpdateModerationController extends Controller
 
     public function updateContent(UpdateAdminTeamUpdateContentRequest $request, TeamUpdate $teamUpdate): AdminTeamUpdateResource
     {
+        $this->authorize('update', $teamUpdate);
+
         /** @var User $actor */
         $actor = $request->user();
 

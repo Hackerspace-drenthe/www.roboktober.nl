@@ -17,6 +17,8 @@ class AdminDashboardController extends Controller
 {
     public function summary(): JsonResponse
     {
+        $this->authorize('viewAdminIndex', Team::class);
+
         $pendingTeamsCount = Team::query()->where('status', TeamStatus::Pending)->count();
         $draftPostsCount = Post::query()->where('is_published', false)->count();
         $draftPagesCount = Page::query()->where('is_published', false)->count();

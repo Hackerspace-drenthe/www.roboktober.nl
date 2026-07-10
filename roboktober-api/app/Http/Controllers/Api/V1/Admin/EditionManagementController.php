@@ -26,6 +26,8 @@ class EditionManagementController extends Controller
 
     public function index(Request $request): AnonymousResourceCollection
     {
+        $this->authorize('viewAny', Edition::class);
+
         $status = $request->query('status');
         $zoekterm = $request->query('q');
 
@@ -54,6 +56,8 @@ class EditionManagementController extends Controller
 
     public function store(StoreEditionRequest $request): EditionResource
     {
+        $this->authorize('create', Edition::class);
+
         /** @var User $actor */
         $actor = $request->user();
 
@@ -94,6 +98,8 @@ class EditionManagementController extends Controller
 
     public function update(UpdateEditionRequest $request, Edition $edition): EditionResource
     {
+        $this->authorize('update', $edition);
+
         /** @var User $actor */
         $actor = $request->user();
 
@@ -164,6 +170,8 @@ class EditionManagementController extends Controller
 
     public function destroy(Request $request, Edition $edition): JsonResponse
     {
+        $this->authorize('delete', $edition);
+
         /** @var User $actor */
         $actor = $request->user();
 

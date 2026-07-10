@@ -21,6 +21,8 @@ class PostModerationController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
+        $this->authorize('viewAny', Post::class);
+
         $status = request()->query('status');
         $zoekterm = request()->query('q');
 
@@ -44,6 +46,8 @@ class PostModerationController extends Controller
 
     public function show(Post $post): AdminPostResource
     {
+        $this->authorize('view', $post);
+
         $post->load('media');
 
         return new AdminPostResource($post);
@@ -51,6 +55,8 @@ class PostModerationController extends Controller
 
     public function updateStatus(UpdatePublishStateRequest $request, Post $post): AdminPostResource
     {
+        $this->authorize('update', $post);
+
         /** @var User $actor */
         $actor = $request->user();
 
@@ -89,6 +95,8 @@ class PostModerationController extends Controller
 
     public function updateContent(UpdateAdminPostContentRequest $request, Post $post): AdminPostResource
     {
+        $this->authorize('update', $post);
+
         /** @var User $actor */
         $actor = $request->user();
 

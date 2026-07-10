@@ -23,6 +23,8 @@ class LinkManagementController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
+        $this->authorize('viewAny', Link::class);
+
         $categorie = request()->query('categorie');
         $zoekterm = request()->query('q');
 
@@ -43,6 +45,8 @@ class LinkManagementController extends Controller
 
     public function store(StoreAdminLinkRequest $request): AdminLinkResource
     {
+        $this->authorize('create', Link::class);
+
         /** @var User $actor */
         $actor = $request->user();
 
@@ -75,6 +79,8 @@ class LinkManagementController extends Controller
 
     public function update(UpdateAdminLinkRequest $request, Link $link): AdminLinkResource
     {
+        $this->authorize('update', $link);
+
         /** @var User $actor */
         $actor = $request->user();
 
@@ -113,6 +119,8 @@ class LinkManagementController extends Controller
 
     public function destroy(Request $request, Link $link): JsonResponse
     {
+        $this->authorize('delete', $link);
+
         /** @var User $actor */
         $actor = $request->user();
 

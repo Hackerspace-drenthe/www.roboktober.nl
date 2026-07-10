@@ -25,6 +25,8 @@ class CompetitionManagementController extends Controller
 {
     public function index(Edition $edition): JsonResponse
     {
+        $this->authorize('viewAny', CompetitionCategory::class);
+
         $categories = CompetitionCategory::query()
             ->where('edition_id', $edition->id)
             ->with(['battles.scores.robot.team'])
@@ -65,6 +67,8 @@ class CompetitionManagementController extends Controller
 
     public function storeCategory(StoreCompetitionCategoryRequest $request, Edition $edition): CompetitionCategoryResource
     {
+        $this->authorize('create', CompetitionCategory::class);
+
         /** @var array{naam: string, omschrijving?: string|null, volgorde?: int|null} $validated */
         $validated = $request->validated();
 
@@ -83,6 +87,8 @@ class CompetitionManagementController extends Controller
 
     public function updateCategory(Request $request, CompetitionCategory $competitionCategory): CompetitionCategoryResource
     {
+        $this->authorize('update', $competitionCategory);
+
         /** @var array{naam?: string, omschrijving?: string|null, volgorde?: int|null} $validated */
         $validated = $request->validate([
             'naam' => ['sometimes', 'string', 'max:120'],
@@ -107,6 +113,8 @@ class CompetitionManagementController extends Controller
 
     public function storeBattle(StoreCompetitionBattleRequest $request, CompetitionCategory $competitionCategory): CompetitionBattleResource
     {
+        $this->authorize('update', $competitionCategory);
+
         /** @var array{naam: string, battle_mode: string, omschrijving?: string|null, scheduled_at?: string|null, volgorde?: int|null} $validated */
         $validated = $request->validated();
 
@@ -125,6 +133,8 @@ class CompetitionManagementController extends Controller
 
     public function updateBattle(Request $request, CompetitionBattle $competitionBattle): CompetitionBattleResource
     {
+        $this->authorize('update', $competitionBattle);
+
         /** @var array{naam?: string, battle_mode?: string, omschrijving?: string|null, scheduled_at?: string|null, volgorde?: int|null} $validated */
         $validated = $request->validate([
             'naam' => ['sometimes', 'string', 'max:120'],
@@ -145,6 +155,8 @@ class CompetitionManagementController extends Controller
         UpsertCompetitionBattleScoresRequest $request,
         CompetitionBattle $competitionBattle,
     ): CompetitionBattleResource {
+        $this->authorize('update', $competitionBattle);
+
         /** @var array{entries: list<array{robot_id: int, punten: int, opmerkingen?: string|null}>} $validated */
         $validated = $request->validated();
 

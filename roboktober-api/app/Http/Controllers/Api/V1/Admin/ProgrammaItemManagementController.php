@@ -25,6 +25,8 @@ class ProgrammaItemManagementController extends Controller
 
     public function index(Edition $edition): AnonymousResourceCollection
     {
+        $this->authorize('viewAny', ProgrammaItem::class);
+
         $items = $edition->programmaItems()
             ->with('media')
             ->orderBy('start_at')
@@ -37,6 +39,8 @@ class ProgrammaItemManagementController extends Controller
 
     public function store(StoreProgrammaItemRequest $request, Edition $edition): ProgrammaItemResource
     {
+        $this->authorize('create', ProgrammaItem::class);
+
         /** @var User $actor */
         $actor = $request->user();
 
@@ -75,6 +79,8 @@ class ProgrammaItemManagementController extends Controller
 
     public function update(UpdateProgrammaItemRequest $request, ProgrammaItem $programmaItem): ProgrammaItemResource
     {
+        $this->authorize('update', $programmaItem);
+
         /** @var User $actor */
         $actor = $request->user();
 
@@ -126,6 +132,8 @@ class ProgrammaItemManagementController extends Controller
 
     public function destroy(Request $request, ProgrammaItem $programmaItem): JsonResponse
     {
+        $this->authorize('delete', $programmaItem);
+
         /** @var User $actor */
         $actor = $request->user();
 
