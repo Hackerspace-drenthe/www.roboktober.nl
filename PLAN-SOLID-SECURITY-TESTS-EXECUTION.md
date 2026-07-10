@@ -73,7 +73,10 @@ Controller-bloat reduceren en duplicatie verwijderen.
 3. Bestaande API contracten blijven ongewijzigd.
 
 ### Status
-- Gepland
+- In uitvoering
+- Uitgevoerd: routebestand opgesplitst in domeinbestanden (public/authenticated/admin) met behoud van bestaande route-namen.
+- Uitgevoerd: dubbele analytics/page-visit logica geëxtraheerd naar gedeelde services (`PathNormalizer`, `PageVisitAggregateService`).
+- Gevalideerd: route footprint behouden en regressietests op analytics/admin/programma slagen.
 
 ## Fase 4 - Teststrategie uitbreiden
 
