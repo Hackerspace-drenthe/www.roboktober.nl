@@ -93,7 +93,12 @@ Regressierisico verlagen op backend en frontend.
 2. Kritieke stromen hebben ten minste 1 positieve en 1 negatieve test.
 
 ### Status
-- Gepland
+- In uitvoering
+- Uitgevoerd: Vitest + jsdom + Vue Test Utils testinfrastructuur toegevoegd.
+- Uitgevoerd: Playwright smoke e2e infrastructuur toegevoegd met lokale webserverconfig.
+- Uitgevoerd: eerste unit tests voor routercontracten en auth-composable.
+- Uitgevoerd: eerste publieke smoke e2e tests voor home en programma routes.
+- Gevalideerd: unit tests en e2e smoke tests slagen lokaal.
 
 ## 4. Risico's en mitigaties
 
