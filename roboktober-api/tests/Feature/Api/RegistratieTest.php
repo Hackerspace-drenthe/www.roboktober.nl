@@ -169,7 +169,7 @@ describe('POST /api/v1/registratie', function (): void {
     });
 
     it('applies rate limiting to registration requests', function (): void {
-        RateLimiter::clear('registratie-ip:127.0.0.1');
+        RateLimiter::clear('registratie-store-ip:127.0.0.1');
 
         for ($i = 0; $i < 5; $i++) {
             postRegistratieAs($this->user, registratieBasisPayload($this->edition->id, [

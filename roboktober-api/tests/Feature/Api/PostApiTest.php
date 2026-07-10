@@ -70,4 +70,24 @@ describe('GET /api/v1/posts/{slug}', function (): void {
     it('returns 404 for unknown slug', function (): void {
         $this->getJson('/api/v1/posts/bestaat-niet')->assertNotFound();
     });
+
+    it('sanitizes unsafe html in post content output', function (): void {
+        $post = Post::factory()->create([
+            'is_published' => true,
+            'published_at' => now()->subDay(),
+            'slug' => 'veilig-html-artikel',
+            'content_format' => ContentFormat::Html,
+            'content' => '<p>Veilige tekst</p><script>alert(1)</script><a href="javascript:alert(2)">klik</a>',
+        ]);
+
+        $response = $this->getJson('/api/v1/posts/'.$post->slug);
+
+        $response->assertOk();
+
+        $content = (string) $response->json('data.content');
+
+        expect($content)->toContain('<p>Veilige tekst</p>');
+        expect($content)->not->toContain('<script>');
+        expect($content)->not->toContain('javascript:alert(2)');
+    });
 });

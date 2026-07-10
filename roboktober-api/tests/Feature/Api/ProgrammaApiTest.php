@@ -43,6 +43,32 @@ describe('Programma API', function (): void {
             ->assertJsonPath('data.0.titel', 'Open workshop');
     });
 
+    it('sanitizes rendered programma description output', function (): void {
+        $edition = Edition::factory()->create([
+            'is_done' => false,
+        ]);
+
+        ProgrammaItem::query()->create([
+            'edition_id' => $edition->id,
+            'titel' => 'Veilig programma-item',
+            'beschrijving' => '<p>Programma tekst</p><img src="x" onerror="alert(1)"><script>alert(2)</script>',
+            'content_format' => ContentFormat::Html,
+            'start_at' => now()->addDay(),
+            'end_at' => now()->addDay()->addHours(1),
+            'volgorde' => 1,
+            'is_published' => true,
+        ]);
+
+        $response = $this->getJson('/api/v1/edities/'.$edition->id.'/programma')
+            ->assertOk();
+
+        $rendered = (string) $response->json('data.0.beschrijving_rendered');
+
+        expect($rendered)->toContain('<p>Programma tekst</p>');
+        expect($rendered)->not->toContain('onerror=');
+        expect($rendered)->not->toContain('<script>');
+    });
+
     it('allows moderators to manage programma items', function (): void {
         $edition = Edition::factory()->create([
             'is_done' => false,

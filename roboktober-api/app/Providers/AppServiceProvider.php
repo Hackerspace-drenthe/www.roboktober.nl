@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         RateLimiter::for('registratie', function (Request $request): array {
-            if ($request->routeIs('registratie.store')) {
+            if ($request->routeIs('api.v1.registratie.store') || $request->routeIs('registratie.store')) {
                 $emailInput = $request->input('email');
                 $email = is_string($emailInput) ? mb_strtolower($emailInput) : '';
 

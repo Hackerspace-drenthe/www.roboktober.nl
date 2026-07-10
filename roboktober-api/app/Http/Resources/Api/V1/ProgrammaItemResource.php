@@ -6,6 +6,7 @@ namespace App\Http\Resources\Api\V1;
 
 use App\Enums\ContentFormat;
 use App\Models\ProgrammaItem;
+use App\Services\Security\HtmlSanitizer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
@@ -20,9 +21,11 @@ class ProgrammaItemResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $renderedBeschrijving = $this->content_format === ContentFormat::Markdown
+        $rawRenderedBeschrijving = $this->content_format === ContentFormat::Markdown
             ? Str::markdown($this->beschrijving)
             : $this->beschrijving;
+
+        $renderedBeschrijving = HtmlSanitizer::sanitize($rawRenderedBeschrijving);
 
         return [
             'id' => $this->id,

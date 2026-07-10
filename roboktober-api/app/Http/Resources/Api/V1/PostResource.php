@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Resources\Api\V1;
 
 use App\Models\Post;
+use App\Services\Security\HtmlSanitizer;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,6 +21,12 @@ class PostResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $content = $this->content;
+
+        if ($this->content_format->value === 'html') {
+            $content = HtmlSanitizer::sanitize($this->content);
+        }
+
         return [
             'id' => $this->id,
             'slug' => $this->slug,
@@ -27,7 +34,7 @@ class PostResource extends JsonResource
             'excerpt' => $this->excerpt,
             'content' => $this->when(
                 $request->routeIs('api.v1.posts.show'),
-                fn () => $this->content,
+                fn () => $content,
             ),
             'content_format' => $this->content_format,
             'categorie' => $this->categorie,
