@@ -200,6 +200,31 @@ export interface Edition {
   is_done: boolean
 }
 
+export interface ProgrammaItem {
+  id: number
+  edition_id: number
+  titel: string
+  beschrijving: string
+  beschrijving_rendered: string
+  content_format: 'html' | 'markdown'
+  start_at: string
+  end_at: string | null
+  volgorde: number
+  is_published: boolean
+  gallery: Media[]
+  bijlagen: Media[]
+}
+
+export interface AdminProgrammaItemPayload {
+  titel: string
+  beschrijving: string
+  content_format: 'html' | 'markdown'
+  start_at: string
+  end_at?: string | null
+  volgorde?: number
+  is_published?: boolean
+}
+
 export interface AdminEditionPayload {
   naam: string
   location: {
@@ -324,6 +349,26 @@ export interface PaginatedResponse<T> {
 
 export type PageVisitGranularity = 'hourly' | 'daily'
 
+export type AnalyticsEventType =
+  | 'page_view'
+  | 'session_start'
+  | 'session_end'
+  | 'tab_switch'
+  | 'click'
+  | 'form_start'
+  | 'form_submit'
+
+export interface AnalyticsEventPayload {
+  session_id: string
+  event_type: AnalyticsEventType
+  event_name?: string
+  page_path?: string
+  route_name?: string
+  referrer_path?: string
+  occurred_at?: string
+  payload?: Record<string, unknown>
+}
+
 export interface AdminPageVisitAnalytics {
   granularity: PageVisitGranularity
   from: string
@@ -337,10 +382,30 @@ export interface AdminPageVisitAnalytics {
   totals: {
     overall_visits: number
     pages_tracked: number
+    sessions_tracked: number
+    logged_in_users: number
+    anonymous_visitors: number
   }
+  events_by_type: Record<string, number>
+  journeys: {
+    top_transitions: Array<{
+      from: string
+      to: string
+      count: number
+    }>
+    recent_sessions: Array<{
+      session_id: string
+      actor_type: 'logged_in' | 'anonymous'
+      user_id: number | null
+      events_count: number
+      steps: string[]
+      last_seen_at: string
+    }>
+  }
+  retention_days: number
 }
 
-export type RichMediaTargetType = 'post' | 'page' | 'team' | 'team_update' | 'robot' | 'user'
+export type RichMediaTargetType = 'post' | 'page' | 'team' | 'team_update' | 'robot' | 'user' | 'programma_item'
 
 export interface RichMediaItem {
   id: number

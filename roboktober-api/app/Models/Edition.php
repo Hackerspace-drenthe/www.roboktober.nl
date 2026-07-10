@@ -62,4 +62,15 @@ class Edition extends Model
     {
         return $this->hasMany(CompetitionCategory::class)->orderBy('volgorde')->orderBy('id');
     }
+
+    /**
+     * @return HasMany<ProgrammaItem, $this>
+     */
+    public function programmaItems(): HasMany
+    {
+        return $this->hasMany(ProgrammaItem::class)
+            ->orderBy('start_at')
+            ->orderBy('volgorde')
+            ->orderBy('id');
+    }
 }

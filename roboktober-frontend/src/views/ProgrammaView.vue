@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { getEditions } from '@/api'
+import { getEditionProgrammaItems, getEditions } from '@/api'
 import headerImage from '@/assets/headers/header-programma.png'
-import type { Edition } from '@/types/api'
+import type { Edition, ProgrammaItem } from '@/types/api'
 import { computed, onMounted, ref } from 'vue'
 
 const heroStyle = {
@@ -11,6 +11,7 @@ const heroStyle = {
 }
 
 const editie = ref<Edition | null>(null)
+const programmaItems = ref<ProgrammaItem[]>([])
 const mapCoords = ref<{ lat: number; lon: number } | null>(null)
 const loading = ref(false)
 const error = ref('')
@@ -55,6 +56,31 @@ function kiesProgrammaEditie(edities: Edition[]): Edition | null {
 
   return openEditie ?? [...edities].sort((a, b) => a.start_at.localeCompare(b.start_at))[0] ?? null
 }
+
+const gegroepeerdeItems = computed(() => {
+  const groups = new Map<string, ProgrammaItem[]>()
+
+  for (const item of programmaItems.value) {
+    const date = new Date(item.start_at)
+    const key = Number.isNaN(date.getTime())
+      ? 'Onbekende datum'
+      : date.toLocaleDateString('nl-NL', {
+        weekday: 'long',
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+      })
+
+    const current = groups.get(key) ?? []
+    current.push(item)
+    groups.set(key, current)
+  }
+
+  return Array.from(groups.entries()).map(([datum, items]) => ({
+    datum,
+    items: [...items].sort((a, b) => a.start_at.localeCompare(b.start_at) || a.volgorde - b.volgorde || a.id - b.id),
+  }))
+})
 
 async function geocodeLocatie(locatie: string): Promise<void> {
   mapCoords.value = null
@@ -136,6 +162,28 @@ function formatEditiePeriode(item: Edition | null): string {
   return end ? `${start} t/m ${end}` : start
 }
 
+function formatTijd(iso: string | null): string {
+  if (!iso) {
+    return 'Tijd volgt'
+  }
+
+  return new Date(iso).toLocaleTimeString('nl-NL', {
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+}
+
+function formatTijdRange(start: string, end: string | null): string {
+  const startText = formatTijd(start)
+  const endText = formatTijd(end)
+
+  if (!end || endText === 'Tijd volgt') {
+    return startText
+  }
+
+  return `${startText} - ${endText}`
+}
+
 const mapEmbedUrl = computed(() => {
   if (!mapCoords.value) {
     return ''
@@ -202,6 +250,10 @@ onMounted(async () => {
   try {
     const edities = await getEditions()
     editie.value = kiesProgrammaEditie(edities)
+
+    if (editie.value) {
+      programmaItems.value = await getEditionProgrammaItems(editie.value.id)
+    }
 
     const geocodeQuery = editieLocatieZoektekst(editie.value)
     if (geocodeQuery) {
@@ -274,54 +326,37 @@ onMounted(async () => {
     <section class="bg-white py-20" aria-labelledby="programma-title">
       <div class="mx-auto max-w-3xl px-6">
         <h2 id="programma-title" class="mb-10 text-2xl font-black text-robo-dark">
-          Twee momenten om op te letten
+          Programma per dag
         </h2>
-        <ol class="relative border-l-2 border-robo-orange/30">
-          <li class="mb-10 ml-8">
-            <span
-              class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-robo-orange text-xs font-black text-white"
-              aria-hidden="true"
-            >1</span>
-            <h3 class="mb-1 text-xl font-bold text-robo-dark">Kickoff-avond</h3>
-            <time class="mb-2 block text-sm font-medium text-robo-orange">Begin oktober 2026</time>
-            <p class="text-slate-600">
-              Introductie in de wereld van combat robotics. Rondleiding door de werkplaats,
-              eerste blik op de arena en kennismaking met de deelnemende teams.
-              Open voor iedereen — ook kijkers zijn welkom.
-            </p>
-            <div class="mt-4 rounded-lg bg-slate-50 border border-slate-200 p-4">
-              <h4 class="mb-1 font-bold text-robo-dark">Presentatie door Walter</h4>
-              <p class="text-sm text-slate-600">
-                Walter (Team Upstart) geeft een presentatie over zijn robots en legt uit wat er
-                nodig is om er zelf een te bouwen — van idee tot rijdende machine. Geschikt voor
-                beginners en nieuwsgierigen van alle leeftijden.
-              </p>
-              <div class="mt-3 rounded-md bg-robo-orange/10 px-4 py-3">
-                <p class="text-sm font-medium text-robo-dark">
-                  Startkitjes
-                </p>
-                <p class="mt-1 text-sm text-slate-600">
-                  Er zijn <strong>Roboktober-kits</strong> beschikbaar met de minimaal noodzakelijke
-                  onderdelen: N20-motortjes, accu, motordriver en een <strong>ESP32-C3</strong>
-                  microcontroller. Of er ook mooie PCB's bij zitten is nog niet zeker — dat moeten
-                  we nog regelen. Meer nodig heb je in ieder geval niet voor je eerste antweight.
-                </p>
-              </div>
-            </div>
-          </li>
-          <li class="ml-8">
-            <span
-              class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-robo-orange text-xs font-black text-white"
-              aria-hidden="true"
-            >2</span>
-            <h3 class="mb-1 text-xl font-bold text-robo-dark">Battle Day</h3>
-            <time class="mb-2 block text-sm font-medium text-robo-orange">Eind oktober 2026</time>
-            <p class="text-slate-600">
-              De dag van de gevechten. Robots worden gekeurd, ingeschaald en laten het
-              dan los in de arena. Publiek welkom — gratis toegang.
-            </p>
-          </li>
-        </ol>
+
+        <p v-if="loading" class="text-slate-600">Programma laden...</p>
+        <p v-else-if="error" class="text-red-700">{{ error }}</p>
+        <p v-else-if="gegroepeerdeItems.length === 0" class="text-slate-600">
+          Er zijn nog geen programma-items gepubliceerd voor deze editie.
+        </p>
+
+        <div v-else class="space-y-10">
+          <section v-for="groep in gegroepeerdeItems" :key="groep.datum" class="rounded-xl border border-slate-200 bg-slate-50 p-5">
+            <h3 class="mb-5 text-lg font-black capitalize text-robo-dark">{{ groep.datum }}</h3>
+
+            <ol class="relative border-l-2 border-robo-orange/30">
+              <li v-for="(item, index) in groep.items" :key="item.id" class="ml-8" :class="index < groep.items.length - 1 ? 'mb-8' : ''">
+                <span
+                  class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-robo-orange text-xs font-black text-white"
+                  aria-hidden="true"
+                >{{ index + 1 }}</span>
+
+                <h4 class="mb-1 text-xl font-bold text-robo-dark">{{ item.titel }}</h4>
+                <time class="mb-2 block text-sm font-medium text-robo-orange">{{ formatTijdRange(item.start_at, item.end_at) }}</time>
+
+                <div class="prose prose-slate max-w-none text-slate-700">
+                  <!-- eslint-disable-next-line vue/no-v-html -->
+                  <div v-html="item.beschrijving_rendered" />
+                </div>
+              </li>
+            </ol>
+          </section>
+        </div>
 
         <div class="mt-12 rounded-xl border border-robo-orange/30 bg-orange-50 p-6">
           <p class="text-sm text-slate-600">

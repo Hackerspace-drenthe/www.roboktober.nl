@@ -15,6 +15,8 @@ import type {
   AdminDashboardSummary,
   AdminEditionPayload,
   AdminEditionCompetitionData,
+  AdminProgrammaItemPayload,
+  AnalyticsEventPayload,
   AdminLink,
   AdminLinkPayload,
   AdminPageVisitAnalytics,
@@ -38,6 +40,7 @@ import type {
   Link,
   LoginPayload,
   Page,
+  ProgrammaItem,
   PaginatedResponse,
   Post,
   RegisterPayload,
@@ -182,6 +185,11 @@ export async function getEditionCompetitionLeaderboard(editionId: number): Promi
   return data.data
 }
 
+export async function getEditionProgrammaItems(editionId: number): Promise<ProgrammaItem[]> {
+  const { data } = await api.get<{ data: ProgrammaItem[] }>(`/edities/${editionId}/programma`)
+  return data.data
+}
+
 // ---------------------------------------------------------------------------
 // Pages
 // ---------------------------------------------------------------------------
@@ -194,6 +202,25 @@ export async function getPage(slug: string): Promise<Page> {
 export async function trackPageVisit(pagePath: string): Promise<void> {
   await api.post('/analytics/page-visits', {
     page_path: pagePath,
+  })
+}
+
+export async function trackAnalyticsEvent(payload: AnalyticsEventPayload): Promise<void> {
+  await api.post('/analytics/events', payload)
+}
+
+export async function sendSessionEndAnalyticsEvent(payload: AnalyticsEventPayload): Promise<void> {
+  const token = localStorage.getItem('auth_token')
+
+  await fetch('/api/v1/analytics/events', {
+    method: 'POST',
+    keepalive: true,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: JSON.stringify(payload),
   })
 }
 
@@ -651,6 +678,31 @@ export async function getAdminPageVisitAnalytics(params?: {
 export async function getAdminEditionCompetition(editionId: number): Promise<AdminEditionCompetitionData> {
   const { data } = await api.get<{ data: AdminEditionCompetitionData }>(`/admin/edities/${editionId}/competitie`)
   return data.data
+}
+
+export async function getAdminEditionProgrammaItems(editionId: number): Promise<ProgrammaItem[]> {
+  const { data } = await api.get<{ data: ProgrammaItem[] }>(`/admin/edities/${editionId}/programma`)
+  return data.data
+}
+
+export async function createAdminEditionProgrammaItem(
+  editionId: number,
+  payload: AdminProgrammaItemPayload,
+): Promise<ProgrammaItem> {
+  const { data } = await api.post<{ data: ProgrammaItem }>(`/admin/edities/${editionId}/programma`, payload)
+  return data.data
+}
+
+export async function updateAdminProgrammaItem(
+  programmaItemId: number,
+  payload: Partial<AdminProgrammaItemPayload>,
+): Promise<ProgrammaItem> {
+  const { data } = await api.patch<{ data: ProgrammaItem }>(`/admin/programma/${programmaItemId}`, payload)
+  return data.data
+}
+
+export async function deleteAdminProgrammaItem(programmaItemId: number): Promise<void> {
+  await api.delete(`/admin/programma/${programmaItemId}`)
 }
 
 export async function createAdminCompetitionCategory(

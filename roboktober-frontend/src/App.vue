@@ -249,6 +249,7 @@ async function handleLogout(): Promise<void> {
                 <RouterLink v-if="auth.hasRole('moderator')" to="/admin/edities" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu"><span class="inline-flex w-full items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] font-bold text-slate-200">E</span><span>Edities</span></span></RouterLink>
                 <RouterLink v-if="auth.hasRole('moderator')" to="/admin/robots" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu"><span class="inline-flex w-full items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] font-bold text-slate-200">R</span><span>Robots</span></span></RouterLink>
                 <RouterLink v-if="auth.hasRole('moderator')" to="/admin/links" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu"><span class="inline-flex w-full items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] font-bold text-slate-200">L</span><span>Links</span></span></RouterLink>
+                <RouterLink v-if="auth.hasRole('moderator')" to="/admin/programma" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu"><span class="inline-flex w-full items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] font-bold text-slate-200">PR</span><span>Programma</span></span></RouterLink>
                 <RouterLink v-if="auth.hasRole('moderator')" to="/admin/competitie" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu"><span class="inline-flex w-full items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] font-bold text-slate-200">C</span><span>Competitie</span></span></RouterLink>
                 <RouterLink v-if="auth.hasRole('moderator')" to="/admin/posts" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu"><span class="inline-flex w-full items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] font-bold text-slate-200">P</span><span>Posts</span></span></RouterLink>
                 <RouterLink v-if="auth.hasRole('moderator')" to="/admin/pages" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass" @click="closeAccountMenu"><span class="inline-flex w-full items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded bg-white/10 text-[10px] font-bold text-slate-200">G</span><span>Pagina's</span></span></RouterLink>
@@ -429,6 +430,14 @@ async function handleLogout(): Promise<void> {
               :active-class="mobileNavActiveClass"
               @click="sluitMenu"
             >Links</RouterLink>
+          </li>
+          <li v-if="auth.hasRole('moderator')">
+            <RouterLink
+              to="/admin/programma"
+              :class="mobileNavLinkClass"
+              :active-class="mobileNavActiveClass"
+              @click="sluitMenu"
+            >Programma</RouterLink>
           </li>
           <li v-if="auth.hasRole('moderator')">
             <RouterLink

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AnalyticsEvent;
 use App\Models\PageVisitAggregate;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
 
 class PageVisitAnalyticsController extends Controller
 {
@@ -52,6 +52,11 @@ class PageVisitAnalyticsController extends Controller
 
         if ($to->lt($from)) {
             [$from, $to] = [$to->copy(), $from->copy()];
+        }
+
+        $retentionCutoff = Carbon::now()->subDays(30)->startOfDay();
+        if ($from->lt($retentionCutoff)) {
+            $from = $retentionCutoff;
         }
 
         $rows = PageVisitAggregate::query()
@@ -107,6 +112,100 @@ class PageVisitAnalyticsController extends Controller
             ])
             ->values();
 
+        $eventRows = AnalyticsEvent::query()
+            ->whereBetween('occurred_at', [$from, $to])
+            ->orderBy('occurred_at')
+            ->get([
+                'session_id',
+                'user_id',
+                'visitor_hash',
+                'event_type',
+                'event_name',
+                'page_path',
+                'occurred_at',
+            ]);
+
+        $loggedInUsers = $eventRows
+            ->pluck('user_id')
+            ->filter(static fn (mixed $id): bool => is_int($id))
+            ->unique()
+            ->count();
+
+        $anonymousVisitors = $eventRows
+            ->filter(static fn ($event): bool => $event->user_id === null)
+            ->pluck('visitor_hash')
+            ->filter(static fn (mixed $hash): bool => is_string($hash) && $hash !== '')
+            ->unique()
+            ->count();
+
+        $eventTypeCounts = $eventRows
+            ->groupBy('event_type')
+            ->map(static fn ($items): int => $items->count())
+            ->sortDesc()
+            ->all();
+
+        $sessionGroups = $eventRows->groupBy('session_id');
+
+        /** @var array<string, int> $transitionCounts */
+        $transitionCounts = [];
+
+        $recentSessions = $sessionGroups
+            ->map(function ($sessionRows, string $sessionId) use (&$transitionCounts): array {
+                $rows = $sessionRows->sortBy('occurred_at')->values();
+                $sequence = [];
+
+                foreach ($rows as $row) {
+                    if (! is_string($row->page_path) || $row->page_path === '') {
+                        continue;
+                    }
+
+                    $last = $sequence[count($sequence) - 1] ?? null;
+                    if ($last !== $row->page_path) {
+                        $sequence[] = $row->page_path;
+                    }
+                }
+
+                for ($index = 0; $index < count($sequence) - 1; $index++) {
+                    $fromPath = $sequence[$index] ?? null;
+                    $toPath = $sequence[$index + 1] ?? null;
+
+                    if (! is_string($fromPath) || ! is_string($toPath)) {
+                        continue;
+                    }
+
+                    $transitionKey = $fromPath.' -> '.$toPath;
+                    $transitionCounts[$transitionKey] = ($transitionCounts[$transitionKey] ?? 0) + 1;
+                }
+
+                $firstRow = $rows->first();
+                $lastRow = $rows->last();
+
+                return [
+                    'session_id' => $sessionId,
+                    'actor_type' => $firstRow?->user_id === null ? 'anonymous' : 'logged_in',
+                    'user_id' => $firstRow?->user_id,
+                    'events_count' => $rows->count(),
+                    'steps' => array_slice($sequence, 0, 12),
+                    'last_seen_at' => Carbon::parse((string) $lastRow?->occurred_at)->toIso8601String(),
+                ];
+            })
+            ->sortByDesc('last_seen_at')
+            ->take(15)
+            ->values();
+
+        arsort($transitionCounts);
+        $topTransitions = collect(array_slice($transitionCounts, 0, 12, true))
+            ->map(static function (int $count, string $key): array {
+                [$fromPath, $toPath] = explode(' -> ', $key, 2);
+
+                return [
+                    'from' => $fromPath,
+                    'to' => $toPath,
+                    'count' => $count,
+                ];
+            })
+            ->values();
+
         return response()->json([
             'data' => [
                 'granularity' => $granularity,
@@ -117,7 +216,16 @@ class PageVisitAnalyticsController extends Controller
                 'totals' => [
                     'overall_visits' => array_sum($totalsByPage),
                     'pages_tracked' => count($totalsByPage),
+                    'sessions_tracked' => $sessionGroups->count(),
+                    'logged_in_users' => $loggedInUsers,
+                    'anonymous_visitors' => $anonymousVisitors,
                 ],
+                'events_by_type' => $eventTypeCounts,
+                'journeys' => [
+                    'top_transitions' => $topTransitions,
+                    'recent_sessions' => $recentSessions,
+                ],
+                'retention_days' => 30,
             ],
         ]);
     }

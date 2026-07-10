@@ -12,6 +12,7 @@ use App\Http\Resources\Api\V1\RichMediaResource;
 use App\Models\Media;
 use App\Models\Page;
 use App\Models\Post;
+use App\Models\ProgrammaItem;
 use App\Models\Robot;
 use App\Models\Team;
 use App\Models\TeamUpdate;
@@ -181,6 +182,7 @@ class RichMediaController extends Controller
             'robot' => Robot::query()->with('team')->findOrFail($id),
             'team_update' => TeamUpdate::query()->with('team')->findOrFail($id),
             'user' => User::query()->findOrFail($id),
+            'programma_item' => ProgrammaItem::query()->findOrFail($id),
             default => abort(Response::HTTP_UNPROCESSABLE_ENTITY, 'Onbekend target_type.'),
         };
     }

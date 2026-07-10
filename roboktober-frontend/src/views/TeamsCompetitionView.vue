@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { getEditionCompetitionLeaderboard, getEditions, getTeams } from '@/api'
+import { useAnalytics } from '@/composables/useAnalytics'
 import type { Edition, EditionCompetitionLeaderboard, Team } from '@/types/api'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -7,6 +8,7 @@ import headerImage from '@/assets/headers/header-teams.png'
 
 const route = useRoute()
 const router = useRouter()
+const analytics = useAnalytics()
 
 const actieveTab = computed<'teams' | 'competitie'>(() => {
   return route.name === 'teams-competitie' ? 'competitie' : 'teams'
@@ -177,11 +179,30 @@ async function refreshLeaderboard(): Promise<void> {
     return
   }
 
+  void analytics.track('click', {
+    eventName: 'refresh_leaderboard',
+    pagePath: route.path,
+    routeName: typeof route.name === 'string' ? route.name : undefined,
+    payload: {
+      edition_id: selectedEditionId.value,
+    },
+  }).catch(() => {
+    // Analytics is best-effort and should not block interactions.
+  })
+
   delete leaderboardCache.value[selectedEditionId.value]
   await loadLeaderboard()
 }
 
 async function openCompetitieTab(): Promise<void> {
+  void analytics.track('click', {
+    eventName: 'open_competitie_tab',
+    pagePath: route.path,
+    routeName: typeof route.name === 'string' ? route.name : undefined,
+  }).catch(() => {
+    // Analytics is best-effort and should not block interactions.
+  })
+
   await router.push('/teams/competitie')
 }
 
@@ -191,8 +212,22 @@ watch(selectedEditionId, async () => {
   }
 })
 
-watch(actieveTab, async (tab) => {
+watch(actieveTab, async (tab, previousTab) => {
   applySeoMeta()
+
+  if (tab !== previousTab) {
+    void analytics.track('tab_switch', {
+      eventName: `${previousTab ?? 'unknown'}->${tab}`,
+      pagePath: route.path,
+      routeName: typeof route.name === 'string' ? route.name : undefined,
+      payload: {
+        from: previousTab ?? null,
+        to: tab,
+      },
+    }).catch(() => {
+      // Analytics is best-effort and should not block interactions.
+    })
+  }
 
   if (tab === 'competitie' && !leaderboard.value && !competitionLoading.value) {
     await loadLeaderboard()

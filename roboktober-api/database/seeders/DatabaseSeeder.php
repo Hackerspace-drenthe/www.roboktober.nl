@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             EditionSeeder::class,
+            ProgrammaItemSeeder::class,
             TeamSeeder::class,
             LinkSeeder::class,
             PostSeeder::class,

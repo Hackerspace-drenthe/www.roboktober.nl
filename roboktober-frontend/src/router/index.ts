@@ -198,6 +198,16 @@ const router = createRouter({
       },
     },
     {
+      path: '/admin/programma',
+      name: 'admin-programma',
+      component: () => import('../views/AdminProgrammaView.vue'),
+      meta: {
+        title: 'Admin Programma — Roboktober',
+        requiresAuth: true,
+        minRole: 'moderator',
+      },
+    },
+    {
       path: '/admin/posts',
       name: 'admin-posts',
       component: () => import('../views/AdminPostsView.vue'),

@@ -20,7 +20,7 @@ class AttachRichMediaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'target_type' => ['required', 'string', Rule::in(['post', 'page', 'team', 'team_update', 'robot', 'user'])],
+            'target_type' => ['required', 'string', Rule::in(['post', 'page', 'team', 'team_update', 'robot', 'user', 'programma_item'])],
             'target_id' => ['required', 'integer', 'min:1'],
             'collectie' => ['nullable', 'string', Rule::in(['featured', 'gallery', 'bijlagen', 'hero', 'foto', 'default'])],
             'alt_tekst' => ['nullable', 'string', 'max:255'],

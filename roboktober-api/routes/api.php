@@ -19,8 +19,10 @@ use App\Http\Controllers\Api\V1\Admin\EditionManagementController;
 use App\Http\Controllers\Api\V1\Admin\PageVisitAnalyticsController;
 use App\Http\Controllers\Api\V1\CompetitionController;
 use App\Http\Controllers\Api\V1\EditionController;
+use App\Http\Controllers\Api\V1\AnalyticsEventController;
 use App\Http\Controllers\Api\V1\PageVisitController;
 use App\Http\Controllers\Api\V1\PageController;
+use App\Http\Controllers\Api\V1\ProgrammaController;
 use App\Http\Controllers\Api\V1\PostController;
 use App\Http\Controllers\Api\V1\RegistratieController;
 use App\Http\Controllers\Api\V1\RobotVoteController;
@@ -28,6 +30,7 @@ use App\Http\Controllers\Api\V1\RichMediaController;
 use App\Http\Controllers\Api\V1\TeamRegistrationUpdateController;
 use App\Http\Controllers\Api\V1\TeamRegistrationEditController;
 use App\Http\Controllers\Api\V1\TeamMembershipController;
+use App\Http\Controllers\Api\V1\Admin\ProgrammaItemManagementController;
 use App\Http\Controllers\Api\V1\TeamController;
 use Illuminate\Support\Facades\Route;
 
@@ -71,6 +74,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
 
     // Event editions (public, read-only)
     Route::get('/edities', [EditionController::class, 'index'])->name('editions.index');
+    Route::get('/edities/{edition}/programma', [ProgrammaController::class, 'index'])->name('editions.programma.index');
     Route::get('/edities/{edition}/competitie', [CompetitionController::class, 'leaderboard'])
         ->name('competition.leaderboard');
 
@@ -79,6 +83,10 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
     Route::post('/analytics/page-visits', [PageVisitController::class, 'store'])
         ->middleware('throttle:120,1')
         ->name('analytics.page-visits.store');
+
+    Route::post('/analytics/events', [AnalyticsEventController::class, 'store'])
+        ->middleware('throttle:240,1')
+        ->name('analytics.events.store');
 
     // Team registration (authenticated, write)
     Route::post('/registratie', [RegistratieController::class, 'store'])
@@ -176,6 +184,14 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
 
             Route::get('/edities/{edition}/competitie', [CompetitionManagementController::class, 'index'])
                 ->name('competition.index');
+            Route::get('/edities/{edition}/programma', [ProgrammaItemManagementController::class, 'index'])
+                ->name('programma.index');
+            Route::post('/edities/{edition}/programma', [ProgrammaItemManagementController::class, 'store'])
+                ->name('programma.store');
+            Route::patch('/programma/{programmaItem}', [ProgrammaItemManagementController::class, 'update'])
+                ->name('programma.update');
+            Route::delete('/programma/{programmaItem}', [ProgrammaItemManagementController::class, 'destroy'])
+                ->name('programma.destroy');
             Route::post('/edities/{edition}/competitie/categories', [CompetitionManagementController::class, 'storeCategory'])
                 ->name('competition.categories.store');
             Route::patch('/competitie/categories/{competitionCategory}', [CompetitionManagementController::class, 'updateCategory'])

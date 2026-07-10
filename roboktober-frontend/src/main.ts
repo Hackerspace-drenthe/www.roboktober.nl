@@ -3,16 +3,27 @@ import './assets/main.css'
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import { trackPageVisit } from './api'
+import { useAnalytics } from './composables/useAnalytics'
 
-router.afterEach((to) => {
+const analytics = useAnalytics()
+
+analytics.init()
+
+router.afterEach((to, from) => {
 	const path = to.path
 
 	if (path.startsWith('/admin') || path.startsWith('/forbidden')) {
 		return
 	}
 
-	void trackPageVisit(path).catch(() => {
+	void analytics.track('page_view', {
+		pagePath: path,
+		routeName: typeof to.name === 'string' ? to.name : undefined,
+		referrerPath: from.path,
+		payload: {
+			full_path: to.fullPath,
+		},
+	}).catch(() => {
 		// Visitor tracking is best-effort and should never break UX.
 	})
 })

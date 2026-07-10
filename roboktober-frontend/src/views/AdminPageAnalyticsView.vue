@@ -53,6 +53,16 @@ const xAxisInfo = computed(() => {
   }
 })
 
+const eventTypeRows = computed(() => {
+  if (!analytics.value) {
+    return []
+  }
+
+  return Object.entries(analytics.value.events_by_type)
+    .map(([type, count]) => ({ type, count }))
+    .sort((a, b) => b.count - a.count)
+})
+
 async function loadAnalytics(): Promise<void> {
   loading.value = true
   error.value = ''
@@ -106,7 +116,7 @@ onMounted(async () => {
     </section>
 
     <template v-else-if="analytics">
-      <section class="mb-6 grid gap-4 md:grid-cols-3">
+      <section class="mb-6 grid gap-4 md:grid-cols-3 xl:grid-cols-6">
         <article class="rounded-xl border border-white/10 bg-robo-dark/70 p-4">
           <h2 class="text-xs uppercase tracking-wide text-slate-300">Totaal visits</h2>
           <p class="mt-2 text-3xl font-black text-white">{{ analytics.totals.overall_visits }}</p>
@@ -118,6 +128,18 @@ onMounted(async () => {
         <article class="rounded-xl border border-white/10 bg-robo-dark/70 p-4">
           <h2 class="text-xs uppercase tracking-wide text-slate-300">Top lijnen</h2>
           <p class="mt-2 text-3xl font-black text-white">{{ analytics.series.length }}</p>
+        </article>
+        <article class="rounded-xl border border-white/10 bg-robo-dark/70 p-4">
+          <h2 class="text-xs uppercase tracking-wide text-slate-300">Sessies</h2>
+          <p class="mt-2 text-3xl font-black text-white">{{ analytics.totals.sessions_tracked }}</p>
+        </article>
+        <article class="rounded-xl border border-white/10 bg-robo-dark/70 p-4">
+          <h2 class="text-xs uppercase tracking-wide text-slate-300">Ingelogde users</h2>
+          <p class="mt-2 text-3xl font-black text-white">{{ analytics.totals.logged_in_users }}</p>
+        </article>
+        <article class="rounded-xl border border-white/10 bg-robo-dark/70 p-4">
+          <h2 class="text-xs uppercase tracking-wide text-slate-300">Anonieme bezoekers</h2>
+          <p class="mt-2 text-3xl font-black text-white">{{ analytics.totals.anonymous_visitors }}</p>
         </article>
       </section>
 
@@ -172,6 +194,84 @@ onMounted(async () => {
             <tr v-for="serie in analytics.series" :key="serie.page_path" class="border-t border-white/10">
               <td class="px-4 py-3 text-white">{{ serie.page_path }}</td>
               <td class="px-4 py-3 text-slate-300">{{ serie.total }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="mt-6 grid gap-6 xl:grid-cols-2">
+        <article class="overflow-hidden rounded-xl border border-white/10 bg-robo-dark/60">
+          <header class="border-b border-white/10 px-4 py-3">
+            <h2 class="text-sm font-bold uppercase tracking-wide text-slate-200">Events per type</h2>
+            <p class="text-xs text-slate-400">Retention: {{ analytics.retention_days }} dagen</p>
+          </header>
+          <table class="w-full border-collapse">
+            <thead class="bg-slate-900/70 text-left text-xs uppercase tracking-wide text-slate-300">
+              <tr>
+                <th class="px-4 py-3">Type</th>
+                <th class="px-4 py-3">Aantal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="row in eventTypeRows" :key="row.type" class="border-t border-white/10">
+                <td class="px-4 py-3 text-white">{{ row.type }}</td>
+                <td class="px-4 py-3 text-slate-300">{{ row.count }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+
+        <article class="overflow-hidden rounded-xl border border-white/10 bg-robo-dark/60">
+          <header class="border-b border-white/10 px-4 py-3">
+            <h2 class="text-sm font-bold uppercase tracking-wide text-slate-200">Top overgangspaden</h2>
+            <p class="text-xs text-slate-400">Meest voorkomende stap-naar-stap routeflow</p>
+          </header>
+          <table class="w-full border-collapse">
+            <thead class="bg-slate-900/70 text-left text-xs uppercase tracking-wide text-slate-300">
+              <tr>
+                <th class="px-4 py-3">Van</th>
+                <th class="px-4 py-3">Naar</th>
+                <th class="px-4 py-3">Aantal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="transition in analytics.journeys.top_transitions"
+                :key="`${transition.from}->${transition.to}`"
+                class="border-t border-white/10"
+              >
+                <td class="px-4 py-3 text-white">{{ transition.from }}</td>
+                <td class="px-4 py-3 text-white">{{ transition.to }}</td>
+                <td class="px-4 py-3 text-slate-300">{{ transition.count }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+      </section>
+
+      <section class="mt-6 overflow-hidden rounded-xl border border-white/10 bg-robo-dark/60">
+        <header class="border-b border-white/10 px-4 py-3">
+          <h2 class="text-sm font-bold uppercase tracking-wide text-slate-200">Recente sessiepaden</h2>
+          <p class="text-xs text-slate-400">Laatste actieve sessies met routepad voor UX-analyse</p>
+        </header>
+
+        <table class="w-full border-collapse">
+          <thead class="bg-slate-900/70 text-left text-xs uppercase tracking-wide text-slate-300">
+            <tr>
+              <th class="px-4 py-3">Sessie</th>
+              <th class="px-4 py-3">Type</th>
+              <th class="px-4 py-3">Events</th>
+              <th class="px-4 py-3">Pad</th>
+              <th class="px-4 py-3">Laatste event</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="session in analytics.journeys.recent_sessions" :key="session.session_id" class="border-t border-white/10">
+              <td class="px-4 py-3 font-mono text-xs text-slate-200">{{ session.session_id.slice(0, 12) }}...</td>
+              <td class="px-4 py-3 text-slate-200">{{ session.actor_type === 'logged_in' ? 'Ingelogd' : 'Anoniem' }}</td>
+              <td class="px-4 py-3 text-slate-300">{{ session.events_count }}</td>
+              <td class="px-4 py-3 text-sm text-white">{{ session.steps.join(' -> ') || '-' }}</td>
+              <td class="px-4 py-3 text-xs text-slate-300">{{ new Date(session.last_seen_at).toLocaleString('nl-NL') }}</td>
             </tr>
           </tbody>
         </table>
