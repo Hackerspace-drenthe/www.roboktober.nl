@@ -7,6 +7,7 @@ namespace App\Http\Resources\Api\V1;
 use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 
 /**
  * @mixin Team
@@ -18,6 +19,9 @@ class AdminTeamResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $createdAt = $this->created_at;
+        $updatedAt = $this->updated_at;
+
         return [
             'id' => $this->id,
             'naam' => $this->naam,
@@ -34,8 +38,8 @@ class AdminTeamResource extends JsonResource
             'captain' => new AuthUserResource($this->whenLoaded('captain')),
             'foto' => new MediaResource($this->whenLoaded('media', fn () => $this->mediaCollectie('foto')->first())),
             'robots' => RobotResource::collection($this->whenLoaded('robots')),
-            'created_at' => optional($this->created_at)?->toISOString(),
-            'updated_at' => optional($this->updated_at)?->toISOString(),
+            'created_at' => $createdAt instanceof Carbon ? $createdAt->toISOString() : null,
+            'updated_at' => $updatedAt instanceof Carbon ? $updatedAt->toISOString() : null,
         ];
     }
 }

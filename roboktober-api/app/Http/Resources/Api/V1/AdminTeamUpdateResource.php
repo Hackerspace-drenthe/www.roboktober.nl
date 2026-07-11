@@ -22,8 +22,8 @@ class AdminTeamUpdateResource extends JsonResource
             'id' => $this->id,
             'team_id' => $this->team_id,
             'team' => $this->whenLoaded('team', fn () => [
-                'id' => $this->team?->id,
-                'naam' => $this->team?->naam,
+                'id' => $this->team->id,
+                'naam' => $this->team->naam,
             ]),
             'titel' => $this->titel,
             'excerpt' => $this->excerpt,

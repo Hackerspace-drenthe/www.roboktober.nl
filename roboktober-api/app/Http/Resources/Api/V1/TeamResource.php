@@ -22,30 +22,33 @@ class TeamResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        /** @var Team $team */
+        $team = $this->resource;
+
         return [
-            'id' => $this->id,
-            'naam' => $this->naam,
-            'beschrijving' => $this->opmerkingen,
+            'id' => $team->id,
+            'naam' => $team->naam,
+            'beschrijving' => $team->opmerkingen,
             'edition' => new EditionResource($this->whenLoaded('edition')),
-            'status' => $this->status->value,
-            'status_label' => $this->status->label(),
+            'status' => $team->status->value,
+            'status_label' => $team->status->label(),
             'captain_foto' => $this->whenLoaded(
                 'captain',
-                fn () => new MediaResource($this->captain?->mediaCollectie('foto')->first()),
+                fn () => new MediaResource($team->captain?->mediaCollectie('foto')->first()),
                 null,
             ),
             'captain' => [
-                'naam' => $this->contactpersoon,
+                'naam' => $team->contactpersoon,
                 'foto' => $this->whenLoaded(
                     'captain',
-                    fn () => new MediaResource($this->captain?->mediaCollectie('foto')->first()),
+                    fn () => new MediaResource($team->captain?->mediaCollectie('foto')->first()),
                     null,
                 ),
             ],
             'leden' => [
-                'volwassenen' => $this->volwassenen,
-                'kinderen' => $this->kinderen ?? 0,
-                'totaal' => $this->volwassenen + ($this->kinderen ?? 0),
+                'volwassenen' => $team->volwassenen,
+                'kinderen' => $team->kinderen ?? 0,
+                'totaal' => $team->volwassenen + ($team->kinderen ?? 0),
             ],
             'foto' => new MediaResource($this->whenLoaded('media', fn () => $this->mediaCollectie('foto')->first())),
             'leden_fotos' => MediaResource::collection($this->whenLoaded('media', fn () => $this->mediaCollectie('leden')->get())),

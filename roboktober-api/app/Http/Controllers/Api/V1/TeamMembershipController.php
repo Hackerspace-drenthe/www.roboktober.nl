@@ -38,6 +38,9 @@ class TeamMembershipController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
+        /** @var array{request_message?: string} $validated */
+        $validated = $request->validated();
+
         $membership = TeamMembership::query()->firstOrNew([
             'team_id' => $team->id,
             'user_id' => $user->id,
@@ -53,7 +56,7 @@ class TeamMembershipController extends Controller
 
         $membership->forceFill([
             'status' => TeamMembershipStatus::Pending,
-            'request_message' => (string) ($request->validated()['request_message'] ?? ''),
+            'request_message' => $validated['request_message'] ?? '',
             'reviewed_at' => null,
             'reviewed_by' => null,
         ])->save();
@@ -102,9 +105,12 @@ class TeamMembershipController extends Controller
         /** @var User $user */
         $user = $request->user();
 
+        /** @var array{status: string} $validated */
+        $validated = $request->validated();
+
         $teamMembership->load('team');
 
-        $isCaptainOfTeam = $teamMembership->team?->captain_user_id === $user->id;
+        $isCaptainOfTeam = $teamMembership->team->captain_user_id === $user->id;
         $isPrivileged = $user->hasAnyRole(UserRole::Admin, UserRole::Moderator);
 
         if (! $isCaptainOfTeam && ! $isPrivileged) {
@@ -113,7 +119,7 @@ class TeamMembershipController extends Controller
             ], Response::HTTP_FORBIDDEN);
         }
 
-        $status = TeamMembershipStatus::from((string) $request->validated()['status']);
+        $status = TeamMembershipStatus::from($validated['status']);
 
         $teamMembership->forceFill([
             'status' => $status,

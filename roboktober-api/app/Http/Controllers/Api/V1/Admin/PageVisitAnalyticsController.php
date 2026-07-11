@@ -168,12 +168,8 @@ class PageVisitAnalyticsController extends Controller
                 }
 
                 for ($index = 0; $index < count($sequence) - 1; $index++) {
-                    $fromPath = $sequence[$index] ?? null;
-                    $toPath = $sequence[$index + 1] ?? null;
-
-                    if (! is_string($fromPath) || ! is_string($toPath)) {
-                        continue;
-                    }
+                    $fromPath = $sequence[$index];
+                    $toPath = $sequence[$index + 1];
 
                     $transitionKey = $fromPath.' -> '.$toPath;
                     $transitionCounts[$transitionKey] = ($transitionCounts[$transitionKey] ?? 0) + 1;

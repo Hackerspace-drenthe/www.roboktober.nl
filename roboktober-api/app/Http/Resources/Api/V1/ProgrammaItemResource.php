@@ -21,9 +21,10 @@ class ProgrammaItemResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $beschrijving = $this->beschrijving ?? '';
         $rawRenderedBeschrijving = $this->content_format === ContentFormat::Markdown
-            ? Str::markdown($this->beschrijving)
-            : $this->beschrijving;
+            ? Str::markdown($beschrijving)
+            : $beschrijving;
 
         $renderedBeschrijving = HtmlSanitizer::sanitize($rawRenderedBeschrijving);
 
@@ -34,7 +35,7 @@ class ProgrammaItemResource extends JsonResource
             'beschrijving' => $this->beschrijving,
             'beschrijving_rendered' => $renderedBeschrijving,
             'content_format' => $this->content_format->value,
-            'start_at' => $this->start_at?->toIso8601String(),
+            'start_at' => $this->start_at->toIso8601String(),
             'end_at' => $this->end_at?->toIso8601String(),
             'volgorde' => $this->volgorde,
             'is_published' => $this->is_published,

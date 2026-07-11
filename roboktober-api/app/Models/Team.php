@@ -32,6 +32,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $captain_user_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read User|null $captain
  * @property-read Collection<int, Robot> $robots
  *
  * @see PLAN.md §5.2 — teams schema

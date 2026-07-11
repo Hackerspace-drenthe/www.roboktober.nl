@@ -18,20 +18,23 @@ class TeamMembershipResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $team = $this->team;
+        $user = $this->user;
+
         return [
             'id' => $this->id,
             'status' => $this->status->value,
             'status_label' => $this->status->label(),
             'request_message' => $this->request_message,
-            'team' => $this->team !== null ? [
-                'id' => $this->team->id,
-                'naam' => $this->team->naam,
-            ] : null,
-            'user' => $this->user !== null ? [
-                'id' => $this->user->id,
-                'name' => $this->user->name,
-                'email' => $this->user->email,
-            ] : null,
+            'team' => [
+                'id' => $team->id,
+                'naam' => $team->naam,
+            ],
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+            ],
             'reviewed_at' => $this->reviewed_at?->toISOString(),
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
