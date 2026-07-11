@@ -135,7 +135,7 @@ class LinkSeeder extends Seeder
         ];
 
         foreach ($links as $link) {
-            Link::create($link);
+            Link::query()->create($link);
         }
     }
 }

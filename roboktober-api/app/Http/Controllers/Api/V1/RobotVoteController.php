@@ -17,6 +17,9 @@ class RobotVoteController extends Controller
 {
     public function store(StoreRobotVoteRequest $request, Robot $robot): JsonResponse
     {
+        /** @var array{stars: int} $validated */
+        $validated = $request->validated();
+
         $robot->loadMissing('team');
 
         if ($robot->team?->status !== TeamStatus::Approved) {
@@ -34,7 +37,7 @@ class RobotVoteController extends Controller
         ]);
 
         $created = ! $vote->exists;
-        $vote->stars = (int) $request->validated()['stars'];
+        $vote->stars = $validated['stars'];
         $vote->save();
 
         $stats = RobotVote::query()
@@ -42,9 +45,17 @@ class RobotVoteController extends Controller
             ->selectRaw('COUNT(*) as votes_count, AVG(stars) as average_stars')
             ->first();
 
+        if ($stats === null) {
+            $votesCount = 0;
+            $averageStars = 0.0;
+        } else {
+            $votesCount = (int) $stats->votes_count;
+            $averageStars = (float) $stats->average_stars;
+        }
+
         $robot->forceFill([
-            'awesomeness_votes_count' => (int) ($stats?->votes_count ?? 0),
-            'awesomeness_score' => round((float) ($stats?->average_stars ?? 0), 2),
+            'awesomeness_votes_count' => $votesCount,
+            'awesomeness_score' => round($averageStars, 2),
         ])->save();
 
         return response()->json([

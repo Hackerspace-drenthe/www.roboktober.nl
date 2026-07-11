@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Contracts\Uploads\MediaStorage;
+use App\Models\User;
 use App\Services\Uploads\FilesystemMediaStorage;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -37,7 +38,8 @@ class AppServiceProvider extends ServiceProvider
                 ];
             }
 
-            $user = $request->user();
+            $actor = $request->user();
+            $user = $actor instanceof User ? $actor : null;
 
             if ($user !== null) {
                 return [

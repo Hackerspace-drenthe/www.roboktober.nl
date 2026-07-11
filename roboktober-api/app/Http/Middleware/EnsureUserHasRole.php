@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use App\Enums\UserRole;
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,9 +17,9 @@ class EnsureUserHasRole
      */
     public function handle(Request $request, Closure $next, string ...$roles): Response
     {
-        $user = $request->user();
+        $actor = $request->user();
 
-        if ($user === null || ! isset($user->role)) {
+        if (! $actor instanceof User) {
             abort(401, 'Niet ingelogd.');
         }
 
@@ -27,7 +28,7 @@ class EnsureUserHasRole
             $roles,
         );
 
-        if (! $user->hasAnyRole(...$allowedRoles)) {
+        if (! $actor->hasAnyRole(...$allowedRoles)) {
             abort(403, 'Geen toegang voor deze rol.');
         }
 

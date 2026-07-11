@@ -20,8 +20,11 @@ class PageVisitController extends Controller
 
     public function store(TrackPageVisitRequest $request): JsonResponse
     {
+        /** @var array{page_path: string} $validated */
+        $validated = $request->validated();
+
         $path = $this->pathNormalizer->normalizePath(
-            path: (string) $request->validated()['page_path'],
+            path: $validated['page_path'],
             excludeAdmin: true,
         );
 

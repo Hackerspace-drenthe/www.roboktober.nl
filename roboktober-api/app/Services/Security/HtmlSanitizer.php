@@ -6,6 +6,7 @@ namespace App\Services\Security;
 
 use DOMDocument;
 use DOMElement;
+use DOMNode;
 use DOMXPath;
 
 class HtmlSanitizer
@@ -37,7 +38,9 @@ class HtmlSanitizer
             }
 
             foreach ($nodes as $node) {
-                $node->parentNode?->removeChild($node);
+                if ($node instanceof DOMNode && $node->parentNode instanceof DOMNode) {
+                    $node->parentNode->removeChild($node);
+                }
             }
         }
 

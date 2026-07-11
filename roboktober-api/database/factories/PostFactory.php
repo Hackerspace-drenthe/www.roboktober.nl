@@ -19,12 +19,17 @@ class PostFactory extends Factory
     public function definition(): array
     {
         $titel = $this->faker->sentence(4);
+        $paragraphs = $this->faker->paragraphs(3);
+
+        if (! is_array($paragraphs)) {
+            $paragraphs = [$paragraphs];
+        }
 
         return [
             'titel' => $titel,
             'slug' => Str::slug($titel).'-'.$this->faker->unique()->numberBetween(1000, 9999),
             'excerpt' => $this->faker->optional()->sentence(),
-            'content' => '<p>'.implode('</p><p>', $this->faker->paragraphs(3)).'</p>',
+            'content' => '<p>'.implode('</p><p>', $paragraphs).'</p>',
             'content_format' => ContentFormat::Html,
             'categorie' => null,
             'tags' => null,

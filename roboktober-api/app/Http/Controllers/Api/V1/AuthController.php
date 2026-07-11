@@ -86,7 +86,7 @@ class AuthController extends Controller
         /** @var User $user */
         $user = $request->user();
 
-        $user->currentAccessToken()?->delete();
+        $user->currentAccessToken()->delete();
 
         return response()->json([
             'message' => 'Uitgelogd.',
@@ -136,10 +136,12 @@ class AuthController extends Controller
         /** @var array{email: string} $validated */
         $validated = $request->validated();
 
-        ResetPasswordNotification::createUrlUsing(static function (User $user, string $token): string {
-            $baseUrl = rtrim((string) config('app.url'), '/');
+        ResetPasswordNotification::createUrlUsing(static function (mixed $user, string $token): string {
+            $configuredAppUrl = config('app.url');
+            $baseUrl = rtrim(is_string($configuredAppUrl) ? $configuredAppUrl : '', '/');
+            $email = $user instanceof User ? $user->email : '';
 
-            return $baseUrl.'/app/wachtwoord-reset?token='.$token.'&email='.urlencode($user->email);
+            return $baseUrl.'/app/wachtwoord-reset?token='.$token.'&email='.urlencode($email);
         });
 
         Password::sendResetLink([

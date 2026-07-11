@@ -18,7 +18,7 @@ class TeamSeeder extends Seeder
     {
         $edition = Edition::query()->where('is_done', false)->orderBy('start_at')->first();
 
-        $team = Team::create([
+        $team = Team::query()->create([
             'edition_id' => $edition?->id,
             'naam' => 'Hackerspace Drenthe',
             'contactpersoon' => 'Hackerspace Drenthe',
@@ -27,7 +27,7 @@ class TeamSeeder extends Seeder
             'status' => TeamStatus::Approved,
         ]);
 
-        Robot::create([
+        Robot::query()->create([
             'team_id' => $team->id,
             'naam' => 'HackerBot',
             'gewichtsklasse' => Gewichtsklasse::Antweight,

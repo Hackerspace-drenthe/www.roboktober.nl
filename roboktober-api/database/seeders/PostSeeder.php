@@ -71,7 +71,7 @@ class PostSeeder extends Seeder
 </p>
 HTML;
 
-        Post::create([
+        Post::query()->create([
             'titel' => 'Roboktober: combat robots komen naar Hackerspace Drenthe',
             'slug' => 'roboktober-combat-robots-hackerspace-drenthe',
             'excerpt' => 'Dit najaar organiseert Hackerspace Drenthe voor het eerst een combat robotics evenement: Roboktober. Kickoff begin oktober, battles eind oktober. Aanmelden kan nu al.',

@@ -23,11 +23,13 @@ class AuditLogger
         ?array $after = null,
         ?array $context = null,
     ): void {
+        $subjectKey = $subject->getKey();
+
         AuditLog::query()->create([
             'actor_user_id' => $actor->id,
             'action' => $action,
             'subject_type' => $subject::class,
-            'subject_id' => (int) $subject->getKey(),
+            'subject_id' => is_int($subjectKey) || is_string($subjectKey) ? $subjectKey : null,
             'before' => $before,
             'after' => $after,
             'context' => $context,

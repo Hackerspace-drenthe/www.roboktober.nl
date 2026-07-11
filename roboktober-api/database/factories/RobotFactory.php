@@ -19,10 +19,12 @@ class RobotFactory extends Factory
 
     public function definition(): array
     {
+        $gewichtsklasse = $this->faker->randomElement(Gewichtsklasse::cases());
+
         return [
             'team_id' => Team::factory(),
             'naam' => $this->faker->word().'Bot',
-            'gewichtsklasse' => $this->faker->randomElement(Gewichtsklasse::cases())->value,
+            'gewichtsklasse' => $gewichtsklasse instanceof Gewichtsklasse ? $gewichtsklasse->value : Gewichtsklasse::Antweight->value,
             'beschrijving' => $this->faker->optional()->sentence(),
             'status' => RobotStatus::InOntwikkeling,
         ];
