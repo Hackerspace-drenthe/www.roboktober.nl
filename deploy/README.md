@@ -5,6 +5,9 @@ Deze map bevat een eenvoudige deploy-opzet voor de server op 192.168.1.10.
 ## Bestanden
 
 - deploy.sh: Pull + composer install + artisan optimize + migrate
+- deploy-remote.sh: generieke remote runner (SSH + deploy.sh)
+- deploy-staging.sh: staging wrapper bovenop deploy-remote.sh
+- deploy-production.sh: productie wrapper bovenop deploy-remote.sh
 - apache/roboktober.conf: Apache vhost template
 - systemd/roboktober-deploy.service: handmatige deploy service
 - systemd/roboktober-deploy.timer: optionele periodieke deploy
@@ -57,6 +60,44 @@ php artisan migrate --force
 cd /var/www/www.roboktober.nl
 bash deploy/deploy.sh
 ```
+
+## Deploy vanaf je lokale machine (staging/productie)
+
+1. Scripts uitvoerbaar maken:
+
+```bash
+chmod +x deploy/deploy-remote.sh deploy/deploy-staging.sh deploy/deploy-production.sh
+```
+
+2. Staging deploy (voorbeeld):
+
+```bash
+STAGING_HOST=rein@192.168.1.10 bash deploy/deploy-staging.sh
+```
+
+3. Productie deploy (voorbeeld):
+
+```bash
+PRODUCTION_HOST=rein@192.168.1.10 bash deploy/deploy-production.sh
+```
+
+4. Dry-run (toon alleen SSH-commando):
+
+```bash
+DEPLOY_DRY_RUN=true STAGING_HOST=rein@192.168.1.10 bash deploy/deploy-staging.sh
+```
+
+Belangrijke variabelen voor wrappers:
+
+- `STAGING_HOST` / `PRODUCTION_HOST` (verplicht als `DEPLOY_HOST` niet gezet is)
+- `STAGING_SSH_USER` / `PRODUCTION_SSH_USER` (optioneel)
+- `STAGING_SSH_PORT` / `PRODUCTION_SSH_PORT` (optioneel, default 22)
+- `STAGING_REPO_DIR` / `PRODUCTION_REPO_DIR` (optioneel, default `/var/www/www.roboktober.nl`)
+- `STAGING_BRANCH` / `PRODUCTION_BRANCH` (optioneel, default `master`)
+- `STAGING_RUN_MIGRATIONS` / `PRODUCTION_RUN_MIGRATIONS` (`true`/`false`)
+- `STAGING_BUILD_FRONTEND` / `PRODUCTION_BUILD_FRONTEND` (`true`/`false`)
+- `STAGING_PHP_BIN` / `PRODUCTION_PHP_BIN` (optioneel)
+- `STAGING_COMPOSER_BIN` / `PRODUCTION_COMPOSER_BIN` (optioneel)
 
 ## Auto deploy via GitHub webhook
 
