@@ -16,7 +16,7 @@ class UpdateTeamStatusRequest extends FormRequest
     }
 
     /**
-     * @return array<string, list<string|\Illuminate\Contracts\Validation\Rule>>
+     * @return array<string, array<int, mixed>>
      */
     public function rules(): array
     {

@@ -109,6 +109,7 @@ Regressierisico verlagen op backend en frontend.
 - Uitgevoerd: extra foutenronde op upload/resource typing (`TeamPhotoUploadService`, `FilesystemMediaStorage`, `CompetitionBattleScoreResource` + call sites); totale PHPStan raw-output verder verlaagd naar 87 regels.
 - Uitgevoerd: extra foutenronde op model typing (`HasFactory` generics, relatie-returntypes en media variant URL typing); totale PHPStan raw-output verder verlaagd naar 68 regels.
 - Uitgevoerd: extra foutenronde op API controllers/resources (`AnalyticsEventController`, `TeamMembershipController`, `PageVisitAnalyticsController`, team/program resource typing); totale PHPStan raw-output verder verlaagd naar 45 regels.
+- Uitgevoerd: brede FormRequest typing-ronde (rules phpdoc normalisatie + edition config-typeguards); totale PHPStan raw-output verder verlaagd naar 24 regels.
 - Uitgevoerd: backend testjob opgesplitst in aparte Unit/Feature suites voor snellere feedback.
 - Gevalideerd: unit tests en e2e smoke tests slagen lokaal.
 

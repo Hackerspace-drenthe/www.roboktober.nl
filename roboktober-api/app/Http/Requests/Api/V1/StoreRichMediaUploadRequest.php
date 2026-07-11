@@ -15,7 +15,7 @@ class StoreRichMediaUploadRequest extends FormRequest
     }
 
     /**
-     * @return array<string, list<mixed>>
+     * @return array<string, array<int, mixed>>
      */
     public function rules(): array
     {

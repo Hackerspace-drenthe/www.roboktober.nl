@@ -14,11 +14,12 @@ class StoreEditionRequest extends FormRequest
     }
 
     /**
-     * @return array<string, list<string>>
+     * @return array<string, array<int, mixed>>
      */
     public function rules(): array
     {
-        $maxImageKb = (int) config('uploads.admin.image_max_kb', 102400);
+        $configuredMaxImageKb = config('uploads.admin.image_max_kb', 102400);
+        $maxImageKb = is_int($configuredMaxImageKb) ? $configuredMaxImageKb : 102400;
 
         return [
             'naam' => ['required', 'string', 'max:255'],

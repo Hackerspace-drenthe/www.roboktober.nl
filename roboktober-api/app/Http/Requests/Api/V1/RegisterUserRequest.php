@@ -15,7 +15,7 @@ class RegisterUserRequest extends FormRequest
     }
 
     /**
-     * @return array<string, list<string|Password>>
+     * @return array<string, array<int, mixed>>
      */
     public function rules(): array
     {
