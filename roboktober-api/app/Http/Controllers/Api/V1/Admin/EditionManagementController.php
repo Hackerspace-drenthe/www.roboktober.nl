@@ -15,6 +15,7 @@ use App\Services\Audit\AuditLogger;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
@@ -61,7 +62,12 @@ class EditionManagementController extends Controller
         $validated = $request->validated();
         $location = $this->resolveLocation($validated['location']);
 
-        $afbeeldingPath = $request->file('afbeelding')?->store('edities', 'public');
+        $afbeeldingPath = null;
+        $afbeelding = $this->uploadedFile($request, 'afbeelding');
+        if ($afbeelding instanceof UploadedFile) {
+            $storedPath = $afbeelding->store('edities', 'public');
+            $afbeeldingPath = is_string($storedPath) ? $storedPath : null;
+        }
 
         $edition = Edition::query()->create([
             'naam' => $validated['naam'],
@@ -83,7 +89,7 @@ class EditionManagementController extends Controller
             after: [
                 'naam' => $edition->naam,
                 'location_id' => $edition->location_id,
-                'start_at' => $edition->start_at?->toIso8601String(),
+                'start_at' => $edition->start_at->toIso8601String(),
                 'end_at' => $edition->end_at?->toIso8601String(),
                 'is_done' => $edition->is_done,
             ],
@@ -106,7 +112,7 @@ class EditionManagementController extends Controller
             'naam' => $edition->naam,
             'location_id' => $edition->location_id,
             'omschrijving' => $edition->omschrijving,
-            'start_at' => $edition->start_at?->toIso8601String(),
+            'start_at' => $edition->start_at->toIso8601String(),
             'end_at' => $edition->end_at?->toIso8601String(),
             'is_done' => (bool) $edition->is_done,
         ];
@@ -119,24 +125,26 @@ class EditionManagementController extends Controller
             $edition->afbeelding = null;
         }
 
-        if ($request->hasFile('afbeelding')) {
+        $afbeelding = $this->uploadedFile($request, 'afbeelding');
+        if ($afbeelding instanceof UploadedFile) {
             if (is_string($edition->afbeelding) && $edition->afbeelding !== '') {
                 Storage::disk('public')->delete($edition->afbeelding);
             }
 
-            $edition->afbeelding = $request->file('afbeelding')?->store('edities', 'public');
+            $storedPath = $afbeelding->store('edities', 'public');
+            $edition->afbeelding = is_string($storedPath) ? $storedPath : null;
         }
 
-        $startAt = $validated['start_at'] ?? $edition->start_at?->toIso8601String();
+        $startAt = $validated['start_at'] ?? $edition->start_at->toIso8601String();
         $endAt = $validated['end_at'] ?? $edition->end_at?->toIso8601String();
 
-        if (is_string($startAt) && is_string($endAt) && strtotime($endAt) < strtotime($startAt)) {
+        if (is_string($endAt) && strtotime($endAt) < strtotime($startAt)) {
             throw ValidationException::withMessages([
                 'end_at' => ['Einddatum moet gelijk aan of later dan startdatum zijn.'],
             ]);
         }
 
-        if (array_key_exists('location', $validated) && is_array($validated['location'])) {
+        if (array_key_exists('location', $validated)) {
             $location = $this->resolveLocation($validated['location']);
             $validated['location_id'] = $location->id;
             unset($validated['location']);
@@ -155,7 +163,7 @@ class EditionManagementController extends Controller
                 'naam' => $edition->naam,
                 'location_id' => $edition->location_id,
                 'omschrijving' => $edition->omschrijving,
-                'start_at' => $edition->start_at?->toIso8601String(),
+                'start_at' => $edition->start_at->toIso8601String(),
                 'end_at' => $edition->end_at?->toIso8601String(),
                 'is_done' => (bool) $edition->is_done,
             ],
@@ -181,7 +189,7 @@ class EditionManagementController extends Controller
             'naam' => $edition->naam,
             'location_id' => $edition->location_id,
             'omschrijving' => $edition->omschrijving,
-            'start_at' => $edition->start_at?->toIso8601String(),
+            'start_at' => $edition->start_at->toIso8601String(),
             'end_at' => $edition->end_at?->toIso8601String(),
             'is_done' => (bool) $edition->is_done,
         ];
@@ -224,5 +232,12 @@ class EditionManagementController extends Controller
                     : null,
             ],
         );
+    }
+
+    private function uploadedFile(Request $request, string $key): ?UploadedFile
+    {
+        $file = $request->file($key);
+
+        return $file instanceof UploadedFile ? $file : null;
     }
 }

@@ -64,7 +64,7 @@ class ProgrammaItemManagementController extends Controller
             after: [
                 'edition_id' => $item->edition_id,
                 'titel' => $item->titel,
-                'start_at' => $item->start_at?->toIso8601String(),
+                'start_at' => $item->start_at->toIso8601String(),
                 'end_at' => $item->end_at?->toIso8601String(),
                 'is_published' => $item->is_published,
             ],
@@ -89,15 +89,15 @@ class ProgrammaItemManagementController extends Controller
             'titel' => $programmaItem->titel,
             'beschrijving' => $programmaItem->beschrijving,
             'content_format' => $programmaItem->content_format->value,
-            'start_at' => $programmaItem->start_at?->toIso8601String(),
+            'start_at' => $programmaItem->start_at->toIso8601String(),
             'end_at' => $programmaItem->end_at?->toIso8601String(),
             'volgorde' => $programmaItem->volgorde,
             'is_published' => $programmaItem->is_published,
         ];
 
         if (array_key_exists('end_at', $validated) && is_string($validated['end_at'])) {
-            $startAt = $validated['start_at'] ?? $programmaItem->start_at?->toIso8601String();
-            if (is_string($startAt) && strtotime($validated['end_at']) < strtotime($startAt)) {
+            $startAt = $validated['start_at'] ?? $programmaItem->start_at->toIso8601String();
+            if (strtotime($validated['end_at']) < strtotime($startAt)) {
                 throw ValidationException::withMessages([
                     'end_at' => ['Eindtijd moet op of na starttijd liggen.'],
                 ]);
@@ -116,7 +116,7 @@ class ProgrammaItemManagementController extends Controller
                 'titel' => $programmaItem->titel,
                 'beschrijving' => $programmaItem->beschrijving,
                 'content_format' => $programmaItem->content_format->value,
-                'start_at' => $programmaItem->start_at?->toIso8601String(),
+                'start_at' => $programmaItem->start_at->toIso8601String(),
                 'end_at' => $programmaItem->end_at?->toIso8601String(),
                 'volgorde' => $programmaItem->volgorde,
                 'is_published' => $programmaItem->is_published,
@@ -138,7 +138,7 @@ class ProgrammaItemManagementController extends Controller
         $before = [
             'edition_id' => $programmaItem->edition_id,
             'titel' => $programmaItem->titel,
-            'start_at' => $programmaItem->start_at?->toIso8601String(),
+            'start_at' => $programmaItem->start_at->toIso8601String(),
             'end_at' => $programmaItem->end_at?->toIso8601String(),
             'is_published' => $programmaItem->is_published,
         ];

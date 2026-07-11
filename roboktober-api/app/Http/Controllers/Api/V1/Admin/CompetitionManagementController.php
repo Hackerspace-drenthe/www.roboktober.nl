@@ -15,6 +15,7 @@ use App\Models\CompetitionBattleScore;
 use App\Models\CompetitionCategory;
 use App\Models\Edition;
 use App\Models\Robot;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -34,12 +35,16 @@ class CompetitionManagementController extends Controller
             ->orderBy('id')
             ->get();
 
-        $robots = Robot::query()
+        /** @var Collection<int, Robot> $robotCollection */
+        $robotCollection = Robot::query()
             ->whereHas('team', static fn ($query) => $query->where('edition_id', $edition->id))
             ->with('team')
             ->orderBy('naam')
-            ->get()
-            ->map(static fn (Robot $robot): array => [
+            ->get();
+
+        $robots = [];
+        foreach ($robotCollection as $robot) {
+            $robots[] = [
                 'id' => $robot->id,
                 'naam' => $robot->naam,
                 'status' => $robot->status->value,
@@ -48,8 +53,8 @@ class CompetitionManagementController extends Controller
                     'id' => $robot->team->id,
                     'naam' => $robot->team->naam,
                 ] : null,
-            ])
-            ->values();
+            ];
+        }
 
         return response()->json([
             'data' => [
@@ -94,7 +99,7 @@ class CompetitionManagementController extends Controller
             'volgorde' => ['sometimes', 'integer', 'min:0', 'max:999'],
         ]);
 
-        if (array_key_exists('naam', $validated) && is_string($validated['naam']) && $validated['naam'] !== $competitionCategory->naam) {
+        if (array_key_exists('naam', $validated) && $validated['naam'] !== $competitionCategory->naam) {
             $competitionCategory->slug = $this->resolveUniqueSlug(
                 editionId: $competitionCategory->edition_id,
                 name: $validated['naam'],
@@ -176,7 +181,7 @@ class CompetitionManagementController extends Controller
                     ]);
                 }
 
-                if ((int) ($robot->team?->edition_id ?? 0) !== $editionId) {
+                if ((int) ($robot->team->edition_id ?? 0) !== $editionId) {
                     throw ValidationException::withMessages([
                         'entries' => ["Robot {$robot->naam} hoort niet bij deze editie."],
                     ]);
