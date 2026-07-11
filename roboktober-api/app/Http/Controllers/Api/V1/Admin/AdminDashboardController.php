@@ -11,6 +11,7 @@ use App\Models\Page;
 use App\Models\Post;
 use App\Models\Team;
 use App\Models\TeamUpdate;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 
 class AdminDashboardController extends Controller
@@ -29,12 +30,38 @@ class AdminDashboardController extends Controller
             ->latest('created_at')
             ->limit(5)
             ->get(['id', 'naam', 'contactpersoon', 'created_at']);
-
+        /** @var Collection<int, Team> $pendingTeams */
         $recentActivity = AuditLog::query()
             ->with('actor')
             ->latest('id')
             ->limit(8)
             ->get();
+        /** @var Collection<int, AuditLog> $recentActivity */
+        $pendingTeamsPayload = [];
+        foreach ($pendingTeams as $team) {
+            $pendingTeamsPayload[] = [
+                'id' => $team->id,
+                'naam' => $team->naam,
+                'contactpersoon' => $team->contactpersoon,
+                'created_at' => $team->created_at?->toISOString(),
+            ];
+        }
+
+        $recentActivityPayload = [];
+        foreach ($recentActivity as $log) {
+            $recentActivityPayload[] = [
+                'id' => $log->id,
+                'action' => $log->action,
+                'subject_type' => $log->subject_type,
+                'subject_id' => $log->subject_id,
+                'actor' => [
+                    'id' => $log->actor?->id,
+                    'name' => $log->actor?->name,
+                    'email' => $log->actor?->email,
+                ],
+                'created_at' => $log->created_at?->toISOString(),
+            ];
+        }
 
         return response()->json([
             'data' => [
@@ -44,24 +71,8 @@ class AdminDashboardController extends Controller
                     'draft_pages' => $draftPagesCount,
                     'draft_team_updates' => $draftTeamUpdatesCount,
                 ],
-                'pending_teams' => $pendingTeams->map(static fn (Team $team): array => [
-                    'id' => $team->id,
-                    'naam' => $team->naam,
-                    'contactpersoon' => $team->contactpersoon,
-                    'created_at' => $team->created_at?->toISOString(),
-                ])->values(),
-                'recent_activity' => $recentActivity->map(static fn (AuditLog $log): array => [
-                    'id' => $log->id,
-                    'action' => $log->action,
-                    'subject_type' => $log->subject_type,
-                    'subject_id' => $log->subject_id,
-                    'actor' => [
-                        'id' => $log->actor?->id,
-                        'name' => $log->actor?->name,
-                        'email' => $log->actor?->email,
-                    ],
-                    'created_at' => $log->created_at?->toISOString(),
-                ])->values(),
+                'pending_teams' => $pendingTeamsPayload,
+                'recent_activity' => $recentActivityPayload,
             ],
         ]);
     }

@@ -8,7 +8,19 @@ use Database\Factories\LocationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $address
+ * @property string $place
+ * @property string $zipcode
+ * @property string|null $osm_url
+ * @property string|null $instructions
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ */
 class Location extends Model
 {
     /** @use HasFactory<LocationFactory> */

@@ -24,20 +24,18 @@ class RobotManagementController extends Controller
     {
         $this->authorize('viewAny', Robot::class);
 
-        $status = request()->query('status');
-        $gewichtsklasse = request()->query('gewichtsklasse');
-        $zoekterm = request()->query('q');
+        $status = trim(request()->string('status')->toString());
+        $gewichtsklasse = trim(request()->string('gewichtsklasse')->toString());
+        $zoekterm = trim(request()->string('q')->toString());
 
         $robots = Robot::query()
-            ->when(is_string($status) && $status !== '', static fn ($query) => $query->where('status', $status))
-            ->when(is_string($gewichtsklasse) && $gewichtsklasse !== '', static fn ($query) => $query->where('gewichtsklasse', $gewichtsklasse))
-            ->when(is_string($zoekterm) && $zoekterm !== '', static function ($query) use ($zoekterm): void {
-                $query
-                    ->where('naam', 'like', '%'.$zoekterm.'%')
-                    ->orWhereHas('team', static function ($teamQuery) use ($zoekterm): void {
-                        $teamQuery->where('naam', 'like', '%'.$zoekterm.'%');
-                    });
-            })
+            ->when($status !== '', static fn ($query) => $query->where('status', $status))
+            ->when($gewichtsklasse !== '', static fn ($query) => $query->where('gewichtsklasse', $gewichtsklasse))
+            ->when($zoekterm !== '', static fn ($query) => $query
+                ->where('naam', 'like', '%'.$zoekterm.'%')
+                ->orWhereHas('team', static function ($teamQuery) use ($zoekterm): void {
+                    $teamQuery->where('naam', 'like', '%'.$zoekterm.'%');
+                }))
             ->with('team')
             ->latest('id')
             ->paginate(20)

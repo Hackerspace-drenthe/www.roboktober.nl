@@ -9,7 +9,21 @@ use App\Enums\ContentFormat;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property int $id
+ * @property int $edition_id
+ * @property string $titel
+ * @property string|null $beschrijving
+ * @property ContentFormat $content_format
+ * @property Carbon $start_at
+ * @property Carbon|null $end_at
+ * @property int $volgorde
+ * @property bool $is_published
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ */
 class ProgrammaItem extends Model
 {
     use HasFactory;

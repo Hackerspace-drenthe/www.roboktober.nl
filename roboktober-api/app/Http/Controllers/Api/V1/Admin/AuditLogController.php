@@ -15,20 +15,14 @@ class AuditLogController extends Controller
     {
         $this->authorize('viewAny', AuditLog::class);
 
-        $action = request()->query('action');
+        $action = trim(request()->string('action')->toString());
         $actorId = request()->query('actor_user_id');
-        $subjectType = request()->query('subject_type');
+        $subjectType = trim(request()->string('subject_type')->toString());
 
         $logs = AuditLog::query()
-            ->when(is_string($action) && $action !== '', static function ($query) use ($action): void {
-                $query->where('action', $action);
-            })
-            ->when(is_numeric($actorId), static function ($query) use ($actorId): void {
-                $query->where('actor_user_id', (int) $actorId);
-            })
-            ->when(is_string($subjectType) && $subjectType !== '', static function ($query) use ($subjectType): void {
-                $query->where('subject_type', $subjectType);
-            })
+            ->when($action !== '', static fn ($query) => $query->where('action', $action))
+            ->when(is_numeric($actorId), static fn ($query) => $query->where('actor_user_id', (int) $actorId))
+            ->when($subjectType !== '', static fn ($query) => $query->where('subject_type', $subjectType))
             ->with('actor')
             ->latest('id')
             ->paginate(50)

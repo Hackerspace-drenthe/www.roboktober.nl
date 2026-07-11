@@ -21,14 +21,12 @@ class UserManagementController extends Controller
     {
         $this->authorize('viewAny', User::class);
 
-        $zoekterm = request()->query('q');
+        $zoekterm = trim(request()->string('q')->toString());
 
         $users = User::query()
-            ->when(is_string($zoekterm) && $zoekterm !== '', static function ($query) use ($zoekterm): void {
-                $query
-                    ->where('name', 'like', '%'.$zoekterm.'%')
-                    ->orWhere('email', 'like', '%'.$zoekterm.'%');
-            })
+            ->when($zoekterm !== '', static fn ($query) => $query
+                ->where('name', 'like', '%'.$zoekterm.'%')
+                ->orWhere('email', 'like', '%'.$zoekterm.'%'))
             ->latest('id')
             ->paginate(25)
             ->withQueryString();

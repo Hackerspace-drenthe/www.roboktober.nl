@@ -26,24 +26,22 @@ class EditionManagementController extends Controller
     {
         $this->authorize('viewAny', Edition::class);
 
-        $status = $request->query('status');
-        $zoekterm = $request->query('q');
+        $status = trim($request->string('status')->toString());
+        $zoekterm = trim($request->string('q')->toString());
 
         $edities = Edition::query()
             ->with('location')
             ->when($status === 'open', static fn ($query) => $query->where('is_done', false))
             ->when($status === 'done', static fn ($query) => $query->where('is_done', true))
-            ->when(is_string($zoekterm) && $zoekterm !== '', static function ($query) use ($zoekterm): void {
-                $query
-                    ->where('naam', 'like', '%'.$zoekterm.'%')
-                    ->orWhereHas('location', static function ($locationQuery) use ($zoekterm): void {
-                        $locationQuery
-                            ->where('name', 'like', '%'.$zoekterm.'%')
-                            ->orWhere('address', 'like', '%'.$zoekterm.'%')
-                            ->orWhere('place', 'like', '%'.$zoekterm.'%')
-                            ->orWhere('zipcode', 'like', '%'.$zoekterm.'%');
-                    });
-            })
+            ->when($zoekterm !== '', static fn ($query) => $query
+                ->where('naam', 'like', '%'.$zoekterm.'%')
+                ->orWhereHas('location', static function ($locationQuery) use ($zoekterm): void {
+                    $locationQuery
+                        ->where('name', 'like', '%'.$zoekterm.'%')
+                        ->orWhere('address', 'like', '%'.$zoekterm.'%')
+                        ->orWhere('place', 'like', '%'.$zoekterm.'%')
+                        ->orWhere('zipcode', 'like', '%'.$zoekterm.'%');
+                }))
             ->orderByDesc('start_at')
             ->orderByDesc('id')
             ->paginate(20)

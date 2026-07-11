@@ -10,7 +10,21 @@ use Database\Factories\TeamUpdateFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property int $id
+ * @property int $team_id
+ * @property string $titel
+ * @property string|null $excerpt
+ * @property string $content
+ * @property ContentFormat $content_format
+ * @property bool $is_published
+ * @property Carbon|null $published_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Team $team
+ */
 class TeamUpdate extends Model
 {
     /** @use HasFactory<TeamUpdateFactory> */

@@ -21,15 +21,13 @@ class TeamUpdateModerationController extends Controller
     {
         $this->authorize('viewAny', TeamUpdate::class);
 
-        $status = request()->query('status');
-        $zoekterm = request()->query('q');
+        $status = trim(request()->string('status')->toString());
+        $zoekterm = trim(request()->string('q')->toString());
 
         $updates = TeamUpdate::query()
             ->when($status === 'published', static fn ($query) => $query->where('is_published', true))
             ->when($status === 'draft', static fn ($query) => $query->where('is_published', false))
-            ->when(is_string($zoekterm) && $zoekterm !== '', static function ($query) use ($zoekterm): void {
-                $query->where('titel', 'like', '%'.$zoekterm.'%');
-            })
+            ->when($zoekterm !== '', static fn ($query) => $query->where('titel', 'like', '%'.$zoekterm.'%'))
             ->with(['team', 'media'])
             ->latest('published_at')
             ->latest('id')

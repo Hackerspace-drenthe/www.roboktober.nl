@@ -35,9 +35,7 @@ class CompetitionManagementController extends Controller
             ->get();
 
         $robots = Robot::query()
-            ->whereHas('team', static function ($query) use ($edition): void {
-                $query->where('edition_id', $edition->id);
-            })
+            ->whereHas('team', static fn ($query) => $query->where('edition_id', $edition->id))
             ->with('team')
             ->orderBy('naam')
             ->get()
@@ -212,9 +210,7 @@ class CompetitionManagementController extends Controller
         while (CompetitionCategory::query()
             ->where('edition_id', $editionId)
             ->where('slug', $slug)
-            ->when($ignoreId !== null, static function ($query) use ($ignoreId): void {
-                $query->where('id', '!=', $ignoreId);
-            })
+            ->when($ignoreId !== null, static fn ($query) => $query->where('id', '!=', $ignoreId))
             ->exists()) {
             $counter++;
             $slug = ($base !== '' ? $base : 'categorie').'-'.$counter;

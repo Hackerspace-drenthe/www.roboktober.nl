@@ -9,7 +9,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property int $id
+ * @property int $edition_id
+ * @property string $naam
+ * @property string $slug
+ * @property string|null $omschrijving
+ * @property int $volgorde
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ */
 class CompetitionCategory extends Model
 {
     /** @use HasFactory<CompetitionCategoryFactory> */

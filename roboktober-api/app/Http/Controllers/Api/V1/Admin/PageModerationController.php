@@ -21,17 +21,15 @@ class PageModerationController extends Controller
     {
         $this->authorize('viewAny', Page::class);
 
-        $status = request()->query('status');
-        $zoekterm = request()->query('q');
+        $status = trim(request()->string('status')->toString());
+        $zoekterm = trim(request()->string('q')->toString());
 
         $pages = Page::query()
             ->when($status === 'published', static fn ($query) => $query->where('is_published', true))
             ->when($status === 'draft', static fn ($query) => $query->where('is_published', false))
-            ->when(is_string($zoekterm) && $zoekterm !== '', static function ($query) use ($zoekterm): void {
-                $query
-                    ->where('titel', 'like', '%'.$zoekterm.'%')
-                    ->orWhere('slug', 'like', '%'.$zoekterm.'%');
-            })
+            ->when($zoekterm !== '', static fn ($query) => $query
+                ->where('titel', 'like', '%'.$zoekterm.'%')
+                ->orWhere('slug', 'like', '%'.$zoekterm.'%'))
             ->with('media')
             ->latest('published_at')
             ->latest('id')

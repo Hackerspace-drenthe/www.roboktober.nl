@@ -21,19 +21,15 @@ class TeamModerationController extends Controller
     {
         $this->authorize('viewAdminIndex', Team::class);
 
-        $status = request()->query('status');
-        $zoekterm = request()->query('q');
+        $status = trim(request()->string('status')->toString());
+        $zoekterm = trim(request()->string('q')->toString());
 
         $teams = Team::query()
-            ->when(is_string($status) && $status !== '', static function ($query) use ($status): void {
-                $query->where('status', $status);
-            })
-            ->when(is_string($zoekterm) && $zoekterm !== '', static function ($query) use ($zoekterm): void {
-                $query
-                    ->where('naam', 'like', '%'.$zoekterm.'%')
-                    ->orWhere('contactpersoon', 'like', '%'.$zoekterm.'%')
-                    ->orWhere('email', 'like', '%'.$zoekterm.'%');
-            })
+            ->when($status !== '', static fn ($query) => $query->where('status', $status))
+            ->when($zoekterm !== '', static fn ($query) => $query
+                ->where('naam', 'like', '%'.$zoekterm.'%')
+                ->orWhere('contactpersoon', 'like', '%'.$zoekterm.'%')
+                ->orWhere('email', 'like', '%'.$zoekterm.'%'))
             ->with(['edition', 'captain', 'media', 'robots'])
             ->latest('created_at')
             ->paginate(20)

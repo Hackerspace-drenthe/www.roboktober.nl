@@ -30,6 +30,7 @@ use Illuminate\Support\Carbon;
  * @property int $awesomeness_votes_count
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read Team|null $team
  *
  * @see PLAN.md §5.2 — robots schema
  */

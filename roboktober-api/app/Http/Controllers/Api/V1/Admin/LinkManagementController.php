@@ -23,17 +23,15 @@ class LinkManagementController extends Controller
     {
         $this->authorize('viewAny', Link::class);
 
-        $categorie = request()->query('categorie');
-        $zoekterm = request()->query('q');
+        $categorie = trim(request()->string('categorie')->toString());
+        $zoekterm = trim(request()->string('q')->toString());
 
         $links = Link::query()
-            ->when(is_string($categorie) && $categorie !== '', static fn ($query) => $query->where('categorie', $categorie))
-            ->when(is_string($zoekterm) && $zoekterm !== '', static function ($query) use ($zoekterm): void {
-                $query
-                    ->where('titel', 'like', '%'.$zoekterm.'%')
-                    ->orWhere('url', 'like', '%'.$zoekterm.'%')
-                    ->orWhere('eigenaar', 'like', '%'.$zoekterm.'%');
-            })
+            ->when($categorie !== '', static fn ($query) => $query->where('categorie', $categorie))
+            ->when($zoekterm !== '', static fn ($query) => $query
+                ->where('titel', 'like', '%'.$zoekterm.'%')
+                ->orWhere('url', 'like', '%'.$zoekterm.'%')
+                ->orWhere('eigenaar', 'like', '%'.$zoekterm.'%'))
             ->latest('id')
             ->paginate(20)
             ->withQueryString();

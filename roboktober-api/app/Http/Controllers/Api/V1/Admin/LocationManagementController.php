@@ -14,16 +14,14 @@ class LocationManagementController extends Controller
 {
     public function index(Request $request): AnonymousResourceCollection
     {
-        $zoekterm = $request->query('q');
+        $zoekterm = trim($request->string('q')->toString());
 
         $locations = Location::query()
-            ->when(is_string($zoekterm) && $zoekterm !== '', static function ($query) use ($zoekterm): void {
-                $query
-                    ->where('name', 'like', '%'.$zoekterm.'%')
-                    ->orWhere('address', 'like', '%'.$zoekterm.'%')
-                    ->orWhere('place', 'like', '%'.$zoekterm.'%')
-                    ->orWhere('zipcode', 'like', '%'.$zoekterm.'%');
-            })
+            ->when($zoekterm !== '', static fn ($query) => $query
+                ->where('name', 'like', '%'.$zoekterm.'%')
+                ->orWhere('address', 'like', '%'.$zoekterm.'%')
+                ->orWhere('place', 'like', '%'.$zoekterm.'%')
+                ->orWhere('zipcode', 'like', '%'.$zoekterm.'%'))
             ->orderBy('name')
             ->orderBy('id')
             ->paginate(20)
