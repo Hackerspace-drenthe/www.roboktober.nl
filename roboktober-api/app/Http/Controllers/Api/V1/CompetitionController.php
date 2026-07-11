@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\CompetitionBattle;
 use App\Models\CompetitionCategory;
 use App\Models\Edition;
 use App\Models\Robot;
@@ -27,7 +28,10 @@ class CompetitionController extends Controller
         /** @var array<int, array{robot: Robot, punten: int}> $overallTotals */
         $overallTotals = [];
 
-        $categoryPayload = $categories->map(function (CompetitionCategory $category) use (&$overallTotals): array {
+        /** @var list<array<string, mixed>> $categoryPayload */
+        $categoryPayload = [];
+
+        foreach ($categories as $category) {
             /** @var array<int, array{robot: Robot, punten: int}> $categoryTotals */
             $categoryTotals = [];
 
@@ -62,21 +66,34 @@ class CompetitionController extends Controller
 
             $ranking = $this->mapRanking(collect(array_values($categoryTotals)));
 
-            return [
+            /** @var Collection<int, CompetitionBattle> $sortedBattles */
+            $sortedBattles = $category->battles->sort(static function (CompetitionBattle $a, CompetitionBattle $b): int {
+                $aScheduled = $a->scheduled_at?->getTimestamp() ?? PHP_INT_MAX;
+                $bScheduled = $b->scheduled_at?->getTimestamp() ?? PHP_INT_MAX;
+                $byDate = $aScheduled <=> $bScheduled;
+
+                if ($byDate !== 0) {
+                    return $byDate;
+                }
+
+                $byOrder = $a->volgorde <=> $b->volgorde;
+                if ($byOrder !== 0) {
+                    return $byOrder;
+                }
+
+                return $a->id <=> $b->id;
+            });
+
+            $categoryPayload[] = [
                 'id' => $category->id,
                 'naam' => $category->naam,
                 'slug' => $category->slug,
                 'omschrijving' => $category->omschrijving,
                 'volgorde' => $category->volgorde,
                 'battles_count' => $category->battles->count(),
-                'battles' => $category->battles
-                    ->sortBy([
-                        [static fn ($battle): string => $battle->scheduled_at?->toIso8601String() ?? '9999-12-31T23:59:59+00:00', 'asc'],
-                        ['volgorde', 'asc'],
-                        ['id', 'asc'],
-                    ])
+                'battles' => $sortedBattles
                     ->values()
-                    ->map(static fn ($battle): array => [
+                    ->map(static fn (CompetitionBattle $battle): array => [
                         'id' => $battle->id,
                         'naam' => $battle->naam,
                         'battle_mode' => $battle->battle_mode,
@@ -85,14 +102,14 @@ class CompetitionController extends Controller
                 'winner' => $ranking[0] ?? null,
                 'ranking' => $ranking,
             ];
-        })->values();
+        }
 
         return response()->json([
             'data' => [
                 'edition' => [
                     'id' => $edition->id,
                     'naam' => $edition->naam,
-                    'start_at' => $edition->start_at?->toIso8601String(),
+                    'start_at' => $edition->start_at->toIso8601String(),
                     'end_at' => $edition->end_at?->toIso8601String(),
                 ],
                 'categories' => $categoryPayload,
@@ -107,29 +124,38 @@ class CompetitionController extends Controller
      */
     private function mapRanking(Collection $totals): array
     {
-        return $totals
-            ->sortBy([
-                ['punten', 'desc'],
-                [static fn (array $row): string => mb_strtolower($row['robot']->naam), 'asc'],
-            ])
-            ->values()
-            ->map(static function (array $row, int $index): array {
-                $robot = $row['robot'];
+        /** @var list<array{robot: Robot, punten: int}> $rows */
+        $rows = array_values($totals->all());
 
-                return [
-                    'positie' => $index + 1,
-                    'punten' => (int) $row['punten'],
-                    'robot' => [
-                        'id' => $robot->id,
-                        'naam' => $robot->naam,
-                        'status' => $robot->status->value,
-                        'team' => $robot->team !== null ? [
-                            'id' => $robot->team->id,
-                            'naam' => $robot->team->naam,
-                        ] : null,
-                    ],
-                ];
-            })
-            ->all();
+        usort($rows, static function (array $a, array $b): int {
+            $byPoints = $b['punten'] <=> $a['punten'];
+            if ($byPoints !== 0) {
+                return $byPoints;
+            }
+
+            return strcmp(mb_strtolower($a['robot']->naam), mb_strtolower($b['robot']->naam));
+        });
+
+        $ranking = [];
+
+        foreach ($rows as $index => $row) {
+            $robot = $row['robot'];
+
+            $ranking[] = [
+                'positie' => $index + 1,
+                'punten' => (int) $row['punten'],
+                'robot' => [
+                    'id' => $robot->id,
+                    'naam' => $robot->naam,
+                    'status' => $robot->status->value,
+                    'team' => $robot->team !== null ? [
+                        'id' => $robot->team->id,
+                        'naam' => $robot->team->naam,
+                    ] : null,
+                ],
+            ];
+        }
+
+        return $ranking;
     }
 }

@@ -18,7 +18,6 @@ use App\Models\Team;
 use App\Models\TeamUpdate;
 use App\Models\User;
 use App\Services\Uploads\FilesystemMediaStorage;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,14 +28,12 @@ class RichMediaController extends Controller
 
     public function index(): JsonResponse
     {
-        $q = request()->query('q');
+        $q = trim(request()->string('q')->toString());
 
         $media = Media::query()
-            ->when(is_string($q) && $q !== '', static function ($query) use ($q): void {
-                $query->where('naam', 'like', '%'.$q.'%')
-                    ->orWhere('bestandsnaam', 'like', '%'.$q.'%')
-                    ->orWhere('mime_type', 'like', '%'.$q.'%');
-            })
+            ->when($q !== '', static fn ($query) => $query->where('naam', 'like', '%'.$q.'%')
+                ->orWhere('bestandsnaam', 'like', '%'.$q.'%')
+                ->orWhere('mime_type', 'like', '%'.$q.'%'))
             ->latest('id')
             ->paginate(25)
             ->withQueryString();
@@ -49,7 +46,7 @@ class RichMediaController extends Controller
         /** @var User $actor */
         $actor = $request->user();
 
-        /** @var array<string, mixed> $validated */
+        /** @var array{naam?: string, target_type?: string, target_id?: int, collectie?: string, alt_tekst?: string|null, onderschrift?: string|null, volgorde?: int} $validated */
         $validated = $request->validated();
 
         $file = $request->file('bestand');
@@ -83,10 +80,10 @@ class RichMediaController extends Controller
         $attachedTo = null;
 
         if (isset($validated['target_type'], $validated['target_id'])) {
-            $target = $this->resolveTarget((string) $validated['target_type'], (int) $validated['target_id']);
+            $target = $this->resolveTarget($validated['target_type'], $validated['target_id']);
             $this->authorizeTargetMutation($actor, $target);
 
-            $collectie = (string) ($validated['collectie'] ?? 'default');
+            $collectie = $validated['collectie'] ?? 'default';
 
             if ($target instanceof Robot && $collectie === 'foto') {
                 $existingFotoIds = $target->mediaCollectie('foto')->pluck('media.id')->all();
@@ -112,7 +109,7 @@ class RichMediaController extends Controller
 
             $attachedTo = [
                 'type' => (string) $validated['target_type'],
-                'id' => (int) $validated['target_id'],
+                'id' => $validated['target_id'],
                 'collectie' => $collectie,
             ];
         }
@@ -129,13 +126,13 @@ class RichMediaController extends Controller
         /** @var User $actor */
         $actor = $request->user();
 
-        /** @var array<string, mixed> $validated */
+        /** @var array{target_type: string, target_id: int, collectie?: string, alt_tekst?: string|null, onderschrift?: string|null, volgorde?: int} $validated */
         $validated = $request->validated();
 
-        $target = $this->resolveTarget((string) $validated['target_type'], (int) $validated['target_id']);
+        $target = $this->resolveTarget($validated['target_type'], $validated['target_id']);
         $this->authorizeTargetMutation($actor, $target);
 
-        $collectie = (string) ($validated['collectie'] ?? 'default');
+        $collectie = $validated['collectie'] ?? 'default';
 
         $target->koppelMedia($media, $collectie, [
             'alt_tekst' => $validated['alt_tekst'] ?? null,
@@ -148,7 +145,7 @@ class RichMediaController extends Controller
             'data' => new RichMediaResource($media),
             'attached_to' => [
                 'type' => (string) $validated['target_type'],
-                'id' => (int) $validated['target_id'],
+                'id' => $validated['target_id'],
                 'collectie' => $collectie,
             ],
         ], Response::HTTP_OK);
@@ -171,7 +168,7 @@ class RichMediaController extends Controller
         return 'content/files';
     }
 
-    private function resolveTarget(string $type, int $id): Model
+    private function resolveTarget(string $type, int $id): Post|Page|Team|Robot|TeamUpdate|User|ProgrammaItem
     {
         return match ($type) {
             'post' => Post::query()->findOrFail($id),
@@ -185,7 +182,7 @@ class RichMediaController extends Controller
         };
     }
 
-    private function authorizeTargetMutation(User $actor, Model $target): void
+    private function authorizeTargetMutation(User $actor, Post|Page|Team|Robot|TeamUpdate|User|ProgrammaItem $target): void
     {
         if ($actor->hasAnyRole(UserRole::Admin, UserRole::Moderator)) {
             return;
@@ -195,7 +192,7 @@ class RichMediaController extends Controller
             return;
         }
 
-        if ($target instanceof TeamUpdate && $target->team?->captain_user_id === $actor->id) {
+        if ($target instanceof TeamUpdate && $target->team->captain_user_id === $actor->id) {
             return;
         }
 

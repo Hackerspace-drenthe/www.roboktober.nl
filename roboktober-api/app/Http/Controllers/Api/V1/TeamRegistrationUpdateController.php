@@ -44,7 +44,7 @@ class TeamRegistrationUpdateController extends Controller
     {
         $team = $this->resolveTeamForUser($this->resolveAuthenticatedUser($request));
 
-        /** @var array<string, mixed> $validated */
+        /** @var array{titel: string, excerpt?: string|null, content: string, content_format: string} $validated */
         $validated = $request->validated();
 
         /** @var TeamUpdate $update */
@@ -59,13 +59,9 @@ class TeamRegistrationUpdateController extends Controller
                 'published_at' => now(),
             ]);
 
-            $bestanden = $request->file('afbeeldingen', []);
+            $bestanden = $this->normalizeUploadedFiles($request->file('afbeeldingen'));
 
             foreach ($bestanden as $index => $bestand) {
-                if (! ($bestand instanceof UploadedFile)) {
-                    continue;
-                }
-
                 $stored = $this->storage->storeUploadedFile(
                     file: $bestand,
                     directory: 'team-updates',
@@ -115,14 +111,11 @@ class TeamRegistrationUpdateController extends Controller
             abort(Response::HTTP_NOT_FOUND);
         }
 
-        /** @var array<string, mixed> $validated */
+        /** @var array{titel: string, excerpt?: string|null, content: string, content_format: string, verwijder_afbeelding_ids?: list<int>} $validated */
         $validated = $request->validated();
 
         /** @var list<int> $verwijderAfbeeldingIds */
-        $verwijderAfbeeldingIds = array_map(
-            static fn (mixed $id): int => (int) $id,
-            $validated['verwijder_afbeelding_ids'] ?? [],
-        );
+        $verwijderAfbeeldingIds = $validated['verwijder_afbeelding_ids'] ?? [];
 
         DB::transaction(function () use ($request, $teamUpdate, $validated, $verwijderAfbeeldingIds): void {
             $teamUpdate->forceFill([
@@ -146,14 +139,11 @@ class TeamRegistrationUpdateController extends Controller
                 $teamUpdate->media()->detach($verwijderAfbeeldingIds);
             }
 
-            $bestanden = $request->file('afbeeldingen', []);
-            $volgordeStart = ((int) ($teamUpdate->mediaCollectie('gallery')->max('mediables.volgorde') ?? -1)) + 1;
+            $bestanden = $this->normalizeUploadedFiles($request->file('afbeeldingen'));
+            $maxVolgorde = $teamUpdate->mediaCollectie('gallery')->max('mediables.volgorde');
+            $volgordeStart = (is_numeric($maxVolgorde) ? (int) $maxVolgorde : -1) + 1;
 
             foreach ($bestanden as $index => $bestand) {
-                if (! ($bestand instanceof UploadedFile)) {
-                    continue;
-                }
-
                 $stored = $this->storage->storeUploadedFile(
                     file: $bestand,
                     directory: 'team-updates',
@@ -208,5 +198,27 @@ class TeamRegistrationUpdateController extends Controller
     private function resolveTeamForUser(User $user): Team
     {
         return Team::query()->where('captain_user_id', $user->id)->firstOrFail();
+    }
+
+    /**
+     * @return list<UploadedFile>
+     */
+    private function normalizeUploadedFiles(mixed $files): array
+    {
+        if ($files instanceof UploadedFile) {
+            return [$files];
+        }
+
+        if (! is_array($files)) {
+            return [];
+        }
+
+        /** @var list<UploadedFile> $normalized */
+        $normalized = array_values(array_filter(
+            $files,
+            static fn (mixed $file): bool => $file instanceof UploadedFile,
+        ));
+
+        return $normalized;
     }
 }

@@ -104,6 +104,7 @@ Regressierisico verlagen op backend en frontend.
 - Uitgevoerd: backend style-schuld weggewerkt met volledige Pint-fix; backend style-check is nu blocking in CI.
 - Uitgevoerd: backend static analysis (PHPStan) staat voorlopig advisory met expliciete technical debt-track (huidige legacy-foutlast).
 - Uitgevoerd: eerste reductieronde op static-analysis schuld in controllers/models; PHPStan raw-output verlaagd van 433 naar 166 regels.
+- Uitgevoerd: tweede reductieronde op top-offenders (`CompetitionController`, `RichMediaController`, `TeamRegistrationUpdateController`); targeted fouten opgelost en totale raw-output verder verlaagd naar 128 regels.
 - Uitgevoerd: backend testjob opgesplitst in aparte Unit/Feature suites voor snellere feedback.
 - Gevalideerd: unit tests en e2e smoke tests slagen lokaal.
 
