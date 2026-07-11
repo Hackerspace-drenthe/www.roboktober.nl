@@ -18,21 +18,25 @@ class CompetitionBattleScoreResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        /** @var CompetitionBattleScore $score */
+        $score = $this->resource;
+        $robot = $score->robot;
+
         return [
-            'id' => $this->id,
-            'punten' => $this->punten,
-            'opmerkingen' => $this->opmerkingen,
-            'robot' => $this->robot !== null ? [
-                'id' => $this->robot->id,
-                'naam' => $this->robot->naam,
-                'status' => $this->robot->status->value,
-                'team' => $this->robot->team !== null ? [
-                    'id' => $this->robot->team->id,
-                    'naam' => $this->robot->team->naam,
+            'id' => $score->id,
+            'punten' => $score->punten,
+            'opmerkingen' => $score->opmerkingen,
+            'robot' => $robot !== null ? [
+                'id' => $robot->id,
+                'naam' => $robot->naam,
+                'status' => $robot->status->value,
+                'team' => $robot->team !== null ? [
+                    'id' => $robot->team->id,
+                    'naam' => $robot->team->naam,
                 ] : null,
             ] : null,
-            'created_at' => $this->created_at?->toISOString(),
-            'updated_at' => $this->updated_at?->toISOString(),
+            'created_at' => $score->created_at?->toISOString(),
+            'updated_at' => $score->updated_at?->toISOString(),
         ];
     }
 }

@@ -6,9 +6,11 @@ namespace App\Services\Uploads;
 
 use App\Contracts\Uploads\MediaStorage;
 use App\Data\Uploads\StoredUpload;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use RuntimeException;
 
 final class FilesystemMediaStorage implements MediaStorage
 {
@@ -22,16 +24,26 @@ final class FilesystemMediaStorage implements MediaStorage
         $fileName = Str::uuid()->toString().'.'.$extension;
         $path = $file->storeAs($directory, $fileName, $resolvedDisk);
 
+        if (! is_string($path) || $path === '') {
+            throw new RuntimeException('Upload kon niet worden opgeslagen op de geselecteerde disk.');
+        }
+
         $realPath = $file->getRealPath();
-        $sha256 = is_string($realPath) ? hash_file('sha256', $realPath) : null;
+        $sha256 = null;
+        if (is_string($realPath) && $realPath !== '') {
+            $hash = hash_file('sha256', $realPath);
+            $sha256 = is_string($hash) ? $hash : null;
+        }
+
+        $fileSize = $file->getSize();
 
         return new StoredUpload(
             path: $path,
             disk: $resolvedDisk,
             originalName: $file->getClientOriginalName(),
-            mimeType: $file->getMimeType() ?? 'application/octet-stream',
+            mimeType: is_string($file->getMimeType()) ? $file->getMimeType() : 'application/octet-stream',
             extension: $extension,
-            size: $file->getSize() ?? 0,
+            size: is_int($fileSize) ? $fileSize : 0,
             sha256: $sha256,
         );
     }
@@ -53,13 +65,20 @@ final class FilesystemMediaStorage implements MediaStorage
             return '/storage/'.ltrim($path, '/');
         }
 
-        return Storage::disk($resolvedDisk)->url($path);
+        /** @var FilesystemAdapter $filesystem */
+        $filesystem = Storage::disk($resolvedDisk);
+
+        return $filesystem->url($path);
     }
 
     private function resolveDisk(?string $disk): string
     {
-        return ($disk !== null && $disk !== '')
-            ? $disk
-            : (string) config('uploads.default_disk', 'public');
+        if ($disk !== null && $disk !== '') {
+            return $disk;
+        }
+
+        $configured = config('uploads.default_disk', 'public');
+
+        return is_string($configured) && $configured !== '' ? $configured : 'public';
     }
 }

@@ -18,8 +18,8 @@ final readonly class TeamPhotoUploadService
     {
         $stored = $this->storage->storeUploadedFile(
             file: $photo,
-            directory: (string) config('uploads.team_photo.directory', 'team-fotos'),
-            disk: (string) config('uploads.team_photo.disk', 'public'),
+            directory: $this->configString('uploads.team_photo.directory', 'team-fotos'),
+            disk: $this->configString('uploads.team_photo.disk', 'public'),
         );
 
         $media = Media::query()->create([
@@ -39,7 +39,7 @@ final readonly class TeamPhotoUploadService
             'downloads' => 0,
         ]);
 
-        $team->koppelMedia($media, (string) config('uploads.team_photo.collection', 'foto'), [
+        $team->koppelMedia($media, $this->configString('uploads.team_photo.collection', 'foto'), [
             'alt_tekst' => 'Teamfoto van '.$team->naam,
             'onderschrift' => $caption,
             'volgorde' => 0,
@@ -58,17 +58,24 @@ final readonly class TeamPhotoUploadService
 
     public function remove(Team $team): void
     {
-        $collection = (string) config('uploads.team_photo.collection', 'foto');
+        $collection = $this->configString('uploads.team_photo.collection', 'foto');
         $photos = $team->mediaCollectie($collection)->get();
 
         foreach ($photos as $photo) {
             $team->ontkoppelMedia($photo);
 
-            if (is_string($photo->pad) && $photo->pad !== '') {
-                $this->storage->delete($photo->pad, is_string($photo->disk) ? $photo->disk : null);
+            if ($photo->pad !== '') {
+                $this->storage->delete($photo->pad, $photo->disk);
             }
 
             $photo->delete();
         }
+    }
+
+    private function configString(string $key, string $fallback): string
+    {
+        $value = config($key, $fallback);
+
+        return is_string($value) && $value !== '' ? $value : $fallback;
     }
 }

@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Services\Uploads\TeamPhotoUploadService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
@@ -93,10 +94,11 @@ class TeamRegistrationEditController extends Controller
                 $this->teamPhotoUploads->remove($team);
             }
 
-            if ($request->hasFile('teamfoto')) {
+            $teamfoto = $request->file('teamfoto');
+            if ($teamfoto instanceof UploadedFile) {
                 $this->teamPhotoUploads->replace(
                     team: $team,
-                    photo: $request->file('teamfoto'),
+                    photo: $teamfoto,
                     source: 'team_registratie_update',
                     caption: 'Bijgewerkt via accountbeheer',
                 );

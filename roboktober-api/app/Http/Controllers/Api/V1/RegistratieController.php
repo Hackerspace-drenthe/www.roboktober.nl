@@ -15,6 +15,7 @@ use App\Models\Team;
 use App\Models\User;
 use App\Services\Uploads\TeamPhotoUploadService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -71,10 +72,11 @@ class RegistratieController extends Controller
                 ]);
             }
 
-            if ($request->hasFile('teamfoto')) {
+            $teamfoto = $request->file('teamfoto');
+            if ($teamfoto instanceof UploadedFile) {
                 $this->teamPhotoUploads->attach(
                     team: $team,
-                    photo: $request->file('teamfoto'),
+                    photo: $teamfoto,
                     source: 'team_registratie',
                     caption: 'Ingestuurd via teamregistratie',
                 );
