@@ -168,7 +168,7 @@ class AuthController extends Controller
                     'password' => $password,
                     'remember_token' => Str::random(60),
                 ])->save();
-            }
+            },
         );
 
         if ($status !== Password::PASSWORD_RESET) {

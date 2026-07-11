@@ -64,7 +64,7 @@ describe('Admin team moderation API', function (): void {
         $this->assertDatabaseHas('audit_logs', [
             'actor_user_id' => $moderator->id,
             'action' => 'team.status_updated',
-            'subject_type' => App\Models\Team::class,
+            'subject_type' => Team::class,
             'subject_id' => $pending->id,
         ]);
     });

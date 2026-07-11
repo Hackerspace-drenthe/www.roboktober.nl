@@ -20,9 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TeamRegistrationEditController extends Controller
 {
-    public function __construct(private readonly TeamPhotoUploadService $teamPhotoUploads)
-    {
-    }
+    public function __construct(private readonly TeamPhotoUploadService $teamPhotoUploads) {}
 
     public function show(Request $request): EditableTeamRegistrationResource
     {

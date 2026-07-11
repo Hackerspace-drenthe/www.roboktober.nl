@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Enums\TeamStatus;
+use App\Mail\NieuwTeamAanmelding;
 use App\Models\Edition;
 use App\Models\Team;
 use App\Models\User;
@@ -10,10 +11,9 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Storage;
-use App\Mail\NieuwTeamAanmelding;
 
 /**
- * @param array<string, mixed> $overschrijvingen
+ * @param  array<string, mixed>  $overschrijvingen
  * @return array<string, mixed>
  */
 function registratieBasisPayload(int $editionId, array $overschrijvingen = []): array
@@ -202,7 +202,7 @@ describe('POST /api/v1/registratie', function (): void {
             ->assertHeader('Referrer-Policy', 'no-referrer')
             ->assertHeader(
                 'Content-Security-Policy',
-                "default-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"
+                "default-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'",
             );
     });
 

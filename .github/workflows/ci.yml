@@ -7,10 +7,9 @@ on:
   pull_request:
 
 jobs:
-  backend-quality:
-    name: Backend Quality (Pint + PHPStan)
+  backend-style:
+    name: Backend Style (Pint)
     runs-on: ubuntu-latest
-    continue-on-error: true
 
     defaults:
       run:
@@ -37,6 +36,34 @@ jobs:
 
       - name: Run code style check
         run: ./vendor/bin/pint --test
+
+  backend-static-analysis:
+    name: Backend Static Analysis (PHPStan)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+
+    defaults:
+      run:
+        working-directory: roboktober-api
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, dom, fileinfo, sqlite3, pdo_sqlite
+          tools: composer:v2
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
 
       - name: Run static analysis
         run: ./vendor/bin/phpstan analyse --no-progress

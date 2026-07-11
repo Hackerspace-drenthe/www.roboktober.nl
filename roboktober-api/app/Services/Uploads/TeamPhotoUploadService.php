@@ -12,9 +12,7 @@ use Illuminate\Support\Str;
 
 final readonly class TeamPhotoUploadService
 {
-    public function __construct(private MediaStorage $storage)
-    {
-    }
+    public function __construct(private MediaStorage $storage) {}
 
     public function attach(Team $team, UploadedFile $photo, string $source, string $caption): Media
     {

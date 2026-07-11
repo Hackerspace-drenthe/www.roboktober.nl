@@ -22,9 +22,9 @@ class PostFactory extends Factory
 
         return [
             'titel' => $titel,
-            'slug' => Str::slug($titel) . '-' . $this->faker->unique()->numberBetween(1000, 9999),
+            'slug' => Str::slug($titel).'-'.$this->faker->unique()->numberBetween(1000, 9999),
             'excerpt' => $this->faker->optional()->sentence(),
-            'content' => '<p>' . implode('</p><p>', $this->faker->paragraphs(3)) . '</p>',
+            'content' => '<p>'.implode('</p><p>', $this->faker->paragraphs(3)).'</p>',
             'content_format' => ContentFormat::Html,
             'categorie' => null,
             'tags' => null,

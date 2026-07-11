@@ -116,4 +116,3 @@ class LinkResource extends Resource
         ];
     }
 }
-

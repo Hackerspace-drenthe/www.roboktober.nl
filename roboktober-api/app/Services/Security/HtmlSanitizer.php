@@ -60,11 +60,13 @@ class HtmlSanitizer
 
                     if (str_starts_with(strtolower($attributeName), 'on')) {
                         $element->removeAttribute($attributeName);
+
                         continue;
                     }
 
                     if ($attributeName === 'style') {
                         $element->removeAttribute($attributeName);
+
                         continue;
                     }
 

@@ -29,7 +29,7 @@ class EditionSeeder extends Seeder
                 'start_at' => Carbon::create(2026, 10, 1, 19, 0, 0),
                 'end_at' => Carbon::create(2026, 10, 31, 22, 0, 0),
                 'is_done' => false,
-            ]
+            ],
         );
     }
 }

@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
-use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
 
 /**
@@ -19,9 +18,9 @@ use Rector\Set\ValueObject\SetList;
  */
 return RectorConfig::configure()
     ->withPaths([
-        __DIR__ . '/app',
-        __DIR__ . '/database',
-        __DIR__ . '/tests',
+        __DIR__.'/app',
+        __DIR__.'/database',
+        __DIR__.'/tests',
     ])
     ->withPhpSets(php82: true)
     ->withSets([
@@ -33,6 +32,6 @@ return RectorConfig::configure()
     ])
     ->withSkip([
         // Skip Filament-generated files — they follow their own conventions
-        __DIR__ . '/app/Providers/Filament',
+        __DIR__.'/app/Providers/Filament',
     ])
     ->withImportNames(removeUnusedImports: true);

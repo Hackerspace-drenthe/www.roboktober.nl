@@ -102,7 +102,7 @@ class CompetitionController extends Controller
     }
 
     /**
-     * @param Collection<int, array{robot: Robot, punten: int}> $totals
+     * @param  Collection<int, array{robot: Robot, punten: int}>  $totals
      * @return list<array<string, mixed>>
      */
     private function mapRanking(Collection $totals): array

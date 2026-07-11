@@ -21,7 +21,7 @@ class RobotFactory extends Factory
     {
         return [
             'team_id' => Team::factory(),
-            'naam' => $this->faker->word() . 'Bot',
+            'naam' => $this->faker->word().'Bot',
             'gewichtsklasse' => $this->faker->randomElement(Gewichtsklasse::cases())->value,
             'beschrijving' => $this->faker->optional()->sentence(),
             'status' => RobotStatus::InOntwikkeling,

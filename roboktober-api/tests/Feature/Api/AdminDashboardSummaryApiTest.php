@@ -46,7 +46,7 @@ describe('Admin dashboard summary API', function (): void {
         AuditLog::query()->create([
             'actor_user_id' => $moderator->id,
             'action' => 'team.status_updated',
-            'subject_type' => App\Models\Team::class,
+            'subject_type' => Team::class,
             'subject_id' => $team->id,
             'before' => ['status' => 'pending'],
             'after' => ['status' => 'approved'],

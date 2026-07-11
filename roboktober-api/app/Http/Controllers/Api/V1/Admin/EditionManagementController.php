@@ -20,9 +20,7 @@ use Illuminate\Validation\ValidationException;
 
 class EditionManagementController extends Controller
 {
-    public function __construct(private readonly AuditLogger $audit)
-    {
-    }
+    public function __construct(private readonly AuditLogger $audit) {}
 
     public function index(Request $request): AnonymousResourceCollection
     {
@@ -210,7 +208,7 @@ class EditionManagementController extends Controller
     }
 
     /**
-     * @param array{name: string, address: string, place: string, zipcode: string, osm_url?: string|null, instructions?: string|null} $payload
+     * @param  array{name: string, address: string, place: string, zipcode: string, osm_url?: string|null, instructions?: string|null}  $payload
      */
     private function resolveLocation(array $payload): Location
     {
@@ -226,7 +224,7 @@ class EditionManagementController extends Controller
                 'instructions' => isset($payload['instructions'])
                     ? (trim((string) $payload['instructions']) !== '' ? trim((string) $payload['instructions']) : null)
                     : null,
-            ]
+            ],
         );
     }
 }

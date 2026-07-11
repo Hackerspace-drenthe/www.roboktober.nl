@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Enums\UserRole;
 use App\Models\AuditLog;
+use App\Models\Team;
 use App\Models\User;
 
 describe('Admin audit log API', function (): void {
@@ -19,7 +20,7 @@ describe('Admin audit log API', function (): void {
         AuditLog::query()->create([
             'actor_user_id' => $actor->id,
             'action' => 'team.status_updated',
-            'subject_type' => App\Models\Team::class,
+            'subject_type' => Team::class,
             'subject_id' => 42,
             'before' => ['status' => 'pending'],
             'after' => ['status' => 'approved'],

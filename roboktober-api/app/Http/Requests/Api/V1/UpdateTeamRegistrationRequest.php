@@ -26,7 +26,7 @@ class UpdateTeamRegistrationRequest extends FormRequest
                 'required',
                 'integer',
                 Rule::exists(Edition::class, 'id')->where(
-                    static fn ($query) => $query->where('is_done', 0)
+                    static fn ($query) => $query->where('is_done', 0),
                 ),
             ],
             'naam' => ['required', 'string', 'max:255'],

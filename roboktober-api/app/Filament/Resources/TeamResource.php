@@ -155,5 +155,3 @@ class TeamResource extends Resource
         return false;
     }
 }
-
-

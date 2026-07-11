@@ -122,21 +122,21 @@ describe('Admin content moderation API', function (): void {
         $this->assertDatabaseHas('audit_logs', [
             'actor_user_id' => $moderator->id,
             'action' => 'post.publish_state_updated',
-            'subject_type' => App\Models\Post::class,
+            'subject_type' => Post::class,
             'subject_id' => $post->id,
         ]);
 
         $this->assertDatabaseHas('audit_logs', [
             'actor_user_id' => $moderator->id,
             'action' => 'page.publish_state_updated',
-            'subject_type' => App\Models\Page::class,
+            'subject_type' => Page::class,
             'subject_id' => $page->id,
         ]);
 
         $this->assertDatabaseHas('audit_logs', [
             'actor_user_id' => $moderator->id,
             'action' => 'team_update.publish_state_updated',
-            'subject_type' => App\Models\TeamUpdate::class,
+            'subject_type' => TeamUpdate::class,
             'subject_id' => $teamUpdate->id,
         ]);
     });

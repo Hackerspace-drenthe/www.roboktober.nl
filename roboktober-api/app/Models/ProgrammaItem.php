@@ -12,8 +12,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProgrammaItem extends Model
 {
-    use HasMedia;
     use HasFactory;
+    use HasMedia;
 
     /**
      * @var list<string>

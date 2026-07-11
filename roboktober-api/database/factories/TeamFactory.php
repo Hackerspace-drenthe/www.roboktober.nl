@@ -18,7 +18,7 @@ class TeamFactory extends Factory
     public function definition(): array
     {
         return [
-            'naam' => $this->faker->company() . ' Robotics',
+            'naam' => $this->faker->company().' Robotics',
             'contactpersoon' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'volwassenen' => $this->faker->numberBetween(1, 4),

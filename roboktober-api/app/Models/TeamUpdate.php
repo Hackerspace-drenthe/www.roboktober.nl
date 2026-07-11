@@ -6,13 +6,14 @@ namespace App\Models;
 
 use App\Concerns\HasMedia;
 use App\Enums\ContentFormat;
+use Database\Factories\TeamUpdateFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TeamUpdate extends Model
 {
-    /** @use HasFactory<\Database\Factories\TeamUpdateFactory> */
+    /** @use HasFactory<TeamUpdateFactory> */
     use HasFactory;
     use HasMedia;
 

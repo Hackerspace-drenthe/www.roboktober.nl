@@ -18,9 +18,7 @@ use Illuminate\Validation\ValidationException;
 
 class RobotManagementController extends Controller
 {
-    public function __construct(private readonly AuditLogger $audit)
-    {
-    }
+    public function __construct(private readonly AuditLogger $audit) {}
 
     public function index(): AnonymousResourceCollection
     {

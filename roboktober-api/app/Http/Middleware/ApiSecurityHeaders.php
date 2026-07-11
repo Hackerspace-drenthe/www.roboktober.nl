@@ -34,14 +34,14 @@ class ApiSecurityHeaders
         if (! $response->headers->has('Permissions-Policy')) {
             $response->headers->set(
                 'Permissions-Policy',
-                'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()'
+                'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()',
             );
         }
 
         if (! $response->headers->has('Content-Security-Policy')) {
             $response->headers->set(
                 'Content-Security-Policy',
-                "default-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"
+                "default-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'",
             );
         }
 

@@ -17,9 +17,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class LinkManagementController extends Controller
 {
-    public function __construct(private readonly AuditLogger $audit)
-    {
-    }
+    public function __construct(private readonly AuditLogger $audit) {}
 
     public function index(): AnonymousResourceCollection
     {

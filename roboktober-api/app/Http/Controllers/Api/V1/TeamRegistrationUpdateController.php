@@ -16,6 +16,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -23,9 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TeamRegistrationUpdateController extends Controller
 {
-    public function __construct(private readonly MediaStorage $storage)
-    {
-    }
+    public function __construct(private readonly MediaStorage $storage) {}
 
     public function index(Request $request): AnonymousResourceCollection
     {
@@ -63,7 +62,7 @@ class TeamRegistrationUpdateController extends Controller
             $bestanden = $request->file('afbeeldingen', []);
 
             foreach ($bestanden as $index => $bestand) {
-                if (!($bestand instanceof \Illuminate\Http\UploadedFile)) {
+                if (! ($bestand instanceof UploadedFile)) {
                     continue;
                 }
 
@@ -122,7 +121,7 @@ class TeamRegistrationUpdateController extends Controller
         /** @var list<int> $verwijderAfbeeldingIds */
         $verwijderAfbeeldingIds = array_map(
             static fn (mixed $id): int => (int) $id,
-            $validated['verwijder_afbeelding_ids'] ?? []
+            $validated['verwijder_afbeelding_ids'] ?? [],
         );
 
         DB::transaction(function () use ($request, $teamUpdate, $validated, $verwijderAfbeeldingIds): void {
@@ -151,7 +150,7 @@ class TeamRegistrationUpdateController extends Controller
             $volgordeStart = ((int) ($teamUpdate->mediaCollectie('gallery')->max('mediables.volgorde') ?? -1)) + 1;
 
             foreach ($bestanden as $index => $bestand) {
-                if (!($bestand instanceof \Illuminate\Http\UploadedFile)) {
+                if (! ($bestand instanceof UploadedFile)) {
                     continue;
                 }
 

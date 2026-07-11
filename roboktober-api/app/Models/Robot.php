@@ -7,10 +7,12 @@ namespace App\Models;
 use App\Concerns\HasMedia;
 use App\Enums\Gewichtsklasse;
 use App\Enums\RobotStatus;
+use Database\Factories\RobotFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * Robot model — combat robot registered for Roboktober events.
@@ -26,14 +28,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property RobotStatus $status
  * @property float $awesomeness_score
  * @property int $awesomeness_votes_count
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  *
  * @see PLAN.md §5.2 — robots schema
  */
 class Robot extends Model
 {
-    /** @use HasFactory<\Database\Factories\RobotFactory> */
+    /** @use HasFactory<RobotFactory> */
     use HasFactory;
     use HasMedia;
 

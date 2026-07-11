@@ -6,8 +6,10 @@ namespace App\Models;
 
 use App\Concerns\HasMedia;
 use App\Enums\ContentFormat;
+use Database\Factories\PostFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * Post model — news/blog article for the Nieuws section.
@@ -26,16 +28,16 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $categorie
  * @property list<string>|null $tags
  * @property bool $is_published
- * @property \Illuminate\Support\Carbon|null $published_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $published_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  *
  * @see PLAN.md §5.2 — posts schema
  * @see PLAN.md §6.7  — Nieuws/Blog page design
  */
 class Post extends Model
 {
-    /** @use HasFactory<\Database\Factories\PostFactory> */
+    /** @use HasFactory<PostFactory> */
     use HasFactory;
     use HasMedia;
 

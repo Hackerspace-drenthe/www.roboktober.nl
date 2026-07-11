@@ -17,8 +17,7 @@ class AnalyticsEventController extends Controller
     public function __construct(
         private readonly PathNormalizer $pathNormalizer,
         private readonly PageVisitAggregateService $pageVisitAggregate,
-    ) {
-    }
+    ) {}
 
     public function store(TrackAnalyticsEventRequest $request): JsonResponse
     {

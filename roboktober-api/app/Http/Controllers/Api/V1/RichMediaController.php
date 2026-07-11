@@ -20,14 +20,12 @@ use App\Models\User;
 use App\Services\Uploads\FilesystemMediaStorage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 
 class RichMediaController extends Controller
 {
-    public function __construct(private readonly FilesystemMediaStorage $storage)
-    {
-    }
+    public function __construct(private readonly FilesystemMediaStorage $storage) {}
 
     public function index(): JsonResponse
     {
@@ -55,7 +53,7 @@ class RichMediaController extends Controller
         $validated = $request->validated();
 
         $file = $request->file('bestand');
-        if (! $file instanceof \Illuminate\Http\UploadedFile) {
+        if (! $file instanceof UploadedFile) {
             return response()->json(['message' => 'Geen geldig bestand ontvangen.'], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 

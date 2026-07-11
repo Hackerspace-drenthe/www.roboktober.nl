@@ -41,7 +41,7 @@ describe('Admin user management API', function (): void {
         $this->assertDatabaseHas('audit_logs', [
             'actor_user_id' => $admin->id,
             'action' => 'user.role_updated',
-            'subject_type' => App\Models\User::class,
+            'subject_type' => User::class,
             'subject_id' => $targetUser->id,
         ]);
     });

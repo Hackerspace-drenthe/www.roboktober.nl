@@ -72,7 +72,7 @@ class ProgrammaItemSeeder extends Seeder
                     'end_at' => $item['end_at'],
                     'volgorde' => $item['volgorde'],
                     'is_published' => $item['is_published'],
-                ]
+                ],
             );
         }
     }

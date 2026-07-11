@@ -19,9 +19,7 @@ use Illuminate\Validation\ValidationException;
 
 class ProgrammaItemManagementController extends Controller
 {
-    public function __construct(private readonly AuditLogger $audit)
-    {
-    }
+    public function __construct(private readonly AuditLogger $audit) {}
 
     public function index(Edition $edition): AnonymousResourceCollection
     {

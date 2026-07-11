@@ -145,5 +145,3 @@ class PostResource extends Resource
         return false;
     }
 }
-
-

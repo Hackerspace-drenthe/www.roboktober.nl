@@ -13,7 +13,6 @@ declare(strict_types=1);
  * The service is started through sudo, so configure a restricted sudoers rule
  * for the webserver user (www-data).
  */
-
 const CONFIG_FILE_CANDIDATES = [
     '/etc/roboktober/github-webhook.env',
     '/etc/default/roboktober-github-webhook',
@@ -22,7 +21,7 @@ const CONFIG_FILE_CANDIDATES = [
 /** @return array<string, string> */
 function loadKeyValueFile(string $path): array
 {
-    if (!is_readable($path)) {
+    if (! is_readable($path)) {
         return [];
     }
 
@@ -83,8 +82,9 @@ function respond(int $status, array $body): never
 
 function getHeaderValue(string $name): string
 {
-    $serverKey = 'HTTP_' . strtoupper(str_replace('-', '_', $name));
+    $serverKey = 'HTTP_'.strtoupper(str_replace('-', '_', $name));
     $value = $_SERVER[$serverKey] ?? '';
+
     return is_string($value) ? $value : '';
 }
 
@@ -103,19 +103,19 @@ if ($secret === '') {
 }
 
 $rawPayload = file_get_contents('php://input');
-if (!is_string($rawPayload) || $rawPayload === '') {
+if (! is_string($rawPayload) || $rawPayload === '') {
     respond(400, ['ok' => false, 'error' => 'Missing payload']);
 }
 
 $signatureHeader = getHeaderValue('X-Hub-Signature-256');
-if (!str_starts_with($signatureHeader, 'sha256=')) {
+if (! str_starts_with($signatureHeader, 'sha256=')) {
     respond(401, ['ok' => false, 'error' => 'Missing signature']);
 }
 
 $incomingSignature = substr($signatureHeader, 7);
 $expectedSignature = hash_hmac('sha256', $rawPayload, $secret);
 
-if (!hash_equals($expectedSignature, $incomingSignature)) {
+if (! hash_equals($expectedSignature, $incomingSignature)) {
     respond(401, ['ok' => false, 'error' => 'Invalid signature']);
 }
 
@@ -130,14 +130,14 @@ if ($event !== 'push') {
 }
 
 $payload = json_decode($rawPayload, true);
-if (!is_array($payload)) {
+if (! is_array($payload)) {
     respond(400, ['ok' => false, 'error' => 'Invalid JSON payload']);
 }
 
 $ref = $payload['ref'] ?? '';
-$expectedRef = 'refs/heads/' . $branch;
+$expectedRef = 'refs/heads/'.$branch;
 
-if (!is_string($ref) || $ref !== $expectedRef) {
+if (! is_string($ref) || $ref !== $expectedRef) {
     respond(202, [
         'ok' => true,
         'message' => 'Ignored branch',
@@ -152,7 +152,7 @@ $exitCode = 0;
 exec($command, $output, $exitCode);
 
 if ($exitCode !== 0) {
-    error_log('github-deploy-hook: failed to start service: ' . implode("\n", $output));
+    error_log('github-deploy-hook: failed to start service: '.implode("\n", $output));
     respond(500, ['ok' => false, 'error' => 'Failed to start deploy service']);
 }
 

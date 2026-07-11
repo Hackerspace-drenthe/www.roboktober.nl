@@ -19,7 +19,7 @@ class PageResource extends Resource
     protected static ?string $model = Page::class;
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static ?string $navigationLabel = "Pagina's";
-    protected static ?string $modelLabel = "Pagina";
+    protected static ?string $modelLabel = 'Pagina';
     protected static ?string $pluralModelLabel = "Pagina's";
     protected static ?int $navigationSort = 2;
 
@@ -137,5 +137,3 @@ class PageResource extends Resource
         return false;
     }
 }
-
-

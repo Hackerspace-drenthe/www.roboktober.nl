@@ -30,12 +30,10 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class RegistratieController extends Controller
 {
-    public function __construct(private readonly TeamPhotoUploadService $teamPhotoUploads)
-    {
-    }
+    public function __construct(private readonly TeamPhotoUploadService $teamPhotoUploads) {}
 
     /**
-    * Accepts a new team registration.
+     * Accepts a new team registration.
      *
      * New registrations always start with status 'pending' — an organizer must approve.
      * Sends email notification to organizer after successful registration.
@@ -120,4 +118,3 @@ class RegistratieController extends Controller
         }
     }
 }
-

@@ -6,10 +6,13 @@ namespace App\Models;
 
 use App\Concerns\HasMedia;
 use App\Enums\TeamStatus;
+use Database\Factories\TeamFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * Team model — combat robot team registration for Roboktober.
@@ -27,15 +30,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property TeamStatus $status
  * @property string|null $opmerkingen
  * @property int|null $captain_user_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Robot> $robots
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, Robot> $robots
  *
  * @see PLAN.md §5.2 — teams schema
  */
 class Team extends Model
 {
-    /** @use HasFactory<\Database\Factories\TeamFactory> */
+    /** @use HasFactory<TeamFactory> */
     use HasFactory;
     use HasMedia;
 

@@ -14,6 +14,5 @@ final readonly class StoredUpload
         public string $extension,
         public int $size,
         public ?string $sha256,
-    ) {
-    }
+    ) {}
 }
