@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\CompetitionBattleFactory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -24,7 +24,7 @@ use Illuminate\Support\Carbon;
  */
 class CompetitionBattle extends Model
 {
-    /** @use HasFactory<CompetitionBattleFactory> */
+    /** @use HasFactory<Factory<self>> */
     use HasFactory;
 
     /**
@@ -63,6 +63,9 @@ class CompetitionBattle extends Model
      */
     public function scores(): HasMany
     {
-        return $this->hasMany(CompetitionBattleScore::class)->orderByDesc('punten')->orderBy('id');
+        $relation = $this->hasMany(CompetitionBattleScore::class);
+        $relation->orderByDesc('punten')->orderBy('id');
+
+        return $relation;
     }
 }

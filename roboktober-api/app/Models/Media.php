@@ -114,7 +114,7 @@ class Media extends Model
 
         return $storage->publicUrl(
             path: $this->pad,
-            disk: is_string($this->disk) ? $this->disk : null,
+            disk: $this->disk,
         );
     }
 

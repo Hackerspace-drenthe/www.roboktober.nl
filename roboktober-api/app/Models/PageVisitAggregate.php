@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PageVisitAggregate extends Model
 {
+    /** @use HasFactory<Factory<self>> */
     use HasFactory;
 
     /**

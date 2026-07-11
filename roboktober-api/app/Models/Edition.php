@@ -75,7 +75,10 @@ class Edition extends Model
      */
     public function competitionCategories(): HasMany
     {
-        return $this->hasMany(CompetitionCategory::class)->orderBy('volgorde')->orderBy('id');
+        $relation = $this->hasMany(CompetitionCategory::class);
+        $relation->orderBy('volgorde')->orderBy('id');
+
+        return $relation;
     }
 
     /**
@@ -83,9 +86,12 @@ class Edition extends Model
      */
     public function programmaItems(): HasMany
     {
-        return $this->hasMany(ProgrammaItem::class)
+        $relation = $this->hasMany(ProgrammaItem::class);
+        $relation
             ->orderBy('start_at')
             ->orderBy('volgorde')
             ->orderBy('id');
+
+        return $relation;
     }
 }

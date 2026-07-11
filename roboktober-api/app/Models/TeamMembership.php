@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\TeamMembershipStatus;
-use Database\Factories\TeamMembershipFactory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,7 +27,7 @@ use Illuminate\Support\Carbon;
  */
 class TeamMembership extends Model
 {
-    /** @use HasFactory<TeamMembershipFactory> */
+    /** @use HasFactory<Factory<self>> */
     use HasFactory;
 
     /**

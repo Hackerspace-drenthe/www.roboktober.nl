@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Concerns\HasMedia;
 use App\Enums\ContentFormat;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,6 +27,7 @@ use Illuminate\Support\Carbon;
  */
 class ProgrammaItem extends Model
 {
+    /** @use HasFactory<Factory<self>> */
     use HasFactory;
     use HasMedia;
 

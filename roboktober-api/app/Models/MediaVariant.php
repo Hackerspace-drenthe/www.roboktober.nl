@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
@@ -67,8 +68,12 @@ class MediaVariant extends Model
      */
     public function url(): string
     {
-        $disk = $this->media()->value('disk') ?? 'public';
+        $media = $this->media()->first();
+        $disk = $media instanceof Media ? $media->disk : 'public';
 
-        return Storage::disk($disk)->url($this->pad);
+        /** @var FilesystemAdapter $filesystem */
+        $filesystem = Storage::disk($disk);
+
+        return $filesystem->url($this->pad);
     }
 }
