@@ -111,6 +111,7 @@ Regressierisico verlagen op backend en frontend.
 - Uitgevoerd: extra foutenronde op API controllers/resources (`AnalyticsEventController`, `TeamMembershipController`, `PageVisitAnalyticsController`, team/program resource typing); totale PHPStan raw-output verder verlaagd naar 45 regels.
 - Uitgevoerd: brede FormRequest typing-ronde (rules phpdoc normalisatie + edition config-typeguards); totale PHPStan raw-output verder verlaagd naar 24 regels.
 - Uitgevoerd: afrondende foutenronde op controllers/middleware/models/services/factories/seeders; PHPStan raw-output teruggebracht naar 0 regels.
+- Uitgevoerd: CI aangescherpt — backend static analysis (PHPStan) is nu weer blocking in plaats van advisory.
 - Uitgevoerd: backend testjob opgesplitst in aparte Unit/Feature suites voor snellere feedback.
 - Gevalideerd: unit tests en e2e smoke tests slagen lokaal.
 

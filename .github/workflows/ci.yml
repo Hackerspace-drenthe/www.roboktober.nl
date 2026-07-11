@@ -40,7 +40,6 @@ jobs:
   backend-static-analysis:
     name: Backend Static Analysis (PHPStan)
     runs-on: ubuntu-latest
-    continue-on-error: true
 
     defaults:
       run:
