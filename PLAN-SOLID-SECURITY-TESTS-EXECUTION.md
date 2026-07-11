@@ -100,6 +100,8 @@ Regressierisico verlagen op backend en frontend.
 - Uitgevoerd: publieke smoke e2e tests voor home en programma routes.
 - Uitgevoerd: auth-guard smoke e2e tests voor `/aanmelden` en `/admin/users` redirect naar login.
 - Uitgevoerd: CI workflow toegevoegd voor backend tests en frontend unit+e2e tests.
+- Uitgevoerd: CI quality-gates toegevoegd (backend Pint+PHPStan als advisory i.v.m. legacy style-schuld, frontend lint+type-check blocking).
+- Uitgevoerd: backend testjob opgesplitst in aparte Unit/Feature suites voor snellere feedback.
 - Gevalideerd: unit tests en e2e smoke tests slagen lokaal.
 
 ## 4. Risico's en mitigaties

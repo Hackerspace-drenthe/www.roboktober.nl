@@ -132,7 +132,7 @@ async function submitForm(): Promise<void> {
 }
 
 async function removeRobot(robot: AdminRobot): Promise<void> {
-  const confirmed = window.confirm(`Weet je zeker dat je robot \"${robot.naam}\" wilt verwijderen?`)
+  const confirmed = window.confirm(`Weet je zeker dat je robot "${robot.naam}" wilt verwijderen?`)
   if (!confirmed) return
 
   errorMessage.value = null

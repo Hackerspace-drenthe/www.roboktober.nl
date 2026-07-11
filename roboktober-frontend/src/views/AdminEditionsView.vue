@@ -157,7 +157,7 @@ async function submitForm(): Promise<void> {
 }
 
 async function removeEdition(edition: Edition): Promise<void> {
-  const confirmed = window.confirm(`Weet je zeker dat je editie \"${edition.naam}\" wilt verwijderen?`)
+  const confirmed = window.confirm(`Weet je zeker dat je editie "${edition.naam}" wilt verwijderen?`)
   if (!confirmed) return
 
   errorMessage.value = null

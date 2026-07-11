@@ -46,7 +46,8 @@ describe('useAuth', () => {
       name: 'Moderator',
       email: 'mod@example.test',
       role: 'moderator',
-      media: [],
+      role_label: 'Moderator',
+      profile_photo: null,
     }
 
     expect(auth.hasRole('visitor')).toBe(true)

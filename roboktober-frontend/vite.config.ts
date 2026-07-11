@@ -10,19 +10,6 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 export default defineConfig({
   plugins: [vue(), vueDevTools(), tailwindcss()],
 
-  test: {
-    environment: 'jsdom',
-    globals: true,
-    setupFiles: './src/test/setup.ts',
-    include: ['src/**/*.{test,spec}.ts'],
-    exclude: ['e2e/**'],
-    coverage: {
-      provider: 'v8',
-      reporter: ['text', 'html'],
-      include: ['src/**/*.{ts,vue}'],
-    },
-  },
-
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

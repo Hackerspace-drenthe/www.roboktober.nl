@@ -120,7 +120,7 @@ async function submitForm(): Promise<void> {
 }
 
 async function removeLink(link: AdminLink): Promise<void> {
-  const confirmed = window.confirm(`Weet je zeker dat je link \"${link.titel}\" wilt verwijderen?`)
+  const confirmed = window.confirm(`Weet je zeker dat je link "${link.titel}" wilt verwijderen?`)
   if (!confirmed) return
 
   errorMessage.value = null
