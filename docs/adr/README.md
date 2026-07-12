@@ -37,3 +37,4 @@ Gebruik oplopende nummers met een korte titel:
 - 0004: Security baseline policy (`0004-security-baseline-policy.md`)
 - 0005: Test strategy governance (`0005-test-strategy-governance.md`)
 - 0006: Observability policy (`0006-observability-policy.md`)
+- 0007: Data governance policy (`0007-data-governance-policy.md`)
