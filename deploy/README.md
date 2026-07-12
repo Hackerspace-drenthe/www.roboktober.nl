@@ -87,8 +87,14 @@ STAGING_HOST=rein@192.168.1.10 bash deploy/deploy-staging.sh
 3. Productie deploy (voorbeeld):
 
 ```bash
-PRODUCTION_HOST=rein@192.168.1.10 bash deploy/deploy-production.sh
+PRODUCTION_CONFIRM=deploy-production PRODUCTION_HOST=rein@192.168.1.10 bash deploy/deploy-production.sh
 ```
+
+Productie wrapper heeft een veiligheidsguard en vereist standaard:
+
+- `PRODUCTION_CONFIRM=deploy-production`
+
+Dit voorkomt onbedoelde productie-deploys.
 
 4. Dry-run (toon alleen SSH-commando):
 
@@ -113,6 +119,7 @@ Belangrijke variabelen voor wrappers:
 - `STAGING_BUILD_FRONTEND` / `PRODUCTION_BUILD_FRONTEND` (`true`/`false`)
 - `STAGING_PHP_BIN` / `PRODUCTION_PHP_BIN` (optioneel)
 - `STAGING_COMPOSER_BIN` / `PRODUCTION_COMPOSER_BIN` (optioneel)
+- `PRODUCTION_CONFIRM` (verplicht voor echte productie deploy, waarde: `deploy-production`)
 
 ## Auto deploy via GitHub webhook
 

@@ -64,11 +64,14 @@ Of volledig via deploy.env zonder inline variabelen:
 
 Voorkeur (1 commando vanaf lokale machine):
 
-- PRODUCTION_HOST=<host-of-user@host> bash deploy/deploy-production.sh
+- PRODUCTION_CONFIRM=deploy-production PRODUCTION_HOST=<host-of-user@host> bash deploy/deploy-production.sh
 
 Of volledig via deploy.env zonder inline variabelen:
 
-- bash deploy/deploy-production.sh
+- PRODUCTION_CONFIRM=deploy-production bash deploy/deploy-production.sh
+
+Let op:
+- Productie wrapper blokkeert deploys zonder `PRODUCTION_CONFIRM=deploy-production`.
 
 1. Herhaal stap 1 t/m 8 van staging op productie.
 2. Doe deploy bij voorkeur in low-traffic window.
