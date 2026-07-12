@@ -33,3 +33,4 @@ Gebruik oplopende nummers met een korte titel:
 ## ADR Overzicht
 - 0001: Service-layer voor complexe controllerflows (`0001-service-layer-voor-complexe-controllerflows.md`)
 - 0002: API-versiebeleid en breaking changes (`0002-api-versiebeleid-en-breaking-changes.md`)
+- 0003: Deployment safety policy (`0003-deployment-safety-policy.md`)
