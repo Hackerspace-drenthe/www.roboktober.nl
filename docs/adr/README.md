@@ -35,3 +35,4 @@ Gebruik oplopende nummers met een korte titel:
 - 0002: API-versiebeleid en breaking changes (`0002-api-versiebeleid-en-breaking-changes.md`)
 - 0003: Deployment safety policy (`0003-deployment-safety-policy.md`)
 - 0004: Security baseline policy (`0004-security-baseline-policy.md`)
+- 0005: Test strategy governance (`0005-test-strategy-governance.md`)
