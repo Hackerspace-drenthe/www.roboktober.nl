@@ -4,6 +4,14 @@ set -euo pipefail
 # Production deploy wrapper.
 # Override via environment variables if needed.
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DEPLOY_ENV_FILE="${DEPLOY_ENV_FILE:-$SCRIPT_DIR/deploy.env}"
+
+if [[ -f "$DEPLOY_ENV_FILE" ]]; then
+	# shellcheck disable=SC1090
+	source "$DEPLOY_ENV_FILE"
+fi
+
 DEPLOY_HOST="${DEPLOY_HOST:-${PRODUCTION_HOST:-}}"
 DEPLOY_SSH_USER="${DEPLOY_SSH_USER:-${PRODUCTION_SSH_USER:-}}"
 DEPLOY_SSH_PORT="${DEPLOY_SSH_PORT:-${PRODUCTION_SSH_PORT:-22}}"
@@ -26,4 +34,4 @@ export DEPLOY_PHP_BIN
 export DEPLOY_COMPOSER_BIN
 export DEPLOY_DRY_RUN
 
-"$(dirname "$0")/deploy-remote.sh"
+"$SCRIPT_DIR/deploy-remote.sh"

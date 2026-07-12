@@ -8,6 +8,7 @@ Deze map bevat een eenvoudige deploy-opzet voor de server op 192.168.1.10.
 - deploy-remote.sh: generieke remote runner (SSH + deploy.sh)
 - deploy-staging.sh: staging wrapper bovenop deploy-remote.sh
 - deploy-production.sh: productie wrapper bovenop deploy-remote.sh
+- deploy.env.example: voorbeeld met STAGING_/PRODUCTION_ variabelen
 - apache/roboktober.conf: Apache vhost template
 - systemd/roboktober-deploy.service: handmatige deploy service
 - systemd/roboktober-deploy.timer: optionele periodieke deploy
@@ -63,6 +64,14 @@ bash deploy/deploy.sh
 
 ## Deploy vanaf je lokale machine (staging/productie)
 
+0. Optioneel: werk met een vast env-bestand
+
+```bash
+cp deploy/deploy.env.example deploy/deploy.env
+```
+
+Vul daarna je staging/productie waarden in. De wrapper scripts laden `deploy/deploy.env` automatisch.
+
 1. Scripts uitvoerbaar maken:
 
 ```bash
@@ -85,6 +94,12 @@ PRODUCTION_HOST=rein@192.168.1.10 bash deploy/deploy-production.sh
 
 ```bash
 DEPLOY_DRY_RUN=true STAGING_HOST=rein@192.168.1.10 bash deploy/deploy-staging.sh
+```
+
+Als je een andere bestandslocatie wilt gebruiken:
+
+```bash
+DEPLOY_ENV_FILE=/pad/naar/mijn-deploy.env bash deploy/deploy-staging.sh
 ```
 
 Belangrijke variabelen voor wrappers:

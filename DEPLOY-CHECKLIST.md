@@ -27,7 +27,12 @@ Deze checklist is gericht op de huidige repository-structuur:
 
 Voorkeur (1 commando vanaf lokale machine):
 
+- cp deploy/deploy.env.example deploy/deploy.env
 - STAGING_HOST=<host-of-user@host> bash deploy/deploy-staging.sh
+
+Of volledig via deploy.env zonder inline variabelen:
+
+- bash deploy/deploy-staging.sh
 
 1. SSH naar staging host.
 2. Ga naar projectmap.
@@ -60,6 +65,10 @@ Voorkeur (1 commando vanaf lokale machine):
 Voorkeur (1 commando vanaf lokale machine):
 
 - PRODUCTION_HOST=<host-of-user@host> bash deploy/deploy-production.sh
+
+Of volledig via deploy.env zonder inline variabelen:
+
+- bash deploy/deploy-production.sh
 
 1. Herhaal stap 1 t/m 8 van staging op productie.
 2. Doe deploy bij voorkeur in low-traffic window.
