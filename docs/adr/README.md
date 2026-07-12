@@ -42,3 +42,4 @@ Gebruik oplopende nummers met een korte titel:
 - 0009: Access governance policy (`0009-access-governance-policy.md`)
 - 0010: Dependency governance policy (`0010-dependency-governance-policy.md`)
 - 0011: Incident management policy (`0011-incident-management-policy.md`)
+- 0012: Business continuity policy (`0012-business-continuity-policy.md`)
