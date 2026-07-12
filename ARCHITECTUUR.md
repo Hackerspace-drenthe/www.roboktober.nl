@@ -195,7 +195,7 @@ Een change is gereed als:
 
 ### 10.2 Aanbevolen vervolgstappen
 1. Leg Architecture Decision Records (ADR) vast voor grotere keuzes in `docs/adr`.
-  - Reeds vastgelegd: ADR 0001 (service-layer), ADR 0002 (API-versiebeleid), ADR 0003 (deployment safety policy), ADR 0004 (security baseline policy) en ADR 0005 (test strategy governance).
+  - Reeds vastgelegd: ADR 0001 (service-layer), ADR 0002 (API-versiebeleid), ADR 0003 (deployment safety policy), ADR 0004 (security baseline policy), ADR 0005 (test strategy governance) en ADR 0006 (observability policy).
 2. Introduceer expliciete application services voor complexe controllerflows.
 3. Voeg periodieke security checks toe (dependency audit + hardening review).
 4. Monitor testcoverage trend per domein i.p.v. alleen totaalcijfer.
