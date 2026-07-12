@@ -38,3 +38,4 @@ Gebruik oplopende nummers met een korte titel:
 - 0005: Test strategy governance (`0005-test-strategy-governance.md`)
 - 0006: Observability policy (`0006-observability-policy.md`)
 - 0007: Data governance policy (`0007-data-governance-policy.md`)
+- 0008: Change management policy (`0008-change-management-policy.md`)
