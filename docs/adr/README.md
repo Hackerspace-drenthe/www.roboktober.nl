@@ -40,3 +40,4 @@ Gebruik oplopende nummers met een korte titel:
 - 0007: Data governance policy (`0007-data-governance-policy.md`)
 - 0008: Change management policy (`0008-change-management-policy.md`)
 - 0009: Access governance policy (`0009-access-governance-policy.md`)
+- 0010: Dependency governance policy (`0010-dependency-governance-policy.md`)
