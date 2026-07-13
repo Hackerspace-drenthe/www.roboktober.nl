@@ -328,6 +328,29 @@ async function stemOpRobot(robotId: number, stars: number): Promise<void> {
               :key="robot.id"
               class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
             >
+              <div class="mb-4 overflow-hidden rounded-xl border border-slate-200">
+                <img
+                  v-if="robot.foto"
+                  :src="robot.foto.url"
+                  :alt="robot.foto.alt_tekst ?? `Robotfoto van ${robot.naam}`"
+                  class="h-48 w-full object-cover"
+                  loading="lazy"
+                />
+                <img
+                  v-else-if="team.foto"
+                  :src="team.foto.url"
+                  :alt="team.foto.alt_tekst ?? `Teamfoto van ${team.naam}`"
+                  class="h-48 w-full object-cover"
+                  loading="lazy"
+                />
+                <div
+                  v-else
+                  class="flex h-48 items-center justify-center bg-slate-100 text-sm font-medium text-slate-500"
+                >
+                  Geen robotfoto beschikbaar
+                </div>
+              </div>
+
               <div class="mb-3 flex flex-wrap items-center gap-2">
                 <h3 class="text-2xl font-black text-robo-dark">{{ robot.naam }}</h3>
                 <span class="rounded-full bg-robo-orange/10 px-3 py-0.5 text-xs font-bold text-robo-orange">

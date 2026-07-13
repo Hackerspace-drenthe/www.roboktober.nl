@@ -35,6 +35,19 @@ const heroStyle = {
   backgroundPosition: 'center',
 }
 
+function teamVisualMedia(team: Team) {
+  if (team.foto) {
+    return team.foto
+  }
+
+  const robotMetFoto = team.robots.find((robot) => robot.foto !== null)
+  return robotMetFoto?.foto ?? null
+}
+
+function robotsMetFoto(team: Team) {
+  return team.robots.filter((robot) => robot.foto !== null)
+}
+
 const gefilterdeTeams = computed(() => {
   const zoekWaarde = zoekterm.value.trim().toLowerCase()
 
@@ -366,9 +379,9 @@ onMounted(async () => {
               class="block overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:border-robo-orange/40 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-robo-orange"
             >
               <img
-                v-if="team.foto"
-                :src="team.foto.url"
-                :alt="team.foto.alt_tekst ?? `Teamfoto van ${team.naam}`"
+                v-if="teamVisualMedia(team)"
+                :src="teamVisualMedia(team)?.url ?? ''"
+                :alt="teamVisualMedia(team)?.alt_tekst ?? `Team- of robotfoto van ${team.naam}`"
                 class="h-48 w-full object-cover"
                 loading="lazy"
               />
@@ -376,7 +389,7 @@ onMounted(async () => {
                 v-else
                 class="flex h-48 w-full items-center justify-center bg-slate-100 text-sm font-medium text-slate-400"
               >
-                Geen teamfoto
+                Geen team- of robotfoto
               </div>
 
               <div class="p-6">
@@ -385,6 +398,27 @@ onMounted(async () => {
                   {{ team.robots.length }} robot{{ team.robots.length !== 1 ? 's' : '' }}
                 </p>
                 <p v-else class="text-sm text-slate-400">Nog geen robots ingeschreven</p>
+
+                <ul v-if="robotsMetFoto(team).length" class="mt-4 flex items-center gap-2" role="list">
+                  <li
+                    v-for="robot in robotsMetFoto(team).slice(0, 3)"
+                    :key="`robot-thumb-${team.id}-${robot.id}`"
+                    class="h-10 w-10 overflow-hidden rounded-full border border-slate-200"
+                  >
+                    <img
+                      :src="robot.foto?.url ?? ''"
+                      :alt="robot.foto?.alt_tekst ?? `Robotfoto van ${robot.naam}`"
+                      class="h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  </li>
+                  <li
+                    v-if="robotsMetFoto(team).length > 3"
+                    class="rounded-full border border-slate-200 bg-slate-50 px-2 py-1 text-xs font-semibold text-slate-500"
+                  >
+                    +{{ robotsMetFoto(team).length - 3 }}
+                  </li>
+                </ul>
               </div>
             </RouterLink>
           </li>
