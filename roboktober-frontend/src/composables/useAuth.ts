@@ -6,7 +6,7 @@ import {
   registerUser,
   setAuthToken,
 } from '@/api'
-import type { AuthUser, LoginPayload, RegisterPayload, UserRole } from '@/types/api'
+import type { AuthResponse, AuthUser, LoginPayload, RegisterPayload, UserRole } from '@/types/api'
 
 const user = ref<AuthUser | null>(null)
 const loading = ref(false)
@@ -41,28 +41,30 @@ export function useAuth() {
     }
   }
 
-  async function register(payload: RegisterPayload): Promise<AuthUser> {
+  async function register(payload: RegisterPayload): Promise<AuthResponse> {
     loading.value = true
 
     try {
       const response = await registerUser(payload)
       setAuthToken(response.token)
       user.value = response.data
-      return response.data
+      return response
     } finally {
       loading.value = false
       initialized.value = true
     }
   }
 
-  async function login(payload: LoginPayload): Promise<AuthUser> {
+  async function login(payload: LoginPayload): Promise<AuthResponse> {
     loading.value = true
 
     try {
       const response = await loginUser(payload)
-      setAuthToken(response.token)
+      if (typeof response.token === 'string' && response.token.length > 0) {
+        setAuthToken(response.token)
+      }
       user.value = response.data
-      return response.data
+      return response
     } finally {
       loading.value = false
       initialized.value = true

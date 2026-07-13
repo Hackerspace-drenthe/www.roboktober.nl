@@ -32,6 +32,8 @@ import type {
   AdminUser,
   AuthResponse,
   AuthUser,
+  ConfirmTwoFactorSetupPayload,
+  CompleteTwoFactorChallengePayload,
   CompetitionBattle,
   CompetitionCategory,
   Edition,
@@ -54,6 +56,7 @@ import type {
   TeamUpdatePayload,
   UpdateTeamUpdatePayload,
   Team,
+  TwoFactorProvisioning,
   TeamRegistratie,
   UpdateAccountPayload,
   UpdatePasswordPayload,
@@ -381,6 +384,11 @@ export async function loginUser(payload: LoginPayload): Promise<AuthResponse> {
   return data
 }
 
+export async function completeTwoFactorChallenge(payload: CompleteTwoFactorChallengePayload): Promise<AuthResponse> {
+  const { data } = await api.post<AuthResponse>('/auth/2fa/challenge', payload)
+  return data
+}
+
 export async function getCurrentUser(): Promise<AuthUser> {
   const { data } = await api.get<{ data: AuthUser }>('/auth/me')
   return data.data
@@ -388,6 +396,16 @@ export async function getCurrentUser(): Promise<AuthUser> {
 
 export async function logoutUser(): Promise<void> {
   await api.post('/auth/logout')
+}
+
+export async function getTwoFactorSetup(): Promise<TwoFactorProvisioning> {
+  const { data } = await api.get<{ data: TwoFactorProvisioning }>('/auth/2fa/setup')
+  return data.data
+}
+
+export async function confirmTwoFactorSetup(payload: ConfirmTwoFactorSetupPayload): Promise<AuthResponse> {
+  const { data } = await api.post<AuthResponse>('/auth/2fa/confirm', payload)
+  return data
 }
 
 export async function updateAccount(payload: UpdateAccountPayload): Promise<AuthUser> {

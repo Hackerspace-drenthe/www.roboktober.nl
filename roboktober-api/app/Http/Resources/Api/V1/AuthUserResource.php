@@ -24,6 +24,8 @@ class AuthUserResource extends JsonResource
             'email' => $this->email,
             'role' => $this->role->value,
             'role_label' => $this->role->label(),
+            'two_factor_enabled' => $this->two_factor_confirmed_at !== null,
+            'two_factor_confirmed_at' => $this->two_factor_confirmed_at?->toIso8601String(),
             'profile_photo' => new MediaResource($this->whenLoaded('media', fn () => $this->mediaCollectie('foto')->first())),
         ];
     }

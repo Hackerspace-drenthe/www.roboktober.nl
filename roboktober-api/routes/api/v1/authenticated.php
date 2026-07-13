@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/auth/me', [AuthController::class, 'me'])->name('auth.me');
 Route::post('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
+Route::get('/auth/2fa/setup', [AuthController::class, 'twoFactorSetup'])->name('auth.2fa.setup');
+Route::post('/auth/2fa/confirm', [AuthController::class, 'confirmTwoFactorSetup'])->name('auth.2fa.confirm');
 Route::patch('/auth/account', [AuthController::class, 'updateAccount'])->name('auth.account.update');
 Route::patch('/auth/password', [AuthController::class, 'updatePassword'])->name('auth.password.update');
 

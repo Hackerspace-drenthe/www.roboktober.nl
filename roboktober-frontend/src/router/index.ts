@@ -123,6 +123,21 @@ const router = createRouter({
       meta: { title: 'Wachtwoord resetten — Roboktober' },
     },
     {
+      path: '/twee-factor',
+      name: 'twee-factor-challenge',
+      component: () => import('../views/TwoFactorChallengeView.vue'),
+      meta: { title: '2FA verificatie — Roboktober' },
+    },
+    {
+      path: '/twee-factor-instellen',
+      name: 'twee-factor-setup',
+      component: () => import('../views/TwoFactorSetupView.vue'),
+      meta: {
+        title: '2FA instellen — Roboktober',
+        requiresAuth: true,
+      },
+    },
+    {
       path: '/registreren',
       name: 'registreren',
       component: () => import('../views/RegisterView.vue'),
@@ -344,6 +359,18 @@ router.beforeEach(async (to) => {
 
   if (!auth.initialized.value) {
     await auth.initAuth()
+  }
+
+  if (
+    auth.isAuthenticated.value
+    && auth.user.value
+    && !auth.user.value.two_factor_enabled
+    && to.name !== 'twee-factor-setup'
+  ) {
+    return {
+      name: 'twee-factor-setup',
+      query: { redirect: to.fullPath },
+    }
   }
 
   const meta = (to.meta ?? {}) as AppRouteMeta

@@ -28,7 +28,10 @@ async function handleSubmit(): Promise<void> {
       password_confirmation: passwordConfirmation.value,
     })
 
-    await router.push('/')
+    await router.push({
+      name: 'twee-factor-setup',
+      query: { redirect: '/' },
+    })
   } catch {
     errorMessage.value = 'Registreren mislukt. Controleer je invoer en probeer opnieuw.'
   }

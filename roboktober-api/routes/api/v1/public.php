@@ -24,6 +24,10 @@ Route::post('/auth/login', [AuthController::class, 'login'])
     ->middleware('throttle:10,1')
     ->name('auth.login');
 
+Route::post('/auth/2fa/challenge', [AuthController::class, 'completeTwoFactorChallenge'])
+    ->middleware('throttle:12,1')
+    ->name('auth.2fa.challenge');
+
 Route::post('/auth/forgot-password', [AuthController::class, 'forgotPassword'])
     ->middleware('throttle:6,1')
     ->name('auth.forgot-password');

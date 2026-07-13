@@ -539,13 +539,26 @@ export interface AuthUser {
   email: string
   role: UserRole
   role_label: string
+  two_factor_enabled: boolean
+  two_factor_confirmed_at: string | null
   profile_photo: Media | null
+}
+
+export interface TwoFactorProvisioning {
+  secret: string
+  otpauth_url: string
+  issuer: string
+  account: string
 }
 
 export interface AuthResponse {
   data: AuthUser
-  token: string
+  token: string | null
   token_type: 'Bearer'
+  two_factor_required?: boolean
+  two_factor_challenge_id?: string
+  two_factor_setup_required?: boolean
+  two_factor_provisioning?: TwoFactorProvisioning
 }
 
 export interface RegisterPayload {
@@ -558,6 +571,17 @@ export interface RegisterPayload {
 export interface LoginPayload {
   email: string
   password: string
+  device_name?: string
+}
+
+export interface CompleteTwoFactorChallengePayload {
+  challenge_id: string
+  code: string
+  device_name?: string
+}
+
+export interface ConfirmTwoFactorSetupPayload {
+  code: string
   device_name?: string
 }
 

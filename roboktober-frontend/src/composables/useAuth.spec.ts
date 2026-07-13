@@ -47,6 +47,8 @@ describe('useAuth', () => {
       email: 'mod@example.test',
       role: 'moderator',
       role_label: 'Moderator',
+      two_factor_enabled: true,
+      two_factor_confirmed_at: '2026-07-13T00:00:00Z',
       profile_photo: null,
     }
 

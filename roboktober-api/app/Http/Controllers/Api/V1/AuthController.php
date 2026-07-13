@@ -6,6 +6,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\V1\CompleteTwoFactorChallengeRequest;
+use App\Http\Requests\Api\V1\ConfirmTwoFactorSetupRequest;
 use App\Http\Requests\Api\V1\ForgotPasswordRequest;
 use App\Http\Requests\Api\V1\LoginUserRequest;
 use App\Http\Requests\Api\V1\RegisterUserRequest;
@@ -14,9 +16,11 @@ use App\Http\Requests\Api\V1\UpdateAccountRequest;
 use App\Http\Requests\Api\V1\UpdatePasswordRequest;
 use App\Http\Resources\Api\V1\AuthUserResource;
 use App\Models\User;
+use App\Security\TotpService;
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
@@ -24,6 +28,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
+    public function __construct(private readonly TotpService $totpService) {}
+
     public function register(RegisterUserRequest $request): JsonResponse
     {
         /** @var array{name: string, email: string, password: string} $validated */
@@ -36,12 +42,15 @@ class AuthController extends Controller
             'role' => UserRole::Visitor,
         ]);
 
-        $token = $user->createToken('api-register', $user->tokenAbilities(), now()->addDays(30))->plainTextToken;
+        $setupPayload = $this->buildTwoFactorSetupPayload($user);
+        $token = $this->issueApiToken($user, '2fa-bootstrap');
 
         return response()->json([
             'data' => new AuthUserResource($user),
             'token' => $token,
             'token_type' => 'Bearer',
+            'two_factor_setup_required' => true,
+            'two_factor_provisioning' => $setupPayload,
         ], Response::HTTP_CREATED);
     }
 
@@ -58,11 +67,100 @@ class AuthController extends Controller
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $token = $user->createToken(
-            $validated['device_name'] ?? 'api-login',
-            $user->tokenAbilities(),
-            now()->addDays(30),
-        )->plainTextToken;
+        if ($user->two_factor_confirmed_at === null) {
+            $token = $this->issueApiToken($user, '2fa-bootstrap');
+
+            return response()->json([
+                'data' => new AuthUserResource($user),
+                'token' => $token,
+                'token_type' => 'Bearer',
+                'two_factor_setup_required' => true,
+                'two_factor_provisioning' => $this->buildTwoFactorSetupPayload($user),
+            ], Response::HTTP_OK);
+        }
+
+        $challengeId = (string) Str::uuid();
+        Cache::put($this->challengeCacheKey($challengeId), $user->id, now()->addMinutes(5));
+
+        return response()->json([
+            'data' => new AuthUserResource($user),
+            'token' => null,
+            'token_type' => 'Bearer',
+            'two_factor_required' => true,
+            'two_factor_challenge_id' => $challengeId,
+        ], Response::HTTP_OK);
+    }
+
+    public function completeTwoFactorChallenge(CompleteTwoFactorChallengeRequest $request): JsonResponse
+    {
+        /** @var array{challenge_id: string, code: string, device_name?: string} $validated */
+        $validated = $request->validated();
+
+        $cacheKey = $this->challengeCacheKey($validated['challenge_id']);
+        $userId = Cache::pull($cacheKey);
+
+        if (! is_int($userId)) {
+            return response()->json([
+                'message' => 'Twee-factor challenge is verlopen of ongeldig.',
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $user = User::query()->find($userId);
+
+        if (! $user instanceof User || ! is_string($user->two_factor_secret) || $user->two_factor_secret === '') {
+            return response()->json([
+                'message' => 'Twee-factor configuratie ontbreekt.',
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        if (! $this->totpService->verifyCode($user->two_factor_secret, $validated['code'])) {
+            return response()->json([
+                'message' => 'Ongeldige twee-factor code.',
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $token = $this->issueApiToken($user, $validated['device_name'] ?? 'api-login');
+
+        return response()->json([
+            'data' => new AuthUserResource($user),
+            'token' => $token,
+            'token_type' => 'Bearer',
+        ], Response::HTTP_OK);
+    }
+
+    public function twoFactorSetup(Request $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        return response()->json([
+            'data' => $this->buildTwoFactorSetupPayload($user),
+        ], Response::HTTP_OK);
+    }
+
+    public function confirmTwoFactorSetup(ConfirmTwoFactorSetupRequest $request): JsonResponse
+    {
+        /** @var User $user */
+        $user = $request->user();
+
+        /** @var array{code: string, device_name?: string} $validated */
+        $validated = $request->validated();
+
+        $secret = $this->ensureTwoFactorSecret($user);
+
+        if (! $this->totpService->verifyCode($secret, $validated['code'])) {
+            return response()->json([
+                'message' => 'Ongeldige twee-factor code.',
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $user->forceFill([
+            'two_factor_confirmed_at' => now(),
+        ])->save();
+
+        $user->currentAccessToken()->delete();
+
+        $token = $this->issueApiToken($user, $validated['device_name'] ?? 'api-login');
 
         return response()->json([
             'data' => new AuthUserResource($user),
@@ -182,5 +280,51 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Wachtwoord is opnieuw ingesteld.',
         ], Response::HTTP_OK);
+    }
+
+    private function issueApiToken(User $user, string $name): string
+    {
+        return $user->createToken(
+            $name,
+            $user->tokenAbilities(),
+            now()->addDays(30),
+        )->plainTextToken;
+    }
+
+    /**
+     * @return array{secret: string, otpauth_url: string, issuer: string, account: string}
+     */
+    private function buildTwoFactorSetupPayload(User $user): array
+    {
+        $secret = $this->ensureTwoFactorSecret($user);
+        $configuredName = config('app.name');
+        $issuer = is_string($configuredName) && $configuredName !== '' ? $configuredName : 'Roboktober';
+
+        return [
+            'secret' => $secret,
+            'otpauth_url' => $this->totpService->otpauthUrl($issuer, $user->email, $secret),
+            'issuer' => $issuer,
+            'account' => $user->email,
+        ];
+    }
+
+    private function ensureTwoFactorSecret(User $user): string
+    {
+        if (is_string($user->two_factor_secret) && $user->two_factor_secret !== '') {
+            return $user->two_factor_secret;
+        }
+
+        $secret = $this->totpService->generateSecret();
+
+        $user->forceFill([
+            'two_factor_secret' => $secret,
+        ])->save();
+
+        return $secret;
+    }
+
+    private function challengeCacheKey(string $challengeId): string
+    {
+        return 'auth:2fa:challenge:'.$challengeId;
     }
 }

@@ -20,11 +20,30 @@ async function handleSubmit(): Promise<void> {
   errorMessage.value = null
 
   try {
-    await auth.login({
+    const response = await auth.login({
       email: email.value.trim(),
       password: password.value,
       device_name: 'web-app',
     })
+
+    if (response.two_factor_required && typeof response.two_factor_challenge_id === 'string') {
+      await router.push({
+        name: 'twee-factor-challenge',
+        query: {
+          challenge: response.two_factor_challenge_id,
+          redirect: redirectTarget.value,
+        },
+      })
+      return
+    }
+
+    if (response.two_factor_setup_required) {
+      await router.push({
+        name: 'twee-factor-setup',
+        query: { redirect: redirectTarget.value },
+      })
+      return
+    }
 
     await router.push(redirectTarget.value)
   } catch {
