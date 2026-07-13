@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Placeholder exploded tech">
+  <rect width="1200" height="900" fill="#0b1220"/>
+  <g stroke="#60a5fa" stroke-width="3" fill="none" opacity="0.9">
+    <rect x="140" y="360" width="220" height="120" rx="10"/>
+    <rect x="430" y="320" width="220" height="200" rx="10"/>
+    <rect x="720" y="360" width="220" height="120" rx="10"/>
+    <line x1="360" y1="420" x2="430" y2="420"/>
+    <line x1="650" y1="420" x2="720" y2="420"/>
+  </g>
+  <text x="140" y="220" fill="#ffffff" font-size="56" font-family="Arial, sans-serif" font-weight="700">Gemini Placeholder</text>
+  <text x="140" y="285" fill="#93c5fd" font-size="34" font-family="Arial, sans-serif">exploded-tech.png</text>
+</svg>

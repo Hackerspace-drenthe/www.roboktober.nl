@@ -184,16 +184,16 @@ async function handleLogout(): Promise<void> {
             <RouterLink to="/programma" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Programma</RouterLink>
           </li>
           <li>
+            <RouterLink to="/antweight" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Antweight</RouterLink>
+          </li>
+          <li>
+            <RouterLink to="/bouwen" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Bouwen</RouterLink>
+          </li>
+          <li>
             <RouterLink to="/teams" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Teams</RouterLink>
           </li>
           <li>
             <RouterLink to="/nieuws" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Nieuws</RouterLink>
-          </li>
-          <li>
-            <RouterLink to="/build-hub" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Build Hub</RouterLink>
-          </li>
-          <li>
-            <RouterLink to="/bouwen" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Bouwen</RouterLink>
           </li>
           <li>
             <RouterLink to="/walter" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Uw Gastheer</RouterLink>
@@ -306,6 +306,22 @@ async function handleLogout(): Promise<void> {
         </li>
         <li>
           <RouterLink
+            to="/antweight"
+            :class="mobileNavLinkClass"
+            :active-class="mobileNavActiveClass"
+            @click="sluitMenu"
+          >Antweight</RouterLink>
+        </li>
+        <li>
+          <RouterLink
+            to="/bouwen"
+            :class="mobileNavLinkClass"
+            :active-class="mobileNavActiveClass"
+            @click="sluitMenu"
+          >Bouwen</RouterLink>
+        </li>
+        <li>
+          <RouterLink
             to="/teams"
             :class="mobileNavLinkClass"
             :active-class="mobileNavActiveClass"
@@ -319,22 +335,6 @@ async function handleLogout(): Promise<void> {
             :active-class="mobileNavActiveClass"
             @click="sluitMenu"
           >Nieuws</RouterLink>
-        </li>
-        <li>
-          <RouterLink
-            to="/build-hub"
-            :class="mobileNavLinkClass"
-            :active-class="mobileNavActiveClass"
-            @click="sluitMenu"
-          >Build Hub</RouterLink>
-        </li>
-        <li>
-          <RouterLink
-            to="/bouwen"
-            :class="mobileNavLinkClass"
-            :active-class="mobileNavActiveClass"
-            @click="sluitMenu"
-          >Bouwen</RouterLink>
         </li>
         <li>
           <RouterLink

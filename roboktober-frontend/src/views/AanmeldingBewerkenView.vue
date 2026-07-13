@@ -12,7 +12,7 @@ import {
 } from '@/api'
 import ContentResourcePanel from '@/components/editor/ContentResourcePanel.vue'
 import EditorFormattingToolbar from '@/components/editor/EditorFormattingToolbar.vue'
-import { useContentInsertion } from '@/composables/useContentInsertion'
+import { useEditorComposer, type EditorAction } from '@/composables/useEditorComposer'
 import { useAuth } from '@/composables/useAuth'
 import type { Edition, Gewichtsklasse, TeamMembership, TeamUpdate, UpdateRegistratiePayload } from '@/types/api'
 import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
@@ -53,23 +53,25 @@ const verwijderUpdateAfbeeldingIds = ref<number[]>([])
 const updateContentTextarea = ref<HTMLTextAreaElement | null>(null)
 const updateContentRef = ref('')
 
-const {
-  insertSnippet: insertUpdateSnippet,
-  wrapSelection,
-  formatHeading,
-  formatList,
-  formatLink,
-  formatQuote,
-  formatCode,
-  insertDivider,
-} = useContentInsertion(updateContentRef, updateContentTextarea)
-
 const updateForm = reactive({
   titel: '',
   excerpt: '',
   content: '',
   content_format: 'html' as 'html' | 'markdown',
 })
+
+const updateContentFormat = computed<'html' | 'markdown'>({
+  get: () => updateForm.content_format,
+  set: (value) => {
+    updateForm.content_format = value
+  },
+})
+
+const { applyAction: applyUpdateAction, insert: insertUpdateSnippet } = useEditorComposer(
+  updateContentRef,
+  updateContentTextarea,
+  updateContentFormat,
+)
 
 const TOEGESTANE_TEAMFOTO_MIME_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp'])
 const TEAMFOTO_MAX_BYTES = 50 * 1024 * 1024
@@ -323,60 +325,9 @@ function insertResourceSnippet(snippet: string): void {
   updateForm.content = updateContentRef.value
 }
 
-function runUpdateFormatAction(action: 'bold' | 'italic' | 'h2' | 'h3' | 'ul' | 'ol' | 'link' | 'quote' | 'code' | 'divider'): void {
+function runUpdateFormatAction(action: EditorAction): void {
   updateContentRef.value = updateForm.content
-
-  if (action === 'bold') {
-    if (updateForm.content_format === 'html') {
-      wrapSelection('<strong>', '</strong>', 'vetgedrukte tekst')
-    } else {
-      wrapSelection('**', '**', 'vetgedrukte tekst')
-    }
-  }
-
-  if (action === 'italic') {
-    if (updateForm.content_format === 'html') {
-      wrapSelection('<em>', '</em>', 'cursieve tekst')
-    } else {
-      wrapSelection('*', '*', 'cursieve tekst')
-    }
-  }
-
-  if (action === 'h2') {
-    formatHeading(2, updateForm.content_format)
-  }
-
-  if (action === 'h3') {
-    formatHeading(3, updateForm.content_format)
-  }
-
-  if (action === 'ul') {
-    formatList('ul', updateForm.content_format)
-  }
-
-  if (action === 'ol') {
-    formatList('ol', updateForm.content_format)
-  }
-
-  if (action === 'link') {
-    const url = window.prompt('Voer de URL in', 'https://')
-    if (url && url.trim().length > 0) {
-      formatLink(url.trim(), updateForm.content_format)
-    }
-  }
-
-  if (action === 'quote') {
-    formatQuote(updateForm.content_format)
-  }
-
-  if (action === 'code') {
-    formatCode(updateForm.content_format)
-  }
-
-  if (action === 'divider') {
-    insertDivider(updateForm.content_format)
-  }
-
+  applyUpdateAction(action)
   updateForm.content = updateContentRef.value
 }
 

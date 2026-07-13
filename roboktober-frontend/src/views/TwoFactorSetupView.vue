@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { confirmTwoFactorSetup, getTwoFactorSetup, setAuthToken } from '@/api'
+import QRCode from 'qrcode'
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
@@ -15,6 +16,8 @@ const loading = ref(false)
 const bootstrapping = ref(true)
 const error = ref('')
 const success = ref('')
+const qrCodeDataUrl = ref('')
+const showBackupSecret = ref(false)
 
 const redirectTarget = typeof route.query.redirect === 'string' && route.query.redirect.startsWith('/')
   ? route.query.redirect
@@ -26,6 +29,14 @@ onMounted(async () => {
 
   try {
     provisioning.value = await getTwoFactorSetup()
+
+    if (provisioning.value?.otpauth_url) {
+      qrCodeDataUrl.value = await QRCode.toDataURL(provisioning.value.otpauth_url, {
+        errorCorrectionLevel: 'M',
+        margin: 1,
+        width: 280,
+      })
+    }
   } catch {
     error.value = 'Kon de 2FA setupgegevens niet laden. Log opnieuw in en probeer opnieuw.'
   } finally {
@@ -76,13 +87,29 @@ async function handleConfirm(): Promise<void> {
 
       <template v-else>
         <div v-if="provisioning" class="space-y-3">
-          <p class="text-sm text-slate-200">1. Open je authenticator app en voeg handmatig dit account toe:</p>
-          <ul class="space-y-2 text-sm text-slate-300">
-            <li><span class="font-semibold text-white">Issuer:</span> {{ provisioning.issuer }}</li>
-            <li><span class="font-semibold text-white">Account:</span> {{ provisioning.account }}</li>
-            <li class="break-all"><span class="font-semibold text-white">Secret:</span> {{ provisioning.secret }}</li>
-          </ul>
-          <p class="text-xs text-slate-400 break-all">otpauth: {{ provisioning.otpauth_url }}</p>
+          <p class="text-sm text-slate-200">1. Scan de QR-code met je authenticator app (Google Authenticator, 1Password, Authy, etc.).</p>
+
+          <div class="flex justify-center rounded-xl border border-white/15 bg-white p-4">
+            <img v-if="qrCodeDataUrl" :src="qrCodeDataUrl" alt="2FA QR code" class="h-56 w-56" />
+            <p v-else class="text-sm text-slate-500">QR-code genereren...</p>
+          </div>
+
+          <div class="rounded-lg border border-white/10 bg-black/20 p-3">
+            <button
+              type="button"
+              class="text-sm font-semibold text-slate-200 underline decoration-dotted underline-offset-4"
+              @click="showBackupSecret = !showBackupSecret"
+            >
+              {{ showBackupSecret ? 'Verberg backup secret' : 'Toon backup secret (alleen als scannen niet lukt)' }}
+            </button>
+
+            <ul v-if="showBackupSecret" class="mt-3 space-y-2 text-sm text-slate-300">
+              <li><span class="font-semibold text-white">Issuer:</span> {{ provisioning.issuer }}</li>
+              <li><span class="font-semibold text-white">Account:</span> {{ provisioning.account }}</li>
+              <li class="break-all"><span class="font-semibold text-white">Secret:</span> {{ provisioning.secret }}</li>
+              <li class="break-all text-xs text-slate-400">otpauth: {{ provisioning.otpauth_url }}</li>
+            </ul>
+          </div>
         </div>
 
         <form class="space-y-4" @submit.prevent="handleConfirm">

@@ -8,7 +8,7 @@ import {
 } from '@/api'
 import ContentResourcePanel from '@/components/editor/ContentResourcePanel.vue'
 import EditorFormattingToolbar from '@/components/editor/EditorFormattingToolbar.vue'
-import { useContentInsertion } from '@/composables/useContentInsertion'
+import { useEditorComposer, type EditorAction } from '@/composables/useEditorComposer'
 import type { AdminProgrammaItemPayload, Edition, ProgrammaItem } from '@/types/api'
 import { computed, onMounted, ref } from 'vue'
 
@@ -23,16 +23,6 @@ const editingId = ref<number | null>(null)
 
 const contentTextarea = ref<HTMLTextAreaElement | null>(null)
 const contentRef = ref('')
-const {
-  insertSnippet,
-  wrapSelection,
-  formatHeading,
-  formatList,
-  formatLink,
-  formatQuote,
-  formatCode,
-  insertDivider,
-} = useContentInsertion(contentRef, contentTextarea)
 
 const form = ref({
   titel: '',
@@ -43,6 +33,15 @@ const form = ref({
   volgorde: 0,
   is_published: true,
 })
+
+const contentFormat = computed<'html' | 'markdown'>({
+  get: () => form.value.content_format,
+  set: (value) => {
+    form.value.content_format = value
+  },
+})
+
+const { applyAction, insert } = useEditorComposer(contentRef, contentTextarea, contentFormat)
 
 const kanOpslaan = computed(() => {
   return selectedEditionId.value !== null && form.value.titel.trim() !== '' && form.value.start_at.trim() !== '' && form.value.beschrijving.trim() !== ''
@@ -111,47 +110,15 @@ function buildPayload(): AdminProgrammaItemPayload {
   }
 }
 
-function runFormatAction(action: 'bold' | 'italic' | 'h2' | 'h3' | 'ul' | 'ol' | 'link' | 'quote' | 'code' | 'divider'): void {
+function runFormatAction(action: EditorAction): void {
   contentRef.value = form.value.beschrijving
-
-  if (action === 'bold') {
-    if (form.value.content_format === 'html') {
-      wrapSelection('<strong>', '</strong>', 'vetgedrukte tekst')
-    } else {
-      wrapSelection('**', '**', 'vetgedrukte tekst')
-    }
-  }
-
-  if (action === 'italic') {
-    if (form.value.content_format === 'html') {
-      wrapSelection('<em>', '</em>', 'cursieve tekst')
-    } else {
-      wrapSelection('*', '*', 'cursieve tekst')
-    }
-  }
-
-  if (action === 'h2') formatHeading(2, form.value.content_format)
-  if (action === 'h3') formatHeading(3, form.value.content_format)
-  if (action === 'ul') formatList('ul', form.value.content_format)
-  if (action === 'ol') formatList('ol', form.value.content_format)
-
-  if (action === 'link') {
-    const url = window.prompt('Voer de URL in', 'https://')
-    if (url && url.trim().length > 0) {
-      formatLink(url.trim(), form.value.content_format)
-    }
-  }
-
-  if (action === 'quote') formatQuote(form.value.content_format)
-  if (action === 'code') formatCode(form.value.content_format)
-  if (action === 'divider') insertDivider(form.value.content_format)
-
+  applyAction(action)
   form.value.beschrijving = contentRef.value
 }
 
 function insertResourceSnippet(snippet: string): void {
   contentRef.value = form.value.beschrijving
-  insertSnippet(snippet)
+  insert(snippet)
   form.value.beschrijving = contentRef.value
 }
 

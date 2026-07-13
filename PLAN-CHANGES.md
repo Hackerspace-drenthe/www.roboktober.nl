@@ -81,7 +81,7 @@
 - `TeamSeeder`: Hackerspace Drenthe (status: approved) + HackerBot (antweight, in ontwikkeling)
 - `LinkSeeder`: 18 links verdeeld over alle categorieën (wallie, community, competitie, tools, onderdelen, documentatie)
 - `PostSeeder`: blog-artikel "Roboktober: combat robots komen naar Hackerspace Drenthe" — gepubliceerd, antweight-focus
-- Admin-gebruiker: `admin@hackerspacedrenthe.nl` (wachtwoord beheerd buiten versiecontrole)
+- Admin-gebruiker: `admin@hackerspace-drenthe.nl` (wachtwoord beheerd buiten versiecontrole)
 
 ---
 

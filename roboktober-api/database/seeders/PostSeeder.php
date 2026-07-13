@@ -66,7 +66,7 @@ class PostSeeder extends Seeder
 <h2>Vragen?</h2>
 <p>
   Kom langs op een van onze open avonden, of stuur een mail naar
-  <a href="mailto:info@hackerspacedrenthe.nl">info@hackerspacedrenthe.nl</a>.
+  <a href="mailto:info@hackerspace-drenthe.nl">info@hackerspace-drenthe.nl</a>.
   We zijn enthousiast en horen graag van je.
 </p>
 HTML;

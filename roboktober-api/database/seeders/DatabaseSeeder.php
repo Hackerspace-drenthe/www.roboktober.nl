@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::query()->updateOrCreate(
-            ['email' => 'admin@hackerspacedrenthe.nl'],
+            ['email' => 'admin@hackerspace-drenthe.nl'],
             [
                 'name' => 'Roboktober Admin',
                 'email_verified_at' => now(),

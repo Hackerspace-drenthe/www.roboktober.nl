@@ -41,4 +41,21 @@ class StoreRichMediaUploadRequest extends FormRequest
             'volgorde' => ['nullable', 'integer', 'min:0'],
         ];
     }
+
+    protected function prepareForValidation(): void
+    {
+        $merge = [];
+
+        if ($this->has('target_id') && is_numeric($this->input('target_id'))) {
+            $merge['target_id'] = (int) $this->input('target_id');
+        }
+
+        if ($this->has('volgorde') && is_numeric($this->input('volgorde'))) {
+            $merge['volgorde'] = (int) $this->input('volgorde');
+        }
+
+        if ($merge !== []) {
+            $this->merge($merge);
+        }
+    }
 }

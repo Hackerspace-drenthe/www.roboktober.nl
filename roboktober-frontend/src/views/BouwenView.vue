@@ -1,5 +1,7 @@
 <script setup lang="ts">
 // Statische pagina — BOM en bouwstappen voor de Roboktober-kit
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import headerImage from '@/assets/headers/header-bouwen.png'
 import stap1Image from '@/assets/instructions/stap1-het-chassis.png'
 import stap2Image from '@/assets/instructions/stap2-motoren-en-wielen.png'
@@ -14,6 +16,11 @@ const heroStyle = {
   backgroundSize: 'cover',
   backgroundPosition: 'center',
 }
+
+const route = useRoute()
+const actieveTab = computed<'bouwgids' | 'links'>(() => {
+  return route.name === 'bouwen-links' ? 'links' : 'bouwgids'
+})
 
 interface VideoItem {
   titel: string
@@ -169,13 +176,34 @@ const actieVideos: VideoItem[] = [
     <!-- Hero -->
     <section class="relative overflow-hidden py-20 text-white" :style="heroStyle">
       <div class="absolute inset-0 bg-robo-dark/75" aria-hidden="true" />
-      <div class="relative z-10 mx-auto max-w-3xl px-6">
+      <div class="relative z-10 mx-auto max-w-4xl px-6 text-center">
         <p class="mb-3 text-sm font-bold uppercase tracking-widest text-robo-orange">Roboktober-kit</p>
         <h1 class="mb-4 text-4xl font-black md:text-5xl">Bouw je eigen antweight</h1>
-        <p class="max-w-2xl text-lg text-slate-300">
+        <p class="mx-auto max-w-2xl text-lg text-slate-300">
           Alles wat je nodig hebt om te beginnen. Geen ervaring vereist —
           een basisrobot bouw je voor <strong class="text-white">€15 à €20</strong>.
         </p>
+
+        <div class="mx-auto mt-8 inline-flex rounded-xl border border-white/15 bg-robo-dark/70 p-1" role="tablist" aria-label="Bouwen tabs">
+          <RouterLink
+            to="/bouwen/bouwgids"
+            role="tab"
+            :aria-selected="actieveTab === 'bouwgids'"
+            class="rounded-lg px-5 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-robo-orange"
+            :class="actieveTab === 'bouwgids' ? 'bg-white text-robo-dark shadow-sm' : 'text-slate-200 hover:bg-white/10'"
+          >
+            Bouwgids
+          </RouterLink>
+          <RouterLink
+            to="/bouwen/links"
+            role="tab"
+            :aria-selected="actieveTab === 'links'"
+            class="rounded-lg px-5 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-robo-orange"
+            :class="actieveTab === 'links' ? 'bg-white text-robo-dark shadow-sm' : 'text-slate-200 hover:bg-white/10'"
+          >
+            Build Hub
+          </RouterLink>
+        </div>
       </div>
     </section>
 
@@ -451,7 +479,7 @@ const actieVideos: VideoItem[] = [
         <div class="mt-8 rounded-xl border border-robo-orange/40 bg-black/20 p-5">
           <p class="text-sm text-slate-200">
             Voor softwarevoorbeelden en extra downloads ga je naar de
-            <RouterLink to="/build-hub" class="font-semibold text-robo-orange underline">
+            <RouterLink to="/bouwen/links" class="font-semibold text-robo-orange underline">
               Build Hub
             </RouterLink>.
           </p>

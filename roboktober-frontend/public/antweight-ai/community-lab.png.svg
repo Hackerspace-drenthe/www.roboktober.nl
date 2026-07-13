@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Placeholder community lab">
+  <rect width="1200" height="900" fill="#111827"/>
+  <circle cx="220" cy="340" r="90" fill="#22c55e" opacity="0.3"/>
+  <circle cx="430" cy="360" r="90" fill="#0ea5e9" opacity="0.3"/>
+  <circle cx="640" cy="340" r="90" fill="#f59e0b" opacity="0.3"/>
+  <circle cx="850" cy="360" r="90" fill="#f97316" opacity="0.3"/>
+  <text x="120" y="700" fill="#ffffff" font-size="56" font-family="Arial, sans-serif" font-weight="700">Gemini Placeholder</text>
+  <text x="120" y="770" fill="#cbd5e1" font-size="34" font-family="Arial, sans-serif">community-lab.png</text>
+</svg>

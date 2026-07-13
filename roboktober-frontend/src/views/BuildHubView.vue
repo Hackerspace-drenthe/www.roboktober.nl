@@ -2,6 +2,7 @@
 import { getLinks } from '@/api'
 import type { Link, LinkCategorie } from '@/types/api'
 import { computed, onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import headerImage from '@/assets/headers/header-build-hub.png'
 
 const links = ref<Link[]>([])
@@ -13,6 +14,11 @@ const heroStyle = {
   backgroundSize: 'cover',
   backgroundPosition: 'center',
 }
+
+const route = useRoute()
+const actieveTab = computed<'bouwgids' | 'links'>(() => {
+  return route.name === 'bouwen-links' ? 'links' : 'bouwgids'
+})
 
 const categorieLabels: Record<LinkCategorie, string> = {
   wallie: 'Hackerspace Drenthe',
@@ -49,11 +55,32 @@ onMounted(async () => {
   <main id="main-content">
     <section class="relative overflow-hidden py-20 text-white" :style="heroStyle">
       <div class="absolute inset-0 bg-robo-dark/75" aria-hidden="true" />
-      <div class="relative z-10 mx-auto max-w-3xl px-6 text-center">
+      <div class="relative z-10 mx-auto max-w-4xl px-6 text-center">
         <h1 class="mb-4 text-4xl font-black md:text-5xl">Build Hub</h1>
         <p class="text-lg text-slate-300">
           Handige links, tools, leveranciers en community-bronnen voor robot-bouwers.
         </p>
+
+        <div class="mx-auto mt-8 inline-flex rounded-xl border border-white/15 bg-robo-dark/70 p-1" role="tablist" aria-label="Bouwen tabs">
+          <RouterLink
+            to="/bouwen/bouwgids"
+            role="tab"
+            :aria-selected="actieveTab === 'bouwgids'"
+            class="rounded-lg px-5 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-robo-orange"
+            :class="actieveTab === 'bouwgids' ? 'bg-white text-robo-dark shadow-sm' : 'text-slate-200 hover:bg-white/10'"
+          >
+            Bouwgids
+          </RouterLink>
+          <RouterLink
+            to="/bouwen/links"
+            role="tab"
+            :aria-selected="actieveTab === 'links'"
+            class="rounded-lg px-5 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-robo-orange"
+            :class="actieveTab === 'links' ? 'bg-white text-robo-dark shadow-sm' : 'text-slate-200 hover:bg-white/10'"
+          >
+            Build Hub
+          </RouterLink>
+        </div>
       </div>
     </section>
 

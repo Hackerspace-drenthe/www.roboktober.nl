@@ -54,7 +54,7 @@ const verhaalInfographics: VerhaalInfographic[] = [
       'Perfect voor nieuwsgierige makers in Drenthe.',
     ],
     afbeelding: storyTechImage,
-    to: '/build-hub',
+    to: '/bouwen/links',
     knop: 'Bekijk de Build Hub',
   },
   {

@@ -363,7 +363,7 @@ onMounted(async () => {
             <strong class="text-robo-dark">Let op:</strong> Exacte data, tijden en locatiedetails
             kunnen nog wijzigen. Volg onze
             <a
-              href="https://hackerspacedrenthe.nl"
+              href="https://hackerspace-drenthe.nl"
               target="_blank"
               rel="noopener noreferrer"
               class="font-medium text-robo-orange underline hover:text-robo-orange-dark"

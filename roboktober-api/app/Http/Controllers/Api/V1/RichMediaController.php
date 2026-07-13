@@ -80,7 +80,8 @@ class RichMediaController extends Controller
         $attachedTo = null;
 
         if (isset($validated['target_type'], $validated['target_id'])) {
-            $target = $this->resolveTarget($validated['target_type'], $validated['target_id']);
+            $targetId = (int) $validated['target_id'];
+            $target = $this->resolveTarget($validated['target_type'], $targetId);
             $this->authorizeTargetMutation($actor, $target);
 
             $collectie = $validated['collectie'] ?? 'default';
@@ -109,7 +110,7 @@ class RichMediaController extends Controller
 
             $attachedTo = [
                 'type' => (string) $validated['target_type'],
-                'id' => $validated['target_id'],
+                'id' => $targetId,
                 'collectie' => $collectie,
             ];
         }
@@ -129,7 +130,8 @@ class RichMediaController extends Controller
         /** @var array{target_type: string, target_id: int, collectie?: string, alt_tekst?: string|null, onderschrift?: string|null, volgorde?: int} $validated */
         $validated = $request->validated();
 
-        $target = $this->resolveTarget($validated['target_type'], $validated['target_id']);
+        $targetId = (int) $validated['target_id'];
+        $target = $this->resolveTarget($validated['target_type'], $targetId);
         $this->authorizeTargetMutation($actor, $target);
 
         $collectie = $validated['collectie'] ?? 'default';
@@ -145,7 +147,7 @@ class RichMediaController extends Controller
             'data' => new RichMediaResource($media),
             'attached_to' => [
                 'type' => (string) $validated['target_type'],
-                'id' => $validated['target_id'],
+                'id' => $targetId,
                 'collectie' => $collectie,
             ],
         ], Response::HTTP_OK);

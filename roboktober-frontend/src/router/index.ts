@@ -72,10 +72,14 @@ const router = createRouter({
       meta: { title: 'Artikel — Roboktober' },
     },
     {
+      path: '/antweight',
+      name: 'antweight',
+      component: () => import('../views/AntweightView.vue'),
+      meta: { title: 'Wat is een antweight robot? — Roboktober' },
+    },
+    {
       path: '/build-hub',
-      name: 'build-hub',
-      component: () => import('../views/BuildHubView.vue'),
-      meta: { title: 'Build Hub — Roboktober' },
+      redirect: '/bouwen/links',
     },
     {
       path: '/aanmelden',
@@ -336,9 +340,19 @@ const router = createRouter({
     },
     {
       path: '/bouwen',
-      name: 'bouwen',
+      redirect: '/bouwen/bouwgids',
+    },
+    {
+      path: '/bouwen/bouwgids',
+      name: 'bouwen-bouwgids',
       component: () => import('../views/BouwenView.vue'),
       meta: { title: 'Bouw je antweight — Roboktober' },
+    },
+    {
+      path: '/bouwen/links',
+      name: 'bouwen-links',
+      component: () => import('../views/BuildHubView.vue'),
+      meta: { title: 'Build Hub — Roboktober' },
     },
     {
       path: '/:slug',

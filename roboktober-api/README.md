@@ -110,7 +110,7 @@ composer setup
 
 - URL: `http://localhost:8000/admin`
 - Seeded user (after `php artisan migrate --seed`):
-	- Email: `admin@hackerspacedrenthe.nl`
+	- Email: `admin@hackerspace-drenthe.nl`
 	- Password: `password`
 
 Change the seeded credentials immediately outside local development.

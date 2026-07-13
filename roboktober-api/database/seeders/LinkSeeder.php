@@ -16,7 +16,7 @@ class LinkSeeder extends Seeder
             // Wallie / Hackerspace
             [
                 'titel' => 'Hackerspace Drenthe',
-                'url' => 'https://hackerspacedrenthe.nl',
+                'url' => 'https://hackerspace-drenthe.nl',
                 'beschrijving' => 'De organiserende hackerspace. Werkplaats, gereedschap, kennis en community — alles op één plek.',
                 'categorie' => LinkCategorie::Wallie,
             ],
@@ -116,13 +116,13 @@ class LinkSeeder extends Seeder
             // Documentatie
             [
                 'titel' => 'Hackerspace Drenthe Wiki: Lasercutter gebruik',
-                'url' => 'https://wiki.hackerspacedrenthe.nl/lasercutter',
+                'url' => 'https://wiki.hackerspace-drenthe.nl/lasercutter',
                 'beschrijving' => 'Interne wiki over het gebruik van de lasercutter — handig voor chassis-platen uit acrylaat of hout.',
                 'categorie' => LinkCategorie::Documentatie,
             ],
             [
                 'titel' => '3D-printen bij de Hackerspace',
-                'url' => 'https://wiki.hackerspacedrenthe.nl/3dprinter',
+                'url' => 'https://wiki.hackerspace-drenthe.nl/3dprinter',
                 'beschrijving' => 'Overzicht van beschikbare printers, materialen en insteltips voor PETG en TPU — populair voor robot-bumpers.',
                 'categorie' => LinkCategorie::Documentatie,
             ],

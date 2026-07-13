@@ -22,7 +22,7 @@ class TeamSeeder extends Seeder
             'edition_id' => $edition?->id,
             'naam' => 'Hackerspace Drenthe',
             'contactpersoon' => 'Hackerspace Drenthe',
-            'email' => 'info@hackerspacedrenthe.nl',
+            'email' => 'info@hackerspace-drenthe.nl',
             'volwassenen' => 3,
             'status' => TeamStatus::Approved,
         ]);

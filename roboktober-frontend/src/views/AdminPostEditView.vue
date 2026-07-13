@@ -2,7 +2,7 @@
 import { getAdminPost, updateAdminPostContent } from '@/api'
 import ContentResourcePanel from '@/components/editor/ContentResourcePanel.vue'
 import EditorFormattingToolbar from '@/components/editor/EditorFormattingToolbar.vue'
-import { useContentInsertion } from '@/composables/useContentInsertion'
+import { useEditorComposer, type EditorAction } from '@/composables/useEditorComposer'
 import type { AdminPost } from '@/types/api'
 import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
@@ -25,16 +25,7 @@ const categorie = ref('')
 const tagsInput = ref('')
 
 const postId = computed(() => Number(route.params.id))
-const {
-  insertSnippet,
-  wrapSelection,
-  formatHeading,
-  formatList,
-  formatLink,
-  formatQuote,
-  formatCode,
-  insertDivider,
-} = useContentInsertion(contentRef, contentTextarea)
+const { applyAction, insert } = useEditorComposer(contentRef, contentTextarea, contentFormat)
 
 function normalizeTags(value: string): string[] {
   return value
@@ -45,64 +36,13 @@ function normalizeTags(value: string): string[] {
 
 function insertResourceSnippet(snippet: string): void {
   contentRef.value = content.value
-  insertSnippet(snippet)
+  insert(snippet)
   content.value = contentRef.value
 }
 
-function runFormatAction(action: 'bold' | 'italic' | 'h2' | 'h3' | 'ul' | 'ol' | 'link' | 'quote' | 'code' | 'divider'): void {
+function runFormatAction(action: EditorAction): void {
   contentRef.value = content.value
-
-  if (action === 'bold') {
-    if (contentFormat.value === 'html') {
-      wrapSelection('<strong>', '</strong>', 'vetgedrukte tekst')
-    } else {
-      wrapSelection('**', '**', 'vetgedrukte tekst')
-    }
-  }
-
-  if (action === 'italic') {
-    if (contentFormat.value === 'html') {
-      wrapSelection('<em>', '</em>', 'cursieve tekst')
-    } else {
-      wrapSelection('*', '*', 'cursieve tekst')
-    }
-  }
-
-  if (action === 'h2') {
-    formatHeading(2, contentFormat.value)
-  }
-
-  if (action === 'h3') {
-    formatHeading(3, contentFormat.value)
-  }
-
-  if (action === 'ul') {
-    formatList('ul', contentFormat.value)
-  }
-
-  if (action === 'ol') {
-    formatList('ol', contentFormat.value)
-  }
-
-  if (action === 'link') {
-    const url = window.prompt('Voer de URL in', 'https://')
-    if (url && url.trim().length > 0) {
-      formatLink(url.trim(), contentFormat.value)
-    }
-  }
-
-  if (action === 'quote') {
-    formatQuote(contentFormat.value)
-  }
-
-  if (action === 'code') {
-    formatCode(contentFormat.value)
-  }
-
-  if (action === 'divider') {
-    insertDivider(contentFormat.value)
-  }
-
+  applyAction(action)
   content.value = contentRef.value
 }
 
