@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { getEditionCompetitionLeaderboard, getEditions, getTeams } from '@/api'
 import { useAnalytics } from '@/composables/useAnalytics'
+import { useAuth } from '@/composables/useAuth'
 import type { Edition, EditionCompetitionLeaderboard, Team } from '@/types/api'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -9,6 +10,7 @@ import headerImage from '@/assets/headers/header-teams.png'
 const route = useRoute()
 const router = useRouter()
 const analytics = useAnalytics()
+const auth = useAuth()
 
 const actieveTab = computed<'teams' | 'competitie'>(() => {
   return route.name === 'teams-competitie' ? 'competitie' : 'teams'
@@ -28,6 +30,9 @@ const leaderboard = ref<EditionCompetitionLeaderboard | null>(null)
 const leaderboardCache = ref<Record<number, EditionCompetitionLeaderboard>>({})
 const competitionLoading = ref(false)
 const competitionError = ref('')
+const joinCtaPath = computed(() => (auth.isAuthenticated.value ? '/aanmelden' : '/registreren'))
+const emptyStateCtaLabel = computed(() => (auth.isAuthenticated.value ? 'Schrijf je in als eerste team' : 'Maak een account en schrijf je in'))
+const joinCtaLabel = computed(() => (auth.isAuthenticated.value ? 'Meld jouw team aan' : 'Maak account aan en meld je team aan'))
 
 const heroStyle = {
   backgroundImage: `url(${headerImage})`,
@@ -312,8 +317,8 @@ onMounted(async () => {
 
         <div v-else-if="gefilterdeTeams.length === 0" class="py-12 text-center text-slate-500">
           <p class="text-lg">Nog geen teams ingeschreven.</p>
-          <RouterLink to="/aanmelden" class="mt-4 inline-block font-medium text-robo-orange hover:underline">
-            Schrijf je in als eerste team &rarr;
+          <RouterLink :to="joinCtaPath" class="mt-4 inline-block font-medium text-robo-orange hover:underline">
+            {{ emptyStateCtaLabel }} &rarr;
           </RouterLink>
         </div>
 
@@ -371,10 +376,10 @@ onMounted(async () => {
 
         <div class="mt-12 text-center">
           <RouterLink
-            to="/aanmelden"
+            :to="joinCtaPath"
             class="inline-block rounded-lg bg-robo-orange px-8 py-3 font-bold text-white transition hover:bg-robo-orange-dark focus:outline-none focus:ring-2 focus:ring-robo-orange focus:ring-offset-2"
           >
-            Meld jouw team aan
+            {{ joinCtaLabel }}
           </RouterLink>
         </div>
       </div>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { getTeams } from '@/api'
+import { useAuth } from '@/composables/useAuth'
 import type { Team } from '@/types/api'
 import { computed, onMounted, ref } from 'vue'
 import headerImage from '@/assets/headers/header-teams.png'
@@ -11,6 +12,10 @@ const zoekterm = ref('')
 const statusFilter = ref<'all' | 'approved' | 'pending' | 'rejected'>('all')
 const gewichtFilter = ref<'all' | 'antweight' | 'beetleweight' | 'featherweight'>('all')
 const sortering = ref<'naam-asc' | 'naam-desc' | 'robots-desc'>('naam-asc')
+const auth = useAuth()
+const joinCtaPath = computed(() => (auth.isAuthenticated.value ? '/aanmelden' : '/registreren'))
+const emptyStateCtaLabel = computed(() => (auth.isAuthenticated.value ? 'Schrijf je in als eerste team' : 'Maak een account en schrijf je in'))
+const joinCtaLabel = computed(() => (auth.isAuthenticated.value ? 'Meld jouw team aan' : 'Maak account aan en meld je team aan'))
 
 const heroStyle = {
   backgroundImage: `url(${headerImage})`,
@@ -126,8 +131,8 @@ onMounted(async () => {
         <!-- Lege staat -->
         <div v-else-if="gefilterdeTeams.length === 0" class="py-12 text-center text-slate-500">
           <p class="text-lg">Nog geen teams ingeschreven.</p>
-          <RouterLink to="/aanmelden" class="mt-4 inline-block font-medium text-robo-orange hover:underline">
-            Schrijf je in als eerste team &rarr;
+          <RouterLink :to="joinCtaPath" class="mt-4 inline-block font-medium text-robo-orange hover:underline">
+            {{ emptyStateCtaLabel }} &rarr;
           </RouterLink>
         </div>
 
@@ -166,10 +171,10 @@ onMounted(async () => {
         <!-- CTA -->
         <div class="mt-12 text-center">
           <RouterLink
-            to="/aanmelden"
+            :to="joinCtaPath"
             class="inline-block rounded-lg bg-robo-orange px-8 py-3 font-bold text-white transition hover:bg-robo-orange-dark focus:outline-none focus:ring-2 focus:ring-robo-orange focus:ring-offset-2"
           >
-            Meld jouw team aan
+            {{ joinCtaLabel }}
           </RouterLink>
         </div>
       </div>

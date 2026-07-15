@@ -3,6 +3,7 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import headerImage from '@/assets/headers/header-bouwen.png'
+import { useAuth } from '@/composables/useAuth'
 import stap1Image from '@/assets/instructions/stap1-het-chassis.png'
 import stap2Image from '@/assets/instructions/stap2-motoren-en-wielen.png'
 import stap3Image from '@/assets/instructions/stap3-driver-accu-schakelaar.png'
@@ -18,9 +19,12 @@ const heroStyle = {
 }
 
 const route = useRoute()
+const auth = useAuth()
 const actieveTab = computed<'bouwgids' | 'links'>(() => {
   return route.name === 'bouwen-links' ? 'links' : 'bouwgids'
 })
+const joinCtaPath = computed(() => (auth.isAuthenticated.value ? '/aanmelden' : '/registreren'))
+const joinCtaLabel = computed(() => (auth.isAuthenticated.value ? 'Aanmelden' : 'Maak account aan en meld je aan'))
 
 interface VideoItem {
   titel: string
@@ -583,10 +587,10 @@ const actieVideos: VideoItem[] = [
           Schrijf je team in en kom bouwen bij Hackerspace Drenthe.
         </p>
         <RouterLink
-          to="/aanmelden"
+          :to="joinCtaPath"
           class="inline-block rounded-lg bg-robo-orange px-8 py-3 font-bold text-white transition hover:bg-robo-orange-dark focus:outline-none focus:ring-2 focus:ring-robo-orange focus:ring-offset-2"
         >
-          Aanmelden
+          {{ joinCtaLabel }}
         </RouterLink>
       </div>
     </section>

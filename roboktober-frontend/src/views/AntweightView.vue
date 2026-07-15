@@ -1,5 +1,11 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import headerTeams from '@/assets/headers/header-teams.png'
+import { useAuth } from '@/composables/useAuth'
+
+const auth = useAuth()
+const joinCtaPath = computed(() => (auth.isAuthenticated.value ? '/aanmelden' : '/registreren'))
+const joinCtaLabel = computed(() => (auth.isAuthenticated.value ? 'Meld je team aan' : 'Maak account aan en meld je team aan'))
 
 const heroStyle = {
   // First image is the Gemini output; second image is fallback background.
@@ -253,10 +259,10 @@ const wowItems = [
             Start met bouwen
           </RouterLink>
           <RouterLink
-            to="/aanmelden"
+            :to="joinCtaPath"
             class="rounded-lg border border-white/30 bg-white/10 px-6 py-3 font-bold text-white transition hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/60"
           >
-            Meld je team aan
+            {{ joinCtaLabel }}
           </RouterLink>
         </div>
       </div>

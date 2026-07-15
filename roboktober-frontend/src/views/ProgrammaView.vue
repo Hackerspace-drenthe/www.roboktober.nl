@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { getEditionProgrammaItems, getEditions } from '@/api'
 import headerImage from '@/assets/headers/header-programma.png'
+import { useAuth } from '@/composables/useAuth'
 import type { Edition, ProgrammaItem } from '@/types/api'
 import { computed, onMounted, ref } from 'vue'
 
@@ -15,6 +16,9 @@ const programmaItems = ref<ProgrammaItem[]>([])
 const mapCoords = ref<{ lat: number; lon: number } | null>(null)
 const loading = ref(false)
 const error = ref('')
+const auth = useAuth()
+const joinCtaPath = computed(() => (auth.isAuthenticated.value ? '/aanmelden' : '/registreren'))
+const joinCtaLabel = computed(() => (auth.isAuthenticated.value ? 'Aanmelden' : 'Maak account aan en meld je aan'))
 
 function editieOsmUrl(item: Edition | null): string | null {
   const value = item?.location?.osm_url
@@ -383,10 +387,10 @@ onMounted(async () => {
           Beginners zijn van harte welkom.
         </p>
         <RouterLink
-          to="/aanmelden"
+          :to="joinCtaPath"
           class="inline-block rounded-lg bg-robo-orange px-8 py-3 font-bold text-white transition hover:bg-robo-orange-dark focus:outline-none focus:ring-2 focus:ring-robo-orange focus:ring-offset-2 focus:ring-offset-robo-gray"
         >
-          Aanmelden
+          {{ joinCtaLabel }}
         </RouterLink>
       </div>
     </section>
