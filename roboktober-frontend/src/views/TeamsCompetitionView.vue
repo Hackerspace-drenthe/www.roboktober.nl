@@ -91,51 +91,6 @@ function formatDatumTijd(iso: string | null): string {
   })
 }
 
-function upsertMetaTag(attribute: 'name' | 'property', key: string, content: string): void {
-  const selector = `meta[${attribute}="${key}"]`
-  let tag = document.head.querySelector(selector) as HTMLMetaElement | null
-
-  if (!tag) {
-    tag = document.createElement('meta')
-    tag.setAttribute(attribute, key)
-    document.head.appendChild(tag)
-  }
-
-  tag.setAttribute('content', content)
-}
-
-function upsertCanonical(url: string): void {
-  let tag = document.head.querySelector('link[rel="canonical"]') as HTMLLinkElement | null
-
-  if (!tag) {
-    tag = document.createElement('link')
-    tag.setAttribute('rel', 'canonical')
-    document.head.appendChild(tag)
-  }
-
-  tag.setAttribute('href', url)
-}
-
-function applySeoMeta(): void {
-  if (typeof window === 'undefined') {
-    return
-  }
-
-  const isCompetitie = actieveTab.value === 'competitie'
-  const title = isCompetitie ? 'Competitieklassement — Roboktober' : 'Teams & Robots — Roboktober'
-  const description = isCompetitie
-    ? 'Bekijk het actuele competitieklassement van Roboktober per editie, categorie en robot.'
-    : 'Bekijk alle teams en robots die meedoen aan Roboktober, inclusief filters en teamdetails.'
-  const canonicalUrl = `${window.location.origin}${route.fullPath}`
-
-  document.title = title
-  upsertMetaTag('name', 'description', description)
-  upsertMetaTag('property', 'og:title', title)
-  upsertMetaTag('property', 'og:description', description)
-  upsertMetaTag('property', 'og:url', canonicalUrl)
-  upsertCanonical(canonicalUrl)
-}
-
 async function loadTeams(): Promise<void> {
   try {
     teams.value = await getTeams()
@@ -226,8 +181,6 @@ watch(selectedEditionId, async () => {
 })
 
 watch(actieveTab, async (tab, previousTab) => {
-  applySeoMeta()
-
   if (tab !== previousTab) {
     void analytics.track('tab_switch', {
       eventName: `${previousTab ?? 'unknown'}->${tab}`,
@@ -247,15 +200,7 @@ watch(actieveTab, async (tab, previousTab) => {
   }
 })
 
-watch(
-  () => route.fullPath,
-  () => {
-    applySeoMeta()
-  },
-)
-
 onMounted(async () => {
-  applySeoMeta()
   await Promise.all([loadTeams(), loadEditions()])
 
   if (actieveTab.value === 'competitie') {

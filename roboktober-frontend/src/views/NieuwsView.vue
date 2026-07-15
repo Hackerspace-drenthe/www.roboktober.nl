@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { getPosts } from '@/api'
 import type { Post } from '@/types/api'
-import { onMounted, ref } from 'vue'
+import { applySeoMeta, removeJsonLd, upsertJsonLd } from '@/utils/seo'
+import { onMounted, onUnmounted, ref } from 'vue'
 import headerImage from '@/assets/headers/header-nieuws.png'
 
 const posts = ref<Post[]>([])
@@ -14,20 +15,54 @@ const heroStyle = {
   backgroundPosition: 'center',
 }
 
+function updateNieuwsStructuredData(): void {
+  upsertJsonLd('news-list', {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Nieuws — Roboktober',
+    url: 'https://www.roboktober.nl/nieuws',
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'Roboktober',
+      url: 'https://www.roboktober.nl/',
+    },
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: posts.value.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: `https://www.roboktober.nl/nieuws/${item.slug}`,
+        name: item.titel,
+      })),
+    },
+  })
+}
+
 function formatDatum(iso: string | null): string {
   if (!iso) return ''
   return new Date(iso).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })
 }
 
 onMounted(async () => {
+  applySeoMeta({
+    title: 'Nieuws — Roboktober',
+    description: 'Lees het laatste nieuws, updates en aankondigingen rond Roboktober en combat robotics in Drenthe.',
+    canonicalPath: '/nieuws',
+  })
+
   try {
     const response = await getPosts({ per_page: 20 })
     posts.value = response.data
+    updateNieuwsStructuredData()
   } catch {
     fout.value = 'Nieuws kon niet worden geladen. Probeer het later opnieuw.'
   } finally {
     laden.value = false
   }
+})
+
+onUnmounted(() => {
+  removeJsonLd('news-list')
 })
 </script>
 

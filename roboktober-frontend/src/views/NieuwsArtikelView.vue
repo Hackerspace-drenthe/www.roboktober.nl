@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { getPost } from '@/api'
 import type { Post } from '@/types/api'
-import { onMounted, ref } from 'vue'
+import { applySeoMeta, removeJsonLd, upsertJsonLd } from '@/utils/seo'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import headerImage from '@/assets/headers/header-nieuws-artikel.png'
 
@@ -22,15 +23,65 @@ function formatDatum(iso: string | null): string {
   return new Date(iso).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })
 }
 
+function stripHtmlToText(content: string): string {
+  return content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
+}
+
+function excerptFromContent(item: Post): string {
+  const base = item.excerpt?.trim() || stripHtmlToText(item.content)
+  return base.length <= 170 ? base : `${base.slice(0, 167)}...`
+}
+
+function updateArticleSeo(item: Post): void {
+  const canonicalPath = `/nieuws/${item.slug}`
+  const description = excerptFromContent(item)
+
+  applySeoMeta({
+    title: `${item.titel} — Roboktober`,
+    description,
+    canonicalPath,
+    ogType: 'article',
+    image: item.featured?.url ?? null,
+  })
+
+  upsertJsonLd('news-article', {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: item.titel,
+    description,
+    datePublished: item.published_at,
+    dateModified: item.published_at,
+    author: {
+      '@type': 'Organization',
+      name: 'Roboktober',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Hackerspace Drenthe',
+    },
+    image: item.featured?.url ? [item.featured.url] : undefined,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://www.roboktober.nl${canonicalPath}`,
+    },
+  })
+}
+
 onMounted(async () => {
   const slug = String(route.params.slug)
   try {
-    post.value = await getPost(slug)
+    const loadedPost = await getPost(slug)
+    post.value = loadedPost
+    updateArticleSeo(loadedPost)
   } catch {
     router.replace('/niet-gevonden')
   } finally {
     laden.value = false
   }
+})
+
+onUnmounted(() => {
+  removeJsonLd('news-article')
 })
 </script>
 

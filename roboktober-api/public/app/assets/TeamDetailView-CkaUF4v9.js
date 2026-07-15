@@ -1,1 +1,0 @@
-export { default } from './TeamDetailView-DXM0FGOi.js'

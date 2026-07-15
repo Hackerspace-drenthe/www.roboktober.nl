@@ -9,6 +9,7 @@
 import { onMounted, onUnmounted, ref } from 'vue'
 import { getPosts } from '@/api'
 import type { Post } from '@/types/api'
+import { applySeoMeta, removeJsonLd, upsertJsonLd } from '@/utils/seo'
 import headerImage from '@/assets/headers/header-home.png'
 import storyCommunityImage from '@/assets/headers/header-aanmelden.png'
 import storyTechImage from '@/assets/headers/header-build-hub.png'
@@ -96,7 +97,62 @@ function berekenCountdown(): Countdown {
 const countdown = ref<Countdown>(berekenCountdown())
 let timer: ReturnType<typeof setInterval> | null = null
 
+function updateHomeStructuredData(): void {
+  upsertJsonLd('home-core', {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': 'https://www.roboktober.nl/#organization',
+        name: 'Roboktober',
+        url: 'https://www.roboktober.nl/',
+        parentOrganization: {
+          '@type': 'Organization',
+          name: 'Hackerspace Drenthe',
+        },
+      },
+      {
+        '@type': 'WebSite',
+        '@id': 'https://www.roboktober.nl/#website',
+        url: 'https://www.roboktober.nl/',
+        name: 'Roboktober',
+        publisher: {
+          '@id': 'https://www.roboktober.nl/#organization',
+        },
+      },
+      {
+        '@type': 'Event',
+        '@id': 'https://www.roboktober.nl/#event',
+        name: 'Roboktober 2026',
+        eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+        eventStatus: 'https://schema.org/EventScheduled',
+        startDate: '2026-10-01T09:00:00+02:00',
+        endDate: '2026-10-31T21:00:00+01:00',
+        organizer: {
+          '@id': 'https://www.roboktober.nl/#organization',
+        },
+        location: {
+          '@type': 'Place',
+          name: 'Hackerspace Drenthe',
+          address: {
+            '@type': 'PostalAddress',
+            addressRegion: 'Drenthe',
+            addressCountry: 'NL',
+          },
+        },
+      },
+    ],
+  })
+}
+
 onMounted(async () => {
+  applySeoMeta({
+    title: 'Roboktober — Combat robots bij Hackerspace Drenthe',
+    description: 'Bouw je eigen gevechtsrobot bij Roboktober in Hackerspace Drenthe. Antweight robotwars, workshops en competitie.',
+    canonicalPath: '/',
+  })
+  updateHomeStructuredData()
+
   timer = setInterval(() => { countdown.value = berekenCountdown() }, 1000)
   try {
     const response = await getPosts({ per_page: 3 })
@@ -108,7 +164,13 @@ onMounted(async () => {
   }
 })
 
-onUnmounted(() => { if (timer) clearInterval(timer) })
+onUnmounted(() => {
+  if (timer) {
+    clearInterval(timer)
+  }
+
+  removeJsonLd('home-core')
+})
 </script>
 
 <template>

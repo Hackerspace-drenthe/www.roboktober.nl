@@ -8,9 +8,14 @@
  */
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
+import { applySeoMeta } from '@/utils/seo'
 
 type AppRouteMeta = {
   title?: string
+  description?: string
+  robots?: string
+  canonicalPath?: string
+  ogType?: 'website' | 'article'
   requiresAuth?: boolean
   minRole?: 'visitor' | 'teamcaptain' | 'moderator' | 'admin'
 }
@@ -29,13 +34,19 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: () => import('../views/HomeView.vue'),
-      meta: { title: 'Roboktober — Combat robots bij Hackerspace Drenthe' },
+      meta: {
+        title: 'Roboktober — Combat robots bij Hackerspace Drenthe',
+        description: 'Bouw je eigen gevechtsrobot bij Roboktober in Hackerspace Drenthe. Antweight robotwars, workshops en competitie.',
+      },
     },
     {
       path: '/programma',
       name: 'programma',
       component: () => import('../views/ProgrammaView.vue'),
-      meta: { title: 'Programma — Roboktober' },
+      meta: {
+        title: 'Programma — Roboktober',
+        description: 'Bekijk het programma van Roboktober met kickoff, workshops, keuringen en battle day in Hackerspace Drenthe.',
+      },
     },
     {
       path: '/competitie',
@@ -45,37 +56,56 @@ const router = createRouter({
       path: '/teams',
       name: 'teams',
       component: () => import('../views/TeamsCompetitionView.vue'),
-      meta: { title: 'Teams & Robots — Roboktober' },
+      meta: {
+        title: 'Teams & Robots — Roboktober',
+        description: 'Bekijk alle teams en robots die meedoen aan Roboktober, inclusief filters en teamdetails.',
+      },
     },
     {
       path: '/teams/competitie',
       name: 'teams-competitie',
       component: () => import('../views/TeamsCompetitionView.vue'),
-      meta: { title: 'Competitieklassement — Roboktober' },
+      meta: {
+        title: 'Competitieklassement — Roboktober',
+        description: 'Volg het actuele competitieklassement van Roboktober per editie, categorie en robot.',
+      },
     },
     {
       path: '/teams/:id',
       name: 'team-detail',
       component: () => import('../views/TeamDetailView.vue'),
-      meta: { title: 'Team — Roboktober' },
+      meta: {
+        title: 'Team — Roboktober',
+        description: 'Bekijk teaminformatie, robots en updates van deelnemers aan Roboktober.',
+      },
     },
     {
       path: '/nieuws',
       name: 'nieuws',
       component: () => import('../views/NieuwsView.vue'),
-      meta: { title: 'Nieuws — Roboktober' },
+      meta: {
+        title: 'Nieuws — Roboktober',
+        description: 'Lees het laatste nieuws, updates en aankondigingen rond Roboktober en combat robotics in Drenthe.',
+      },
     },
     {
       path: '/nieuws/:slug',
       name: 'nieuws-artikel',
       component: () => import('../views/NieuwsArtikelView.vue'),
-      meta: { title: 'Artikel — Roboktober' },
+      meta: {
+        title: 'Artikel — Roboktober',
+        description: 'Nieuwsartikel van Roboktober.',
+        ogType: 'article',
+      },
     },
     {
       path: '/antweight',
       name: 'antweight',
       component: () => import('../views/AntweightView.vue'),
-      meta: { title: 'Wat is een antweight robot? — Roboktober' },
+      meta: {
+        title: 'Wat is een antweight robot? — Roboktober',
+        description: 'Ontdek wat antweight combat robots zijn, hoe je begint en waarom deze klasse perfect is voor starters.',
+      },
     },
     {
       path: '/build-hub',
@@ -336,7 +366,10 @@ const router = createRouter({
       path: '/walter',
       name: 'walter',
       component: () => import('../views/WalterView.vue'),
-      meta: { title: 'Walter — Gastheer van Roboktober' },
+      meta: {
+        title: 'Walter — Gastheer van Roboktober',
+        description: 'Maak kennis met Walter (Wallieonline), initiatiefnemer van Roboktober en mentor binnen Hackerspace Drenthe.',
+      },
     },
     {
       path: '/bouwen',
@@ -346,24 +379,37 @@ const router = createRouter({
       path: '/bouwen/bouwgids',
       name: 'bouwen-bouwgids',
       component: () => import('../views/BouwenView.vue'),
-      meta: { title: 'Bouw je antweight — Roboktober' },
+      meta: {
+        title: 'Bouw je antweight — Roboktober',
+        description: 'Praktische bouwgids om stap voor stap je eigen antweight robot te bouwen voor Roboktober.',
+      },
     },
     {
       path: '/bouwen/links',
       name: 'bouwen-links',
       component: () => import('../views/BuildHubView.vue'),
-      meta: { title: 'Build Hub — Roboktober' },
+      meta: {
+        title: 'Build Hub — Roboktober',
+        description: 'Gebruik de Build Hub met onderdelen, tools en bronnen om je robot sneller te ontwerpen en bouwen.',
+      },
     },
     {
       path: '/:slug',
       name: 'pagina',
       component: () => import('../views/PaginaView.vue'),
+      meta: {
+        title: 'Pagina — Roboktober',
+        description: 'Informatiepagina van Roboktober.',
+      },
     },
     {
       path: '/:pathMatch(.*)*',
       name: 'niet-gevonden',
       component: () => import('../views/NietGevondenView.vue'),
-      meta: { title: 'Pagina niet gevonden — Roboktober' },
+      meta: {
+        title: 'Pagina niet gevonden — Roboktober',
+        robots: 'noindex,nofollow',
+      },
     },
   ],
 })
@@ -405,11 +451,18 @@ router.beforeEach(async (to) => {
   return true
 })
 
-// Update document title on route change
 router.afterEach((to) => {
-  if (typeof to.meta.title === 'string') {
-    document.title = to.meta.title
-  }
+  const meta = (to.meta ?? {}) as AppRouteMeta
+  const title = typeof meta.title === 'string' ? meta.title : 'Roboktober'
+  const isPrivateRoute = to.path.startsWith('/admin') || to.path.startsWith('/account') || Boolean(meta.requiresAuth)
+
+  applySeoMeta({
+    title,
+    description: meta.description,
+    canonicalPath: meta.canonicalPath ?? to.fullPath,
+    robots: meta.robots ?? (isPrivateRoute ? 'noindex,nofollow' : 'index,follow'),
+    ogType: meta.ogType,
+  })
 })
 
 export default router

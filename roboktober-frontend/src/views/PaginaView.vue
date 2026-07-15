@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { getPage } from '@/api'
 import type { Page } from '@/types/api'
+import { applySeoMeta } from '@/utils/seo'
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import headerImage from '@/assets/headers/header-pagina.png'
@@ -19,7 +20,17 @@ const heroStyle = {
 onMounted(async () => {
   const slug = String(route.params.slug)
   try {
-    pagina.value = await getPage(slug)
+    const loadedPage = await getPage(slug)
+    pagina.value = loadedPage
+
+    const seoTitle = loadedPage.seo?.title ?? `${loadedPage.titel} — Roboktober`
+    const seoDescription = loadedPage.seo?.description ?? 'Informatiepagina van Roboktober.'
+
+    applySeoMeta({
+      title: seoTitle,
+      description: seoDescription,
+      canonicalPath: `/${loadedPage.slug}`,
+    })
   } catch {
     router.replace('/niet-gevonden')
   } finally {
