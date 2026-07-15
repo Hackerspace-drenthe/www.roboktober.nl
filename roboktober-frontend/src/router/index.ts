@@ -175,7 +175,10 @@ const router = createRouter({
       path: '/registreren',
       name: 'registreren',
       component: () => import('../views/RegisterView.vue'),
-      meta: { title: 'Registreren — Roboktober' },
+      meta: {
+        title: 'Registreren — Roboktober',
+        description: 'Maak een account aan voor Roboktober en zet de eerste stap naar teamaanmelding en deelname aan antweight robotwars.',
+      },
     },
     {
       path: '/account',

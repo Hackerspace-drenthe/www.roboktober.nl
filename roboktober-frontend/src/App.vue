@@ -7,7 +7,7 @@
  *
  * @see PLAN.md §4 — WCAG 2.2 AA compliance
  */
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
 
@@ -29,6 +29,8 @@ const desktopNavActiveClass = 'bg-robo-orange/90 text-white shadow-sm'
 const mobileNavLinkClass =
   'block rounded-md px-3 py-2 text-slate-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-robo-orange/80'
 const mobileNavActiveClass = 'bg-white/10 text-white'
+const primaryCtaRoute = computed(() => (auth.isAuthenticated.value ? '/aanmelden' : '/registreren'))
+const primaryCtaLabel = computed(() => (auth.isAuthenticated.value ? 'Aanmelden' : 'Doe mee'))
 
 function sluitMenu(): void {
   menuOpen.value = false
@@ -200,11 +202,11 @@ async function handleLogout(): Promise<void> {
           </li>
           <li>
             <RouterLink
-              to="/aanmelden"
+              :to="primaryCtaRoute"
               class="rounded-lg bg-robo-orange px-4 py-2 font-bold text-white hover:bg-robo-orange-dark"
               active-class="bg-robo-orange-dark ring-2 ring-robo-orange/80"
             >
-              Aanmelden
+              {{ primaryCtaLabel }}
             </RouterLink>
           </li>
         </ul>
@@ -346,12 +348,12 @@ async function handleLogout(): Promise<void> {
         </li>
         <li>
           <RouterLink
-            to="/aanmelden"
+            :to="primaryCtaRoute"
             class="block rounded-lg bg-robo-orange px-4 py-2 text-center font-bold text-white hover:bg-robo-orange-dark"
             active-class="bg-robo-orange-dark ring-2 ring-robo-orange/80"
             @click="sluitMenu"
           >
-            Aanmelden
+            {{ primaryCtaLabel }}
           </RouterLink>
         </li>
 

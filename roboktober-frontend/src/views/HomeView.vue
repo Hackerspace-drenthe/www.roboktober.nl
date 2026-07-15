@@ -6,8 +6,9 @@
  * @see PLAN.md §6.1 — Home page design
  * @see PLAN.md §4   — doelgroepen
  */
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { getPosts } from '@/api'
+import { useAuth } from '@/composables/useAuth'
 import type { Post } from '@/types/api'
 import { applySeoMeta, removeJsonLd, upsertJsonLd } from '@/utils/seo'
 import headerImage from '@/assets/headers/header-home.png'
@@ -17,6 +18,9 @@ import storyArenaImage from '@/assets/headers/header-programma.png'
 
 const posts = ref<Post[]>([])
 const ladenPosts = ref(true)
+const auth = useAuth()
+const joinCtaPath = computed(() => (auth.isAuthenticated.value ? '/aanmelden' : '/registreren'))
+const joinCtaLabel = computed(() => (auth.isAuthenticated.value ? 'Meld je team aan' : 'Maak je account aan'))
 
 const heroStyle = {
   backgroundImage: `url(${headerImage})`,
@@ -214,10 +218,10 @@ onUnmounted(() => {
 
       <div class="flex flex-col gap-4 sm:flex-row sm:justify-center">
         <RouterLink
-          to="/aanmelden"
+          :to="joinCtaPath"
           class="rounded-lg bg-robo-orange px-8 py-4 text-lg font-bold text-white transition hover:bg-robo-orange-dark focus:outline-none focus:ring-4 focus:ring-robo-orange/50"
         >
-          Meld je team aan
+          {{ joinCtaLabel }}
         </RouterLink>
         <RouterLink
           to="/programma"
@@ -283,10 +287,10 @@ onUnmounted(() => {
             </ul>
 
             <RouterLink
-              :to="item.to"
+              :to="item.to === '/aanmelden' ? joinCtaPath : item.to"
               class="inline-flex rounded-lg bg-robo-dark px-4 py-2 text-sm font-bold text-white transition hover:bg-robo-orange"
             >
-              {{ item.knop }} →
+              {{ item.to === '/aanmelden' ? joinCtaLabel : item.knop }} →
             </RouterLink>
           </div>
         </article>
