@@ -43,6 +43,8 @@ Route::get('/sitemap.xml', function () use ($canonicalHostRedirect) {
             ['path' => '/teams', 'lastmod' => $nowIso, 'changefreq' => 'daily', 'priority' => '0.8'],
             ['path' => '/teams/competitie', 'lastmod' => $nowIso, 'changefreq' => 'daily', 'priority' => '0.7'],
             ['path' => '/nieuws', 'lastmod' => $nowIso, 'changefreq' => 'daily', 'priority' => '0.8'],
+            ['path' => '/aanmelden', 'lastmod' => $nowIso, 'changefreq' => 'daily', 'priority' => '0.9'],
+            ['path' => '/registreren', 'lastmod' => $nowIso, 'changefreq' => 'weekly', 'priority' => '0.8'],
             ['path' => '/walter', 'lastmod' => $nowIso, 'changefreq' => 'monthly', 'priority' => '0.6'],
         ];
 
