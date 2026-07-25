@@ -5,7 +5,7 @@
  * Contains the skip-nav link (WCAG 2.2 AA) and main navigation.
  * Navigation is sticky and collapses to hamburger on mobile.
  *
- * @see PLAN.md §4 — WCAG 2.2 AA compliance
+ * @see docs/PLAN.md §4 — WCAG 2.2 AA compliance
  */
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'

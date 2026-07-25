@@ -14,7 +14,7 @@ use Rector\Set\ValueObject\SetList;
  * - Type-safe patterns
  *
  * @see https://getrector.org/documentation
- * @see PLAN.md §8.1 — code quality standards
+ * @see docs/PLAN.md §8.1 — code quality standards
  */
 return RectorConfig::configure()
     ->withPaths([

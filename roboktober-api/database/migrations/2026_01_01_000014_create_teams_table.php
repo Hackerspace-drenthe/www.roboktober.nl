@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Schema;
  * Registration is always open (no event-scoped deadline in v1).
  * Team photos are stored in the mediables table under collection 'foto'.
  *
- * @see PLAN.md §5.1 — team registration model
- * @see PLAN.md §5.2 — teams schema
+ * @see docs/PLAN.md §5.1 — team registration model
+ * @see docs/PLAN.md §5.2 — teams schema
  */
 return new class extends Migration
 {

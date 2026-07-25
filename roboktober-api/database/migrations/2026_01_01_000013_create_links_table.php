@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Schema;
  * - media = uploadable files stored on disk
  * - links = external URLs with optional OG metadata cache
  *
- * @see PLAN.md §5.2 — links schema (renamed from 'resources')
+ * @see docs/PLAN.md §5.2 — links schema (renamed from 'resources')
  */
 return new class extends Migration
 {
@@ -40,7 +40,7 @@ return new class extends Migration
             $table->json('meta')->nullable();
 
             // Content category for filtering/grouping in the Build Hub page
-            // Values mirror the page design in PLAN.md §6.5
+            // Values mirror the page design in docs/PLAN.md §6.5
             $table->enum('categorie', [
                 'wallie',        // Wallie-specific resources
                 'community',     // Community links (Discord, forums)

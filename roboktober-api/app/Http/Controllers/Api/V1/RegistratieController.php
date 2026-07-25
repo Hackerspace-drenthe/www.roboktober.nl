@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Routes:
  * - POST /api/v1/registratie → RegistratieController@store
  *
- * @see PLAN.md §5.1 — registration always open
+ * @see docs/PLAN.md §5.1 — registration always open
  */
 class RegistratieController extends Controller
 {

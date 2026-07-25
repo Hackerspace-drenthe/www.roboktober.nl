@@ -19,7 +19,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
  * - GET /api/v1/teams       → TeamController@index
  * - GET /api/v1/teams/{id}  → TeamController@show
  *
- * @see PLAN.md §5.2 — REST API endpoints
+ * @see docs/PLAN.md §5.2 — REST API endpoints
  */
 class TeamController extends Controller
 {

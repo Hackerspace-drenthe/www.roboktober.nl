@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * $post->featuredMedia();              // The single featured/header image (or null)
  * ```
  *
- * @see PLAN.md §5.2 — HasMedia trait specification
+ * @see docs/PLAN.md §5.2 — HasMedia trait specification
  */
 trait HasMedia
 {

@@ -1,0 +1,79 @@
+services:
+  mariadb:
+    image: mariadb:11.4
+    container_name: roboktober-mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: roboktober
+      MARIADB_USER: roboktober
+      MARIADB_PASSWORD: roboktober
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  backend:
+    build:
+      context: ./roboktober-api
+      dockerfile: Dockerfile.dev
+    container_name: roboktober-backend
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    working_dir: /app
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8000
+      DB_CONNECTION: mysql
+      DB_HOST: mariadb
+      DB_PORT: 3306
+      DB_DATABASE: roboktober
+      DB_USERNAME: roboktober
+      DB_PASSWORD: roboktober
+      SESSION_DRIVER: file
+      CACHE_STORE: file
+      QUEUE_CONNECTION: sync
+    volumes:
+      - ./roboktober-api:/app
+    ports:
+      - "8000:8000"
+    command: >
+      bash -lc "
+      [ -f .env ] || cp .env.example .env;
+      composer install --no-interaction;
+      grep -q '^APP_KEY=base64:' .env || php artisan key:generate --force;
+      php artisan migrate --force;
+      php artisan serve --host=0.0.0.0 --port=8000
+      "
+
+  frontend:
+    build:
+      context: ./roboktober-frontend
+      dockerfile: Dockerfile.dev
+    container_name: roboktober-frontend
+    depends_on:
+      - backend
+    working_dir: /app
+    environment:
+      VITE_API_PROXY_TARGET: http://backend:8000
+    volumes:
+      - ./roboktober-frontend:/app
+      - frontend_node_modules:/app/node_modules
+    ports:
+      - "5173:5173"
+    command: >
+      sh -lc "
+      if [ ! -d node_modules ] || [ -z \"$(ls -A node_modules 2>/dev/null)\" ]; then npm ci; fi;
+      npm run dev -- --host 0.0.0.0 --port 5173
+      "
+
+volumes:
+  mariadb_data:
+  frontend_node_modules:

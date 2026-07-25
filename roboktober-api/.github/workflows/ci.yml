@@ -9,7 +9,7 @@ on:
 jobs:
   # ============================================================
   # Code quality — PHPStan, Pint, Rector
-  # @see PLAN.md §8.1 — code quality pipeline
+  # @see docs/PLAN.md §8.1 — code quality pipeline
   # ============================================================
   quality:
     name: Code quality (PHP)

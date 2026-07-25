@@ -104,6 +104,8 @@ Map: `roboktober-frontend`
 - Laravel Sanctum voor token/session patronen
 - Policies/Gates voor autorisatie op resource-niveau
 - Minimaal noodzakelijke rechten per endpoint
+- Account-first registratie en beheerflows; mutaties lopen via het ingelogde account.
+- Verplichte TOTP 2FA voor accounts met bevestigde setup, inclusief bootstrap/challenge-flow.
 
 ### 5.2 Input en output beveiliging
 - Alle write-endpoints gebruiken FormRequest-validatie
@@ -114,6 +116,7 @@ Map: `roboktober-frontend`
 - Secrets niet in repository; runtime via omgeving/config
 - Deploy met expliciete productiebevestiging (`PRODUCTION_CONFIRM=deploy-production`)
 - Dry-run mode beschikbaar voor veilige preflight checks
+- Auth UI en API volgen dezelfde 2FA-route voor setup, challenge en confirm.
 
 ## 6. Kwaliteitsarchitectuur
 ### 6.1 Backend kwaliteit
@@ -150,7 +153,7 @@ Belangrijkste eigenschappen:
 - Wrapper scripts voor staging/production met consistente variabelen
 - Remote uitvoering via SSH en gestandaardiseerde deployflow
 - Productieguard voorkomt onbedoelde live-uitrol
-- Checklist in root (`DEPLOY-CHECKLIST.md`) als operationele standaard
+- Checklist in docs-root (`DEPLOY-CHECKLIST.md`) als operationele standaard
 
 ## 8. SOLID-vertaling naar dit project
 - Single Responsibility:
@@ -192,6 +195,7 @@ Een change is gereed als:
 - Static analysis debt naar 0 teruggebracht
 - CI gates actief en aanscherpt
 - Deployflow voorzien van guardrails en checklist
+- Account-first auth en 2FA vormen de huidige baseline voor publieke en beheerflows.
 
 ### 10.2 Aanbevolen vervolgstappen
 1. Leg Architecture Decision Records (ADR) vast voor grotere keuzes in `docs/adr`.

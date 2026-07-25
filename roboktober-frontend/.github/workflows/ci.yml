@@ -9,7 +9,7 @@ on:
 jobs:
   # ============================================================
   # Type check + ESLint + build
-  # @see PLAN.md §8.1 — frontend quality pipeline
+  # @see docs/PLAN.md §8.1 — frontend quality pipeline
   # ============================================================
   quality:
     name: Type check & lint (Vue 3 + TypeScript)

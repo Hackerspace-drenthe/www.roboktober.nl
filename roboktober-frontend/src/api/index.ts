@@ -4,7 +4,7 @@
  * Centralised Axios instance with base URL and default headers.
  * All API calls go through this module — no bare fetch() calls elsewhere.
  *
- * @see PLAN.md §5.3 — API communication
+ * @see docs/PLAN.md §5.3 — API communication
  */
 
 import type {

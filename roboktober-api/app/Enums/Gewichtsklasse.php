@@ -11,7 +11,7 @@ namespace App\Enums;
  * Beetleweight:  up to 1.36 kg (3 lbs)
  * Featherweight: up to 13.6 kg (30 lbs)
  *
- * @see PLAN.md §5.1 — gewichtsklassen
+ * @see docs/PLAN.md §5.1 — gewichtsklassen
  */
 enum Gewichtsklasse: string
 {

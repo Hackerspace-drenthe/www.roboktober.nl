@@ -2,6 +2,17 @@
 
 Dit document is het uitvoerplan na de audit en bevat zowel roadmap als directe uitvoering.
 
+## 0. Huidige status
+
+De kern van dit uitvoerplan is inmiddels gerealiseerd en vormt de huidige technische baseline:
+- Account-first registratie en wijzigflows zijn actief.
+- Verplichte 2FA setup/challenge/confirm is actief.
+- Sanitization, throttling en policy checks zijn in productiegebonden code opgenomen.
+- Vitest, Playwright en de backend CI-gates zijn aanwezig.
+- PHPStan staat blocking in CI en de style-/testpijplijn is structureel verankerd.
+
+De resterende waarde van dit document zit in het onderhouden van de baseline en het documenteren van eventuele volgende incrementen; de onderstaande fases zijn daarom vooral een vastlegging van wat al is opgeleverd.
+
 ## 1. Doelen
 
 1. Architectuur verbeteren richting duidelijke verantwoordelijkheden (SOLID).
@@ -32,7 +43,7 @@ Kritieke security en regressies direct oplossen zonder grote structurele refacto
 3. Doelgerichte tests slagen lokaal.
 
 ### Status
-- Deels uitgevoerd
+- Gerealiseerd als baseline
 - Uitgevoerd: output sanitization voor page/post/team update/programma resources.
 - Uitgevoerd: registratie limiter route match fix.
 - Uitgevoerd: regressietests voor sanitization en throttle-pad.
@@ -52,7 +63,7 @@ Autorisatie consistenter maken met policy-driven checks i.p.v. alleen route-role
 2. Authz tests dekken moderator/admin/visitor paden.
 
 ### Status
-- In uitvoering
+- Gerealiseerd als baseline
 - Uitgevoerd: policy-classes toegevoegd voor admin-resources (content, programma, editie, competitie, robots, links, users, audit, analytics).
 - Uitgevoerd: expliciete authorize-checks toegevoegd in admin-controllers bovenop route-middleware.
 - Gevalideerd: bestaande admin feature tests slagen met policy-checks actief.
@@ -73,7 +84,7 @@ Controller-bloat reduceren en duplicatie verwijderen.
 3. Bestaande API contracten blijven ongewijzigd.
 
 ### Status
-- In uitvoering
+- Gerealiseerd als baseline
 - Uitgevoerd: routebestand opgesplitst in domeinbestanden (public/authenticated/admin) met behoud van bestaande route-namen.
 - Uitgevoerd: dubbele analytics/page-visit logica geëxtraheerd naar gedeelde services (`PathNormalizer`, `PageVisitAggregateService`).
 - Gevalideerd: route footprint behouden en regressietests op analytics/admin/programma slagen.
@@ -93,7 +104,7 @@ Regressierisico verlagen op backend en frontend.
 2. Kritieke stromen hebben ten minste 1 positieve en 1 negatieve test.
 
 ### Status
-- In uitvoering
+- Gerealiseerd als baseline
 - Uitgevoerd: Vitest + jsdom + Vue Test Utils testinfrastructuur toegevoegd.
 - Uitgevoerd: Playwright smoke e2e infrastructuur toegevoegd met lokale webserverconfig.
 - Uitgevoerd: eerste unit tests voor routercontracten en auth-composable.
@@ -130,3 +141,7 @@ Mitigatie: starten met beperkte smoke + composable unit tests.
 
 1. Commit baseline gemaakt voor huidige status.
 2. Fase 1 gestart in deze wijzigingsronde.
+3. De beschreven security- en testmaatregelen zijn nu de operationele standaard.
+4. De roadmap dient vanaf nu vooral als onderhouds- en uitbreidingslog in plaats van als open implementatieplan.
+5. Frontend testverificatie op 2026-07-22: Vitest + Playwright slagen na installatie van frontend dependencies en Chromium-browsers.
+6. Backend testverificatie op 2026-07-22 kon niet worden uitgevoerd in deze workspace, omdat PHP/composer en sudo-gestuurde installatie niet beschikbaar zijn.

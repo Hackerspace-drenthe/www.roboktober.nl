@@ -26,7 +26,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
- * @see PLAN.md §5.2 — mediables schema
+ * @see docs/PLAN.md §5.2 — mediables schema
  */
 class Mediable extends Model
 {

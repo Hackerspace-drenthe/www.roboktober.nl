@@ -16,10 +16,10 @@ use Illuminate\Support\Facades\Schema;
  * - 'bijlagen'  → downloadable files (PDFs, STL, etc.)
  *
  * Content written in Filament RichEditor (HTML) or Markdown.
- * B1 language level for middelbare school audience (PLAN.md §4).
+ * B1 language level for middelbare school audience (docs/PLAN.md §4).
  *
- * @see PLAN.md §5.2 — posts schema
- * @see PLAN.md §6.7  — Nieuws/Blog page design
+ * @see docs/PLAN.md §5.2 — posts schema
+ * @see docs/PLAN.md §6.7  — Nieuws/Blog page design
  */
 return new class extends Migration
 {

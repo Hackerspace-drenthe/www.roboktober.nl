@@ -113,6 +113,6 @@ Beleidsregels:
 - Aanscherpingen volgen via opvolgende ADR's.
 
 ## Referenties
-- Gerelateerd document: ARCHITECTUUR.md
-- Gerelateerde documenten: DEPLOY-CHECKLIST.md, deploy/README.md
+- Gerelateerd document: ../ARCHITECTUUR.md
+- Gerelateerde documenten: ../DEPLOY-CHECKLIST.md, ../../deploy/README.md
 - Gerelateerde map: docs/adr

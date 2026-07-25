@@ -2,6 +2,8 @@
 
 In deze map leggen we belangrijke architectuurbeslissingen vast als Architecture Decision Records (ADR's).
 
+Terug naar het hoofdoverzicht: [../README.md](../README.md)
+
 Doel:
 - Beslissingen traceerbaar maken
 - Alternatieven en trade-offs expliciet documenteren
@@ -44,3 +46,7 @@ Gebruik oplopende nummers met een korte titel:
 - 0011: Incident management policy (`0011-incident-management-policy.md`)
 - 0012: Business continuity policy (`0012-business-continuity-policy.md`)
 - 0013: Documentation governance policy (`0013-documentation-governance-policy.md`)
+
+## Huidige rol
+
+De ADR's vormen de beleidslaag onder de actuele baseline in [../ARCHITECTUUR.md](../ARCHITECTUUR.md). Raadpleeg ook [../DEPLOY-CHECKLIST.md](../DEPLOY-CHECKLIST.md) voor operationele uitvoering.

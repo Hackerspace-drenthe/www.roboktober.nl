@@ -2,7 +2,7 @@
  * Roboktober API TypeScript types.
  *
  * Mirror of the Laravel API Resources defined in roboktober-api.
- * @see PLAN.md §5.3 — API response examples
+ * @see docs/PLAN.md §5.3 — API response examples
  */
 
 // ---------------------------------------------------------------------------

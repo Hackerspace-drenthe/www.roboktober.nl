@@ -4,7 +4,7 @@
  * All routes use lazy loading (dynamic import) to minimize initial bundle size.
  * Route names match page slugs where possible for easy API integration.
  *
- * @see PLAN.md §6.x — page designs
+ * @see docs/PLAN.md §6.x — page designs
  */
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'

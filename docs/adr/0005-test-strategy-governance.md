@@ -105,5 +105,5 @@ Beleidsregels:
 - Wijzigingen op beleid worden versioneerbaar vastgelegd via volgende ADR.
 
 ## Referenties
-- Gerelateerd document: ARCHITECTUUR.md
+- Gerelateerd document: ../ARCHITECTUUR.md
 - Gerelateerde map: docs/adr

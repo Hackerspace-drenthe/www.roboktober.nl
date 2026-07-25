@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Schema;
  * Static content pages: Home, Programma, Build Hub, Resources, Credits, etc.
  * Media attached via mediables 'hero' collection (full-width background image).
  *
- * @see PLAN.md §5.2 — pages schema
- * @see PLAN.md §6.x  — page designs
+ * @see docs/PLAN.md §5.2 — pages schema
+ * @see docs/PLAN.md §6.x  — page designs
  */
 return new class extends Migration
 {

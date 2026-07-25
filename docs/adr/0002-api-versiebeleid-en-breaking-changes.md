@@ -90,5 +90,5 @@ Definitie breaking change:
 - Geen database rollback impliciet vereist, maar schemawijzigingen moeten backward-compatible gemigreerd worden gedurende transitie.
 
 ## Referenties
-- Gerelateerd document: `ARCHITECTUUR.md`
+- Gerelateerd document: `../ARCHITECTUUR.md`
 - Gerelateerde map: `docs/adr`

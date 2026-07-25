@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Schema;
  * Records which robots are registered for a specific battle day,
  * including technical inspection status and approval.
  *
- * @see PLAN.md §5.2 — battle_registrations schema
+ * @see docs/PLAN.md §5.2 — battle_registrations schema
  */
 return new class extends Migration
 {

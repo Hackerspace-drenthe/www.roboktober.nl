@@ -110,6 +110,6 @@ Per klasse bepalen we minimaal:
 - Aanpassingen of aanscherpingen worden via opvolgende ADR's vastgelegd.
 
 ## Referenties
-- Gerelateerd document: ARCHITECTUUR.md
-- Gerelateerde documenten: DEPLOY-CHECKLIST.md, deploy/README.md
+- Gerelateerd document: ../ARCHITECTUUR.md
+- Gerelateerde documenten: ../DEPLOY-CHECKLIST.md, ../../deploy/README.md
 - Gerelateerde map: docs/adr

@@ -4,7 +4,7 @@ includes:
     # - vendor/larastan/larastan/extension.neon
 
 parameters:
-    # PHPStan level 9 = highest strictness, as required by PLAN.md §8.1
+    # PHPStan level 9 = highest strictness, as required by docs/PLAN.md §8.1
     level: 9
 
     paths:

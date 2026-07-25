@@ -4,7 +4,7 @@ Dit is de centrale repository voor de Roboktober website en API van Hackerspace 
 
 Roboktober is een oktober-evenement rond combat robots, met focus op bouwen, leren en community.
 
-## Projectdoelen (uit PLAN.md)
+## Projectdoelen (uit docs/PLAN.md)
 
 1. Mensen warm maken voor het event met teaser-content, planning en sfeer.
 2. Deelnemers helpen bouwen met complete en praktische bouwinformatie.
@@ -32,8 +32,8 @@ Deze scheiding maakt het mogelijk om frontend en backend onafhankelijk te ontwik
 
 - roboktober-api: Laravel backend, API en admin panel
 - roboktober-frontend: Vue frontend voor de publieke website
-- PLAN.md: functioneel en technisch masterplan
-- PLAN-CHANGES.md: aanvullingen en wijzigingen op het plan
+- docs/PLAN.md: functioneel en technisch masterplan
+- docs/PLAN-CHANGES.md: aanvullingen en wijzigingen op het plan
 
 ## Huidige scope (MVP richting)
 
@@ -74,9 +74,45 @@ Dit start parallel:
 
 Let op: dit root-script gebruikt `npx concurrently`, dus internettoegang voor package-resolutie kan nodig zijn bij de eerste run.
 
-## Bron van waarheid
+## Docker development (backend + frontend + MariaDB)
 
-Voor productkeuzes, doelen, informatie-architectuur en functionele eisen blijft PLAN.md de bron van waarheid.
+Start de volledige lokale stack:
+
+```bash
+docker compose up --build
+```
+
+Snellere variant voor lokale iteratie (ook met MariaDB):
+
+```bash
+docker compose -f docker-compose.fast.yml up -d
+```
+
+Deze variant is self-contained:
+- de backend-image bevat de benodigde PHP-extensies en Composer
+- als `vendor/autoload.php` ontbreekt, draait de container automatisch `composer install`
+- backend `vendor` wordt in een Docker-volume bewaard voor snellere herstarts
+
+Draai in de achtergrond:
+
+```bash
+docker compose up -d --build
+```
+
+Stoppen:
+
+```bash
+docker compose down
+```
+
+Belangrijke endpoints:
+- Backend API: `http://localhost:8000`
+- Frontend app: `http://localhost:5173`
+- MariaDB: `localhost:3306` (database `roboktober`, user `roboktober`, wachtwoord `roboktober`)
+
+## Documentatie
+
+De volledige documentatie staat in [docs/README.md](docs/README.md).
 
 ## Deploy op Apache (192.168.1.10)
 

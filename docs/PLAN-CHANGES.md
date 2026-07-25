@@ -704,6 +704,29 @@ Server-side frontend builds faalden op oudere Node-versie (`v18`) omdat Vite 8 e
 
 ---
 
+### WZ-036 · 2026-07-13 · CHANGE · Sectie 5.2 / 5.3 — Verplichte TOTP 2FA voor account-auth
+
+**Reden:** Accountauth moest na de account-first overstap extra beveiligd worden met een verplichte tweede factor voor bevestigde accounts.
+
+**Gewijzigd naar:**
+- Registratie geeft nu voor onbevestigde accounts een bootstrap-token en provisioningdata terug.
+- Login vereist een 2FA challenge voor accounts met bevestigde setup.
+- Nieuwe 2FA-endpoints toegevoegd voor setup, challenge en confirm:
+
+	- `POST /api/v1/auth/2fa/challenge`
+	- `GET /api/v1/auth/2fa/setup`
+	- `POST /api/v1/auth/2fa/confirm`
+
+- `users` bevat nu `two_factor_secret` en `two_factor_confirmed_at`.
+- Sanctum middleware `2fa.confirmed` bewaakt de bootstrap-flow.
+- Frontend route-guards en views sturen gebruikers naar de juiste 2FA-stap.
+
+**Validatie:**
+- Backend auth tests uitgebreid voor bootstrap, setup, challenge en confirm.
+- Frontend auth/router-typen uitgebreid voor 2FA-statussen.
+
+---
+
 <!-- TEMPLATE voor een nieuwe wijziging:
 
 ### WZ-001 · 2026-MM-DD · [Type] · Sectie X.X — Korte omschrijving

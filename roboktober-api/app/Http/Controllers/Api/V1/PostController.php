@@ -20,7 +20,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
  * - GET /api/v1/posts         → PostController@index
  * - GET /api/v1/posts/{slug}  → PostController@show
  *
- * @see PLAN.md §5.2 — REST API endpoints
+ * @see docs/PLAN.md §5.2 — REST API endpoints
  */
 class PostController extends Controller
 {

@@ -14,7 +14,7 @@ use App\Models\Page;
  * Routes:
  * - GET /api/v1/pages/{slug} → PageController@show
  *
- * @see PLAN.md §5.2 — REST API endpoints
+ * @see docs/PLAN.md §5.2 — REST API endpoints
  */
 class PageController extends Controller
 {

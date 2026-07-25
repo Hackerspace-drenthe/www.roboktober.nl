@@ -11,7 +11,7 @@ namespace App\Enums;
  * gereed          → Robot is finished and tested
  * battle_ready    → Robot has passed technical inspection and is cleared for battle
  *
- * @see PLAN.md §5.2 — robots.status
+ * @see docs/PLAN.md §5.2 — robots.status
  */
 enum RobotStatus: string
 {

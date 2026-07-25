@@ -15,7 +15,7 @@ use Illuminate\Validation\Rule;
  * OWASP A03: Input Validation — all user-submitted data is strictly validated.
  * Email is stored as-is (not hashed) for organizer contact use.
  *
- * @see PLAN.md §5.1 — team registration model
+ * @see docs/PLAN.md §5.1 — team registration model
  */
 class StoreTeamRequest extends FormRequest
 {

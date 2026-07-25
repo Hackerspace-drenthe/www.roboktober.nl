@@ -35,7 +35,7 @@ use Illuminate\Support\Carbon;
  * @property-read User|null $captain
  * @property-read Collection<int, Robot> $robots
  *
- * @see PLAN.md §5.2 — teams schema
+ * @see docs/PLAN.md §5.2 — teams schema
  */
 class Team extends Model
 {

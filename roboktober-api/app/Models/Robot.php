@@ -32,7 +32,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property-read Team|null $team
  *
- * @see PLAN.md §5.2 — robots schema
+ * @see docs/PLAN.md §5.2 — robots schema
  */
 class Robot extends Model
 {

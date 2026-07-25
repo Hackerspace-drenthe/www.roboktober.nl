@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Storage;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
- * @see PLAN.md §5.2 — media_varianten schema
+ * @see docs/PLAN.md §5.2 — media_varianten schema
  */
 class MediaVariant extends Model
 {

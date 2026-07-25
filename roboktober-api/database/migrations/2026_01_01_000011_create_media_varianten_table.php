@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Schema;
  *
  * SOLID: SRP — separate table keeps variant metadata apart from source file metadata.
  *
- * @see PLAN.md §5.2 — media_varianten schema
+ * @see docs/PLAN.md §5.2 — media_varianten schema
  */
 return new class extends Migration
 {

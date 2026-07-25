@@ -3,8 +3,8 @@
  * Home page — visueel-first landing page voor Roboktober.
  *
  * Doelgroep: middelbare school (12-18 jaar), B1 taalgebruik
- * @see PLAN.md §6.1 — Home page design
- * @see PLAN.md §4   — doelgroepen
+ * @see docs/PLAN.md §6.1 — Home page design
+ * @see docs/PLAN.md §4   — doelgroepen
  */
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { getPosts } from '@/api'

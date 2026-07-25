@@ -6,7 +6,7 @@ import { defineConfig } from 'vite'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
-// @see PLAN.md §5.3 — frontend setup, API communication
+// @see docs/PLAN.md §5.3 — frontend setup, API communication
 export default defineConfig({
   plugins: [vue(), vueDevTools(), tailwindcss()],
 

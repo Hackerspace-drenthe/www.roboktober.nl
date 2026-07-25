@@ -110,6 +110,6 @@ Stappen:
 - Bij regressie wordt teruggedraaid naar laatste stabiele dependencyset.
 
 ## Referenties
-- Gerelateerd document: ARCHITECTUUR.md
-- Gerelateerde documenten: DEPLOY-CHECKLIST.md, deploy/README.md
+- Gerelateerd document: ../ARCHITECTUUR.md
+- Gerelateerde documenten: ../DEPLOY-CHECKLIST.md, ../../deploy/README.md
 - Gerelateerde map: docs/adr

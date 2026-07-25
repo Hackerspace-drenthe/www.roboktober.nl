@@ -5,8 +5,8 @@
  * WCAG 2.2 AA: alle velden hebben labels, foutmeldingen zijn gekoppeld via aria-describedby.
  * OWASP: input validation op client én server (StoreTeamRequest.php).
  *
- * @see PLAN.md §5.1 — registratie via account
- * @see PLAN.md §6.x — Aanmelden page design
+ * @see docs/PLAN.md §5.1 — registratie via account
+ * @see docs/PLAN.md §6.x — Aanmelden page design
  */
 import { onMounted, onUnmounted, reactive, ref } from 'vue'
 import { getEditions, registreerTeam } from '@/api'

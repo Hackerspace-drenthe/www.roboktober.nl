@@ -11,7 +11,7 @@ namespace App\Enums;
  * approved → Organizer confirmed the team; they can enter robots
  * rejected → Team cannot participate (capacity, safety, etc.)
  *
- * @see PLAN.md §5.2 — teams.status
+ * @see docs/PLAN.md §5.2 — teams.status
  */
 enum TeamStatus: string
 {

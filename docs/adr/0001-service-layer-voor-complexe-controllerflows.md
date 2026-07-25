@@ -91,5 +91,5 @@ Conventie:
 - Geen database-migratie vereist voor deze architectuurbeslissing.
 
 ## Referenties
-- Gerelateerd document: `ARCHITECTUUR.md`
+- Gerelateerd document: `../ARCHITECTUUR.md`
 - Gerelateerde map: `docs/adr`

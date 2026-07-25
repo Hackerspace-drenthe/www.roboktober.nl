@@ -7,8 +7,8 @@ namespace App\Enums;
 /**
  * Link categories for the Build Hub / Resources page.
  *
- * @see PLAN.md §5.2 — links.categorie
- * @see PLAN.md §6.5  — Build Hub page design
+ * @see docs/PLAN.md §5.2 — links.categorie
+ * @see docs/PLAN.md §6.5  — Build Hub page design
  */
 enum LinkCategorie: string
 {

@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Schema;
  * - 'foto'       → team or robot profile photo
  * - 'hero'       → full-width page background image
  *
- * @see PLAN.md §5.2 — mediables schema
+ * @see docs/PLAN.md §5.2 — mediables schema
  */
 return new class extends Migration
 {

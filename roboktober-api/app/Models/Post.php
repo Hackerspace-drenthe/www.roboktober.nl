@@ -32,8 +32,8 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
- * @see PLAN.md §5.2 — posts schema
- * @see PLAN.md §6.7  — Nieuws/Blog page design
+ * @see docs/PLAN.md §5.2 — posts schema
+ * @see docs/PLAN.md §6.7  — Nieuws/Blog page design
  */
 class Post extends Model
 {

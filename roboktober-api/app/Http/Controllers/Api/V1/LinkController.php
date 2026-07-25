@@ -16,8 +16,8 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
  * Routes:
  * - GET /api/v1/links → LinkController@index
  *
- * @see PLAN.md §5.2 — REST API endpoints
- * @see PLAN.md §6.5  — Build Hub page design
+ * @see docs/PLAN.md §5.2 — REST API endpoints
+ * @see docs/PLAN.md §6.5  — Build Hub page design
  */
 class LinkController extends Controller
 {

@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Schema;
  * SOLID: Single Responsibility — this table only stores file metadata.
  * Open/Closed — adding a new file type requires no schema change, only a new mime_type.
  *
- * @see PLAN.md §5.2 — database schema design
+ * @see docs/PLAN.md §5.2 — database schema design
  */
 return new class extends Migration
 {

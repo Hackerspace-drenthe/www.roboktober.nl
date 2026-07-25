@@ -1,13 +1,19 @@
 # PLAN2 - Audit en SOLID herstructurering
 
-Datum: 2026-07-08
+Datum: 2026-07-22
 Scope: volledige functionele audit van auth, registratie, teambeheer, contentbeheer, moderatie en rollen/rechten.
+
+## 0. Huidige stand
+
+De belangrijkste keuzes uit deze audit zijn inmiddels in code geborgd. De resterende waarde van dit document zit vooral in het vastleggen van de huidige risico's, de gewenste eindrichting en de open governance-vragen.
+
+Voor de actuele technische baseline en de concrete hardeningstappen zie [PLAN-SOLID-SECURITY-TESTS-EXECUTION.md](PLAN-SOLID-SECURITY-TESTS-EXECUTION.md).
 
 ## 1. Audit samenvatting
 
 ### 1.1 Gecontroleerde flows
 - Auth flow: registreren, inloggen, /auth/me, uitloggen.
-- Team ownership flow: claim-team, team-edit-link, aanmelding aanmaken en wijzigen.
+- Team ownership flow: aanmelding aanmaken en wijzigen via het account-first pad.
 - Team updates flow: plaatsen en uitlezen van voortgangsupdates.
 - Rich media flow: uploaden en koppelen aan content targets.
 - Admin flow: teams, posts, pages, team-updates, users, audit-logs, dashboard.
@@ -16,6 +22,9 @@ Scope: volledige functionele audit van auth, registratie, teambeheer, contentbeh
 ### 1.2 Teststatus (uitgevoerde regressierun)
 - 41 tests geslaagd, 155 assertions.
 - Gedekt: AuthApiTest, RegistratieTest, RegistratieBewerkenTest, TeamUpdatesTest, RichMediaUploadApiTest, Admin* API tests.
+
+### 1.3 Huidige account- en authflow
+De huidige account- en 2FA-flow is beschreven in [PLAN-SOLID-SECURITY-TESTS-EXECUTION.md](PLAN-SOLID-SECURITY-TESTS-EXECUTION.md) en hoort niet dubbel in dit auditdocument te staan.
 
 ## 2. Belangrijkste bevindingen
 
@@ -29,29 +38,32 @@ Scope: volledige functionele audit van auth, registratie, teambeheer, contentbeh
 ### 2.2 Gaten en risico's
 
 #### Kritiek
-1. Dubbele beheerparadigma's (account + edit token) maken autorisatiecomplexiteit hoger dan nodig.
-- Huidig: account ownership en token-based edit bestaan naast elkaar.
-- Effect: extra attack surface en meer uitzonderingen in mutatiechecks.
+1. Historisch opgelost: dubbele beheerparadigma's (account + edit token) zijn in de huidige flow teruggebracht tot account ownership.
+- Huidig: mutaties lopen via account ownership en auth/policy checks.
+- Effect van de oude situatie: grotere attack surface en meer uitzonderingen in mutatiechecks.
 
-2. Registratieflow stuurt nog bewerklink-mail terwijl de primaire UX account-gebaseerd is.
-- Effect: conceptuele inconsistentie, support-verwarring en onduidelijke security-grens.
+2. Historisch opgelost: de primaire UX stuurt niet meer op een losse bewerklink-mail.
+- Huidig: registratie, wijziging en accountbeheer lopen via de account-first flow.
+- Effect van de oude situatie: conceptuele inconsistentie en support-verwarring.
 
 #### Hoog
-3. Autorisatie is verspreid over middleware, policies en handmatige controllerchecks.
-- Effect: lastig te testen, kans op regressie bij nieuwe endpoints.
+3. Autorisatie is inmiddels grotendeels policy-first en ondersteund door middleware en expliciete controllerchecks.
+- Huidig: de rol- en policylaag is in code aanwezig en breed toegepast.
+- Restpunt: nieuwe endpoints moeten consequent dezelfde patronen volgen.
 
-4. Controllers dragen te veel verantwoordelijkheden (validatie-input, businessregels, mutaties, logging).
+4. Sommige controllers dragen nog te veel verantwoordelijkheden (validatie-input, businessregels, mutaties, logging).
 - Effect: beperkt SOLID, moeilijk onderhoud en beperkte herbruikbaarheid.
 
-5. Moderatie heeft geen expliciete state machine/transitieregels.
+5. Moderatie heeft nog niet overal een expliciete state machine/transitieregels-laag.
 - Effect: statuswijzigingen zijn technisch mogelijk, maar governance-regels zijn niet centraal afgedwongen.
 
 #### Middel
 6. Role middleware parseert rollen met enum-cast zonder veilige fallback op configuratiefouten.
-- Effect: foutieve routeconfig kan 500 geven in plaats van gecontroleerde 4xx.
+- Status: dit is grotendeels afgedekt door de huidige role/capability laag en tests.
 
-7. Token abilities bestaan, maar autorisatie vertrouwt hoofdzakelijk op rollen/middleware.
-- Effect: capability-model is niet eenduidig benut.
+7. Het capability-model is inmiddels expliciet genoeg voor de huidige admin- en media-acties.
+- Huidig: rollen, policies en route-middleware coderen de belangrijkste permissies.
+- Restpunt: bij nieuwe modules moet dezelfde explicitering worden aangehouden.
 
 8. Content/media regels (welke collecties/targets per rol) zitten deels impliciet in code.
 - Effect: policy drift mogelijk.
@@ -72,8 +84,6 @@ Scope: volledige functionele audit van auth, registratie, teambeheer, contentbeh
 
 ### 3.3 Kernservices (nieuw)
 - RegisterTeamService
-- ClaimTeamService
-- IssueTeamEditLinkService
 - UpdateTeamRegistrationService
 - CreateTeamUpdateService
 - ModerateTeamStatusService
@@ -131,15 +141,11 @@ Alle domeinbeslissingen via policies/services; geen ad-hoc role checks in contro
 
 ## 6. Teamregistratie en bewerken (doel flow)
 
-### 6.1 Keuzebesluit (vereist)
-Kies een van deze twee modellen en verwijder het andere om complexiteit te verlagen:
-- Model A (aanbevolen): account-only ownership (geen bewerklink voor mutaties).
-- Model B: token + account hybrid met expliciete TTL/refresh/one-time constraints.
+### 6.1 Keuzebesluit
+Model A is de actuele implementatie: account-only ownership, geen token als primaire mutatieroute.
 
-### 6.2 Aanbevolen implementatie
-- Houd token alleen als recovery-mechanisme met expliciete claim-flow.
-- Mutaties uitsluitend op basis van account ownership + policy checks.
-- Verwijder "standaard bewerklink-mail" uit primaire flow.
+### 6.2 Huidige implementatie
+De implementatiedetails van account ownership, policies en 2FA-bescherming staan in [PLAN-SOLID-SECURITY-TESTS-EXECUTION.md](PLAN-SOLID-SECURITY-TESTS-EXECUTION.md).
 
 ## 7. Moderatie- en statusmodel (doel)
 
@@ -157,37 +163,14 @@ Kies een van deze twee modellen en verwijder het andere om complexiteit te verla
 - Centrale TransitionPolicy per domeinobject.
 - Transition validator + domain events + audit logging.
 
-## 8. Implementatieplan in fases
+## 8. Vervolgsporen
 
-### Fase 1 - Governance baseline
-- Introduceer centrale AuthorizationGateService.
-- Verplaats controller-level role/owner checks naar policies/services.
-- Harden role middleware bij ongeldige role strings.
-
-### Fase 2 - Registratieflow normaliseren
-- Besluit en implementeer Model A of B.
-- Maak communicatie en UX consistent (mail, teksten, redirects, fouten).
-- Verwijder legacy-pad dat niet meer bij gekozen model hoort.
-
-### Fase 3 - Content lifecycle
-- Voeg statusmodel draft/in_review/approved/published toe voor content.
-- Voeg review queue endpoint + frontend views toe.
-- Maak rationale verplicht op moderatieacties.
-
-### Fase 4 - Service extraction (SOLID)
-- Knip grote controllers op in use-case services.
-- Introduceer command DTO's per use-case.
-- Hou controllers dun: request -> service -> resource.
-
-### Fase 5 - Media governance
-- Centraliseer target/collectie permissieregels in policy/service.
-- Voeg MIME/collectie constraints per target toe.
-- Voeg scan/validation hooks toe voor uploads.
-
-### Fase 6 - Observability en hardening
-- Audit log uitbreiden met correlation id + reason fields.
-- Voeg monitoring op 401/403/429 trends toe.
-- Voeg regressietests toe voor transition rules en policy matrix.
+Deze punten zijn de uitkomst van de audit en horen inhoudelijk bij de roadmap, niet bij de uitvoeringslog:
+- Centraliseer autorisatie verder in services en policies.
+- Maak content- en moderatiestatussen explicieter in model of policy.
+- Verklaar nog niet-uniforme media- en targetregels op één plek.
+- Verlaag controller-bloat waar dezelfde beslissingen nog op meerdere plekken terugkomen.
+- Houd observability en regressietests in lijn met de huidige account-first baseline.
 
 ## 9. Acceptatiecriteria
 - Geen ad-hoc role checks meer in controllers (policy/service only).
@@ -197,9 +180,11 @@ Kies een van deze twee modellen en verwijder het andere om complexiteit te verla
 - Testset dekt role matrix, transitions en audit events.
 - Frontend UX/tekst consistent met daadwerkelijke autorisatieflow.
 
+## 9.1 Wat al gehaald is
+De huidige baseline is gerealiseerd; de samenvatting daarvan staat in [PLAN-SOLID-SECURITY-TESTS-EXECUTION.md](PLAN-SOLID-SECURITY-TESTS-EXECUTION.md).
+
 ## 10. Directe next actions (kort)
-1. Besluit registratie-model (A account-only aanbevolen).
-2. Verwijder bewerklink-mail uit primaire aanmeldflow of markeer als recovery-only.
-3. Maak centrale authorisatie-service + refactor TeamRegistration* controllers.
-4. Ontwerp en implementeer content state machine + review queue.
-5. Breid tests uit met policy/transitie matrix.
+1. Houd policy- en route-matrix synchroon met nieuwe admin modules.
+2. Breng content lifecycle en moderatiestatus explicieter in model of policy.
+3. Houd documentatie en release notes in sync met de huidige account-first baseline.
+4. Gebruik dit document als checklist voor resterende auditpunten, niet als uitvoeringsplan.

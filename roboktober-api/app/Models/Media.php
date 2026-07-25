@@ -36,7 +36,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
  *
- * @see PLAN.md §5.2 — media schema
+ * @see docs/PLAN.md §5.2 — media schema
  */
 class Media extends Model
 {

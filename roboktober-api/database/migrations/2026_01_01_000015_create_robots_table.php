@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Schema;
  * STL / CAD files stored via mediables 'bijlagen' collection.
  *
  * Weight classes: antweight (up to 150g), beetleweight (up to 1.36 kg),
- * featherweight (up to 13.6 kg). Defined in PLAN.md §5.1.
+ * featherweight (up to 13.6 kg). Defined in docs/PLAN.md §5.1.
  *
- * @see PLAN.md §5.2 — robots schema
+ * @see docs/PLAN.md §5.2 — robots schema
  */
 return new class extends Migration
 {
