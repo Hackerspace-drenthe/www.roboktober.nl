@@ -93,6 +93,8 @@ Deze variant is self-contained:
 - als `vendor/autoload.php` ontbreekt, draait de container automatisch `composer install`
 - backend `vendor` wordt in een Docker-volume bewaard voor snellere herstarts
 
+Beide Docker-varianten voeren bij het starten automatisch de migraties uit. Is de database nog leeg, dan draaien ook de seeders om de lokale admin en basiscontent aan te maken. Bij volgende starts blijft bestaande data behouden en worden de seeders overgeslagen.
+
 Draai in de achtergrond:
 
 ```bash
@@ -108,7 +110,21 @@ docker compose down
 Belangrijke endpoints:
 - Backend API: `http://localhost:8000`
 - Frontend app: `http://localhost:5173`
-- MariaDB: `localhost:3306` (database `roboktober`, user `roboktober`, wachtwoord `roboktober`)
+- MariaDB: `localhost:13306` (database `roboktober`, user `roboktober`, wachtwoord `roboktober`)
+
+De containerpoorten blijven intern vast; alleen de hostpoorten zijn configureerbaar:
+
+| Variabele | Standaard | Containerpoort |
+| --- | ---: | ---: |
+| `MARIADB_HOST_PORT` | `13306` | `3306` |
+| `BACKEND_HOST_PORT` | `8000` | `8000` |
+| `FRONTEND_HOST_PORT` | `5173` | `5173` |
+
+Bij een lokaal poortconflict kun je een hostpoort per start overschrijven:
+
+```bash
+MARIADB_HOST_PORT=23306 BACKEND_HOST_PORT=18000 FRONTEND_HOST_PORT=15173 docker compose up -d --build
+```
 
 ## Documentatie
 

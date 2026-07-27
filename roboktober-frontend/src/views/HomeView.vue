@@ -319,7 +319,7 @@ onUnmounted(() => {
             We starten klein en veilig. Antweights zijn goedkoop te bouwen, makkelijker te transporteren en perfect voor een eerste editie. Klein formaat, groot spektakel!
           </p>
           <p class="mt-4 text-slate-300">
-            Een basisrobot hoeft niet meer te kosten dan <strong class="text-white">€15 à €20</strong>. Wil je verder gaan met leds, geluid of een beter wapen? Dat kan altijd nog.
+            Een basisrobot hoeft niet meer te kosten dan <strong class="text-white">€15 à €20</strong>. Wil je verder gaan met leds, geluid of een actief robotonderdeel zoals een flipper of spinner? Dat kan altijd nog.
           </p>
           <p class="mt-4 text-slate-300">
             Leuk om samen met vrienden of kinderen te doen. Leer omgaan met elektronica, software en 3D-printen — op een educatieve maar vooral <em>leuke</em> manier.

@@ -6,34 +6,35 @@ import { useAuth } from '@/composables/useAuth'
 const auth = useAuth()
 const joinCtaPath = computed(() => (auth.isAuthenticated.value ? '/aanmelden' : '/registreren'))
 const joinCtaLabel = computed(() => (auth.isAuthenticated.value ? 'Meld je team aan' : 'Maak account aan en meld je team aan'))
+const antweightAssetBase = `${import.meta.env.BASE_URL}antweight-ai`
 
 const heroStyle = {
   // First image is the Gemini output; second image is fallback background.
-  backgroundImage: `url(/antweight-ai/hero-combat.png), url(${headerTeams})`,
+  backgroundImage: `url(${antweightAssetBase}/hero-combat.png), url(${headerTeams})`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
 }
 
 const aiImages = {
   workbench: {
-    png: '/antweight-ai/workbench-build.png',
-    svg: '/antweight-ai/workbench-build.png.svg',
+    png: `${antweightAssetBase}/workbench-build.png`,
+    svg: `${antweightAssetBase}/workbench-build.png.svg`,
   },
   styles: {
-    png: '/antweight-ai/styles-collage.png',
-    svg: '/antweight-ai/styles-collage.png.svg',
+    png: `${antweightAssetBase}/styles-collage.png`,
+    svg: `${antweightAssetBase}/styles-collage.png.svg`,
   },
   exploded: {
-    png: '/antweight-ai/exploded-tech.png',
-    svg: '/antweight-ai/exploded-tech.png.svg',
+    png: `${antweightAssetBase}/exploded-tech.png`,
+    svg: `${antweightAssetBase}/exploded-tech.png.svg`,
   },
   beauty: {
-    png: '/antweight-ai/battle-beauty.png',
-    svg: '/antweight-ai/battle-beauty.png.svg',
+    png: `${antweightAssetBase}/battle-beauty.png`,
+    svg: `${antweightAssetBase}/battle-beauty.png.svg`,
   },
   community: {
-    png: '/antweight-ai/community-lab.png',
-    svg: '/antweight-ai/community-lab.png.svg',
+    png: `${antweightAssetBase}/community-lab.png`,
+    svg: `${antweightAssetBase}/community-lab.png.svg`,
   },
 } as const
 
@@ -46,8 +47,8 @@ function useSvgFallback(event: Event, fallback: string): void {
 const typeCards = [
   {
     titel: 'Combat antweights',
-    subtitle: 'Snel, agressief en tactisch',
-    beschrijving: 'Gebouwd voor de arena: rammen, duwen, flippen of spinnen. Alles draait om controle, grip en slim rijden.',
+    subtitle: 'Snel, gecontroleerd en tactisch',
+    beschrijving: 'Gebouwd voor een afgesloten arena: rammen, duwen, flippen of spinnen met veilige robotonderdelen. Alles draait om controle, grip en slim rijden.',
     kenmerken: ['Arena-veilig ontwerp', 'Focus op aandrijving en balans', 'Battle-ready in kleine schaal'],
     accent: 'from-rose-500/20 to-orange-400/20 border-rose-300/40',
   },
@@ -129,7 +130,8 @@ const wowItems = [
           <h2 id="antweight-uitleg-title" class="text-3xl font-black text-robo-dark md:text-4xl">Compact, betaalbaar en uitdagend</h2>
           <p class="mt-5 text-slate-700">
             Antweights combineren technische diepgang met praktische toegankelijkheid. Door hun compacte formaat en lage kosten
-            kun je snel experimenteren met verschillende concepten: van eenvoudige wedge tot geavanceerde spinner.
+            kun je snel experimenteren met arena-veilige, actieve robotonderdelen zoals wiggen, flippers en spinners. Deze zijn
+            bedoeld om een tegenstander te duwen, te desoriënteren of om te gooien.
           </p>
           <p class="mt-4 text-slate-700">
             Je leert direct welke principes werken: tractie, snelheid, stabiliteit, bescherming en besturingstechniek.
