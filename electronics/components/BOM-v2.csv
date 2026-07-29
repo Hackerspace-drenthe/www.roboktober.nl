@@ -1,0 +1,16 @@
+Reference,Quantity,Category,Part,Specification,Footprint or interface,Release condition
+U1,1,Controller,ESP32-C3 SuperMini,3.3 V logic common 2x8 module,2x 1x08 female machined socket strips at 2.54 mm pitch,15.24 mm row spacing; select socket pin and verify drill diameter
+U2,1,Motor driver,DRV8833 breakout (no nSLEEP pin),1S compatible and rated above measured combined stall current,2x 1x06 female machined socket strips at 2.54 mm pitch,15.24 mm row spacing; select socket pin and verify drill diameter
+U3,1,Power regulator,3.3 V buck-boost module,1S input >=500 mA continuous with radio transient margin,1x03 2.54 mm module header,Verify transient response and pin order
+C1,1,Driver decoupling,100 nF ceramic,>=10 V X7R,2.54 mm through-hole,Place at driver VM and GND
+C2,1,Driver bulk capacitor,100 uF low-ESR electrolytic,>=10 V,2.50 mm radial,Place at driver and observe polarity
+CM1 CM2,2,Motor suppression,100 nF ceramic,>=10 V X7R,Solder directly to motor terminals,Required for conducted EMI control
+J4,1,Battery connector,JST-PH 2 pin,1S LiPo keyed connector,JST-PH vertical 2.0 mm,Confirm battery lead polarity and current rating
+J5 J6,2,Motor connector,JST-PH 2 pin,Motor output keyed connector,JST-PH vertical 2.0 mm,Verify current rating against measured stall current
+J8,1,ESP32 left all-pins breakout row,1x08 breakaway header or bare solder pads,2.54 mm through-hole unpopulated,5V_NC GND 3V3 GPIO4 GPIO3 GPIO2 GPIO1 GPIO0 sit 2.54 mm outside matching ESP32 socket pads
+J9,1,ESP32 right all-pins breakout row,1x08 breakaway header or bare solder pads,2.54 mm through-hole unpopulated,GPIO5 GPIO6 GPIO7 GPIO8 GPIO9 GPIO10 GPIO20 GPIO21 sit 2.54 mm outside matching ESP32 socket pads
+J10,1,Accessory power header,1x03 breakaway header or bare solder pads,3V3 GND and switched 1S battery,1x03 2.54 mm through-hole unpopulated,Placed below DRV8833 between motor connectors
+H1 H2,2,Mounting hole,M2 clearance hole,2.4 mm finished hole,NPTH 2.4 mm,Keep copper and components clear for fastener head
+SW1,1,Power switch,SPST slide switch,DC rating above combined stall current,Vendor-specific through-hole,Record exact part before routing
+BT1,1,Battery,Protected 1S LiPo,3.7 V nominal >=500 mAh and adequate discharge rating,External via JST-PH,Provide undervoltage protection
+M1 M2,2,Motor,N20 gearmotor,Selected speed and voltage,External via JST-PH,Measure stall current at 4.2 V

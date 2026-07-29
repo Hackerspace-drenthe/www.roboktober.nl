@@ -1,2 +1,7 @@
 # Local deployment secrets/config
 /deploy/deploy.env
+
+# KiCad local/cache/backup files (not part of the design source of truth)
+*.kicad_prl
+fp-info-cache
+electronics/kicad/**/*-backups/
