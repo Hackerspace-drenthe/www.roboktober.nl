@@ -1,0 +1,19 @@
+#VRML V2.0 utf8
+
+DEF PCB Appearance { material Material { diffuseColor 0.04 0.32 0.12 specularColor 0.12 0.25 0.14 shininess 0.25 } }
+DEF DARK Appearance { material Material { diffuseColor 0.035 0.035 0.04 specularColor 0.12 0.12 0.14 shininess 0.2 } }
+DEF METAL Appearance { material Material { diffuseColor 0.68 0.7 0.7 specularColor 0.85 0.85 0.85 shininess 0.75 } }
+Group {
+  children [
+    # 13 x 18 mm regulator board mounted upright on a five-pin right-angle header.
+    Transform { translation 5.08 -1.4 9.6 children [ Shape { appearance USE PCB geometry Box { size 13 0.8 18 } } ] }
+    Transform { translation 5.08 -0.35 1.25 children [ Shape { appearance USE DARK geometry Box { size 12.2 1.4 2.5 } } ] }
+    Transform { translation 5.08 -1.9 11.2 children [ Shape { appearance USE DARK geometry Box { size 5.5 1.1 4 } } ] }
+    Transform { translation 5.08 -1.95 5.8 children [ Shape { appearance USE METAL geometry Box { size 8.5 0.25 1.3 } } ] }
+    Transform { translation 0 0 0.8 rotation 1 0 0 1.5708 children [ Shape { appearance USE METAL geometry Cylinder { radius 0.22 height 2.8 } } ] }
+    Transform { translation 2.54 0 0.8 rotation 1 0 0 1.5708 children [ Shape { appearance USE METAL geometry Cylinder { radius 0.22 height 2.8 } } ] }
+    Transform { translation 5.08 0 0.8 rotation 1 0 0 1.5708 children [ Shape { appearance USE METAL geometry Cylinder { radius 0.22 height 2.8 } } ] }
+    Transform { translation 7.62 0 0.8 rotation 1 0 0 1.5708 children [ Shape { appearance USE METAL geometry Cylinder { radius 0.22 height 2.8 } } ] }
+    Transform { translation 10.16 0 0.8 rotation 1 0 0 1.5708 children [ Shape { appearance USE METAL geometry Cylinder { radius 0.22 height 2.8 } } ] }
+  ]
+}

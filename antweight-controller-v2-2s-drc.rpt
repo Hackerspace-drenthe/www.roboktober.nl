@@ -1,0 +1,404 @@
+** Drc report for antweight-controller-v2-2s.kicad_pcb **
+** Created on 2026-08-03T13:59:08+0200 **
+** Report includes: Errors, Warnings, Exclusions **
+
+** Found 62 DRC violations **
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(94,3800 mm, 112,8750 mm): PTH pad 4 [3V3] of U3
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(85,0800 mm, 110,1250 mm): PTH pad 3 [VBAT_SW] of J10
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(94,1200 mm, 80,8750 mm): Track [GND] on B.Cu, length 16,0644 mm
+    @(97,5000 mm, 91,3750 mm): PTH pad 1 [VBAT_SW] of C1_C2
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(94,0000 mm, 108,0000 mm): PTH pad 1 [VBAT_RAW] of J4
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(99,4600 mm, 112,8750 mm): PTH pad 2 [GND] of U3
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(96,9200 mm, 112,8750 mm): PTH pad 3 [GND] of U3
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(94,3800 mm, 112,8750 mm): PTH pad 4 [3V3] of U3
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(99,4600 mm, 112,8750 mm): PTH pad 2 [GND] of U3
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(82,5400 mm, 110,1250 mm): PTH pad 2 [GND] of J10
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(85,0800 mm, 110,1250 mm): PTH pad 3 [VBAT_SW] of J10
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(94,0000 mm, 108,0000 mm): PTH pad 1 [VBAT_RAW] of J4
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(91,5800 mm, 96,1150 mm): PTH pad 8 [M2A] of U2
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(89,0400 mm, 80,8750 mm): PTH pad 9 [AIN2_GPIO6] of U2
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(85,3000 mm, 66,7950 mm): PTH pad 4 [GPIO4_SPARE] of U1
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(85,3000 mm, 69,3350 mm): PTH pad 5 [GPIO3_SPARE] of U1
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(100,5400 mm, 71,8750 mm): PTH pad 11 [BIN2_GPIO10] of U1
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(100,5400 mm, 74,4150 mm): PTH pad 10 [GPIO20_SPARE] of U1
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(100,5400 mm, 76,9550 mm): PTH pad 9 [GPIO21_SPARE] of U1
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(100,0400 mm, 91,3750 mm): PTH pad 2 [GND] of C1_C2
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(97,5000 mm, 91,3750 mm): PTH pad 1 [VBAT_SW] of C1_C2
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(100,0400 mm, 91,3750 mm): PTH pad 2 [GND] of C1_C2
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(82,0000 mm, 88,3750 mm): PTH pad 1 [M2A] of J6
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+[shorting_items]: Items shorting two nets (nets VBAT_SW and GND)
+    Local override; error
+    @(85,0800 mm, 110,1250 mm): PTH pad 3 [VBAT_SW] of J10
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+[shorting_items]: Items shorting two nets (nets GPIO4_SPARE and 3V3)
+    Local override; error
+    @(85,3000 mm, 66,7950 mm): PTH pad 4 [GPIO4_SPARE] of U1
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+[shorting_items]: Items shorting two nets (nets VBAT_SW and GND)
+    Local override; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(94,1200 mm, 80,8750 mm): Track [GND] on B.Cu, length 16,0644 mm
+[shorting_items]: Items shorting two nets (nets GND and 3V3)
+    Local override; error
+    @(82,5400 mm, 110,1250 mm): PTH pad 2 [GND] of J10
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(79,5000 mm, 108,0000 mm): Track [VBAT_RAW] on B.Cu, length 14,5000 mm
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+[shorting_items]: Items shorting two nets (nets BIN2_GPIO10 and BIN1_GPIO9)
+    Local override; error
+    @(100,5400 mm, 71,8750 mm): PTH pad 11 [BIN2_GPIO10] of U1
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+[shorting_items]: Items shorting two nets (nets GND and M1A)
+    Local override; error
+    @(100,0400 mm, 91,3750 mm): PTH pad 2 [GND] of C1_C2
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+[shorting_items]: Items shorting two nets (nets M2A and M2B)
+    Local override; error
+    @(82,0000 mm, 88,3750 mm): PTH pad 1 [M2A] of J6
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+[clearance]: Clearance violation ( clearance 0,2000 mm; actual 0,1241 mm)
+    Local override; error
+    @(100,5400 mm, 74,4150 mm): Track [GPIO20_SPARE] on F.Cu, length 2,5400 mm
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+[clearance]: Clearance violation ( clearance 0,2000 mm; actual 0,1413 mm)
+    Local override; error
+    @(85,3000 mm, 66,7950 mm): Track [GPIO4_SPARE] on F.Cu, length 2,5400 mm
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+[clearance]: Clearance violation ( clearance 0,2000 mm; actual 0,0265 mm)
+    Local override; error
+    @(104,0000 mm, 88,3750 mm): PTH pad 1 [M1A] of J5
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0,2500 mm; actual 0,1000 mm)
+    Rule: board setup constraints hole; error
+    @(77,7000 mm, 57,8000 mm): Polygon [<no net>] on F.Cu
+    @(110,0000 mm, 85,4750 mm): NPTH pad of MB5
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0,2500 mm; actual 0,1000 mm)
+    Rule: board setup constraints hole; error
+    @(77,7000 mm, 57,8000 mm): Polygon [<no net>] on F.Cu
+    @(110,0000 mm, 84,6750 mm): NPTH pad of MB5
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0,2500 mm; actual 0,1000 mm)
+    Rule: board setup constraints hole; error
+    @(77,7000 mm, 57,8000 mm): Polygon [<no net>] on F.Cu
+    @(110,0000 mm, 83,8750 mm): NPTH pad of MB5
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0,2500 mm; actual 0,1000 mm)
+    Rule: board setup constraints hole; error
+    @(77,7000 mm, 57,8000 mm): Polygon [<no net>] on F.Cu
+    @(110,0000 mm, 83,0750 mm): NPTH pad of MB5
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0,2500 mm; actual 0,1000 mm)
+    Rule: board setup constraints hole; error
+    @(77,7000 mm, 57,8000 mm): Polygon [<no net>] on F.Cu
+    @(110,0000 mm, 82,2750 mm): NPTH pad of MB5
+[silk_overlap]: Silkscreen overlap
+    Rule: board setup constraints silk; warning
+    @(120,7600 mm, 89,5000 mm): Value field of M1 (N20 6V 50:1 MOTOR LEFT)
+    @(79,0000 mm, 85,8950 mm): PCB text 'MOTOR R' on f.silkscreen
+[silk_overlap]: Silkscreen overlap
+    Rule: board setup constraints silk; warning
+    @(120,7600 mm, 89,5000 mm): Value field of M1 (N20 6V 50:1 MOTOR LEFT)
+    @(76,6000 mm, 89,3750 mm): PCB text 'GND' on f.silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(79,0000 mm, 85,8950 mm): PCB text 'MOTOR R' on f.silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(82,0000 mm, 102,6750 mm): PCB text 'SW1' on f.silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(104,5000 mm, 85,8750 mm): PCB text 'MOTOR L' on f.silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(96,5400 mm, 93,3750 mm): PCB text 'M1A' on f.silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(120,7600 mm, 89,5000 mm): Value field of M1 (N20 6V 50:1 MOTOR LEFT)
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(128,5200 mm, 56,6200 mm): PTH pad 16 [<no net>] of EXP3
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0,2495 mm; actual 0,0000 mm)
+    Rule: board setup constraints; warning
+    @(110,0000 mm, 85,4750 mm): NPTH pad of MB5
+    @(110,0000 mm, 84,6750 mm): NPTH pad of MB5
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0,2495 mm; actual 0,0000 mm)
+    Rule: board setup constraints; warning
+    @(110,0000 mm, 84,6750 mm): NPTH pad of MB5
+    @(110,0000 mm, 83,8750 mm): NPTH pad of MB5
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0,2495 mm; actual 0,0000 mm)
+    Rule: board setup constraints; warning
+    @(110,0000 mm, 83,0750 mm): NPTH pad of MB5
+    @(110,0000 mm, 83,8750 mm): NPTH pad of MB5
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0,2495 mm; actual 0,0000 mm)
+    Rule: board setup constraints; warning
+    @(110,0000 mm, 82,2750 mm): NPTH pad of MB5
+    @(110,0000 mm, 83,0750 mm): NPTH pad of MB5
+[padstack]: Padstack is questionable (SMD pad has copper on both sides of the board)
+    Local override; warning
+    @(113,7600 mm, 48,5000 mm): Pad 1 [<no net>] of FD2 on all copper layers
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(62,7600 mm, 39,5000 mm): Polygon on Edge.Cuts
+    @(120,7600 mm, 89,5000 mm): Value field of M1 (N20 6V 50:1 MOTOR LEFT)
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(62,7600 mm, 39,5000 mm): Polygon on Edge.Cuts
+    @(120,7600 mm, 89,5000 mm): Value field of M1 (N20 6V 50:1 MOTOR LEFT)
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(73,5200 mm, 85,8750 mm): Rectangle on Edge.Cuts
+    @(120,7600 mm, 89,5000 mm): Value field of M1 (N20 6V 50:1 MOTOR LEFT)
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(62,7600 mm, 39,5000 mm): Polygon on Edge.Cuts
+    @(128,5200 mm, 56,6200 mm): PTH pad 16 [<no net>] of EXP3
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(110,0000 mm, 85,8750 mm): Rectangle on Edge.Cuts
+    @(128,5200 mm, 56,6200 mm): PTH pad 16 [<no net>] of EXP3
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(62,7600 mm, 39,5000 mm): Polygon on Edge.Cuts
+    @(128,5200 mm, 56,6200 mm): PTH pad 16 [<no net>] of EXP3
+
+** Found 38 unconnected pads **
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(82,9000 mm, 87,6202 mm): Marker (Front solder mask aperture bridges items with different nets)
+    @(82,9000 mm, 87,6202 mm): Marker (Front solder mask aperture bridges items with different nets)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(120,7600 mm, 89,5000 mm): Value field of M1 (N20 6V 50:1 MOTOR LEFT)
+    @(120,7600 mm, 89,5000 mm): Value field of M1 (N20 6V 50:1 MOTOR LEFT)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(82,9000 mm, 87,6202 mm): Marker (Front solder mask aperture bridges items with different nets)
+    @(120,9000 mm, 49,0000 mm): Value field of EXP3 (PROTO_CORNER_4X04_2P54)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(120,7600 mm, 89,5000 mm): Value field of M1 (N20 6V 50:1 MOTOR LEFT)
+    @(120,7600 mm, 89,5000 mm): Value field of M1 (N20 6V 50:1 MOTOR LEFT)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(120,9000 mm, 49,0000 mm): Value field of EXP3 (PROTO_CORNER_4X04_2P54)
+    @(120,9000 mm, 49,0000 mm): Value field of EXP3 (PROTO_CORNER_4X04_2P54)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(120,7600 mm, 89,5000 mm): Value field of M1 (N20 6V 50:1 MOTOR LEFT)
+    @(110,0000 mm, 85,4750 mm): Marker (Drilled hole too close to other hole (board setup constraints min 0,2495 mm; actual 0,0000 mm))
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(120,9000 mm, 49,0000 mm): Value field of EXP3 (PROTO_CORNER_4X04_2P54)
+    @(81,3300 mm, 43,5000 mm): Value field of EXP1 (PROTO_10X04_2P54)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(110,0000 mm, 85,4750 mm): Marker (Drilled hole too close to other hole (board setup constraints min 0,2495 mm; actual 0,0000 mm))
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(82,7600 mm, 61,7150 mm): PTH pad 2 [GND] of J8
+    @(85,3000 mm, 61,7150 mm): PTH pad 2 [GND] of U1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(81,3300 mm, 43,5000 mm): Value field of EXP1 (PROTO_10X04_2P54)
+    @(81,3300 mm, 43,5000 mm): Value field of EXP1 (PROTO_10X04_2P54)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(85,3000 mm, 61,7150 mm): PTH pad 2 [GND] of U1
+    @(81,3300 mm, 43,5000 mm): Value field of EXP1 (PROTO_10X04_2P54)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(85,3000 mm, 61,7150 mm): PTH pad 2 [GND] of U1
+    @(94,1200 mm, 80,8750 mm): Track [GND] on B.Cu, length 16,0644 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(81,3300 mm, 43,5000 mm): Value field of EXP1 (PROTO_10X04_2P54)
+    @(81,3300 mm, 43,5000 mm): Value field of EXP1 (PROTO_10X04_2P54)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(80,9333 mm, 103,0008 mm): Marker (Silkscreen clipped by solder mask)
+    @(81,3300 mm, 43,5000 mm): Value field of EXP1 (PROTO_10X04_2P54)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(82,9000 mm, 87,6202 mm): Marker (Front solder mask aperture bridges items with different nets)
+    @(80,9333 mm, 103,0008 mm): Marker (Silkscreen clipped by solder mask)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(82,9000 mm, 87,6202 mm): Marker (Front solder mask aperture bridges items with different nets)
+    @(82,9000 mm, 87,6202 mm): Marker (Front solder mask aperture bridges items with different nets)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(82,9000 mm, 87,6202 mm): Marker (Front solder mask aperture bridges items with different nets)
+    @(82,9000 mm, 87,6202 mm): Marker (Front solder mask aperture bridges items with different nets)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(82,9000 mm, 87,6202 mm): Marker (Front solder mask aperture bridges items with different nets)
+    @(82,9000 mm, 87,6202 mm): Marker (Front solder mask aperture bridges items with different nets)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(99,2000 mm, 96,1150 mm): PTH pad 2 [GND] of U2
+    @(102,5000 mm, 101,3750 mm): PTH pad 2 [GND] of C1_C2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(99,7979 mm, 111,8054 mm): Marker (Tracks crossing)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(101,0000 mm, 108,0000 mm): PTH pad 2 [GND] of J4
+    @(102,5000 mm, 101,3750 mm): PTH pad 2 [GND] of C1_C2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(82,9000 mm, 87,6202 mm): Marker (Front solder mask aperture bridges items with different nets)
+    @(82,9000 mm, 87,6202 mm): Marker (Front solder mask aperture bridges items with different nets)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(82,9000 mm, 87,6202 mm): Marker (Front solder mask aperture bridges items with different nets)
+    @(82,9000 mm, 87,6202 mm): Marker (Front solder mask aperture bridges items with different nets)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(82,9000 mm, 87,6202 mm): Marker (Front solder mask aperture bridges items with different nets)
+    @(120,9000 mm, 49,0000 mm): Value field of EXP3 (PROTO_CORNER_4X04_2P54)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(120,9000 mm, 49,0000 mm): Value field of EXP3 (PROTO_CORNER_4X04_2P54)
+    @(120,9000 mm, 49,0000 mm): Value field of EXP3 (PROTO_CORNER_4X04_2P54)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(99,7979 mm, 111,8054 mm): Marker (Tracks crossing)
+    @(99,7979 mm, 111,8054 mm): Marker (Tracks crossing)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(99,7979 mm, 111,8054 mm): Marker (Tracks crossing)
+    @(99,7979 mm, 111,8054 mm): Marker (Tracks crossing)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(120,9000 mm, 49,0000 mm): Value field of EXP3 (PROTO_CORNER_4X04_2P54)
+    @(120,9000 mm, 49,0000 mm): Value field of EXP3 (PROTO_CORNER_4X04_2P54)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(120,9000 mm, 49,0000 mm): Value field of EXP3 (PROTO_CORNER_4X04_2P54)
+    @(120,9000 mm, 49,0000 mm): Value field of EXP3 (PROTO_CORNER_4X04_2P54)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(99,7979 mm, 111,8054 mm): Marker (Tracks crossing)
+    @(99,7979 mm, 111,8054 mm): Marker (Tracks crossing)
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(97,5000 mm, 101,3750 mm): PTH pad 1 [VBAT_SW] of C1_C2
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+    @(97,5000 mm, 101,3750 mm): PTH pad 1 [VBAT_SW] of C1_C2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(85,3000 mm, 64,2550 mm): PTH pad 3 [3V3] of U1
+    @(82,7600 mm, 64,2550 mm): PTH pad 3 [3V3] of J8
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(103,0800 mm, 61,7150 mm): PTH pad 7 [AIN2_GPIO6] of J9
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(103,0800 mm, 64,2550 mm): PTH pad 6 [AIN1_GPIO7] of J9
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(103,0800 mm, 69,3350 mm): PTH pad 4 [BIN1_GPIO9] of J9
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(103,0800 mm, 71,8750 mm): PTH pad 3 [BIN2_GPIO10] of J9
+    @(89,0400 mm, 96,1150 mm): Track [M2B] on F.Cu, length 12,0179 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(120,7600 mm, 89,5000 mm): Value field of M1 (N20 6V 50:1 MOTOR LEFT)
+    @(82,9000 mm, 87,6202 mm): Marker (Front solder mask aperture bridges items with different nets)
+
+** Found 0 Footprint errors **
+
+** End of Report **

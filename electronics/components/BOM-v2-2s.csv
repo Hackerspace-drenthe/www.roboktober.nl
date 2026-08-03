@@ -1,0 +1,12 @@
+Reference,Quantity,Category,Part,Specification,Interface,Release condition
+BT1,1,Battery,Protected 2S LiPo/Li-ion,6.0-8.4 V; >=5 A burst capability,External keyed >=5 A connector,Record capacity discharge BMS and connector ratings
+F1,1,Protection,Replaceable fuse or resettable protection,5 A initial value; DC rated above 8.4 V,Series with battery positive,Validate nuisance trips and wiring fault protection
+SW1,1,Power switch,DC power switch,>=5 A at >=12 VDC,Vendor-specific,Record exact part and contact resistance
+U_LOGIC,1,Logic regulator,Mini-360 MP2307DN adjustable buck module,Set to 3.30 V; 4.75-23 V input; approximately 17 x 11 mm,Four wired pads IN+ IN- OUT- OUT+,Verify module pinout output calibration radio transient response and 1 A thermal margin; https://www.aliexpress.com/wholesale?SearchText=Mini-360+MP2307DN
+U1,1,Controller,ESP32-C3 SuperMini,3.3 V logic common 2x8 module,2x 1x08 female machined socket strips,Verify module pinout and 3.3 V supply behavior
+U2,1,Motor driver,DRV8833 breakout,Direct 2S VM; approximately 1.5 A RMS and 2 A peak per bridge with internal fault protection,Module-specific,Verify startup reversal brief-stall fault response and thermal margin
+C_VM1,1,Driver decoupling,100 nF ceramic,>=16 V X7R,At driver VM and GND,Place directly at driver
+C_VM2,1,Driver bulk capacitor,470 uF low-ESR electrolytic,>=16 V,At driver VM and GND,Verify ripple rating and polarity
+CM1 CM2,2,Motor suppression,100 nF ceramic,>=16 V X7R,Solder directly to motor terminals,Required for conducted EMI control
+M1 M2,2,Motor,N20-compatible 6 V 50:1 micro metal gearmotor,590-650 RPM and 1.5-1.6 A theoretical stall at 6 V; 10 x 12 mm gearbox; 3 mm D-shaft,J5/J6 two-pin PCB connectors to detachable two-wire harnesses soldered to motor terminals,Confirm exact purchased motor against n20-6v-50-1-verification.md and validate full-load temperature and brief-stall behavior
+MBR1 MBR2,4,Motor retention,Hand-bent steel wire bracket,Approximately 1 mm steel paperclip wire formed as two U-brackets per motor,Four M1/M2 mechanical plated holes per motor; 1.2 mm drill,Test clamp force and solder-joint strength with the purchased motor before release

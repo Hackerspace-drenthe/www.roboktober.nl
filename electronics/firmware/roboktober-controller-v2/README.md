@@ -32,6 +32,7 @@ The packet layout remains compatible with upstream: eight unsigned 16-bit RC cha
 - Elevator controls throttle; aileron controls steering.
 - RC range is 960-2040 μs, neutral is 1500 μs and input deadband is ±40 μs.
 - Four 5 kHz, 8-bit PWM channels drive the DRV8833 phase inputs.
+- The direct-2S variant permits the full 255/255 duty range. Its motors and driver must therefore be validated for continuous 8.4 V operation and abnormal stall conditions.
 - A valid packet must be exactly 16 bytes and come from `AllowedSenderMac`.
 - Invalid channel values stop both motors immediately.
 - No valid packet for 200 ms stops both motors using rollover-safe elapsed-time arithmetic.

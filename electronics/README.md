@@ -11,6 +11,8 @@ Deze map bevat de gedeelde elektronica-informatie voor de Roboktober antweight-b
 - `schema/`: elektrische ontwerpkeuzes en netspecificatie.
 - `kicad/antweight-controller-v2/`: KiCad-project voor het carrierboard.
 
+De 2S-voedingsvariant is apart gespecificeerd in `schema/electrical-design-v2-2s.md`, met bedrading in `wiring/antweight-controller-v2-2s.md` en een eigen `components/BOM-v2-2s.csv`. Deze variant heeft nog geen vrijgegeven PCB; het bestaande v2-board blijft uitsluitend voor 1S.
+
 ## Reference design
 
 Het huidige (en enige) ontwerp gebruikt:

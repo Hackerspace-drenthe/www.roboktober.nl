@@ -1,0 +1,91 @@
+** Drc report for antweight-controller-v2.kicad_pcb **
+** Created on 2026-08-03T13:55:17+0200 **
+** Report includes: Errors, Warnings, Exclusions **
+
+** Found 0 DRC violations **
+
+** Found 20 unconnected pads **
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(33,7200 mm, 63,3300 mm): PTH pad 2 [GND] of U3
+    @(41,0200 mm, 68,3300 mm): PTH pad 2 [GND] of J4
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(36,2200 mm, 73,8300 mm): PTH pad 2 [GND] of J10
+    @(41,0200 mm, 68,3300 mm): PTH pad 2 [GND] of J4
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(37,9400 mm, 44,4700 mm): PTH pad 5 [GND] of U2
+    @(28,9000 mm, 21,5500 mm): PTH pad 2 [GND] of U1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(41,0200 mm, 68,3300 mm): PTH pad 2 [GND] of J4
+    @(43,0200 mm, 63,3300 mm): PTH pad 2 [GND] of C1_C2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(43,0200 mm, 59,7100 mm): PTH pad 2 [GND] of U2
+    @(37,9400 mm, 44,4700 mm): PTH pad 5 [GND] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(43,0200 mm, 63,3300 mm): PTH pad 2 [GND] of C1_C2
+    @(43,0200 mm, 59,7100 mm): PTH pad 2 [GND] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(31,1800 mm, 63,3300 mm): PTH pad 1 [VBAT_SW] of U3
+    @(36,2200 mm, 68,3300 mm): PTH pad 2 [VBAT_SW] of SW1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(36,2200 mm, 68,3300 mm): PTH pad 2 [VBAT_SW] of SW1
+    @(39,0200 mm, 63,3300 mm): PTH pad 1 [VBAT_SW] of C1_C2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(38,7600 mm, 73,8300 mm): PTH pad 3 [VBAT_SW] of J10
+    @(36,2200 mm, 68,3300 mm): PTH pad 2 [VBAT_SW] of SW1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(39,0200 mm, 63,3300 mm): PTH pad 1 [VBAT_SW] of C1_C2
+    @(35,4000 mm, 44,4700 mm): PTH pad 7 [VBAT_SW] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(33,6800 mm, 73,8300 mm): PTH pad 1 [3V3] of J10
+    @(36,2600 mm, 63,3300 mm): PTH pad 3 [3V3] of U3
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(36,2600 mm, 63,3300 mm): PTH pad 3 [3V3] of U3
+    @(28,9000 mm, 24,0900 mm): PTH pad 3 [3V3] of U1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(44,1400 mm, 21,5500 mm): Track [AIN2_GPIO6] on F.Cu, length 2,5400 mm
+    @(32,8600 mm, 44,4700 mm): PTH pad 9 [AIN2_GPIO6] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(44,1400 mm, 24,0900 mm): Track [AIN1_GPIO7] on F.Cu, length 2,5400 mm
+    @(30,3200 mm, 44,4700 mm): PTH pad 11 [AIN1_GPIO7] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(44,1400 mm, 29,1700 mm): Track [BIN1_GPIO9] on F.Cu, length 2,5400 mm
+    @(40,4800 mm, 44,4700 mm): PTH pad 3 [BIN1_GPIO9] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(44,1400 mm, 31,7100 mm): PTH pad 11 [BIN2_GPIO10] of U1
+    @(43,0200 mm, 44,4700 mm): PTH pad 1 [BIN2_GPIO10] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(25,5200 mm, 73,8300 mm): PTH pad 1 [M1A] of J5
+    @(40,4800 mm, 59,7100 mm): PTH pad 4 [M1A] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(27,5200 mm, 73,8300 mm): PTH pad 2 [M1B] of J5
+    @(37,9400 mm, 59,7100 mm): PTH pad 6 [M1B] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(35,4000 mm, 59,7100 mm): PTH pad 8 [M2A] of U2
+    @(46,9200 mm, 73,8300 mm): PTH pad 1 [M2A] of J6
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(32,8600 mm, 59,7100 mm): PTH pad 10 [M2B] of U2
+    @(44,9200 mm, 73,8300 mm): PTH pad 2 [M2B] of J6
+
+** Found 0 Footprint errors **
+
+** End of Report **
