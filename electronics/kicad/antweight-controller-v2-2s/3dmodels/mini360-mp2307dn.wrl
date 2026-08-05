@@ -5,9 +5,10 @@ DEF DARK Appearance { material Material { diffuseColor 0.025 0.025 0.03 specular
 DEF METAL Appearance { material Material { diffuseColor 0.7 0.72 0.72 specularColor 0.8 0.8 0.8 shininess 0.7 } }
 Group {
   children [
-    Transform { translation 3.81 -1.2 5.8 children [ Shape { appearance USE PCB geometry Box { size 17 0.9 11 } } ] }
-    Transform { translation 3.81 -1.9 6.4 children [ Shape { appearance USE DARK geometry Box { size 5.8 1.1 3.5 } } ] }
-    Transform { translation 3.81 -1.9 2.7 children [ Shape { appearance USE METAL geometry Box { size 8.2 0.25 1.1 } } ] }
+    # Body fixed for KiCad Z-up rendering: keep X/Y footprint extents, keep pins unchanged.
+    Transform { translation 3.81 -1.2 0.45 children [ Shape { appearance USE PCB geometry Box { size 8.6 5.6 0.9 } } ] }
+    Transform { translation 3.81 -1.9 1.45 children [ Shape { appearance USE DARK geometry Box { size 3.2 2.0 1.1 } } ] }
+    Transform { translation 3.81 -1.9 0.95 children [ Shape { appearance USE METAL geometry Box { size 4.2 0.8 0.25 } } ] }
     Transform { translation 0 0 0.8 rotation 1 0 0 1.5708 children [ Shape { appearance USE METAL geometry Cylinder { radius 0.22 height 2.4 } } ] }
     Transform { translation 2.54 0 0.8 rotation 1 0 0 1.5708 children [ Shape { appearance USE METAL geometry Cylinder { radius 0.22 height 2.4 } } ] }
     Transform { translation 5.08 0 0.8 rotation 1 0 0 1.5708 children [ Shape { appearance USE METAL geometry Cylinder { radius 0.22 height 2.4 } } ] }

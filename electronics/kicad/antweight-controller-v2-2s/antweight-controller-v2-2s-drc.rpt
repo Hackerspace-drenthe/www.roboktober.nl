@@ -1,323 +1,68 @@
 ** Drc report for antweight-controller-v2-2s.kicad_pcb **
-** Created on 2026-08-03T14:14:02+0200 **
+** Created on 2026-08-05T10:43:46+0200 **
 ** Report includes: Errors, Warnings, Exclusions **
 
-** Found 24 DRC violations **
+** Found 15 DRC violations **
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(104,0000 mm, 84,5000 mm): Track [M1B] on F.Cu, length 1,8750 mm
+    @(91,5800 mm, 78,8500 mm): Track [VBAT_SW] on F.Cu, length 18,4200 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(75,5000 mm, 55,6000 mm): Zone [GND] on B.Cu, priority 0
+    @(100,5400 mm, 64,2550 mm): Track [AIN1_GPIO7] on F.Cu, length 2,5400 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(75,5000 mm, 55,6000 mm): Zone [GND] on B.Cu, priority 0
+    @(100,5400 mm, 64,2550 mm): Track [AIN1_GPIO7] on F.Cu, length 2,5400 mm
+[tracks_crossing]: Tracks crossing
+    Local override; error
+    @(96,6600 mm, 83,0000 mm): Track [BIN1_GPIO9] on F.Cu, length 2,1250 mm
+    @(91,5800 mm, 78,8500 mm): Track [VBAT_SW] on F.Cu, length 18,4200 mm
 [hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0,2500 mm; actual 0,1000 mm)
     Rule: board setup constraints hole; error
-    @(77,7000 mm, 57,8000 mm): Polygon [<no net>] on F.Cu
-    @(110,0000 mm, 85,4750 mm): NPTH pad of MB5
+    @(74,7000 mm, 54,8000 mm): Polygon [<no net>] on F.Cu
+    @(113,0000 mm, 85,4750 mm): NPTH pad of MB5
 [hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0,2500 mm; actual 0,1000 mm)
     Rule: board setup constraints hole; error
-    @(77,7000 mm, 57,8000 mm): Polygon [<no net>] on F.Cu
-    @(110,0000 mm, 84,6750 mm): NPTH pad of MB5
+    @(74,7000 mm, 54,8000 mm): Polygon [<no net>] on F.Cu
+    @(113,0000 mm, 84,6750 mm): NPTH pad of MB5
 [hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0,2500 mm; actual 0,1000 mm)
     Rule: board setup constraints hole; error
-    @(77,7000 mm, 57,8000 mm): Polygon [<no net>] on F.Cu
-    @(110,0000 mm, 83,8750 mm): NPTH pad of MB5
+    @(74,7000 mm, 54,8000 mm): Polygon [<no net>] on F.Cu
+    @(113,0000 mm, 83,8750 mm): NPTH pad of MB5
 [hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0,2500 mm; actual 0,1000 mm)
     Rule: board setup constraints hole; error
-    @(77,7000 mm, 57,8000 mm): Polygon [<no net>] on F.Cu
-    @(110,0000 mm, 83,0750 mm): NPTH pad of MB5
+    @(74,7000 mm, 54,8000 mm): Polygon [<no net>] on F.Cu
+    @(113,0000 mm, 83,0750 mm): NPTH pad of MB5
 [hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0,2500 mm; actual 0,1000 mm)
     Rule: board setup constraints hole; error
-    @(77,7000 mm, 57,8000 mm): Polygon [<no net>] on F.Cu
-    @(110,0000 mm, 82,2750 mm): NPTH pad of MB5
-[silk_overlap]: Silkscreen overlap
-    Rule: board setup constraints silk; warning
-    @(102,0000 mm, 112,8750 mm): Marker (Missing connection between items)
-    @(79,0000 mm, 85,8950 mm): PCB text 'MOTOR R' on f.silkscreen
-[silk_overlap]: Silkscreen overlap
-    Rule: board setup constraints silk; warning
-    @(102,0000 mm, 112,8750 mm): Marker (Missing connection between items)
-    @(76,6000 mm, 89,3750 mm): PCB text 'GND' on f.silkscreen
+    @(74,7000 mm, 54,8000 mm): Polygon [<no net>] on F.Cu
+    @(113,0000 mm, 82,2750 mm): NPTH pad of MB5
 [silk_over_copper]: Silkscreen clipped by solder mask
     Local override; warning
-    @(79,0000 mm, 85,8950 mm): PCB text 'MOTOR R' on f.silkscreen
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(82,0000 mm, 102,6750 mm): PCB text 'SW1' on f.silkscreen
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(104,5000 mm, 85,8750 mm): PCB text 'MOTOR L' on f.silkscreen
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(96,5400 mm, 93,3750 mm): PCB text 'M1A' on f.silkscreen
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(102,0000 mm, 112,8750 mm): Marker (Missing connection between items)
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(101,6500 mm, 48,5800 mm): Marker (Missing connection between items)
+    @(94,0000 mm, 106,8000 mm): PCB text 'B+' on f.silkscreen
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0,2495 mm; actual 0,0000 mm)
     Rule: board setup constraints; warning
-    @(110,0000 mm, 85,4750 mm): NPTH pad of MB5
-    @(110,0000 mm, 84,6750 mm): NPTH pad of MB5
+    @(113,0000 mm, 85,4750 mm): NPTH pad of MB5
+    @(113,0000 mm, 84,6750 mm): NPTH pad of MB5
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0,2495 mm; actual 0,0000 mm)
     Rule: board setup constraints; warning
-    @(110,0000 mm, 84,6750 mm): NPTH pad of MB5
-    @(110,0000 mm, 83,8750 mm): NPTH pad of MB5
+    @(113,0000 mm, 84,6750 mm): NPTH pad of MB5
+    @(113,0000 mm, 83,8750 mm): NPTH pad of MB5
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0,2495 mm; actual 0,0000 mm)
     Rule: board setup constraints; warning
-    @(110,0000 mm, 83,0750 mm): NPTH pad of MB5
-    @(110,0000 mm, 83,8750 mm): NPTH pad of MB5
+    @(113,0000 mm, 83,0750 mm): NPTH pad of MB5
+    @(113,0000 mm, 83,8750 mm): NPTH pad of MB5
 [hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0,2495 mm; actual 0,0000 mm)
     Rule: board setup constraints; warning
-    @(110,0000 mm, 82,2750 mm): NPTH pad of MB5
-    @(110,0000 mm, 83,0750 mm): NPTH pad of MB5
+    @(113,0000 mm, 82,2750 mm): NPTH pad of MB5
+    @(113,0000 mm, 83,0750 mm): NPTH pad of MB5
 [padstack]: Padstack is questionable (SMD pad has copper on both sides of the board)
     Local override; warning
     @(113,7600 mm, 48,5000 mm): Pad 1 [<no net>] of FD2 on all copper layers
-[silk_edge_clearance]: Silkscreen clipped by board edge
-    Rule: board setup constraints silk; warning
-    @(62,7600 mm, 39,5000 mm): Polygon on Edge.Cuts
-    @(102,0000 mm, 112,8750 mm): Marker (Missing connection between items)
-[silk_edge_clearance]: Silkscreen clipped by board edge
-    Rule: board setup constraints silk; warning
-    @(62,7600 mm, 39,5000 mm): Polygon on Edge.Cuts
-    @(102,0000 mm, 112,8750 mm): Marker (Missing connection between items)
-[silk_edge_clearance]: Silkscreen clipped by board edge
-    Rule: board setup constraints silk; warning
-    @(73,5200 mm, 85,8750 mm): Rectangle on Edge.Cuts
-    @(102,0000 mm, 112,8750 mm): Marker (Missing connection between items)
-[silk_edge_clearance]: Silkscreen clipped by board edge
-    Rule: board setup constraints silk; warning
-    @(62,7600 mm, 39,5000 mm): Polygon on Edge.Cuts
-    @(101,6500 mm, 48,5800 mm): Marker (Missing connection between items)
-[silk_edge_clearance]: Silkscreen clipped by board edge
-    Rule: board setup constraints silk; warning
-    @(110,0000 mm, 85,8750 mm): Rectangle on Edge.Cuts
-    @(101,6500 mm, 48,5800 mm): Marker (Missing connection between items)
-[silk_edge_clearance]: Silkscreen clipped by board edge
-    Rule: board setup constraints silk; warning
-    @(62,7600 mm, 39,5000 mm): Polygon on Edge.Cuts
-    @(101,6500 mm, 48,5800 mm): Marker (Missing connection between items)
 
-** Found 56 unconnected pads **
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(102,0000 mm, 112,8750 mm): Marker (Missing connection between items)
-    @(102,0000 mm, 112,8750 mm): Marker (Missing connection between items)
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(104,1900 mm, 51,1200 mm): PTH pad 40 [PROTO_VPLUS] of EXP1
-    @(104,1900 mm, 51,1200 mm): PTH pad 40 [PROTO_VPLUS] of EXP1
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(102,0000 mm, 112,8750 mm): Marker (Missing connection between items)
-    @(102,0000 mm, 112,8750 mm): Marker (Missing connection between items)
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(86,4100 mm, 48,5800 mm): Marker (Missing connection between items)
-    @(104,1900 mm, 51,1200 mm): PTH pad 40 [PROTO_VPLUS] of EXP1
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(102,0000 mm, 112,8750 mm): Marker (Missing connection between items)
-    @(80,0000 mm, 110,1250 mm): Marker (Missing connection between items)
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(86,4100 mm, 48,5800 mm): Marker (Missing connection between items)
-    @(86,4100 mm, 48,5800 mm): Marker (Missing connection between items)
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(86,4100 mm, 48,5800 mm): Marker (Missing connection between items)
-    @(81,3300 mm, 43,5000 mm): Value field of EXP1 (PROTO_10X04_2P54)
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(80,0000 mm, 110,1250 mm): Marker (Missing connection between items)
-    @(82,5400 mm, 110,1250 mm): PTH pad 2 [GND] of J10
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(81,3300 mm, 43,5000 mm): Value field of EXP1 (PROTO_10X04_2P54)
-    @(81,3300 mm, 43,5000 mm): Value field of EXP1 (PROTO_10X04_2P54)
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(85,3000 mm, 61,7150 mm): PTH pad 2 [GND] of U1
-    @(82,7600 mm, 61,7150 mm): PTH pad 2 [GND] of J8
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(85,3000 mm, 61,7150 mm): PTH pad 2 [GND] of U1
-    @(81,3300 mm, 43,5000 mm): Value field of EXP1 (PROTO_10X04_2P54)
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(81,3300 mm, 43,5000 mm): Value field of EXP1 (PROTO_10X04_2P54)
-    @(81,3300 mm, 43,5000 mm): Value field of EXP1 (PROTO_10X04_2P54)
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(88,9500 mm, 48,5800 mm): PTH pad 24 [GND] of EXP1
-    @(81,3300 mm, 43,5000 mm): Value field of EXP1 (PROTO_10X04_2P54)
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(104,1900 mm, 51,1200 mm): PTH pad 40 [PROTO_VPLUS] of EXP1
-    @(88,9500 mm, 48,5800 mm): PTH pad 24 [GND] of EXP1
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(104,1900 mm, 51,1200 mm): PTH pad 40 [PROTO_VPLUS] of EXP1
-    @(104,1900 mm, 51,1200 mm): PTH pad 40 [PROTO_VPLUS] of EXP1
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(94,1200 mm, 80,8750 mm): PTH pad 5 [GND] of U2
-    @(100,0400 mm, 91,3750 mm): PTH pad 2 [GND] of C1_C2
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(94,1200 mm, 80,8750 mm): PTH pad 5 [GND] of U2
-    @(85,3000 mm, 61,7150 mm): PTH pad 2 [GND] of U1
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(104,1900 mm, 51,1200 mm): PTH pad 40 [PROTO_VPLUS] of EXP1
-    @(104,1900 mm, 51,1200 mm): PTH pad 40 [PROTO_VPLUS] of EXP1
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(96,9200 mm, 112,8750 mm): PTH pad 3 [GND] of U3
-    @(82,5400 mm, 110,1250 mm): PTH pad 2 [GND] of J10
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(104,1900 mm, 51,1200 mm): PTH pad 40 [PROTO_VPLUS] of EXP1
-    @(104,1900 mm, 51,1200 mm): PTH pad 40 [PROTO_VPLUS] of EXP1
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(99,2000 mm, 96,1150 mm): PTH pad 2 [GND] of U2
-    @(100,0400 mm, 91,3750 mm): PTH pad 2 [GND] of C1_C2
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(99,2000 mm, 96,1150 mm): PTH pad 2 [GND] of U2
-    @(102,5000 mm, 101,3750 mm): PTH pad 2 [GND] of C1_C2
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(99,4600 mm, 112,8750 mm): PTH pad 2 [GND] of U3
-    @(96,9200 mm, 112,8750 mm): PTH pad 3 [GND] of U3
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(99,4600 mm, 112,8750 mm): PTH pad 2 [GND] of U3
-    @(101,0000 mm, 108,0000 mm): PTH pad 2 [GND] of J4
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(101,0000 mm, 108,0000 mm): PTH pad 2 [GND] of J4
-    @(102,5000 mm, 101,3750 mm): PTH pad 2 [GND] of C1_C2
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(104,1900 mm, 51,1200 mm): PTH pad 40 [PROTO_VPLUS] of EXP1
-    @(104,1900 mm, 51,1200 mm): PTH pad 40 [PROTO_VPLUS] of EXP1
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(104,1900 mm, 51,1200 mm): PTH pad 40 [PROTO_VPLUS] of EXP1
-    @(104,1900 mm, 51,1200 mm): PTH pad 40 [PROTO_VPLUS] of EXP1
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(104,1900 mm, 51,1200 mm): PTH pad 40 [PROTO_VPLUS] of EXP1
-    @(86,4100 mm, 48,5800 mm): Marker (Missing connection between items)
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(94,1200 mm, 96,1150 mm): Marker (Missing connection between items)
-    @(94,1200 mm, 96,1150 mm): Marker (Missing connection between items)
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(94,1200 mm, 96,1150 mm): Marker (Missing connection between items)
-    @(99,4600 mm, 112,8750 mm): PTH pad 2 [GND] of U3
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(86,4100 mm, 48,5800 mm): Marker (Missing connection between items)
-    @(86,4100 mm, 48,5800 mm): Marker (Missing connection between items)
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(86,4100 mm, 48,5800 mm): Marker (Missing connection between items)
-    @(86,4100 mm, 48,5800 mm): Marker (Missing connection between items)
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(94,1200 mm, 96,1150 mm): Marker (Missing connection between items)
-    @(94,1200 mm, 96,1150 mm): Marker (Missing connection between items)
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(86,4100 mm, 48,5800 mm): Marker (Missing connection between items)
-    @(86,4100 mm, 48,5800 mm): Marker (Missing connection between items)
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(94,1200 mm, 96,1150 mm): Marker (Missing connection between items)
-    @(94,1200 mm, 96,1150 mm): Marker (Missing connection between items)
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(84,5000 mm, 104,3750 mm): PTH pad 2 [VBAT_SW] of SW1
-    @(85,0800 mm, 110,1250 mm): PTH pad 3 [VBAT_SW] of J10
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(84,5000 mm, 104,3750 mm): PTH pad 2 [VBAT_SW] of SW1
-    @(97,5000 mm, 101,3750 mm): PTH pad 1 [VBAT_SW] of C1_C2
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(97,5000 mm, 91,3750 mm): PTH pad 1 [VBAT_SW] of C1_C2
-    @(97,5000 mm, 101,3750 mm): PTH pad 1 [VBAT_SW] of C1_C2
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(97,5000 mm, 91,3750 mm): PTH pad 1 [VBAT_SW] of C1_C2
-    @(91,5800 mm, 80,8750 mm): PTH pad 7 [VBAT_SW] of U2
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(102,0000 mm, 112,8750 mm): PTH pad 1 [VBAT_SW] of U3
-    @(97,5000 mm, 101,3750 mm): PTH pad 1 [VBAT_SW] of C1_C2
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(80,0000 mm, 110,1250 mm): PTH pad 1 [3V3] of J10
-    @(94,3800 mm, 112,8750 mm): PTH pad 4 [3V3] of U3
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(82,7600 mm, 64,2550 mm): PTH pad 3 [3V3] of J8
-    @(80,0000 mm, 110,1250 mm): PTH pad 1 [3V3] of J10
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(85,3000 mm, 64,2550 mm): PTH pad 3 [3V3] of U1
-    @(82,7600 mm, 64,2550 mm): PTH pad 3 [3V3] of J8
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(100,5400 mm, 61,7150 mm): PTH pad 15 [AIN2_GPIO6] of U1
-    @(89,0400 mm, 80,8750 mm): PTH pad 9 [AIN2_GPIO6] of U2
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(103,0800 mm, 61,7150 mm): PTH pad 7 [AIN2_GPIO6] of J9
-    @(100,5400 mm, 61,7150 mm): PTH pad 15 [AIN2_GPIO6] of U1
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(100,5400 mm, 64,2550 mm): PTH pad 14 [AIN1_GPIO7] of U1
-    @(86,5000 mm, 80,8750 mm): PTH pad 11 [AIN1_GPIO7] of U2
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(103,0800 mm, 64,2550 mm): PTH pad 6 [AIN1_GPIO7] of J9
-    @(100,5400 mm, 64,2550 mm): PTH pad 14 [AIN1_GPIO7] of U1
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(100,5400 mm, 69,3350 mm): PTH pad 12 [BIN1_GPIO9] of U1
-    @(96,6600 mm, 80,8750 mm): PTH pad 3 [BIN1_GPIO9] of U2
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(103,0800 mm, 69,3350 mm): PTH pad 4 [BIN1_GPIO9] of J9
-    @(100,5400 mm, 69,3350 mm): PTH pad 12 [BIN1_GPIO9] of U1
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(100,5400 mm, 71,8750 mm): PTH pad 11 [BIN2_GPIO10] of U1
-    @(99,2000 mm, 80,8750 mm): PTH pad 1 [BIN2_GPIO10] of U2
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(103,0800 mm, 71,8750 mm): PTH pad 3 [BIN2_GPIO10] of J9
-    @(100,5400 mm, 71,8750 mm): PTH pad 11 [BIN2_GPIO10] of U1
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(96,6600 mm, 96,1150 mm): PTH pad 4 [M1A] of U2
-    @(104,0000 mm, 88,3750 mm): PTH pad 1 [M1A] of J5
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(94,1200 mm, 96,1150 mm): PTH pad 6 [M1B] of U2
-    @(104,0000 mm, 86,3750 mm): PTH pad 2 [M1B] of J5
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(82,0000 mm, 88,3750 mm): PTH pad 1 [M2A] of J6
-    @(91,5800 mm, 96,1150 mm): PTH pad 8 [M2A] of U2
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(82,0000 mm, 86,3750 mm): PTH pad 2 [M2B] of J6
-    @(89,0400 mm, 96,1150 mm): PTH pad 10 [M2B] of U2
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(102,0000 mm, 112,8750 mm): Marker (Missing connection between items)
-    @(104,1900 mm, 51,1200 mm): PTH pad 40 [PROTO_VPLUS] of EXP1
+** Found 0 unconnected pads **
 
 ** Found 0 Footprint errors **
 
