@@ -11,16 +11,10 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
 
-const siteGatePassword = 'Drenthe'
-const siteGateSessionKey = 'roboktober-site-gate-unlocked'
-
 const menuOpen = ref(false)
 const accountMenuOpen = ref(false)
 const accountMenuRef = ref<HTMLElement | null>(null)
 const auth = useAuth()
-const gatePasswordInput = ref('')
-const gateError = ref('')
-const gateUnlocked = ref(false)
 
 const desktopNavLinkClass =
   'rounded-md px-3 py-2 text-slate-300 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-robo-orange/80'
@@ -34,35 +28,6 @@ const primaryCtaLabel = computed(() => (auth.isAuthenticated.value ? 'Aanmelden'
 
 function sluitMenu(): void {
   menuOpen.value = false
-}
-
-function setGateUnlockedInSession(): void {
-  try {
-    sessionStorage.setItem(siteGateSessionKey, '1')
-  } catch {
-    // Ignore storage failures (e.g. strict privacy mode) and keep in-memory unlock.
-  }
-}
-
-function getGateUnlockedFromSession(): boolean {
-  try {
-    return sessionStorage.getItem(siteGateSessionKey) === '1'
-  } catch {
-    return false
-  }
-}
-
-function submitSiteGate(): void {
-  const normalizedInput = gatePasswordInput.value.trim()
-
-  if (normalizedInput === siteGatePassword) {
-    gateUnlocked.value = true
-    gateError.value = ''
-    setGateUnlockedInSession()
-    return
-  }
-
-  gateError.value = 'Onjuist wachtwoord. Probeer opnieuw.'
 }
 
 function openAccountMenu(): void {
@@ -98,7 +63,6 @@ function handleDocumentKeydown(event: KeyboardEvent): void {
 void auth.initAuth()
 
 onMounted(() => {
-  gateUnlocked.value = getGateUnlockedFromSession()
   document.addEventListener('mousedown', handleDocumentPointerDown)
   document.addEventListener('keydown', handleDocumentKeydown)
 })
@@ -116,45 +80,6 @@ async function handleLogout(): Promise<void> {
 </script>
 
 <template>
-  <div v-if="!gateUnlocked" class="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-950/90 p-6">
-    <div class="w-full max-w-md rounded-2xl border border-white/20 bg-robo-dark p-6 shadow-2xl">
-      <h1 class="text-2xl font-black text-white">Site in aanbouw</h1>
-      <p class="mt-3 text-sm text-slate-300">
-        Roboktober is nog niet open voor normale bezoekers. De site gaat begin augustus 2026 live.
-      </p>
-      <p class="mt-2 text-sm text-slate-300">
-        Voer het toegangswachtwoord in om verder te gaan.
-      </p>
-      <p class="mt-2 rounded-lg border border-amber-300/40 bg-amber-500/10 px-3 py-2 text-sm font-semibold text-amber-100">
-        Testomgeving: voer geen echte persoonsgegevens of andere niet-testdata in.
-      </p>
-
-      <form class="mt-5 space-y-3" @submit.prevent="submitSiteGate">
-        <label for="site-gate-password" class="block text-sm font-semibold text-slate-200">Wachtwoord</label>
-        <input
-          id="site-gate-password"
-          v-model="gatePasswordInput"
-          @input="gateError = ''"
-          type="password"
-          class="w-full rounded-lg border border-white/25 bg-slate-950/70 px-3 py-2 text-white placeholder:text-slate-500 focus:border-robo-orange focus:outline-none"
-          placeholder="Voer wachtwoord in"
-          autocomplete="current-password"
-          required
-        >
-
-        <p v-if="gateError" class="text-sm font-semibold text-red-300">{{ gateError }}</p>
-
-        <button
-          type="submit"
-          class="w-full rounded-lg bg-robo-orange px-4 py-2 font-bold text-white transition hover:bg-robo-orange-dark"
-        >
-          Verder
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <template v-else>
     <!-- Skip-nav link for keyboard/screen reader users (WCAG 2.4.1) -->
     <a
       href="#main-content"
@@ -528,5 +453,4 @@ async function handleLogout(): Promise<void> {
     <footer class="border-t border-white/10 bg-robo-dark py-8 text-center text-sm text-slate-500">
       <p>© 2026 Roboktober · Hackerspace Drenthe</p>
     </footer>
-  </template>
 </template>
