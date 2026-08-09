@@ -769,8 +769,44 @@ export async function getRichMediaLibrary(params?: {
   q?: string
   page?: number
 }): Promise<PaginatedResponse<RichMediaItem>> {
-  const { data } = await api.get<PaginatedResponse<RichMediaItem>>('/media', { params })
-  return data
+  const { data } = await api.get<PaginatedResponse<RichMediaItem> | Record<string, unknown>>('/media', { params })
+
+  // Backward-compatible normalization for raw Laravel paginator payloads.
+  if (typeof data === 'object' && data !== null && !('meta' in data)) {
+    const raw = data as {
+      data?: RichMediaItem[]
+      current_page?: number
+      from?: number | null
+      last_page?: number
+      per_page?: number
+      to?: number | null
+      total?: number
+      first_page_url?: string | null
+      last_page_url?: string | null
+      prev_page_url?: string | null
+      next_page_url?: string | null
+    }
+
+    return {
+      data: Array.isArray(raw.data) ? raw.data : [],
+      links: {
+        first: raw.first_page_url ?? null,
+        last: raw.last_page_url ?? null,
+        prev: raw.prev_page_url ?? null,
+        next: raw.next_page_url ?? null,
+      },
+      meta: {
+        current_page: Number.isFinite(raw.current_page) ? Number(raw.current_page) : 1,
+        from: typeof raw.from === 'number' ? raw.from : null,
+        last_page: Number.isFinite(raw.last_page) ? Number(raw.last_page) : 1,
+        per_page: Number.isFinite(raw.per_page) ? Number(raw.per_page) : 25,
+        to: typeof raw.to === 'number' ? raw.to : null,
+        total: Number.isFinite(raw.total) ? Number(raw.total) : (Array.isArray(raw.data) ? raw.data.length : 0),
+      },
+    }
+  }
+
+  return data as PaginatedResponse<RichMediaItem>
 }
 
 export async function uploadRichMedia(payload: RichMediaUploadPayload): Promise<{
