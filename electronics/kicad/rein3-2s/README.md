@@ -1,19 +1,22 @@
-# KiCad antweight controller v2
+# KiCad antweight controller v2 - rein3-2s external-power variant
 
-This KiCad 9 project implements the ESP32-C3/DRV8833 v2 net contract.
+This KiCad 9 project implements a separate 2S-oriented rein3 variant with external power interfaces.
 
 ## Status
 
-The schematic is electrically documented and the PCB is **electrically routed (DRC-clean)** but still pre-release. The compact 30.48 x 63.50 mm strip layout uses machined socket-strip placeholders for the ESP32-C3 and DRV8833 modules. The DRV8833 breakout is rotated 90 degrees clockwise, with its input pins facing the ESP32 and its output pins facing the motors. A 5.08 mm length increase provides additional routing space between both modules. The GPIO breakout rows sit one 2.54 mm step outside the matching ESP32 pins. Both motor connectors sit directly below the DRV8833, accessory power is centered between them, and the battery, switch, regulator and driver capacitors form a short power-path cluster on the right. All footprints remain abstract until exact supplier parts are selected. Motor-current sizing assumes 1.5 A maximum per motor and 3.0 A combined on shared power paths.
+The schematic is electrically documented and the PCB is still pre-release. This folder diverges from `rein3` by externalizing the power path interfaces:
+- `SW1` is a 2-pin external switch header (`VBAT_RAW` <-> `VBAT_SW`).
+- Bypass mode is done with a 2-pin shunt directly on `SW1` (no separate jumper footprint).
+- `U3` is a 3-pin external regulator header (`VIN`, `GND`, `VOUT=3V3`) for an external module.
 
 Do not generate or order manufacturing files from this revision.
 
 ## Validation
 
 ```bash
-kicad-cli sch erc electronics/kicad/rein3/antweight-controller-v2.kicad_sch
-kicad-cli sch export netlist electronics/kicad/rein3/antweight-controller-v2.sch
-kicad-cli pcb drc electronics/kicad/rein3/antweight-controller-v2.kicad_pcb --severity-all
+kicad-cli sch erc electronics/kicad/rein3-2s/rein-2s-controller.kicad_sch
+kicad-cli sch export netlist electronics/kicad/rein3-2s/rein-2s-controller.sch
+kicad-cli pcb drc electronics/kicad/rein3-2s/rein-2s-controller.kicad_pcb --severity-all
 ```
 
 Expected at this stage:
@@ -41,7 +44,7 @@ The U1/U2 socket pads currently retain conservative 1.0 mm drills. Update pad an
 
 Primary preview (with components, top side):
 
-![Antweight controller v2 3D top render](antweight-controller-v2-3d-with-components-top-2026-08-10.png)
+![Antweight controller v2 3D top render](rein-2s-controller-3d-with-components-top-2026-08-10.png)
 
 Render definitions used in this folder:
 - `with-components` = assembly view with mounted board parts (DRV8833 module, ESP module, driver capacitor, and connectors) plus two N20 motors connected by wires to the motor connectors.
@@ -52,9 +55,9 @@ Motor mapping in the with-components assembly view:
 - N20 LEFT motor -> `M2A`/`M2B` (`MOTOR L` connector)
 
 Generated artifact:
-- `antweight-controller-v2-3d-with-components-top-2026-08-10.png`
-- `antweight-controller-v2-3d-without-components-top-2026-08-10.png`
-- `antweight-controller-v2-3d-without-components-bottom-2026-08-10.png`
+- `rein-2s-controller-3d-with-components-top-2026-08-10.png`
+- `rein-2s-controller-3d-without-components-top-2026-08-10.png`
+- `rein-2s-controller-3d-without-components-bottom-2026-08-10.png`
 
 Render command (reproducible):
 
@@ -68,15 +71,15 @@ kicad-cli pcb render \
 	--zoom 1.35 \
 	--rotate "-35,0,25" \
 	--side top \
-	--output electronics/kicad/rein3/antweight-controller-v2-3d-with-components-top-2026-08-10.png \
-	electronics/kicad/rein3/antweight-controller-v2.kicad_pcb
+	--output electronics/kicad/rein3-2s/rein-2s-controller-3d-with-components-top-2026-08-10.png \
+	electronics/kicad/rein3-2s/rein-2s-controller.kicad_pcb
 ```
 
 Render both sides without components (temporary footprint-stripped board):
 
 ```bash
-PCB="electronics/kicad/rein3/antweight-controller-v2.kicad_pcb"
-TMP="electronics/kicad/rein3/antweight-controller-v2-no-components.tmp.kicad_pcb"
+PCB="electronics/kicad/rein3-2s/rein-2s-controller.kicad_pcb"
+TMP="electronics/kicad/rein3-2s/rein-2s-controller-no-components.tmp.kicad_pcb"
 
 perl -ne '
 sub balance { my ($s)=@_; my $o=()=$s=~/\(/g; my $c=()=$s=~/\)/g; return $o-$c; }
@@ -95,7 +98,7 @@ for side in top bottom; do
 		--zoom 1.35 \
 		--rotate "-35,0,25" \
 		--side "$side" \
-		--output "electronics/kicad/rein3/antweight-controller-v2-3d-without-components-${side}-2026-08-10.png" \
+		--output "electronics/kicad/rein3-2s/rein-2s-controller-3d-without-components-${side}-2026-08-10.png" \
 		"$TMP"
 done
 

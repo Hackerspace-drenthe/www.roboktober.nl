@@ -1,0 +1,36 @@
+** Drc report for rein-2s-controller.kicad_pcb **
+** Created on 2026-08-10T15:48:27+0200 **
+** Report includes: Errors, Warnings **
+
+** Found 7 DRC violations **
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(46,5620 mm, 34,0430 mm): Rectangle on b.silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(47,2830 mm, 34,0430 mm): Rectangle on b.silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(47,2830 mm, 35,4830 mm): Rectangle on b.silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(47,2830 mm, 36,2040 mm): Rectangle on b.silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(47,2830 mm, 36,9240 mm): Rectangle on b.silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(47,2830 mm, 37,6440 mm): Rectangle on b.silkscreen
+[via_dangling]: Via is not connected or connected on only one layer
+    Local override; warning
+    @(43,0000 mm, 71,0000 mm): Via [GND] on F.Cu - B.Cu
+
+** Found 1 unconnected pads **
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(27,0000 mm, 64,0000 mm): Track [VBAT_SW] on F.Cu, length 3,6600 mm
+    @(26,9600 mm, 68,5000 mm): PTH pad 1 [VBAT_SW] of U3
+
+** Found 0 Footprint errors **
+
+** End of Report **
