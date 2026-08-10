@@ -13,6 +13,41 @@ Deze map bevat de gedeelde elektronica-informatie voor de Roboktober antweight-b
 
 De 2S-voedingsvariant is apart gespecificeerd in `schema/electrical-design-v2-2s.md`, met bedrading in `wiring/antweight-controller-v2-2s.md` en een eigen `components/BOM-v2-2s.csv`. Deze variant heeft nog geen vrijgegeven PCB; het bestaande v2-board blijft uitsluitend voor 1S.
 
+## Fallback scenario bij PCB-vertraging
+
+Als de PCB niet op tijd vrijgegeven en getest is, schakelt het project over op handmatige bedrading en solderen.
+
+Go/no-go beslismoment:
+- 1 maand voor het event.
+
+Go-criterium (PCB-pad blijft actief):
+- PCB is elektrisch en mechanisch gevalideerd.
+- Kritieke DRC/ERC blockers zijn opgelost.
+- Minimaal een werkend praktijkprototype is stabiel onder belasting.
+
+No-go-criterium (fallback activeren):
+- Geen stabiel praktijkprototype beschikbaar.
+- Open kritieke blockers op voeding, motorsturing of connector-layout.
+- Productie- of levertijd van PCB haalt de eventplanning niet.
+
+Fallback-uitvoering (handmatige wiring):
+1. Gebruik de actuele pin-definitions en wiring-docs als bron van waarheid.
+2. Bouw volgens de bestaande 1S/2S bedradingsinstructies.
+3. Soldeer en test modulair: voeding, MCU, driver, dan motoruitgangen.
+4. Test eerst met stroombegrensde voeding en zonder gemonteerde motoren.
+5. Leg afwijkingen of workarounds direct vast in de wiring-documentatie.
+
+Minimale materialen-check voor fallback:
+- ESP32-C3 modules
+- DRV8833 modules
+- bekabeling, connectoren, krimpkous
+- zekeringen/stroombegrenzing voor bench-test
+- reservecomponenten voor rework
+
+Publicatiestatus:
+- KiCad updates mogen gepubliceerd worden voor review/samenwerking.
+- Tot vrijgave blijven ze development-only en niet productie-klaar.
+
 ## Reference design
 
 Het huidige (en enige) ontwerp gebruikt:
@@ -26,6 +61,11 @@ Het huidige (en enige) ontwerp gebruikt:
 Zie `firmware/roboktober-controller-v2/README.md` voor gedrag en compilatie, en `schema/electrical-design-v2.md` voor release blockers.
 
 ## KiCad
+
+Status van recente KiCad-updates:
+- Publicatie toegestaan voor samenwerking en review.
+- Huidige updates zijn in development stage en nog niet werkend.
+- Niet gebruiken als release- of productieontwerp.
 
 Open `kicad/antweight-controller-v2/antweight-controller-v2.kicad_pro` met KiCad 9 of nieuwer. Het schema is als een door KiCad 9 leesbaar legacybestand opgenomen; dit houdt het pincontract controleerbaar zolang de definitieve leveranciersfootprint nog niet is gekozen.
 

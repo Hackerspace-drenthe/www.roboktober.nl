@@ -173,3 +173,56 @@ composer test
 ```bash
 composer dev
 ```
+
+## Testing policy (lokaal/CI vs productie)
+
+- Volledige test-suites horen in lokale dev en CI te draaien.
+- Productiehosts zijn primair voor runtime- en smoke-verificatie, niet voor volledige dev test-tooling.
+- Aanbevolen minimale productiechecks na deploy:
+	- `GET /api/v1/posts`
+	- kritieke frontend route laden
+	- SMTP smoke check (zie runbook hieronder)
+
+## Operations quick runbook (productie)
+
+### 1. SMTP verificatie
+
+Gebruik dezelfde Laravel app-context voor een realistische test:
+
+```bash
+cd /var/www/www.roboktober.nl/roboktober-api
+PHP_BIN="$(command -v php8.6 || command -v php8.5 || command -v php8.4 || command -v php8.3 || command -v php)"
+$PHP_BIN -r 'require __DIR__."/vendor/autoload.php"; $app=require __DIR__."/bootstrap/app.php"; $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap(); try { Illuminate\Support\Facades\Mail::raw("SMTP smoke", function($m){ $m->to(config("mail.from.address"))->subject("SMTP smoke");}); echo "MAIL_OK\n"; } catch (Throwable $e) { echo "MAIL_ERR: ".$e->getMessage()."\n"; }'
+```
+
+Verwachte output:
+- `MAIL_OK`
+
+Bij fouten:
+- controleer `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_FROM_ADDRESS`
+- refresh config cache:
+
+```bash
+$PHP_BIN artisan config:clear
+$PHP_BIN artisan config:cache
+```
+
+### 2. Database backup (voor mutaties)
+
+```bash
+cd /var/www/www.roboktober.nl/roboktober-api
+mkdir -p storage/backups
+TS="$(date +%Y%m%d_%H%M%S)"
+mysqldump --single-transaction --quick --routines --triggers --events \
+	-h "$DB_HOST" -P "$DB_PORT" -u "$DB_USERNAME" -p"$DB_PASSWORD" "$DB_DATABASE" \
+	| gzip > "storage/backups/roboktober_${TS}.sql.gz"
+ls -lh "storage/backups/roboktober_${TS}.sql.gz"
+```
+
+### 3. Veilige data cleanup flow
+
+1. Dry-run met aantallen en voorbeelden.
+2. Team-confirmatie op exacte scope.
+3. Uitvoering in veilige delete-volgorde.
+4. After-check met before/after aantallen.
+5. Resultaat loggen in release notes of operationele changelog.

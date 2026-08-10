@@ -13,17 +13,11 @@ const heroStyle = {
 
 const editie = ref<Edition | null>(null)
 const programmaItems = ref<ProgrammaItem[]>([])
-const mapCoords = ref<{ lat: number; lon: number } | null>(null)
 const loading = ref(false)
 const error = ref('')
 const auth = useAuth()
 const joinCtaPath = computed(() => (auth.isAuthenticated.value ? '/aanmelden' : '/registreren'))
 const joinCtaLabel = computed(() => (auth.isAuthenticated.value ? 'Aanmelden' : 'Maak account aan en meld je aan'))
-
-function editieOsmUrl(item: Edition | null): string | null {
-  const value = item?.location?.osm_url
-  return typeof value === 'string' && value.trim() !== '' ? value.trim() : null
-}
 
 function editieLocatieZoektekst(item: Edition | null): string {
   if (!item?.location) {
@@ -86,64 +80,6 @@ const gegroepeerdeItems = computed(() => {
   }))
 })
 
-async function geocodeLocatie(locatie: string): Promise<void> {
-  mapCoords.value = null
-
-  try {
-    const response = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(locatie)}`,
-    )
-
-    if (!response.ok) {
-      return
-    }
-
-    const payload = await response.json() as Array<{ lat?: string; lon?: string }>
-    const lat = Number(payload[0]?.lat)
-    const lon = Number(payload[0]?.lon)
-
-    if (Number.isFinite(lat) && Number.isFinite(lon)) {
-      mapCoords.value = { lat, lon }
-    }
-  } catch {
-    mapCoords.value = null
-  }
-}
-
-function extractNodeId(osmUrl: string): string | null {
-  const match = osmUrl.match(/\/node\/(\d+)/)
-  return match?.[1] ?? null
-}
-
-async function geocodeOsmNodeUrl(osmUrl: string): Promise<void> {
-  const nodeId = extractNodeId(osmUrl)
-
-  if (!nodeId) {
-    return
-  }
-
-  try {
-    const response = await fetch(`https://www.openstreetmap.org/api/0.6/node/${nodeId}.json`)
-
-    if (!response.ok) {
-      return
-    }
-
-    const payload = await response.json() as {
-      elements?: Array<{ lat?: number; lon?: number }>
-    }
-
-    const lat = Number(payload.elements?.[0]?.lat)
-    const lon = Number(payload.elements?.[0]?.lon)
-
-    if (Number.isFinite(lat) && Number.isFinite(lon)) {
-      mapCoords.value = { lat, lon }
-    }
-  } catch {
-    // Keep fallback behavior if node lookup fails.
-  }
-}
-
 function formatDatum(iso: string | null): string {
   if (!iso) {
     return 'Datum volgt'
@@ -189,45 +125,36 @@ function formatTijdRange(start: string, end: string | null): string {
 }
 
 const mapEmbedUrl = computed(() => {
-  if (!mapCoords.value) {
+  const query = editieLocatieZoektekst(editie.value)
+
+  if (!query) {
     return ''
   }
 
-  const lat = mapCoords.value.lat
-  const lon = mapCoords.value.lon
-  const delta = 0.01
-  const left = lon - delta
-  const right = lon + delta
-  const top = lat + delta
-  const bottom = lat - delta
-
-  return `https://www.openstreetmap.org/export/embed.html?bbox=${left}%2C${bottom}%2C${right}%2C${top}&layer=mapnik&marker=${lat}%2C${lon}`
+  return `https://maps.google.com/maps?q=${encodeURIComponent(query)}&t=&z=15&ie=UTF8&iwloc=&output=embed`
 })
 
 const mapFallbackUrl = computed(() => {
-  if (!editie.value) {
-    return 'https://www.openstreetmap.org'
-  }
-
-  const osmUrl = editieOsmUrl(editie.value)
-  if (osmUrl) {
-    return osmUrl
-  }
-
-  return `https://www.openstreetmap.org/search?query=${encodeURIComponent(editieLocatieZoektekst(editie.value))}`
+  const query = editieLocatieZoektekst(editie.value)
+  return query ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}` : 'https://www.google.com/maps'
 })
 
-async function openRouteInOpenStreetMap(): Promise<void> {
+async function openRouteInGoogleMaps(): Promise<void> {
   if (!editie.value) {
     return
   }
 
-  if (!mapCoords.value || !('geolocation' in navigator)) {
+  const destinationQuery = editieLocatieZoektekst(editie.value)
+
+  if (!destinationQuery) {
+    window.open('https://www.google.com/maps', '_blank', 'noopener,noreferrer')
+    return
+  }
+
+  if (!('geolocation' in navigator)) {
     window.open(mapFallbackUrl.value, '_blank', 'noopener,noreferrer')
     return
   }
-
-  const destination = `${mapCoords.value.lat},${mapCoords.value.lon}`
 
   const currentPosition = await new Promise<GeolocationPosition | null>((resolve) => {
     navigator.geolocation.getCurrentPosition(
@@ -243,7 +170,7 @@ async function openRouteInOpenStreetMap(): Promise<void> {
   }
 
   const origin = `${currentPosition.coords.latitude},${currentPosition.coords.longitude}`
-  const routeUrl = `https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=${encodeURIComponent(`${origin};${destination}`)}`
+  const routeUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destinationQuery)}&travelmode=driving`
   window.open(routeUrl, '_blank', 'noopener,noreferrer')
 }
 
@@ -257,18 +184,6 @@ onMounted(async () => {
 
     if (editie.value) {
       programmaItems.value = await getEditionProgrammaItems(editie.value.id)
-    }
-
-    const geocodeQuery = editieLocatieZoektekst(editie.value)
-    if (geocodeQuery) {
-      await geocodeLocatie(geocodeQuery)
-    }
-
-    if (!mapCoords.value) {
-      const osmUrl = editieOsmUrl(editie.value)
-      if (osmUrl) {
-        await geocodeOsmNodeUrl(osmUrl)
-      }
     }
   } catch {
     error.value = 'Programma-informatie laden mislukt.'
@@ -300,9 +215,9 @@ onMounted(async () => {
             type="button"
             class="rounded-lg bg-robo-orange px-4 py-2 text-sm font-bold text-white transition hover:bg-robo-orange-dark"
             :disabled="!editie"
-            @click="openRouteInOpenStreetMap"
+            @click="openRouteInGoogleMaps"
           >
-            Open route in OpenStreetMap
+            Open route in Google Maps
           </button>
         </div>
 
@@ -321,7 +236,7 @@ onMounted(async () => {
           />
         </div>
         <div v-else class="rounded-xl border border-slate-300 bg-white p-6 text-slate-700">
-          Kaart laden is niet gelukt. Gebruik de routeknop om de locatie direct in OpenStreetMap te openen.
+          Kaart laden is niet gelukt. Gebruik de routeknop om de locatie direct in Google Maps te openen.
         </div>
       </div>
     </section>

@@ -22,6 +22,9 @@ Deze checklist is gericht op de huidige repository-structuur:
    - npm run lint:check
    - npm run type-check
    - npm run test:unit
+5. Bepaal expliciet de PHP binary voor serverstappen (voorkomt extension/runtime mismatch):
+   - PHP_BIN="$(command -v php8.6 || command -v php8.5 || command -v php8.4 || command -v php8.3 || command -v php)"
+   - $PHP_BIN -v
 
 ## 2. Staging Deploy
 
@@ -49,13 +52,14 @@ Of volledig via deploy.env zonder inline variabelen:
    - npm run build
 6. Laravel app optimaliseren:
    - cd ../roboktober-api
-   - php artisan migrate --force
-   - php artisan optimize:clear
-   - php artisan config:cache
-   - php artisan route:cache
-   - php artisan view:cache
+   - PHP_BIN="$(command -v php8.6 || command -v php8.5 || command -v php8.4 || command -v php8.3 || command -v php)"
+   - $PHP_BIN artisan migrate --force
+   - $PHP_BIN artisan optimize:clear
+   - $PHP_BIN artisan config:cache
+   - $PHP_BIN artisan route:cache
+   - $PHP_BIN artisan view:cache
 7. Herstart queue workers:
-   - php artisan queue:restart
+   - $PHP_BIN artisan queue:restart
 8. Controleer basis-endpoints:
    - curl -i https://<staging-host>/api/v1/posts
    - open https://<staging-host>/app/programma
@@ -82,6 +86,11 @@ Let op:
    - SPA: /app/programma
    - Auth route: /app/aanmelden
    - Admin redirect/guard: /app/admin/users
+5. Verifieer mailtransport (SMTP) expliciet:
+   - cd roboktober-api
+   - PHP_BIN="$(command -v php8.6 || command -v php8.5 || command -v php8.4 || command -v php8.3 || command -v php)"
+   - $PHP_BIN -r 'require __DIR__."/vendor/autoload.php"; $app=require __DIR__."/bootstrap/app.php"; $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap(); try { Illuminate\Support\Facades\Mail::raw("Deploy SMTP smoke", function($m){ $m->to(config("mail.from.address"))->subject("Deploy SMTP smoke");}); echo "MAIL_OK\n"; } catch (Throwable $e) { echo "MAIL_ERR: ".$e->getMessage()."\n"; }'
+   - Verwacht resultaat: `MAIL_OK`
 
 ## 4. Post-Deploy Verificatie
 
@@ -96,6 +105,8 @@ Let op:
    - Login/logout
    - Programma pagina laden
    - Nieuws API laden
+5. Controleer dat er geen recente SMTP errors loggen:
+   - tail -n 120 roboktober-api/storage/logs/laravel.log | grep -Ei 'smtp|mailer|authentication required|failed to authenticate|connection could not be established' || echo 'NO_RECENT_SMTP_ERRORS'
 
 ## 5. Rollback Plan
 
@@ -122,3 +133,5 @@ Let op:
    - roboktober-api/storage
    - roboktober-api/bootstrap/cache
    - roboktober-api/storage/app/public/team-fotos
+5. Voor elke destructieve data-operatie (delete/truncate) eerst een DB-backup maken en pad noteren in change-log.
+6. Volledige test-suites draaien lokaal/CI; productiehost is bedoeld voor smoke- en runtime-verificatie.

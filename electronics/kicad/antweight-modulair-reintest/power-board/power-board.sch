@@ -1,0 +1,205 @@
+EESchema Schematic File Version 4
+LIBS:power
+LIBS:device
+LIBS:Connector_Generic
+LIBS:Switch
+EELAYER 29 0
+EELAYER END
+$Descr A4 11693 8268
+Sheet 1 1
+Title "Antweight Modular Power Board"
+Date "2026-08-08"
+Rev "0.2"
+Comp "Hackerspace Drenthe"
+Comment1 "Bottom board: 2S input, switching and rail generation only"
+Comment2 "Interchangeable power stage for future 1S or 2S variants"
+$EndDescr
+$Comp
+L Connector_Generic:Conn_01x02 J1
+U 1 1 31000001
+P 1900 2200
+F 0 "J1" H 1980 2192 50 0000 L CNN
+F 1 "BATTERY_2S" H 1980 2101 50 0000 L CNN
+F 2 "JST_PH_BATTERY" H 1900 2200 50 0001 C CNN
+	1    1900 2200
+	1    0    0    -1
+$EndComp
+$Comp
+L Switch:SW_SPST SW1
+U 1 1 31000002
+P 3150 2200
+F 0 "SW1" H 3150 2435 50 0000 C CNN
+F 1 "MAIN_POWER" H 3150 2344 50 0000 C CNN
+F 2 "SWITCH_VERIFY" H 3150 2200 50 0001 C CNN
+	1    3150 2200
+	1    0    0    -1
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x04 J2
+U 1 1 31000003
+P 5000 1950
+F 0 "J2" H 5080 1942 50 0000 L CNN
+F 1 "BUCK_6V_MOTOR" H 5080 1851 50 0000 L CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical" H 5000 1950 50 0001 C CNN
+	1    5000 1950
+	1    0    0    -1
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x04 J3
+U 1 1 31000004
+P 5000 2850
+F 0 "J3" H 5080 2842 50 0000 L CNN
+F 1 "BUCK_3V5_CPU" H 5080 2751 50 0000 L CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical" H 5000 2850 50 0001 C CNN
+	1    5000 2850
+	1    0    0    -1
+$EndComp
+$Comp
+L Connector_Generic:Conn_02x04_Odd_Even J7
+U 1 1 31000008
+P 7000 4450
+F 0 "J7" H 7050 4767 50 0000 C CNN
+F 1 "STACK_TO_CPU_DRV" H 7050 4676 50 0000 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_2x04_P2.54mm_Vertical" H 7000 4450 50 0001 C CNN
+	1    7000 4450
+	1    0    0    -1
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x03 J8
+U 1 1 31000009
+P 9550 4450
+F 0 "J8" H 9630 4492 50 0000 L CNN
+F 1 "AUX_POWER" H 9630 4401 50 0000 L CNN
+F 2 "ACCESSORY_POWER_1X03_UNPOPULATED" H 9550 4450 50 0001 C CNN
+	1    9550 4450
+	1    0    0    -1
+$EndComp
+$Comp
+L Device:C C1
+U 1 1 3100000A
+P 8100 2250
+F 0 "C1" H 8215 2296 50 0000 L CNN
+F 1 "100nF" H 8215 2205 50 0000 L CNN
+F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm" H 8100 2250 50 0001 C CNN
+	1    8100 2250
+	1    0    0    -1
+$EndComp
+$Comp
+L Device:C_Polarized C2
+U 1 1 3100000B
+P 8700 2250
+F 0 "C2" H 8818 2296 50 0000 L CNN
+F 1 "220uF/16V" H 8818 2205 50 0000 L CNN
+F 2 "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm" H 8700 2250 50 0001 C CNN
+	1    8700 2250
+	1    0    0    -1
+$EndComp
+Wire Wire Line
+	1700 2200 1200 2200
+Text Label 1250 2200 0 50 ~ 0
+VBAT_2S_RAW
+Wire Wire Line
+	1700 2300 1200 2300
+Text Label 1250 2300 0 50 ~ 0
+GND
+Wire Wire Line
+	2950 2200 2550 2200
+Text Label 2600 2200 0 50 ~ 0
+VBAT_2S_RAW
+Wire Wire Line
+	3350 2200 3900 2200
+Text Label 3450 2200 0 50 ~ 0
+VBAT_2S_SW
+Wire Wire Line
+	4800 1850 4100 1850
+Text Label 4200 1850 0 50 ~ 0
+VBAT_2S_SW
+Wire Wire Line
+	4800 1950 4100 1950
+Text Label 4200 1950 0 50 ~ 0
+GND
+Wire Wire Line
+	4800 2050 4100 2050
+Text Label 4200 2050 0 50 ~ 0
+VMOTOR_6V
+Wire Wire Line
+	4800 2150 4100 2150
+Text Label 4200 2150 0 50 ~ 0
+GND
+Wire Wire Line
+	4800 2750 4100 2750
+Text Label 4200 2750 0 50 ~ 0
+VBAT_2S_SW
+Wire Wire Line
+	4800 2850 4100 2850
+Text Label 4200 2850 0 50 ~ 0
+GND
+Wire Wire Line
+	4800 2950 4100 2950
+Text Label 4200 2950 0 50 ~ 0
+VCPU_3V5
+Wire Wire Line
+	4800 3050 4100 3050
+Text Label 4200 3050 0 50 ~ 0
+GND
+Wire Wire Line
+	6800 4250 6100 4250
+Text Label 6150 4250 0 50 ~ 0
+VCPU_3V5
+Wire Wire Line
+	7300 4250 7900 4250
+Text Label 7350 4250 0 50 ~ 0
+GND
+Wire Wire Line
+	6800 4350 6100 4350
+Text Label 6150 4350 0 50 ~ 0
+VMOTOR_6V
+Wire Wire Line
+	7300 4350 7900 4350
+Text Label 7350 4350 0 50 ~ 0
+GND
+Wire Wire Line
+	6800 4450 6100 4450
+Text Label 6150 4450 0 50 ~ 0
+VCPU_3V5
+Wire Wire Line
+	7300 4450 7900 4450
+Text Label 7350 4450 0 50 ~ 0
+GND
+Wire Wire Line
+	6800 4550 6100 4550
+Text Label 6150 4550 0 50 ~ 0
+VMOTOR_6V
+Wire Wire Line
+	7300 4550 7900 4550
+Text Label 7350 4550 0 50 ~ 0
+GND
+Wire Wire Line
+	9350 4350 8700 4350
+Text Label 8750 4350 0 50 ~ 0
+VCPU_3V5
+Wire Wire Line
+	9350 4450 8700 4450
+Text Label 8750 4450 0 50 ~ 0
+GND
+Wire Wire Line
+	9350 4550 8700 4550
+Text Label 8750 4550 0 50 ~ 0
+VMOTOR_6V
+Wire Wire Line
+	8100 2100 8100 1950
+Wire Wire Line
+	8100 2400 8100 2550
+Text Label 8150 1950 0 50 ~ 0
+VMOTOR_6V
+Text Label 8150 2550 0 50 ~ 0
+GND
+Wire Wire Line
+	8700 2100 8700 1950
+Wire Wire Line
+	8700 2400 8700 2550
+Text Label 8750 1950 0 50 ~ 0
+VCPU_3V5
+Text Label 8750 2550 0 50 ~ 0
+GND
+$EndSCHEMATC

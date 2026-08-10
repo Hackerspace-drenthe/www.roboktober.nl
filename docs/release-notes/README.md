@@ -6,6 +6,7 @@ Deze map bevat release notes en korte functionele updates. De huidige notitie is
 
 - [2026-07-08](2026-07-08.md) - account-first auth, editor UX, governance en 2FA-update.
 - [2026-07-22](2026-07-22.md) - frontend tests opnieuw geverifieerd; backend toolingblokker vastgelegd.
+- [2026-08-10](2026-08-10.md) - SMTP fix + validatie, productie cleanup, backup en lokale teststatus groen.
 
 ## Richtlijn
 
