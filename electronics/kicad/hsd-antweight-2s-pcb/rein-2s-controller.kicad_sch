@@ -3225,7 +3225,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "BATTERY_1S"
+		(property "Value" "BATTERY_2S_7V4"
 			(at 223.012 64.7446 0)
 			(effects
 				(font

@@ -4,7 +4,7 @@
 "J1","ESP32-C3_LEFT","","1",""
 "J2","ESP32-C3_RIGHT","","1",""
 "J3","DRV8833_BREAKOUT","","1",""
-"J4","BATTERY_1S","","1",""
+"J4","BATTERY_2S_7V4","","1",""
 "J5","MOTOR_LEFT","","1",""
 "J6","MOTOR_RIGHT","","1",""
 "J7","3V3_BUCK_BOOST","","1",""

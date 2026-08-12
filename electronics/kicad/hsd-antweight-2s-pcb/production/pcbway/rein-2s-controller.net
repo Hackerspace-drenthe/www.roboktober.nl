@@ -86,7 +86,7 @@
       (sheetpath (names "/") (tstamps "/"))
       (tstamps "00000000-0000-0000-0000-000020000003"))
     (comp (ref "J4")
-      (value "BATTERY_1S")
+      (value "BATTERY_2S_7V4")
       (fields
         (field (name "Footprint"))
         (field (name "Datasheet"))

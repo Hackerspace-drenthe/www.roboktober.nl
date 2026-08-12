@@ -83,7 +83,7 @@ const bouwStappen: BouwStap[] = [
     duur: '30-50 min',
     afbeelding: stap3Image,
     alt: 'Bedradingsschema met motordriver, accu en schakelaar voor een antweight robot',
-    materialen: ['DRV8833 of TB6612FNG', '1S LiPo', 'Silicone draad 24AWG', 'Aan/uit schakelaar'],
+    materialen: ['DRV8833 of TB6612FNG', '2S LiPo 7,4 V (8,4 V volgeladen)', 'Silicone draad 24AWG', 'Aan/uit schakelaar'],
     acties: [
       'Verbind elke motor met een eigen output van de motordriver.',
       'Plaats de schakelaar tussen accu plus en driver voedingsingang.',
@@ -285,12 +285,12 @@ const actieVideos: VideoItem[] = [
               </tr>
               <tr class="hover:bg-slate-50">
                 <td class="px-4 py-3 font-semibold text-robo-dark">LiPo accu</td>
-                <td class="px-4 py-3 text-slate-600">1S 3,7 V · 500 mAh · 30C+</td>
+                <td class="px-4 py-3 text-slate-600">2S 7,4 V (8,4 V volgeladen) · 500 mAh · 30C+</td>
                 <td class="px-4 py-3 text-slate-600">1×</td>
                 <td class="px-4 py-3 text-slate-700">€3 – €6</td>
                 <td class="px-4 py-3">
                   <a
-                    href="https://www.aliexpress.com/w/wholesale-1s-lipo-battery-500mah-30c.html"
+                    href="https://www.aliexpress.com/w/wholesale-2s-lipo-battery-500mah-30c.html"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="text-robo-orange underline hover:text-robo-orange-dark"
@@ -298,11 +298,11 @@ const actieVideos: VideoItem[] = [
                 </td>
                 <td class="px-4 py-3">
                   <a
-                    href="https://www.gensace.de/lipo-batteries/1s.html"
+                    href="https://www.gensace.de/lipo-batteries/2s.html"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="text-robo-orange underline hover:text-robo-orange-dark"
-                  >Gens Ace 1S LiPo<span class="sr-only"> (opent in nieuw venster)</span></a>
+                  >Gens Ace 2S LiPo 7,4 V<span class="sr-only"> (opent in nieuw venster)</span></a>
                 </td>
               </tr>
               <tr class="hover:bg-slate-50">
@@ -383,7 +383,7 @@ const actieVideos: VideoItem[] = [
                   Afstandsbediening
                   <span class="ml-1 rounded bg-slate-100 px-1.5 py-0.5 text-xs font-normal text-slate-500">optie A</span>
                 </td>
-                <td class="px-4 py-3 text-slate-600">ESP32-C3 + 1S LiPo + joystick/knopjes + behuizing</td>
+                <td class="px-4 py-3 text-slate-600">ESP32-C3 + 2S LiPo 7,4 V (8,4 V volgeladen) + joystick/knopjes + behuizing</td>
                 <td class="px-4 py-3 text-slate-600">1×</td>
                 <td class="px-4 py-3 text-slate-700">€5 – €10</td>
                 <td class="px-4 py-3">

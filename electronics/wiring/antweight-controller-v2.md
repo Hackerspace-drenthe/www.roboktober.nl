@@ -1,4 +1,4 @@
-# Antweight controller v2 wiring (archived 1S reference)
+# Antweight controller v2 wiring (archived legacy reference)
 
 This wiring guide is archived and retained only as historical context.
 
@@ -11,4 +11,4 @@ Related active design references:
 - `electronics/schema/electrical-design-v2-2s.md`
 - `electronics/kicad/hsd-antweight-2s-pcb/README.md`
 
-Do not use this archived 1S file for new builds.
+Do not use this archived legacy file for new builds.

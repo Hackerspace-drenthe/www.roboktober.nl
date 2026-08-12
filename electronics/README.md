@@ -10,7 +10,7 @@ antweight-builds.
 - `pin-definitions/`: logisch pincontract en controlepunten voor modules.
 - `wiring/`: bedradingsinstructies voor bouw en foutzoeken.
 - `schema/`: elektrische ontwerpkeuzes en netspecificatie.
-- `kicad/antweight-controller-v2/`: historische 1S KiCad-projectmap
+- `kicad/antweight-controller-v2/`: historische legacy KiCad-projectmap
   (gearchiveerd).
 - `kicad/hsd-antweight-2s-pcb/`: actuele 2S KiCad-projectmap met externe
   voedingsinterfaces.
@@ -21,7 +21,7 @@ Er is nog maar één actief ontwerp in deze repository:
 - 2S wiring: `wiring/antweight-controller-v2-2s.md`
 - 2S PCB: `kicad/hsd-antweight-2s-pcb/`
 
-De oude 1S-documenten blijven alleen als archiefreferentie bestaan.
+De oude legacy-documenten blijven alleen als archiefreferentie bestaan.
 
 De bijbehorende PCB staat in `kicad/hsd-antweight-2s-pcb/` en is
 proto-ready voor PCBWay 2-layer fabricage.

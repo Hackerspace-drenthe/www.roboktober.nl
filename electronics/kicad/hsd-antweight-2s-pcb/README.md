@@ -13,7 +13,7 @@ Current board silk details:
 The schematic is documented and the PCB is now proto-ready for
 PCBWay 2-layer fabrication.
 
-This folder diverges from the archived 1S board layout by externalizing
+This folder diverges from the archived legacy board layout by externalizing
 the power path:
 
 - `SW1` is a 2-pin external switch header (`VBAT_RAW` <-> `VBAT_SW`).
