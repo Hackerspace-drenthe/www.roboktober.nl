@@ -15,13 +15,19 @@ antweight-builds.
 - `kicad/hsd-antweight-2s-pcb/`: actuele 2S KiCad-projectmap met externe
   voedingsinterfaces.
 
-De 2S-voedingsvariant is apart gespecificeerd in
-`schema/electrical-design-v2-2s.md`, met bedrading in
-`wiring/antweight-controller-v2-2s.md` en een eigen
-`components/BOM-v2-2s.csv`.
+Er is nog maar één actief ontwerp in deze repository:
 
-De bijbehorende PCB staat in `kicad/hsd-antweight-2s-pcb/` en blijft
-voorlopig development-only (nog niet productie-vrijgegeven).
+- 2S elektrisch contract: `schema/electrical-design-v2-2s.md`
+- 2S wiring: `wiring/antweight-controller-v2-2s.md`
+- 2S PCB: `kicad/hsd-antweight-2s-pcb/`
+
+De oude 1S-documenten blijven alleen als archiefreferentie bestaan.
+
+De bijbehorende PCB staat in `kicad/hsd-antweight-2s-pcb/` en is
+proto-ready voor PCBWay 2-layer fabricage.
+
+Deze vrijgave is bedoeld voor prototypes en validatie,
+niet voor massaproductie.
 
 ## Fallback scenario bij PCB-vertraging
 
@@ -47,7 +53,7 @@ No-go-criterium (fallback activeren):
 Fallback-uitvoering (handmatige wiring):
 
 1. Gebruik de actuele pin-definitions en wiring-docs als bron van waarheid.
-2. Bouw volgens de bestaande 1S/2S bedradingsinstructies.
+2. Bouw volgens de actieve 2S bedradingsinstructies.
 3. Soldeer en test modulair: voeding, MCU, driver, dan motoruitgangen.
 4. Test eerst met stroombegrensde voeding en zonder gemonteerde motoren.
 5. Leg afwijkingen of workarounds direct vast in de wiring-documentatie.
@@ -63,7 +69,10 @@ Minimale materialen-check voor fallback:
 Publicatiestatus:
 
 - KiCad updates mogen gepubliceerd worden voor review/samenwerking.
-- Tot vrijgave blijven ze development-only en niet productie-klaar.
+- De actuele 2S-print is proto-ready en mag voor proefseries worden
+  gebruikt.
+- Massaproductie blijft geblokkeerd totdat footprints en thermische
+  validatie definitief zijn vastgelegd.
 
 ## Reference design
 
@@ -73,25 +82,31 @@ Het huidige (en enige) ontwerp gebruikt:
 - een DRV8833-breakout zonder `nSLEEP`-pin (`IN1`-`IN4`, `VCC`, `GND`,
   `OUT1`-`OUT4`, `EEP` op `GND`, `ULT`/`FLT` onaangesloten);
 - GPIO5 is hierdoor spare/onaangesloten;
+- een externe spanningsomvormer via `U3` (`VIN`, `GND`, `VOUT=3V3`) voor
+  de logicarail;
+- standaard ESP-voeding: alleen `3V3`; `3V5` is geen geldige bedrijfsspanning
+  voor dit ontwerp;
 - de failsafe loopt via het nulzetten van de motor-PWM/digitale outputs
   (`stopMotors()`);
 - een ongeplaatste 2x6-uitbreidingsheader voor zeven vrije GPIO's,
   dubbele 3,3 V/GND en geschakelde accuspanning;
 - gereviewde firmware met afzenderfilter, packetvalidatie en een
   200 ms failsafe;
-- een placement-only KiCad-board totdat exacte leverancierfootprints en
-  gemeten motorstromen bekend zijn.
+- een proto-ready 2S KiCad-board met PCBWay releasepakket voor
+  validatie en proefseries.
 
 Zie `firmware/roboktober-controller-v2/README.md` voor gedrag en
-compilatie, en `schema/electrical-design-v2.md` voor release blockers.
+compilatie, en `schema/electrical-design-v2-2s.md` voor
+actuele release-eisen.
 
 ## KiCad
 
 Status van recente KiCad-updates:
 
 - Publicatie toegestaan voor samenwerking en review.
-- Huidige updates zijn in development stage en nog niet werkend.
-- Niet gebruiken als release- of productieontwerp.
+- Het actieve 2S-ontwerp is DRC-clean en ERC-error-clean.
+- Gebruik het huidige pakket als prototype-release, niet als
+  massaproductie-release.
 
 Open `kicad/hsd-antweight-2s-pcb/rein-2s-controller.kicad_pro` met
 KiCad 9 of nieuwer.
@@ -103,7 +118,8 @@ leveranciersfootprint nog niet is gekozen.
 Voer voor een release minimaal uit:
 
 ```bash
-kicad-cli sch erc kicad/hsd-antweight-2s-pcb/rein-2s-controller.sch
+kicad-cli sch erc --severity-error \
+  kicad/hsd-antweight-2s-pcb/rein-2s-controller.kicad_sch
 kicad-cli pcb drc kicad/hsd-antweight-2s-pcb/rein-2s-controller.kicad_pcb
 ```
 

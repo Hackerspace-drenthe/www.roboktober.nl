@@ -7,7 +7,7 @@ The purchased module has **no `nSLEEP` pin**. It exposes two rows of six pins at
 | 1 | `IN4` | `BIN2_GPIO10` | Right motor phase input 2 |
 | 2 | `IN3` | `BIN1_GPIO9` | Right motor phase input 1 |
 | 3 | `GND` | `GND` | Common return |
-| 4 | `VCC` | `VBAT_SW` | Switched 1S motor supply |
+| 4 | `VCC` | `VBAT_SW` | Switched raw 2S motor supply (6.0-8.4 V) |
 | 5 | `IN2` | `AIN2_GPIO6` | Left motor phase input 2 |
 | 6 | `IN1` | `AIN1_GPIO7` | Left motor phase input 1 |
 | 7 | `EEP` | `GND` | Exposed thermal/enable pad; tie to ground |
