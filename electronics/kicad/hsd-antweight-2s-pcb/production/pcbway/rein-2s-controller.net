@@ -1,7 +1,7 @@
 (export (version "E")
   (design
     (source "/home/rein/Projects/www.roboktober.nl/electronics/kicad/hsd-antweight-2s-pcb/rein-2s-controller.kicad_sch")
-    (date "2026-08-12T08:56:13+0200")
+    (date "2026-08-12T15:41:27+0200")
     (tool "Eeschema 9.0.8+dfsg-1")
     (sheet (number "1") (name "/") (tstamps "/")
       (title_block

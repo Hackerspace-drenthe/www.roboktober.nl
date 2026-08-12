@@ -5,7 +5,7 @@
       "Application": "Pcbnew",
       "Version": "9.0.8+dfsg-1"
     },
-    "CreationDate": "2026-08-12T08:56:12+02:00"
+    "CreationDate": "2026-08-12T15:42:00+02:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
@@ -32,27 +32,27 @@
   ],
   "FilesAttributes": [
     {
-      "Path": "rein-2s-controller-F_Cu.gbr",
+      "Path": "rein-2s-controller-F_Cu.gtl",
       "FileFunction": "Copper,L1,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "rein-2s-controller-B_Cu.gbr",
+      "Path": "rein-2s-controller-B_Cu.gbl",
       "FileFunction": "Copper,L2,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "rein-2s-controller-f_silkscreen.gbr",
+      "Path": "rein-2s-controller-f_silkscreen.gto",
       "FileFunction": "Legend,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "rein-2s-controller-b_silkscreen.gbr",
+      "Path": "rein-2s-controller-b_silkscreen.gbo",
       "FileFunction": "Legend,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "rein-2s-controller-Edge_Cuts.gbr",
+      "Path": "rein-2s-controller-Edge_Cuts.gm1",
       "FileFunction": "Profile",
       "FilePolarity": "Positive"
     }
