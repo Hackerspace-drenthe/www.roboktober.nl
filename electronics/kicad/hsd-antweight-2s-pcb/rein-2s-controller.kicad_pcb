@@ -391,7 +391,7 @@
 				)
 			)
 		)
-		(property "Value" "3V3 GND VBAT_SW"
+		(property "Value" "3V3 GND VLIPO"
 			(at 2.54 3 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -1813,6 +1813,17 @@
 		(uuid "8c7e8c8e-d8e4-4af2-b5f0-0c8efe659ead")
 	)
 	(gr_rect
+		(start 25.8 67.3)
+		(end 33.3 71.2)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.SilkS")
+		(uuid "f4d03dfd-2dc3-4e5f-82d7-dd4dbe03a57b")
+	)
+	(gr_rect
 		(start 14.02 16.75)
 		(end 60 83.75)
 		(stroke
@@ -1822,6 +1833,17 @@
 		(fill no)
 		(layer "Edge.Cuts")
 		(uuid "687e41f3-a509-4bb4-9090-4ea84c234e25")
+	)
+	(gr_text "HACKERSPACE"
+		(at 54.1 77.9 0)
+		(layer "F.SilkS")
+		(uuid "4a1d5c92-2d79-4d88-8d6f-98d6a7139e2d")
+		(effects
+			(font
+				(size 0.65 0.65)
+				(thickness 0.1)
+			)
+		)
 	)
 	(gr_text "M1A"
 		(at 18.5 52 0)
@@ -2131,6 +2153,28 @@
 			)
 		)
 	)
+	(gr_text "7V4"
+		(at 25.8 71.2 90)
+		(layer "F.SilkS")
+		(uuid "16620060-1662-4060-9662-006016620060")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(gr_text "GND"
+		(at 29.55 71.2 90)
+		(layer "F.SilkS")
+		(uuid "ac058711-ac05-4711-ac05-8711ac058711")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
 	(gr_text "AI1"
 		(at 30.32 47.75 90)
 		(layer "F.SilkS")
@@ -2175,7 +2219,18 @@
 			)
 		)
 	)
-	(gr_text "+8v"
+	(gr_text "3V3"
+		(at 33.3 71.2 90)
+		(layer "F.SilkS")
+		(uuid "3b456a89-3b45-4a89-bb45-6a893b456a89")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(gr_text "7V4"
 		(at 34.5 79 90)
 		(layer "F.SilkS")
 		(uuid "e232e783-527c-4807-9989-6016f7c65ec9")
@@ -2307,7 +2362,7 @@
 			)
 		)
 	)
-	(gr_text "VBAT"
+	(gr_text "VLIPO"
 		(at 47.5 79.5 90)
 		(layer "F.SilkS")
 		(uuid "792707e0-e472-4294-bebd-35dcc3759bda")
@@ -2315,6 +2370,40 @@
 			(font
 				(size 0.8 0.8)
 				(thickness 0.12)
+			)
+		)
+	)
+	(gr_text "DRENTHE"
+		(at 54.1 79 0)
+		(layer "F.SilkS")
+		(uuid "f0a6b0a8-1c7b-4b79-8f31-9a7d7f3b12d1")
+		(effects
+			(font
+				(size 0.9 0.9)
+				(thickness 0.12)
+			)
+		)
+	)
+	(gr_text "ROBOKTOBER.NL"
+		(at 47.5 83 0)
+		(layer "F.SilkS")
+		(uuid "7d20861f-7d20-461f-bd20-861f7d20861f")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "VREG 3V3"
+		(at 29.5 66.9 0)
+		(layer "F.SilkS")
+		(uuid "db0c9777-238f-41d7-9607-5ab8e3ab6e59")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
 			)
 		)
 	)

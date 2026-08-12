@@ -66,44 +66,28 @@ Contents:
 
 ## 3D render (current revision)
 
-Primary preview (with components, top side):
+Render images are stored in `renders/`.
+All renders in this folder are PCB-only (no external connectors, modules or capacitors).
 
-![Antweight controller v2 3D top render](rein-2s-controller-3d-with-components-top-2026-08-10.png)
+Primary preview (top overview, PCB-only):
 
-Render definitions:
+![Antweight controller v2 bare PCB top overview](renders/pcbway-bare-top-1-overview.png)
 
-- `with-components` is the assembly view with mounted board parts.
-- `without-components` is the PCB-only view.
+Generated artifacts (6 views):
 
-Motor mapping in assembly view:
-
-- right motor: `M1A` and `M1B` (`MOTOR R`);
-- left motor: `M2A` and `M2B` (`MOTOR L`).
-
-Generated artifacts:
-
-- `rein-2s-controller-3d-with-components-top-2026-08-10.png`
-- `rein-2s-controller-3d-without-components-top-2026-08-10.png`
-- `rein-2s-controller-3d-without-components-bottom-2026-08-10.png`
+- Top:
+  - `renders/pcbway-bare-top-1-overview.png`
+  - `renders/pcbway-bare-top-2-angle-left.png`
+  - `renders/pcbway-bare-top-3-angle-right.png`
+- Bottom:
+  - `renders/pcbway-bare-bottom-1-overview.png`
+  - `renders/pcbway-bare-bottom-2-angle-left.png`
+  - `renders/pcbway-bare-bottom-3-angle-right.png`
 
 Render command:
 
-```bash
-kicad-cli pcb render \
-  --width 2200 \
-  --height 1600 \
-  --background transparent \
-  --quality high \
-  --perspective \
-  --zoom 1.35 \
-  --rotate "-35,0,25" \
-  --side top \
-  --output \
-  electronics/kicad/hsd-antweight-2s-pcb/rein-2s-controller-3d-with-components-top-2026-08-10.png \
-  electronics/kicad/hsd-antweight-2s-pcb/rein-2s-controller.kicad_pcb
-```
-
-Render both sides without components:
+Settings below are tuned so the complete PCB (including holes, pads,
+traces and vias) stays visible in frame.
 
 ```bash
 PCB="electronics/kicad/hsd-antweight-2s-pcb/rein-2s-controller.kicad_pcb"
@@ -116,20 +100,97 @@ if ($skip) { $depth += balance($_); if ($depth <= 0) { $skip=0; } next; }
 print;
 ' "$PCB" > "$TMP"
 
-for side in top bottom; do
-  kicad-cli pcb render \
-    --width 2200 \
-    --height 1600 \
-    --background transparent \
-    --quality high \
-    --perspective \
-    --zoom 1.35 \
-    --rotate "-35,0,25" \
-    --side "$side" \
-    --output \
-    "electronics/kicad/hsd-antweight-2s-pcb/rein-2s-controller-3d-without-components-${side}-2026-08-10.png" \
-    "$TMP"
-done
+kicad-cli pcb render \
+  --width 3200 \
+  --height 2400 \
+  --background transparent \
+  --quality high \
+  --zoom 1.00 \
+  --rotate "0,0,0" \
+  --side top \
+  --output \
+  electronics/kicad/hsd-antweight-2s-pcb/renders/pcbway-bare-top-1-overview.png \
+  "$TMP"
+
+kicad-cli pcb render \
+  --width 3200 \
+  --height 2400 \
+  --background transparent \
+  --quality high \
+  --perspective \
+  --zoom 1.04 \
+  --rotate "-20,0,18" \
+  --side top \
+  --output \
+  electronics/kicad/hsd-antweight-2s-pcb/renders/pcbway-bare-top-2-angle-left.png \
+  "$TMP"
+
+kicad-cli pcb render \
+  --width 3200 \
+  --height 2400 \
+  --background transparent \
+  --quality high \
+  --perspective \
+  --zoom 1.04 \
+  --rotate "20,0,-18" \
+  --side top \
+  --output \
+  electronics/kicad/hsd-antweight-2s-pcb/renders/pcbway-bare-top-3-angle-right.png \
+  "$TMP"
+
+rm -f "$TMP"
+```
+
+Render bottom views (PCB-only):
+
+```bash
+PCB="electronics/kicad/hsd-antweight-2s-pcb/rein-2s-controller.kicad_pcb"
+TMP="electronics/kicad/hsd-antweight-2s-pcb/rein-2s-controller-no-components.tmp.kicad_pcb"
+
+perl -ne '
+sub balance { my ($s)=@_; my $o=()=$s=~/\(/g; my $c=()=$s=~/\)/g; return $o-$c; }
+if (!$skip && /\(footprint /) { $skip=1; $depth=balance($_); next; }
+if ($skip) { $depth += balance($_); if ($depth <= 0) { $skip=0; } next; }
+print;
+' "$PCB" > "$TMP"
+
+kicad-cli pcb render \
+  --width 3200 \
+  --height 2400 \
+  --background transparent \
+  --quality high \
+  --zoom 1.00 \
+  --rotate "0,0,0" \
+  --side bottom \
+  --output \
+  electronics/kicad/hsd-antweight-2s-pcb/renders/pcbway-bare-bottom-1-overview.png \
+  "$TMP"
+
+kicad-cli pcb render \
+  --width 3200 \
+  --height 2400 \
+  --background transparent \
+  --quality high \
+  --perspective \
+  --zoom 1.04 \
+  --rotate "-20,0,18" \
+  --side bottom \
+  --output \
+  electronics/kicad/hsd-antweight-2s-pcb/renders/pcbway-bare-bottom-2-angle-left.png \
+  "$TMP"
+
+kicad-cli pcb render \
+  --width 3200 \
+  --height 2400 \
+  --background transparent \
+  --quality high \
+  --perspective \
+  --zoom 1.04 \
+  --rotate "20,0,-18" \
+  --side bottom \
+  --output \
+  electronics/kicad/hsd-antweight-2s-pcb/renders/pcbway-bare-bottom-3-angle-right.png \
+  "$TMP"
 
 rm -f "$TMP"
 ```
