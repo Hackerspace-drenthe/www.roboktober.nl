@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "author": "Copilot",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-esp32-c3-devkitm-1",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_sleep",
+      "top": -110,
+      "left": 250,
+      "attrs": { "color": "yellow" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r_sleep",
+      "top": -86,
+      "left": 210,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_l1",
+      "top": -30,
+      "left": 250,
+      "attrs": { "color": "red" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r_l1",
+      "top": -6,
+      "left": 210,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_l2",
+      "top": 40,
+      "left": 250,
+      "attrs": { "color": "red" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r_l2",
+      "top": 64,
+      "left": 210,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_r1",
+      "top": 110,
+      "left": 250,
+      "attrs": { "color": "blue" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r_r1",
+      "top": 134,
+      "left": 210,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_r2",
+      "top": 180,
+      "left": 250,
+      "attrs": { "color": "blue" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r_r2",
+      "top": 204,
+      "left": 210,
+      "attrs": { "value": "220" }
+    }
+  ],
+  "connections": [
+    ["esp:5", "r_sleep:1", "green", []],
+    ["r_sleep:2", "led_sleep:A", "green", []],
+    ["led_sleep:C", "esp:GND.1", "black", []],
+
+    ["esp:7", "r_l1:1", "green", []],
+    ["r_l1:2", "led_l1:A", "green", []],
+    ["led_l1:C", "esp:GND.1", "black", []],
+
+    ["esp:6", "r_l2:1", "green", []],
+    ["r_l2:2", "led_l2:A", "green", []],
+    ["led_l2:C", "esp:GND.1", "black", []],
+
+    ["esp:9", "r_r1:1", "green", []],
+    ["r_r1:2", "led_r1:A", "green", []],
+    ["led_r1:C", "esp:GND.1", "black", []],
+
+    ["esp:10", "r_r2:1", "green", []],
+    ["r_r2:2", "led_r2:A", "green", []],
+    ["led_r2:C", "esp:GND.1", "black", []]
+  ]
+}

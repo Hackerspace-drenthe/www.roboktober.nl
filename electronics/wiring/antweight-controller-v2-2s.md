@@ -11,6 +11,8 @@ The 2S rail feeds the motor driver directly. Logic power comes from an external 
 | `GND` | DRV8833 GND, U3 `GND`, and ESP32 GND | Black |
 | U3 `VOUT` (`3V3`) | ESP32 3V3 and J10 3V3 | Orange |
 
+J10 pad 3 is electrically `VBAT_SW` but silk-labeled `VLIPO` on the PCB.
+
 Route the high-current battery/driver return directly to the battery-ground node. Join the logic-regulator ground at that node rather than carrying motor current through the ESP32 return path.
 
 ## Motor connections
@@ -53,3 +55,5 @@ Use an adjustable external converter only after confirming polarity and effectiv
 
 Standard for this design: keep U3 output at `3V3`. Do not run the ESP32 rail at
 `3V5` on this board revision.
+
+The PCB logo silk uses two lines: small `HACKERSPACE` over normal-size `DRENTHE`.

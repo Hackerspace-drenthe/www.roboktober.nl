@@ -3,6 +3,11 @@
 This KiCad 9 project is the current 2S-oriented board variant with
 externalized power interfaces.
 
+Current board silk details:
+
+- logo area: `HACKERSPACE` above `DRENTHE`
+- J10 pad 3 raw rail silk: `VLIPO` (electrically `VBAT_SW`)
+
 ## Status
 
 The schematic is documented and the PCB is now proto-ready for
@@ -91,11 +96,11 @@ traces and vias) stays visible in frame.
 
 ```bash
 PCB="electronics/kicad/hsd-antweight-2s-pcb/rein-2s-controller.kicad_pcb"
-TMP="electronics/kicad/hsd-antweight-2s-pcb/rein-2s-controller-no-components.tmp.kicad_pcb"
+TMP="electronics/kicad/hsd-antweight-2s-pcb/rein-2s-controller-no-3dmodels.tmp.kicad_pcb"
 
 perl -ne '
 sub balance { my ($s)=@_; my $o=()=$s=~/\(/g; my $c=()=$s=~/\)/g; return $o-$c; }
-if (!$skip && /\(footprint /) { $skip=1; $depth=balance($_); next; }
+if (!$skip && /\(model\s+/) { $skip=1; $depth=balance($_); next; }
 if ($skip) { $depth += balance($_); if ($depth <= 0) { $skip=0; } next; }
 print;
 ' "$PCB" > "$TMP"
@@ -145,11 +150,11 @@ Render bottom views (PCB-only):
 
 ```bash
 PCB="electronics/kicad/hsd-antweight-2s-pcb/rein-2s-controller.kicad_pcb"
-TMP="electronics/kicad/hsd-antweight-2s-pcb/rein-2s-controller-no-components.tmp.kicad_pcb"
+TMP="electronics/kicad/hsd-antweight-2s-pcb/rein-2s-controller-no-3dmodels.tmp.kicad_pcb"
 
 perl -ne '
 sub balance { my ($s)=@_; my $o=()=$s=~/\(/g; my $c=()=$s=~/\)/g; return $o-$c; }
-if (!$skip && /\(footprint /) { $skip=1; $depth=balance($_); next; }
+if (!$skip && /\(model\s+/) { $skip=1; $depth=balance($_); next; }
 if ($skip) { $depth += balance($_); if ($depth <= 0) { $skip=0; } next; }
 print;
 ' "$PCB" > "$TMP"

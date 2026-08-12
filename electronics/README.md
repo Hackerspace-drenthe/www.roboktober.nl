@@ -84,6 +84,8 @@ Het huidige (en enige) ontwerp gebruikt:
 - GPIO5 is hierdoor spare/onaangesloten;
 - een externe spanningsomvormer via `U3` (`VIN`, `GND`, `VOUT=3V3`) voor
   de logicarail;
+- J10 pad 3 is elektrisch `VBAT_SW` maar staat op de PCB-silk als `VLIPO`;
+- de logo-silk leest `HACKERSPACE` boven `DRENTHE`;
 - standaard ESP-voeding: alleen `3V3`; `3V5` is geen geldige bedrijfsspanning
   voor dit ontwerp;
 - de failsafe loopt via het nulzetten van de motor-PWM/digitale outputs

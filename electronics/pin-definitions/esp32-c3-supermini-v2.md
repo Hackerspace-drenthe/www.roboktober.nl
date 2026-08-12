@@ -57,7 +57,7 @@ J10 is a horizontal unpopulated 1x3 header below the DRV8833 and between the lef
 | ---: | --- | --- |
 | 1 | `3V3` | Regulated logic and sensor supply |
 | 2 | `GND` | Common return |
-| 3 | `VBAT_SW` | Switched raw 2S battery rail; up to 8.4 V |
+| 3 | `VBAT_SW` | Switched raw 2S battery rail; up to 8.4 V; silk label on J10 is `VLIPO` |
 
 Motor-control pins are also duplicated for measurement and future reconfiguration, but accessories must not contend with firmware outputs. GPIO2, GPIO8 and GPIO9 are boot-sensitive strapping pins. Expansion loads must not source current into GPIO pins while the controller is unpowered. `VBAT_SW` is not a regulated rail; logic power must come from the external converter path on U3 into `3V3`. `5V_NC` remains intentionally unpowered even though it is now mirrored on J8 pad 1.
 

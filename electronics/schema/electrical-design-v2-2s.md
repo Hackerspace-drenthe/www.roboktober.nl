@@ -80,9 +80,11 @@ The current 2S carrier uses these power interfaces:
 | J4 | `VBAT_RAW`, `GND` | Keyed battery connector, at least 5 A DC |
 | SW1 | `VBAT_RAW`, `VBAT_SW` | External switch or bypass shunt interface |
 | U3 | `VIN`, `GND`, `VOUT(3V3)` | External logic-converter interface |
-| J10 | `3V3`, `GND`, `VBAT_SW` | Accessory power; 3.3 V accessories limited to 300 mA continuous pending test |
+| J10 | `3V3`, `GND`, `VBAT_SW` | Accessory power; silk labels the raw rail as `VLIPO`; 3.3 V accessories limited to 300 mA continuous pending test |
 
 Label J10 raw power explicitly as `2S RAW 8.4V MAX`; it is no longer the maximum 4.2 V accessory rail of the 1S design.
+
+PCB branding silk currently reads `HACKERSPACE` / `DRENTHE` on the logo area.
 
 ## Driver constraint
 
