@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "roboktober")(type "KiCad")(uri "/home/rein/Projects/www.roboktober.nl/electronics/kicad/hsd-antweight-2s-v2/Roboktober_Custom.pretty")(options "")(descr ""))
+)

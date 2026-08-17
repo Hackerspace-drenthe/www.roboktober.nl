@@ -19,18 +19,18 @@ This contract follows the WORC DRV8833 firmware at upstream commit `933d0f5f65ad
 
 The PCB reserves two rows of eight pins at 2.54 mm pitch. The measured row spacing is six pitch intervals, or 15.24 mm center-to-center. Pin order remains vendor-specific and must be checked against the purchased module.
 
-Pad numbering wraps DIP-style: pad 1 starts the left column top-to-bottom, then pad 9 continues the right column bottom-to-top, so pad 8 and pad 9 sit on the same physical row (nearest the board edge) and pad 1 and pad 16 sit on the opposite row. Each table row below lists a real physical row, confirmed against the module's official pinout diagram (5V/GPIO5 on the row nearest the USB-C connector, GPIO0/GPIO21 on the row nearest the antenna edge).
+Pad numbering wraps DIP-style: pad 1 starts the left column top-to-bottom, then pad 9 continues the right column bottom-to-top, so pad 8 and pad 9 sit on the same physical row (nearest the board edge) and pad 1 and pad 16 sit on the opposite row. Each table row below lists a real physical row, confirmed against the module's official pinout diagram (5V/GPIO21 on the row nearest the USB-C connector, GPIO0/GPIO5 on the row nearest the antenna edge).
 
 | Pad | Carrier signal | Pad | Carrier signal |
 | ---: | --- | ---: | --- |
-| 1 | `5V_NC` | 16 | `GPIO5 / spare` |
-| 2 | `GND` | 15 | `GPIO6 / AIN2` |
-| 3 | `3V3` | 14 | `GPIO7 / AIN1` |
-| 4 | `GPIO4_SPARE` | 13 | `GPIO8 / LED, no carrier load` |
-| 5 | `GPIO3_SPARE` | 12 | `GPIO9 / BIN1` |
-| 6 | `GPIO2_SPARE / strap` | 11 | `GPIO10 / BIN2` |
-| 7 | `GPIO1_SPARE` | 10 | `GPIO20_SPARE` |
-| 8 | `GPIO0_SPARE` | 9 | `GPIO21_SPARE` |
+| 1 | `5V_NC` | 16 | `GPIO21_SPARE` |
+| 2 | `GND` | 15 | `GPIO20_SPARE` |
+| 3 | `3V3` | 14 | `GPIO10 / BIN2` |
+| 4 | `GPIO4_SPARE` | 13 | `GPIO9 / BIN1` |
+| 5 | `GPIO3_SPARE` | 12 | `GPIO8 / LED, no carrier load` |
+| 6 | `GPIO2_SPARE / strap` | 11 | `GPIO7 / AIN1` |
+| 7 | `GPIO1_SPARE` | 10 | `GPIO6 / AIN2` |
+| 8 | `GPIO0_SPARE` | 9 | `GPIO5 / spare` |
 
 ## Adjacent pin breakout rows J8 and J9
 
@@ -38,14 +38,14 @@ Every ESP32 socket pad now has one matching unpopulated solder pad exactly one 2
 
 | J8 pad | Left signal | J9 pad | Right signal |
 | ---: | --- | ---: | --- |
-| 1 | `5V_NC` | 1 | `GPIO21` |
-| 2 | `GND` | 2 | `GPIO20` |
-| 3 | `3V3` | 3 | `GPIO10 / BIN2` |
-| 4 | `GPIO4` | 4 | `GPIO9 / BIN1 / strap` |
-| 5 | `GPIO3` | 5 | `GPIO8 / onboard LED / strap` |
-| 6 | `GPIO2 / strap` | 6 | `GPIO7 / AIN1` |
-| 7 | `GPIO1` | 7 | `GPIO6 / AIN2` |
-| 8 | `GPIO0` | 8 | `GPIO5 / spare` |
+| 1 | `5V_NC` | 1 | `GPIO5 / spare` |
+| 2 | `GND` | 2 | `GPIO6 / AIN2` |
+| 3 | `3V3` | 3 | `GPIO7 / AIN1` |
+| 4 | `GPIO4` | 4 | `GPIO8 / onboard LED / strap` |
+| 5 | `GPIO3` | 5 | `GPIO9 / BIN1 / strap` |
+| 6 | `GPIO2 / strap` | 6 | `GPIO10 / BIN2` |
+| 7 | `GPIO1` | 7 | `GPIO20` |
+| 8 | `GPIO0` | 8 | `GPIO21` |
 
 ## Accessory power header J10
 

@@ -1,0 +1,291 @@
+** Drc report for hsd-antweight-2s-v2.kicad_pcb **
+** Created on 2026-08-16T09:40:23+0200 **
+** Report includes: Errors, Warnings, Exclusions **
+
+** Found 32 DRC violations **
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(65,3804 mm, 48,2000 mm): PTH pad 11 [BIN2_GPIO10] of U1
+    @(64,5000 mm, 47,1400 mm): PTH pad 2 [GND] of U2
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(65,3804 mm, 48,2000 mm): PTH pad 11 [BIN2_GPIO10] of U1
+    @(67,0400 mm, 47,1400 mm): PTH pad 4 [M1A] of U2
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(65,3804 mm, 48,2000 mm): PTH pad 11 [BIN2_GPIO10] of U1
+    @(64,5000 mm, 47,1400 mm): PTH pad 2 [GND] of U2
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(65,3804 mm, 48,2000 mm): PTH pad 11 [BIN2_GPIO10] of U1
+    @(67,0400 mm, 47,1400 mm): PTH pad 4 [M1A] of U2
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(65,3804 mm, 45,6600 mm): PTH pad 12 [BIN1_GPIO9] of U1
+    @(64,5000 mm, 47,1400 mm): PTH pad 2 [GND] of U2
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(65,3804 mm, 45,6600 mm): PTH pad 12 [BIN1_GPIO9] of U1
+    @(64,5000 mm, 47,1400 mm): PTH pad 2 [GND] of U2
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(67,0400 mm, 47,1400 mm): PTH pad 4 [M1A] of U2
+    @(67,9204 mm, 48,2000 mm): PTH pad 3 [BIN2_GPIO10] of J9
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(67,0400 mm, 47,1400 mm): PTH pad 4 [M1A] of U2
+    @(67,9204 mm, 45,6600 mm): PTH pad 4 [BIN1_GPIO9] of J9
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(67,0400 mm, 47,1400 mm): PTH pad 4 [M1A] of U2
+    @(67,9204 mm, 48,2000 mm): PTH pad 3 [BIN2_GPIO10] of J9
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(67,0400 mm, 47,1400 mm): PTH pad 4 [M1A] of U2
+    @(67,9204 mm, 45,6600 mm): PTH pad 4 [BIN1_GPIO9] of J9
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(69,5800 mm, 62,3800 mm): PTH pad 5 [GND] of U2
+    @(70,7604 mm, 63,0000 mm): PTH pad 1 [M1A] of J5
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(69,5800 mm, 62,3800 mm): PTH pad 5 [GND] of U2
+    @(70,7604 mm, 61,0000 mm): PTH pad 2 [M1B] of J5
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(69,5800 mm, 62,3800 mm): PTH pad 5 [GND] of U2
+    @(70,7604 mm, 63,0000 mm): PTH pad 1 [M1A] of J5
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(69,5800 mm, 62,3800 mm): PTH pad 5 [GND] of U2
+    @(70,7604 mm, 61,0000 mm): PTH pad 2 [M1B] of J5
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(69,5800 mm, 47,1400 mm): PTH pad 6 [M1B] of U2
+    @(67,9204 mm, 48,2000 mm): PTH pad 3 [BIN2_GPIO10] of J9
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(69,5800 mm, 47,1400 mm): PTH pad 6 [M1B] of U2
+    @(67,9204 mm, 48,2000 mm): PTH pad 3 [BIN2_GPIO10] of J9
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(72,1200 mm, 62,3800 mm): PTH pad 7 [VBAT_SW] of U2
+    @(70,7604 mm, 63,0000 mm): PTH pad 1 [M1A] of J5
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(72,1200 mm, 62,3800 mm): PTH pad 7 [VBAT_SW] of U2
+    @(70,7604 mm, 63,0000 mm): PTH pad 1 [M1A] of J5
+[shorting_items]: Items shorting two nets (nets BIN2_GPIO10 and GND)
+    Local override; error
+    @(65,3804 mm, 48,2000 mm): PTH pad 11 [BIN2_GPIO10] of U1
+    @(64,5000 mm, 47,1400 mm): PTH pad 2 [GND] of U2
+[shorting_items]: Items shorting two nets (nets BIN2_GPIO10 and M1A)
+    Local override; error
+    @(65,3804 mm, 48,2000 mm): PTH pad 11 [BIN2_GPIO10] of U1
+    @(67,0400 mm, 47,1400 mm): PTH pad 4 [M1A] of U2
+[shorting_items]: Items shorting two nets (nets BIN1_GPIO9 and GND)
+    Local override; error
+    @(65,3804 mm, 45,6600 mm): PTH pad 12 [BIN1_GPIO9] of U1
+    @(64,5000 mm, 47,1400 mm): PTH pad 2 [GND] of U2
+[shorting_items]: Items shorting two nets (nets M1A and BIN2_GPIO10)
+    Local override; error
+    @(67,0400 mm, 47,1400 mm): PTH pad 4 [M1A] of U2
+    @(67,9204 mm, 48,2000 mm): PTH pad 3 [BIN2_GPIO10] of J9
+[shorting_items]: Items shorting two nets (nets M1A and BIN1_GPIO9)
+    Local override; error
+    @(67,0400 mm, 47,1400 mm): PTH pad 4 [M1A] of U2
+    @(67,9204 mm, 45,6600 mm): PTH pad 4 [BIN1_GPIO9] of J9
+[shorting_items]: Items shorting two nets (nets GND and M1B)
+    Local override; error
+    @(69,5800 mm, 62,3800 mm): PTH pad 5 [GND] of U2
+    @(70,7604 mm, 61,0000 mm): PTH pad 2 [M1B] of J5
+[shorting_items]: Items shorting two nets (nets GND and M1A)
+    Local override; error
+    @(69,5800 mm, 62,3800 mm): PTH pad 5 [GND] of U2
+    @(70,7604 mm, 63,0000 mm): PTH pad 1 [M1A] of J5
+[shorting_items]: Items shorting two nets (nets M1B and BIN2_GPIO10)
+    Local override; error
+    @(69,5800 mm, 47,1400 mm): PTH pad 6 [M1B] of U2
+    @(67,9204 mm, 48,2000 mm): PTH pad 3 [BIN2_GPIO10] of J9
+[clearance]: Clearance violation ( clearance 0,2000 mm; actual 0,0372 mm)
+    Local override; error
+    @(72,1200 mm, 62,3800 mm): PTH pad 7 [VBAT_SW] of U2
+    @(70,7604 mm, 61,0000 mm): PTH pad 2 [M1B] of J5
+[shorting_items]: Items shorting two nets (nets VBAT_SW and M1A)
+    Local override; error
+    @(72,1200 mm, 62,3800 mm): PTH pad 7 [VBAT_SW] of U2
+    @(70,7604 mm, 63,0000 mm): PTH pad 1 [M1A] of J5
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(73,0208 mm, 45,6600 mm): PCB text 'B1/BI1' on f.silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(73,0208 mm, 48,2000 mm): PCB text 'B2/BI2' on f.silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(73,7604 mm, 61,0000 mm): PCB text 'M2B' on f.silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(73,7604 mm, 63,0000 mm): PCB text 'M2A' on f.silkscreen
+
+** Found 39 unconnected pads **
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(43,4604 mm, 75,8000 mm): PTH pad 2 [GND] of U3
+    @(58,0000 mm, 56,0000 mm): PTH pad 2 [GND] of J10
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(47,6004 mm, 38,0400 mm): PTH pad 2 [GND] of J8
+    @(37,7604 mm, 51,5000 mm): PTH pad 2 [GND] of C1_C2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(50,1404 mm, 38,0400 mm): PTH pad 2 [GND] of U1
+    @(47,6004 mm, 38,0400 mm): PTH pad 2 [GND] of J8
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(58,0000 mm, 56,0000 mm): PTH pad 2 [GND] of J10
+    @(69,5800 mm, 62,3800 mm): PTH pad 5 [GND] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(64,5000 mm, 47,1400 mm): PTH pad 2 [GND] of U2
+    @(58,0000 mm, 56,0000 mm): PTH pad 2 [GND] of J10
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(64,5000 mm, 47,1400 mm): PTH pad 2 [GND] of U2
+    @(50,1404 mm, 38,0400 mm): PTH pad 2 [GND] of U1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(72,7604 mm, 76,0000 mm): PTH pad 2 [GND] of J4
+    @(69,5800 mm, 62,3800 mm): PTH pad 5 [GND] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(70,7604 mm, 76,0000 mm): PTH pad 1 [VBAT_RAW] of J4
+    @(80,7604 mm, 45,5000 mm): PTH pad 1 [VBAT_RAW] of SW1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(46,2604 mm, 71,9500 mm): PTH pad 3 [VBAT_SW] of JP1
+    @(40,9204 mm, 75,8000 mm): PTH pad 1 [VBAT_SW] of U3
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(46,2604 mm, 71,9500 mm): PTH pad 3 [VBAT_SW] of JP1
+    @(60,5400 mm, 56,0000 mm): PTH pad 3 [VBAT_SW] of J10
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(46,2604 mm, 71,9500 mm): PTH pad 3 [VBAT_SW] of JP1
+    @(33,7604 mm, 51,5000 mm): PTH pad 1 [VBAT_SW] of C1_C2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(72,1200 mm, 62,3800 mm): PTH pad 7 [VBAT_SW] of U2
+    @(60,5400 mm, 56,0000 mm): PTH pad 3 [VBAT_SW] of J10
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(72,1200 mm, 62,3800 mm): PTH pad 7 [VBAT_SW] of U2
+    @(80,7604 mm, 40,5000 mm): PTH pad 2 [VBAT_SW] of SW1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(43,7204 mm, 71,9500 mm): PTH pad 2 [3V3] of JP1
+    @(55,4600 mm, 56,0000 mm): PTH pad 1 [3V3] of J10
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(50,1404 mm, 40,5800 mm): PTH pad 3 [3V3] of U1
+    @(47,6004 mm, 40,5800 mm): PTH pad 3 [3V3] of J8
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(55,4600 mm, 56,0000 mm): PTH pad 1 [3V3] of J10
+    @(50,1404 mm, 40,5800 mm): PTH pad 3 [3V3] of U1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(65,3804 mm, 35,5000 mm): PTH pad 16 [GPIO5_SPARE] of U1
+    @(67,9204 mm, 35,5000 mm): PTH pad 8 [GPIO5_SPARE] of J9
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(67,9204 mm, 38,0400 mm): PTH pad 7 [AIN2_GPIO6] of J9
+    @(65,3804 mm, 38,0400 mm): PTH pad 15 [AIN2_GPIO6] of U1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(74,6600 mm, 62,3800 mm): PTH pad 9 [AIN2_GPIO6] of U2
+    @(67,9204 mm, 38,0400 mm): PTH pad 7 [AIN2_GPIO6] of J9
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(67,9204 mm, 40,5800 mm): PTH pad 6 [AIN1_GPIO7] of J9
+    @(65,3804 mm, 40,5800 mm): PTH pad 14 [AIN1_GPIO7] of U1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(77,2000 mm, 62,3800 mm): PTH pad 11 [AIN1_GPIO7] of U2
+    @(67,9204 mm, 40,5800 mm): PTH pad 6 [AIN1_GPIO7] of J9
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(67,0400 mm, 62,3800 mm): PTH pad 3 [BIN1_GPIO9] of U2
+    @(67,9204 mm, 45,6600 mm): PTH pad 4 [BIN1_GPIO9] of J9
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(67,9204 mm, 45,6600 mm): PTH pad 4 [BIN1_GPIO9] of J9
+    @(65,3804 mm, 45,6600 mm): PTH pad 12 [BIN1_GPIO9] of U1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(65,3804 mm, 48,2000 mm): PTH pad 11 [BIN2_GPIO10] of U1
+    @(64,5000 mm, 62,3800 mm): PTH pad 1 [BIN2_GPIO10] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(67,9204 mm, 48,2000 mm): PTH pad 3 [BIN2_GPIO10] of J9
+    @(65,3804 mm, 48,2000 mm): PTH pad 11 [BIN2_GPIO10] of U1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(67,0400 mm, 47,1400 mm): PTH pad 4 [M1A] of U2
+    @(70,7604 mm, 63,0000 mm): PTH pad 1 [M1A] of J5
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(69,5800 mm, 47,1400 mm): PTH pad 6 [M1B] of U2
+    @(70,7604 mm, 61,0000 mm): PTH pad 2 [M1B] of J5
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(46,2604 mm, 61,0000 mm): PTH pad 1 [M2A] of J6
+    @(72,1200 mm, 47,1400 mm): PTH pad 8 [M2A] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(46,2604 mm, 63,0000 mm): PTH pad 2 [M2B] of J6
+    @(74,6600 mm, 47,1400 mm): PTH pad 10 [M2B] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(47,6004 mm, 53,2800 mm): PTH pad 8 [GPIO0_SPARE] of J8
+    @(50,1404 mm, 53,2800 mm): PTH pad 8 [GPIO0_SPARE] of U1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(47,6004 mm, 50,7400 mm): PTH pad 7 [GPIO1_SPARE] of J8
+    @(50,1404 mm, 50,7400 mm): PTH pad 7 [GPIO1_SPARE] of U1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(47,6004 mm, 48,2000 mm): PTH pad 6 [GPIO2_SPARE] of J8
+    @(50,1404 mm, 48,2000 mm): PTH pad 6 [GPIO2_SPARE] of U1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(47,6004 mm, 45,6600 mm): PTH pad 5 [GPIO3_SPARE] of J8
+    @(50,1404 mm, 45,6600 mm): PTH pad 5 [GPIO3_SPARE] of U1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(47,6004 mm, 43,1200 mm): PTH pad 4 [GPIO4_SPARE] of J8
+    @(50,1404 mm, 43,1200 mm): PTH pad 4 [GPIO4_SPARE] of U1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(65,3804 mm, 50,7400 mm): PTH pad 10 [GPIO20_SPARE] of U1
+    @(67,9204 mm, 50,7400 mm): PTH pad 2 [GPIO20_SPARE] of J9
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(65,3804 mm, 53,2800 mm): PTH pad 9 [GPIO21_SPARE] of U1
+    @(67,9204 mm, 53,2800 mm): PTH pad 1 [GPIO21_SPARE] of J9
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(65,3804 mm, 43,1200 mm): PTH pad 13 [GPIO8_LED_EXPANSION] of U1
+    @(67,9204 mm, 43,1200 mm): PTH pad 5 [GPIO8_LED_EXPANSION] of J9
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(47,6004 mm, 35,5000 mm): PTH pad 1 [5V_NC] of J8
+    @(50,1404 mm, 35,5000 mm): PTH pad 1 [5V_NC] of U1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(41,1804 mm, 71,9500 mm): PTH pad 1 [REG_3V3_2S] of JP1
+    @(46,0004 mm, 75,8000 mm): PTH pad 3 [REG_3V3_2S] of U3
+
+** Found 0 Footprint errors **
+
+** End of Report **

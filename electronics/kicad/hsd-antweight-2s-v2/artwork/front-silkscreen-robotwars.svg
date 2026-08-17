@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="78mm"
+     height="56mm"
+     viewBox="19.5 29 78 56"
+     version="1.1">
+  <title>Front Silkscreen Artwork - Exact PCB Outline</title>
+  <desc>Artwork aligned to the exact hsd-antweight-2s-v3 PCB outline with three logo placeholders.</desc>
+
+  <defs>
+    <style>
+      .outline { fill: none; stroke: #000000; stroke-width: 0.2; }
+      .silk-main { fill: none; stroke: #000000; stroke-width: 0.35; stroke-linecap: round; stroke-linejoin: round; }
+      .silk-thin { fill: none; stroke: #000000; stroke-width: 0.22; stroke-linecap: round; stroke-linejoin: round; }
+      .silk-text { fill: #000000; font-family: "DejaVu Sans", "Noto Sans", sans-serif; font-weight: 700; }
+      .silk-small { fill: #000000; font-family: "DejaVu Sans Mono", "Noto Sans Mono", monospace; font-weight: 700; }
+    </style>
+
+    <!-- Exact board contour from Edge.Cuts primitives -->
+    <path id="pcb-outline"
+      d="M29.2604 29
+         L87.7396 29
+         A2 2 0 0 1 89.068328 29.50518
+         L96.82865 36.403244
+         A2 2 0 0 1 97.5 37.889954
+         L97.5 42
+         A2 2 0 0 1 95.5 44
+         L92.5 44
+         A1 1 0 0 0 91.5 45
+         L91.5 83
+         A2 2 0 0 1 89.5 85
+         L27.5 85
+         A2 2 0 0 1 25.5 83
+         L25.5 45
+         A1 1 0 0 0 24.5 44
+         L21.5 44
+         A2 2 0 0 1 19.5 42
+         L19.5 37.89813
+         A2 2 0 0 1 20.171267 36.403317
+         L27.931672 29.50518
+         A2 2 0 0 1 29.2604 29
+         Z" />
+
+    <clipPath id="clip-board">
+      <use href="#pcb-outline" />
+    </clipPath>
+  </defs>
+
+  <!-- Optional contour reference: remove before final import if not wanted on silk -->
+  <use href="#pcb-outline" class="outline" />
+
+  <g clip-path="url(#clip-board)">
+    <!-- Top title and theme row -->
+    <path d="M30.8 33.2 H86.8" class="silk-main" />
+    <text x="58.8" y="32.1" text-anchor="middle" font-size="1.95" class="silk-text">ROBOTWARS.NL</text>
+
+    <text x="30.8" y="36.2" font-size="1.65" class="silk-text">ARTISTIC</text>
+    <text x="52.7" y="36.2" font-size="1.65" class="silk-text">TECHNOLOGY</text>
+    <text x="86.2" y="36.2" text-anchor="end" font-size="1.65" class="silk-text">SCIENTIFIC</text>
+
+    <!-- Central robot/science emblem -->
+    <circle cx="58.5" cy="56.6" r="9.2" class="silk-main" />
+    <circle cx="58.5" cy="56.6" r="5.5" class="silk-thin" />
+    <path d="M58.5 47.4 V65.8 M49.3 56.6 H67.7" class="silk-thin" />
+    <path d="M52.1 50.2 L64.9 63 M64.9 50.2 L52.1 63" class="silk-thin" />
+    <ellipse cx="58.5" cy="56.6" rx="15.6" ry="6.2" class="silk-thin" transform="rotate(-20 58.5 56.6)" />
+    <ellipse cx="58.5" cy="56.6" rx="15.6" ry="6.2" class="silk-thin" transform="rotate(20 58.5 56.6)" />
+
+    <circle cx="48.7" cy="50.4" r="0.72" fill="#000000" />
+    <circle cx="68.3" cy="50.4" r="0.72" fill="#000000" />
+    <circle cx="58.5" cy="66.9" r="0.72" fill="#000000" />
+    <text x="58.5" y="72.2" text-anchor="middle" font-size="1.95" class="silk-text">ROBOTS</text>
+
+    <!-- Three logo placeholders -->
+    <rect x="30.2" y="74.0" width="17.7" height="7.2" rx="0.8" class="silk-main" />
+    <rect x="49.6" y="74.0" width="17.7" height="7.2" rx="0.8" class="silk-main" />
+    <rect x="69.0" y="74.0" width="17.7" height="7.2" rx="0.8" class="silk-main" />
+
+    <text x="39.05" y="78.2" text-anchor="middle" font-size="1.55" class="silk-small">LOGO 1</text>
+    <text x="58.45" y="78.2" text-anchor="middle" font-size="1.55" class="silk-small">LOGO 2</text>
+    <text x="77.85" y="78.2" text-anchor="middle" font-size="1.55" class="silk-small">LOGO 3</text>
+
+    <!-- Tech baseline detail -->
+    <path d="M30.5 82.4 H86.5" class="silk-thin" />
+    <path d="M33.5 82.4 V81.0 M36.5 82.4 V81.3 M39.5 82.4 V81.0 M42.5 82.4 V81.3 M45.5 82.4 V81.0 M48.5 82.4 V81.3 M51.5 82.4 V81.0 M54.5 82.4 V81.3 M57.5 82.4 V81.0 M60.5 82.4 V81.3 M63.5 82.4 V81.0 M66.5 82.4 V81.3 M69.5 82.4 V81.0 M72.5 82.4 V81.3 M75.5 82.4 V81.0 M78.5 82.4 V81.3 M81.5 82.4 V81.0 M84.5 82.4 V81.3" class="silk-thin" />
+  </g>
+</svg>

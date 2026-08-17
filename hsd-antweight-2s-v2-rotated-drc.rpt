@@ -1,0 +1,155 @@
+** Drc report for hsd-antweight-2s-v2-rotated.kicad_pcb **
+** Created on 2026-08-17T09:09:36+0200 **
+** Report includes: Errors, Warnings, Exclusions **
+
+** Found 10 DRC violations **
+[clearance]: Clearance violation ( clearance 0,2000 mm; actual 0,0270 mm)
+    Local override; error
+    @(55,9048 mm, 36,3460 mm): Rectangle [<no net>] on F.Cu
+    @(56,6258 mm, 36,3460 mm): Rectangle [BIN1_GPIO9] on F.Cu
+[clearance]: Clearance violation ( clearance 0,2000 mm; actual 0,0882 mm)
+    Local override; error
+    @(56,6258 mm, 36,3460 mm): Rectangle [BIN1_GPIO9] on F.Cu
+    @(55,9048 mm, 37,0665 mm): Rectangle [<no net>] on F.Cu
+[clearance]: Clearance violation ( clearance 0,2000 mm; actual 0,0275 mm)
+    Local override; error
+    @(56,6258 mm, 37,0665 mm): Rectangle [<no net>] on F.Cu
+    @(56,6258 mm, 36,3460 mm): Rectangle [BIN1_GPIO9] on F.Cu
+[clearance]: Clearance violation ( clearance 0,2000 mm; actual 0,0275 mm)
+    Local override; error
+    @(58,0648 mm, 37,0665 mm): Rectangle [<no net>] on F.Cu
+    @(58,0648 mm, 36,3460 mm): Rectangle [BIN1_GPIO9] on F.Cu
+[clearance]: Clearance violation ( clearance 0,2000 mm; actual 0,0270 mm)
+    Local override; error
+    @(58,7858 mm, 36,3460 mm): Rectangle [<no net>] on F.Cu
+    @(58,0648 mm, 36,3460 mm): Rectangle [BIN1_GPIO9] on F.Cu
+[clearance]: Clearance violation ( clearance 0,2000 mm; actual 0,0882 mm)
+    Local override; error
+    @(58,0648 mm, 36,3460 mm): Rectangle [BIN1_GPIO9] on F.Cu
+    @(58,7858 mm, 37,0665 mm): Rectangle [<no net>] on F.Cu
+[clearance]: Clearance violation ( clearance 0,2000 mm; actual 0,0275 mm)
+    Local override; error
+    @(60,2268 mm, 36,3460 mm): Rectangle [GPIO8_LED_EXPANSION] on F.Cu
+    @(60,2268 mm, 37,0665 mm): Rectangle [<no net>] on F.Cu
+[clearance]: Clearance violation ( clearance 0,2000 mm; actual 0,0270 mm)
+    Local override; error
+    @(60,2268 mm, 36,3460 mm): Rectangle [GPIO8_LED_EXPANSION] on F.Cu
+    @(60,9458 mm, 36,3460 mm): Rectangle [<no net>] on F.Cu
+[clearance]: Clearance violation ( clearance 0,2000 mm; actual 0,0882 mm)
+    Local override; error
+    @(60,2268 mm, 36,3460 mm): Rectangle [GPIO8_LED_EXPANSION] on F.Cu
+    @(60,9458 mm, 37,0665 mm): Rectangle [<no net>] on F.Cu
+[clearance]: Clearance violation ( clearance 0,2000 mm; actual 0,0886 mm)
+    Local override; error
+    @(60,2268 mm, 36,3460 mm): Rectangle [GPIO8_LED_EXPANSION] on F.Cu
+    @(60,9458 mm, 37,0670 mm): Rectangle [<no net>] on F.Cu
+
+** Found 26 unconnected pads **
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(37,7604 mm, 51,5000 mm): PTH pad 2 [GND] of C1_C2
+    @(58,0000 mm, 56,0000 mm): PTH pad 2 [GND] of J10
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(43,4604 mm, 75,8000 mm): PTH pad 2 [GND] of U3
+    @(59,4200 mm, 77,6200 mm): PTH pad 5 [GND] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(58,0000 mm, 56,0000 mm): PTH pad 2 [GND] of J10
+    @(64,5000 mm, 62,3800 mm): PTH pad 2 [GND] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(59,4200 mm, 77,6200 mm): PTH pad 5 [GND] of U2
+    @(72,7604 mm, 76,0000 mm): PTH pad 2 [GND] of J4
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(64,5000 mm, 62,3800 mm): PTH pad 2 [GND] of U2
+    @(72,7604 mm, 76,0000 mm): PTH pad 2 [GND] of J4
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(65,3804 mm, 50,7400 mm): PTH pad 10 [GND] of U1
+    @(58,0000 mm, 56,0000 mm): PTH pad 2 [GND] of J10
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(70,7604 mm, 76,0000 mm): PTH pad 1 [VBAT_RAW] of J4
+    @(80,7604 mm, 45,5000 mm): PTH pad 1 [VBAT_RAW] of SW1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(46,2604 mm, 71,9500 mm): PTH pad 3 [VBAT_SW] of JP1
+    @(40,9204 mm, 75,8000 mm): PTH pad 1 [VBAT_SW] of U3
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(46,2604 mm, 71,9500 mm): PTH pad 3 [VBAT_SW] of JP1
+    @(56,8800 mm, 77,6200 mm): PTH pad 7 [VBAT_SW] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(46,2604 mm, 71,9500 mm): PTH pad 3 [VBAT_SW] of JP1
+    @(33,7604 mm, 51,5000 mm): PTH pad 1 [VBAT_SW] of C1_C2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(60,5400 mm, 56,0000 mm): PTH pad 3 [VBAT_SW] of J10
+    @(46,2604 mm, 71,9500 mm): PTH pad 3 [VBAT_SW] of JP1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(80,7604 mm, 40,5000 mm): PTH pad 2 [VBAT_SW] of SW1
+    @(60,5400 mm, 56,0000 mm): PTH pad 3 [VBAT_SW] of J10
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(55,4600 mm, 56,0000 mm): PTH pad 1 [3V3] of J10
+    @(43,7204 mm, 71,9500 mm): PTH pad 2 [3V3] of JP1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(65,3804 mm, 48,2000 mm): PTH pad 11 [3V3] of U1
+    @(55,4600 mm, 56,0000 mm): PTH pad 1 [3V3] of J10
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(50,1404 mm, 50,7400 mm): PTH pad 7 [AIN2_GPIO6] of U1
+    @(54,3400 mm, 77,6200 mm): PTH pad 9 [AIN2_GPIO6] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(50,1404 mm, 48,2000 mm): PTH pad 6 [AIN1_GPIO7] of U1
+    @(51,8000 mm, 77,6200 mm): PTH pad 11 [AIN1_GPIO7] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(50,1404 mm, 43,1200 mm): PTH pad 4 [BIN1_GPIO9] of U1
+    @(61,9600 mm, 77,6200 mm): PTH pad 3 [BIN1_GPIO9] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(56,6258 mm, 36,3460 mm): Rectangle [BIN1_GPIO9] on F.Cu
+    @(50,1404 mm, 43,1200 mm): PTH pad 4 [BIN1_GPIO9] of U1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(58,0648 mm, 36,3460 mm): Rectangle [BIN1_GPIO9] on F.Cu
+    @(56,6258 mm, 36,3460 mm): Rectangle [BIN1_GPIO9] on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(50,1404 mm, 40,5800 mm): PTH pad 3 [BIN2_GPIO10] of U1
+    @(64,5000 mm, 77,6200 mm): PTH pad 1 [BIN2_GPIO10] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(61,9600 mm, 62,3800 mm): PTH pad 4 [M1A] of U2
+    @(70,7604 mm, 63,0000 mm): PTH pad 1 [M1A] of J5
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(59,4200 mm, 62,3800 mm): PTH pad 6 [M1B] of U2
+    @(70,7604 mm, 61,0000 mm): PTH pad 2 [M1B] of J5
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(46,2604 mm, 61,0000 mm): PTH pad 1 [M2A] of J6
+    @(56,8800 mm, 62,3800 mm): PTH pad 8 [M2A] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(46,2604 mm, 63,0000 mm): PTH pad 2 [M2B] of J6
+    @(54,3400 mm, 62,3800 mm): PTH pad 10 [M2B] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(50,1404 mm, 45,6600 mm): PTH pad 5 [GPIO8_LED_EXPANSION] of U1
+    @(60,2268 mm, 36,3460 mm): Rectangle [GPIO8_LED_EXPANSION] on F.Cu
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(41,1804 mm, 71,9500 mm): PTH pad 1 [REG_3V3_2S] of JP1
+    @(46,0004 mm, 75,8000 mm): PTH pad 3 [REG_3V3_2S] of U3
+
+** Found 0 Footprint errors **
+
+** End of Report **
