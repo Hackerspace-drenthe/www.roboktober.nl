@@ -1,0 +1,10 @@
+#VRML V2.0 utf8
+
+DEF BODY Appearance { material Material { diffuseColor 0.055 0.055 0.06 specularColor 0.18 0.18 0.2 shininess 0.25 } }
+DEF METAL Appearance { material Material { diffuseColor 0.65 0.67 0.68 specularColor 0.88 0.88 0.88 shininess 0.8 } }
+Group {
+  children [
+    Transform { translation 0.984 0 0.591 children [ Shape { appearance USE BODY geometry Box { size 2.756 1.575 1.181 } } ] }
+    Transform { translation 1.45 0 1.417 children [ Shape { appearance USE METAL geometry Box { size 0.866 0.551 0.551 } } ] }
+  ]
+}

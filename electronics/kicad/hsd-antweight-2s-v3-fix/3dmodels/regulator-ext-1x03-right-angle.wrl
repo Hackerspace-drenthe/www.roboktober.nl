@@ -1,0 +1,50 @@
+#VRML V2.0 utf8
+
+# Project legacy WRL convention: 1 unit = 2.54 mm.
+# Pin row origin aligns with footprint pad 1 at (0,0), pads on +X at 2.54 mm pitch.
+
+DEF HEADER_BLACK Appearance { material Material { diffuseColor 0.08 0.08 0.09 specularColor 0.14 0.14 0.14 shininess 0.18 } }
+DEF PIN_METAL Appearance { material Material { diffuseColor 0.72 0.73 0.74 specularColor 0.92 0.92 0.92 shininess 0.75 } }
+DEF REG_PCB Appearance { material Material { diffuseColor 0.05 0.20 0.08 specularColor 0.16 0.28 0.16 shininess 0.22 } }
+DEF REG_BODY Appearance { material Material { diffuseColor 0.12 0.16 0.14 specularColor 0.18 0.24 0.20 shininess 0.18 } }
+DEF REG_TRIM Appearance { material Material { diffuseColor 0.22 0.30 0.22 specularColor 0.24 0.30 0.24 shininess 0.10 } }
+
+Group {
+  children [
+    # Right-angle 1x03 male header body at pin row.
+    Transform {
+      translation 1.000 0.000 0.250
+      children [
+        Shape {
+          appearance USE HEADER_BLACK
+          geometry Box { size 3.000 0.800 0.600 }
+        }
+      ]
+    }
+
+    # Vertical pin legs through PCB.
+    Transform { translation 0.000 0.000 -0.550 children [ Shape { appearance USE PIN_METAL geometry Box { size 0.095 0.095 1.600 } } ] }
+    Transform { translation 1.000 0.000 -0.550 children [ Shape { appearance USE PIN_METAL geometry Box { size 0.095 0.095 1.600 } } ] }
+    Transform { translation 2.000 0.000 -0.550 children [ Shape { appearance USE PIN_METAL geometry Box { size 0.095 0.095 1.600 } } ] }
+
+    # Bent section from header to regulator carrier (towards -Y in local footprint space).
+    Transform { translation 0.000 -0.390 0.430 children [ Shape { appearance USE PIN_METAL geometry Box { size 0.095 0.780 0.095 } } ] }
+    Transform { translation 1.000 -0.390 0.430 children [ Shape { appearance USE PIN_METAL geometry Box { size 0.095 0.780 0.095 } } ] }
+    Transform { translation 2.000 -0.390 0.430 children [ Shape { appearance USE PIN_METAL geometry Box { size 0.095 0.780 0.095 } } ] }
+
+    # Regulator mini-board mounted on the right-angle pins.
+    Transform {
+      translation 1.000 -1.450 0.560
+      children [
+        Shape {
+          appearance USE REG_PCB
+          geometry Box { size 2.850 2.200 0.180 }
+        }
+      ]
+    }
+
+    # Main regulator body and a trim pot block.
+    Transform { translation 1.000 -1.350 0.740 children [ Shape { appearance USE REG_BODY geometry Box { size 0.780 0.620 0.300 } } ] }
+    Transform { translation 1.000 -2.100 0.720 children [ Shape { appearance USE REG_TRIM geometry Box { size 0.900 0.520 0.220 } } ] }
+  ]
+}
