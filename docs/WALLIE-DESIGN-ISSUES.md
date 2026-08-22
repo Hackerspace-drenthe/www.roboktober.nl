@@ -188,6 +188,7 @@ Open na implementatie:
 1. DRC/ERC draaien op v3-fix na netwijzigingen.
 2. Fysieke benchvalidatie met gekozen goedkope module(s) volgens testmatrix.
 3. Eventueel W-05 later toevoegen als extra fysieke 1S/2S scheiding gewenst is.
+4. Routeer `ESP_5V_IN` in PCB-editor netjes van JP1 pad2 naar ESP 5V-invoer zonder nieuwe kruisingen/shorts.
 
 ## Besluiten vastgesteld
 
