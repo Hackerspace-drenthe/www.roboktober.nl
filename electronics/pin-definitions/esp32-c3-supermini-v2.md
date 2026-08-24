@@ -12,7 +12,8 @@ This contract follows the WORC DRV8833 firmware at upstream commit `933d0f5f65ad
 | Module status LED | `GPIO8` | No carrier connection | Strapping pin; do not add an external load |
 | Right motor input 1 | `GPIO9` | DRV8833 `BIN1` | Strapping pin; do not add a pull resistor |
 | Right motor input 2 | `GPIO10` | DRV8833 `BIN2` | - |
-| Logic supply | `3V3` | Regulator output | Regulated 3.3 V only |
+| Logic supply | `ESP_5V_IN` | Regulated 5V module input, approx. 3.7-5.0 V valid for the tested module | Do not feed raw battery directly unless the module is explicitly validated |
+| Internal logic rail | `3V3` | Generated inside the ESP32-C3 module | The module's onboard regulator creates the logic rail; no separate raw 3.3 V battery feed |
 | Ground | `GND` | Common ground | Join controller, driver and regulator returns |
 
 ## Abstract 2x8 carrier header
@@ -23,7 +24,7 @@ Pad numbering wraps DIP-style: pad 1 starts the left column top-to-bottom, then 
 
 | Pad | Carrier signal | Pad | Carrier signal |
 | ---: | --- | ---: | --- |
-| 1 | `5V_NC` | 16 | `GPIO21_SPARE` |
+| 1 | `ESP_5V_IN` | 16 | `GPIO21_SPARE` |
 | 2 | `GND` | 15 | `GPIO20_SPARE` |
 | 3 | `3V3` | 14 | `GPIO10 / BIN2` |
 | 4 | `GPIO4_SPARE` | 13 | `GPIO9 / BIN1` |
@@ -34,11 +35,11 @@ Pad numbering wraps DIP-style: pad 1 starts the left column top-to-bottom, then 
 
 ## Adjacent pin breakout rows J8 and J9
 
-Every ESP32 socket pad now has one matching unpopulated solder pad exactly one 2.54 mm grid step farther from the module. J8 mirrors the full left U1 row (pads 1-8) including `5V_NC`, `GND` and `3V3`. J9 mirrors the full right U1 row (pads 9-16), so J9 pad 1 corresponds to U1 pad 9, J9 pad 2 to U1 pad 10, and so on up to J9 pad 8 corresponding to U1 pad 16.
+Every ESP32 socket pad now has one matching unpopulated solder pad exactly one 2.54 mm grid step farther from the module. J8 mirrors the full left U1 row (pads 1-8) including `ESP_5V_IN`, `GND` and `3V3`. J9 mirrors the full right U1 row (pads 9-16), so J9 pad 1 corresponds to U1 pad 9, J9 pad 2 to U1 pad 10, and so on up to J9 pad 8 corresponding to U1 pad 16.
 
 | J8 pad | Left signal | J9 pad | Right signal |
 | ---: | --- | ---: | --- |
-| 1 | `5V_NC` | 1 | `GPIO5 / spare` |
+| 1 | `ESP_5V_IN` | 1 | `GPIO5 / spare` |
 | 2 | `GND` | 2 | `GPIO6 / AIN2` |
 | 3 | `3V3` | 3 | `GPIO7 / AIN1` |
 | 4 | `GPIO4` | 4 | `GPIO8 / onboard LED / strap` |
@@ -49,17 +50,17 @@ Every ESP32 socket pad now has one matching unpopulated solder pad exactly one 2
 
 ## Accessory power header J10
 
-ESP power standard on this controller: `3V3` only.
+ESP power standard on this controller: `ESP_5V_IN` with the module's onboard regulator creating the 3.3 V domain.
 
 J10 is a horizontal unpopulated 1x3 header below the DRV8833 and between the left and right motor connectors.
 
 | J10 pad | Signal | Use |
 | ---: | --- | --- |
-| 1 | `3V3` | Regulated logic and sensor supply |
+| 1 | `ESP_5V_IN (3.7-5V valid input for tested module)` | Regulated 5V feed to the ESP module; direct 1S is allowed only on the validated module |
 | 2 | `GND` | Common return |
 | 3 | `VBAT_SW` | Switched raw 2S battery rail; up to 8.4 V; silk label on J10 is `VLIPO` |
 
-Motor-control pins are also duplicated for measurement and future reconfiguration, but accessories must not contend with firmware outputs. GPIO2, GPIO8 and GPIO9 are boot-sensitive strapping pins. Expansion loads must not source current into GPIO pins while the controller is unpowered. `VBAT_SW` is not a regulated rail; logic power must come from the external converter path on U3 into `3V3`. `5V_NC` remains intentionally unpowered even though it is now mirrored on J8 pad 1.
+Motor-control pins are also duplicated for measurement and future reconfiguration, but accessories must not contend with firmware outputs. GPIO2, GPIO8 and GPIO9 are boot-sensitive strapping pins. Expansion loads must not source current into GPIO pins while the controller is unpowered. `VBAT_SW` is not a regulated rail; the ESP must receive a valid 5V rail via `ESP_5V_IN` or the tested direct-1S exception. `5V_NC` is no longer the active design meaning; use the validated `ESP_5V_IN` path and keep all raw battery feed rules behind the v3-fix power policy.
 
 ## Mandatory verification
 

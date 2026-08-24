@@ -1,5 +1,0 @@
-(fp_lib_table
-  (version 7)
-  (lib (name "Roboktober_Custom")(type "KiCad")(uri "${KIPRJMOD}/Roboktober_Custom.pretty")(options "")(descr "Custom Roboktober footprints"))
-  (lib (name "roboktober other")(type "KiCad")(uri "${KIPRJMOD}/Library.pretty")(options "")(descr ""))
-)

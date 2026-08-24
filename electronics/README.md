@@ -12,19 +12,20 @@ antweight-builds.
 - `schema/`: elektrische ontwerpkeuzes en netspecificatie.
 - `kicad/antweight-controller-v2/`: historische legacy KiCad-projectmap
   (gearchiveerd).
-- `kicad/hsd-antweight-2s-pcb/`: actuele 2S KiCad-projectmap met externe
-  voedingsinterfaces.
+- `kicad/hsd-antweight-2s-v3-fix/`: leidend ontwerp voor de huidige
+  ESP32-C3 controller revisie.
 
-Er is nog maar één actief ontwerp in deze repository:
+Het leidende actieve ontwerp in deze repository is nu:
 
-- 2S elektrisch contract: `schema/electrical-design-v2-2s.md`
-- 2S wiring: `wiring/antweight-controller-v2-2s.md`
-- 2S PCB: `kicad/hsd-antweight-2s-pcb/`
+- v3-fix PCB: `kicad/hsd-antweight-2s-v3-fix/`
+- v3-fix power rule: `ESP_5V_IN` is de standaard ESP-voeding; 2S via 5V regulateur,
+  1S direct alleen op de gevalideerde module
+- v3-fix design notes: `docs/WALLIE-DESIGN-ISSUES.md`
 
-De oude legacy-documenten blijven alleen als archiefreferentie bestaan.
-
-De bijbehorende PCB staat in `kicad/hsd-antweight-2s-pcb/` en is
-proto-ready voor PCBWay 2-layer fabricage.
+De PCB in `kicad/hsd-antweight-2s-v3-fix/` is de bron van waarheid voor het actuele ontwerp.
+Legacy 3.3V-only en oudere 2S-documenten blijven alleen als archiefreferentie
+bestaan voor vergelijking; ze zijn niet meer leidend voor bouw-, validatie- of
+release-werk.
 
 Deze vrijgave is bedoeld voor prototypes en validatie,
 niet voor massaproductie.
@@ -76,44 +77,34 @@ Publicatiestatus:
 
 ## Reference design
 
-Het huidige (en enige) ontwerp gebruikt:
+Het leidende actieve ontwerp is de v3-fix revisie in `kicad/hsd-antweight-2s-v3-fix/`.
 
-- ESP32-C3 SuperMini met de WORC GPIO5/6/7/9/10-mapping;
-- een DRV8833-breakout zonder `nSLEEP`-pin (`IN1`-`IN4`, `VCC`, `GND`,
-  `OUT1`-`OUT4`, `EEP` op `GND`, `ULT`/`FLT` onaangesloten);
-- GPIO5 is hierdoor spare/onaangesloten;
-- een externe spanningsomvormer via `U3` (`VIN`, `GND`, `VOUT=3V3`) voor
-  de logicarail;
-- J10 pad 3 is elektrisch `VBAT_SW` maar staat op de PCB-silk als `VLIPO`;
-- de logo-silk leest `HACKERSPACE` boven `DRENTHE`;
-- standaard ESP-voeding: alleen `3V3`; `3V5` is geen geldige bedrijfsspanning
-  voor dit ontwerp;
-- de failsafe loopt via het nulzetten van de motor-PWM/digitale outputs
-  (`stopMotors()`);
-- een ongeplaatste 2x6-uitbreidingsheader voor zeven vrije GPIO's,
-  dubbele 3,3 V/GND en geschakelde accuspanning;
-- gereviewde firmware met afzenderfilter, packetvalidatie en een
-  200 ms failsafe;
-- een proto-ready 2S KiCad-board met PCBWay releasepakket voor
-  validatie en proefseries.
+Belangrijkste actuele regels:
 
-Zie `firmware/roboktober-controller-v2/README.md` voor gedrag en
-compilatie, en `schema/electrical-design-v2-2s.md` voor
-actuele release-eisen.
+- ESP32-C3 SuperMini voedt via `ESP_5V_IN`, niet via een legacy 3.3V-only rail;
+- de module maakt intern 3.3V zelf; geen raw batterij op de ESP 3.3V pin;
+- standaard route: `VBAT -> 5V-regelaar -> ESP_5V_IN`;
+- 1S direct op `ESP_5V_IN` is alleen geldig voor de specifiek geteste module in v3-fix;
+- `VIN -> VOUT` bypass naar de ESP 3.3V rail blijft verboden;
+- de v3-fix PCB en schematic zijn de bron van waarheid, niet de legacy 2S docs.
+
+De oudere 2S/3.3V-only documenten in deze map blijven alleen als historische referentie
+bestaan en mogen niet meer als actieve power-contract gelden.
+
+Zie `docs/WALLIE-DESIGN-ISSUES.md` voor de definitieve design rules en
+`kicad/hsd-antweight-2s-v3-fix/README.md` voor de actuele PCB mapping.
 
 ## KiCad
 
 Status van recente KiCad-updates:
 
-- Publicatie toegestaan voor samenwerking en review.
-- Het actieve 2S-ontwerp is DRC-clean en ERC-error-clean.
-- Gebruik het huidige pakket als prototype-release, niet als
-  massaproductie-release.
+- v3-fix is het leidende ontwerp voor nieuwe hardware en validatie.
+- De PCB en het schema in `kicad/hsd-antweight-2s-v3-fix/` zijn de source-of-truth.
+- Legacy ontwerpen in `kicad/hsd-antweight-2s-pcb/` en oudere mappen zijn archief.
 
-Open `kicad/hsd-antweight-2s-pcb/rein-2s-controller.kicad_pro` met
-KiCad 9 of nieuwer.
+Open `kicad/hsd-antweight-2s-v3-fix/hsd-antweight-2s-v3.kicad_pro` met KiCad 9 of nieuwer.
 
-Het schema is als een door KiCad 9 leesbaar legacybestand opgenomen.
+Voor review/validatie moet de actuele power-path altijd controleren.
 Dit houdt het pincontract controleerbaar zolang de definitieve
 leveranciersfootprint nog niet is gekozen.
 

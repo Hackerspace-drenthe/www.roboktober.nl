@@ -2,5 +2,5 @@
 
 (rule "PowerAndGroundExact1p2mm"
   (constraint track_width (min 1.2mm) (max 1.2mm))
-  (condition "A.NetName == 'GND' || A.NetName == 'VBAT_RAW' || A.NetName == 'VBAT_SW' || A.NetName == '3V3' || A.NetName == 'REG_3V3_2S'")
+  (condition "A.NetName == 'GND' || A.NetName == 'VBAT_RAW' || A.NetName == 'VBAT_SW' || A.NetName == '3V3' || A.NetName == 'ESP_5V_IN' || A.NetName == 'REG_5V_OUT'")
 )

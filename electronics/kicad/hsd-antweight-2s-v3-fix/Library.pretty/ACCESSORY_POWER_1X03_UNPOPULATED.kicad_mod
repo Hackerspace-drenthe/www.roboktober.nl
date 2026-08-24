@@ -16,7 +16,7 @@
 			(justify mirror)
 		)
 	)
-	(property "Value" "ESP PWR SEL: REG-3V3-1S"
+	(property "Value" "ESP PWR SEL: REG-5V-1S"
 		(at 2.54 -3 0)
 		(layer "B.Fab")
 		(hide yes)

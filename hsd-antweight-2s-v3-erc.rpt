@@ -1,0 +1,9 @@
+ERC report (2026-08-24T10:27:58+0200, Encoding UTF8)
+Report includes: Errors
+
+***** Sheet /
+[label_dangling]: Label not connected to anything
+    ; error
+    @(135,89 mm, 123,19 mm): Label 'REG_5V_OUT'
+
+ ** ERC messages: 1  Errors 1  Warnings 0
