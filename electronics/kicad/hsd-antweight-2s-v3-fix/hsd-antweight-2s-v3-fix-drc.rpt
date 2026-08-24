@@ -1,31 +1,10 @@
 ** Drc report for hsd-antweight-2s-v3.kicad_pcb **
-** Created on 2026-08-22T13:40:07+0200 **
+** Created on 2026-08-24T12:48:07+0200 **
 ** Report includes: Errors, Warnings **
 
-** Found 3 DRC violations **
-[silk_over_copper]: Silkscreen clipped by solder mask
-    Local override; warning
-    @(80,5000 mm, 43,0000 mm): PCB text 'ON/OFF' on f.silkscreen
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(81,0000 mm, 40,5000 mm): Track [VBAT_SW] on F.Cu, length 3,0000 mm
-[track_dangling]: Track has unconnected end
-    Local override; warning
-    @(41,0000 mm, 71,0800 mm): Track [3V3] on B.Cu, length 8,0004 mm
+** Found 0 DRC violations **
 
-** Found 3 unconnected pads **
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(81,0000 mm, 40,5000 mm): Track [VBAT_SW] on F.Cu, length 3,0000 mm
-    @(81,0000 mm, 42,9600 mm): PTH pad 2 [VBAT_SW] of SW1
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(63,7800 mm, 77,1200 mm): PTH pad 12 [GPIO20_SPARE] of U2
-    @(47,6004 mm, 50,7400 mm): Track [GPIO20_SPARE] on F.Cu, length 2,5400 mm
-[unconnected_items]: Missing connection between items
-    Local override; error
-    @(65,3804 mm, 35,5000 mm): Track [ESP_5V_IN] on F.Cu, length 2,5400 mm
-    @(36,5000 mm, 48,9600 mm): PTH pad 2 [ESP_5V_IN] of JP1
+** Found 0 unconnected pads **
 
 ** Found 0 Footprint errors **
 

@@ -9,7 +9,7 @@
 		(date "2026-08-19")
 		(rev "3.0")
 		(company "Hackerspace Drenthe")
-		(comment 1 "ESP32-C3 SuperMini + DRV8833 carrier (nSLEEP wired to GPIO20_SPARE)")
+		(comment 1 "ESP32-C3 SuperMini + DRV8833 carrier (nSLEEP wired to GPIO5)")
 		(comment 2 "N20 600rpm measured max 1.5A per motor (3.0A combined)")
 	)
 	(lib_symbols
@@ -1589,7 +1589,7 @@
 		)
 		(uuid "f81be06f-f81b-406f-b81b-e06ff81be074")
 	)
-	(text "DRV8833 BREAKOUT (SLEEP VIA GPIO20_SPARE)"
+	(text "DRV8833 BREAKOUT (SLEEP VIA GPIO5)"
 		(exclude_from_sim no)
 		(at 90.17 80.264 0)
 		(effects
@@ -2677,7 +2677,7 @@
 		)
 		(uuid "8be81395-8710-44b2-afc8-c538d697dc38")
 	)
-	(label "GPIO5_SPARE"
+	(label "GPIO5"
 		(at 41.91 82.55 0)
 		(effects
 			(font
@@ -2847,7 +2847,7 @@
 		)
 		(uuid "c782852e-05c5-4be7-a896-d11f032233d4")
 	)
-	(label "GPIO20_SPARE"
+	(label "GPIO5"
 		(at 134.62 90.17 0)
 		(effects
 			(font
@@ -2857,7 +2857,7 @@
 		)
 		(uuid "d078e29a-f439-4b5a-a753-30cc4ca35aaa")
 	)
-	(label "GPIO5_SPARE"
+	(label "GPIO5"
 		(at 144.78 53.34 0)
 		(effects
 			(font
@@ -2974,7 +2974,7 @@
 			)
 		)
 		(property "Footprint" "Roboktober_Custom:ESP32_C3_SUPERMINI"
-			(at 33.02 39.37 0)
+			(at 46.228 91.186 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3268,6 +3268,72 @@
 			(project "hsd-antweight-2s-v3"
 				(path "/f81be06f-f81b-406f-b81b-e06ff81be06f"
 					(reference "J4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x02")
+		(at 220.98 72.39 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "00000000-0000-0000-0000-000020000004_ALT")
+		(property "Reference" "J4_ALT"
+			(at 223.012 72.5932 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "BATTERY_ALT_2P_2.54"
+			(at 223.012 74.9046 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical"
+			(at 220.98 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 220.98 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 220.98 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "4f5d3f5d-4f5d-4f5d-a0f5-d3f5d4f5d3f5")
+		)
+		(pin "1"
+			(uuid "a1c2d3e4-a5b6-4c78-9d0e-1a2b3c4d5e6f")
+		)
+		(instances
+			(project "hsd-antweight-2s-v3"
+				(path "/f81be06f-f81b-406f-b81b-e06ff81be06f"
+					(reference "J4_ALT")
 					(unit 1)
 				)
 			)

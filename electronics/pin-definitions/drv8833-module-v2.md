@@ -26,6 +26,6 @@ The purchased module has **no `nSLEEP` pin**. It exposes two rows of six pins at
 
 ## No hardware sleep control (deferred)
 
-This module has no `nSLEEP` pin, so there is no hardware pull-down/enable circuit for the driver on this design. Motor safety on power-loss/reset still relies on firmware zeroing the PWM/digital motor outputs (`stopMotors()`), independent of any sleep pin. `GPIO5` (formerly wired to `nSLEEP`) is now a spare, unconnected GPIO — see [esp32-c3-supermini-v2.md](esp32-c3-supermini-v2.md).
+This module has no `nSLEEP` pin, so there is no direct hardware sleep input on the breakout. The board-level control signal is therefore implemented via `GPIO5` as a software-controlled driver disable line, while the firmware still zeroes the PWM outputs on reset and link loss. This keeps the pin available without conflicting with the ESP's internal boot/strapping behavior — see [esp32-c3-supermini-v2.md](esp32-c3-supermini-v2.md).
 
 If hardware-level sleep/disable is needed later, consider adding an external MOSFET load switch on `VCC`/`VM` controlled by a spare GPIO, rather than assuming a sleep pin exists on this breakout. Not implemented now; revisit only if needed.

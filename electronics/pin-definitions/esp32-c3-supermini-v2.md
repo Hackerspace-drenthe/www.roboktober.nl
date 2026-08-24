@@ -6,7 +6,7 @@ This contract follows the WORC DRV8833 firmware at upstream commit `933d0f5f65ad
 
 | Function | Signal | Destination | Reset requirement |
 | --- | --- | --- | --- |
-| Spare | `GPIO5` | No carrier connection | This DRV8833 breakout has no `nSLEEP` pin; firmware still toggles `GPIO5` but it is unconnected here |
+| Sleep/disable control | `GPIO5` | DRV8833 breakout sleep/disable signal (board-level control) | Use `GPIO5` as the designated board sleep/control line; keep it distinct from the internal ESP boot/strapping functions |
 | Left motor input 2 | `GPIO6` | DRV8833 `AIN2` | - |
 | Left motor input 1 | `GPIO7` | DRV8833 `AIN1` | - |
 | Module status LED | `GPIO8` | No carrier connection | Strapping pin; do not add an external load |
@@ -39,7 +39,7 @@ Every ESP32 socket pad now has one matching unpopulated solder pad exactly one 2
 
 | J8 pad | Left signal | J9 pad | Right signal |
 | ---: | --- | ---: | --- |
-| 1 | `ESP_5V_IN` | 1 | `GPIO5 / spare` |
+| 1 | `ESP_5V_IN` | 1 | `GPIO5 / sleep control` |
 | 2 | `GND` | 2 | `GPIO6 / AIN2` |
 | 3 | `3V3` | 3 | `GPIO7 / AIN1` |
 | 4 | `GPIO4` | 4 | `GPIO8 / onboard LED / strap` |
