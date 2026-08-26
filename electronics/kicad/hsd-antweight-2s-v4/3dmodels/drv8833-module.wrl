@@ -1,0 +1,49 @@
+#VRML V2.0 utf8
+
+DEF PCB Appearance { material Material { diffuseColor 0.18 0.055 0.055 specularColor 0.30 0.12 0.12 shininess 0.30 } }
+DEF CHIP Appearance { material Material { diffuseColor 0.03 0.03 0.035 specularColor 0.18 0.18 0.20 shininess 0.25 } }
+DEF HEADER Appearance { material Material { diffuseColor 0.08 0.08 0.09 specularColor 0.12 0.12 0.12 shininess 0.18 } }
+DEF METAL Appearance { material Material { diffuseColor 0.70 0.72 0.74 specularColor 0.90 0.90 0.90 shininess 0.80 } }
+DEF GOLD Appearance { material Material { diffuseColor 0.82 0.58 0.08 specularColor 0.70 0.58 0.22 shininess 0.60 } }
+
+Group {
+  children [
+    # Global wrapper kept at origin; internal geometry already matches footprint grid.
+    Transform {
+      translation 0.000 4.941732 0.000
+      children [
+        # KiCad legacy WRL convention in this project: 1 unit = 2.54 mm.
+        # Model is centered between rows (x=3) and between first/last pin (y=-2.5).
+        Transform { translation 3.000 -2.500 0.236 children [ Shape { appearance USE PCB geometry Box { size 7.008 5.984 0.472 } } ] }
+
+        # Pin header plastic bodies aligned to the exact drill rows.
+        Transform { translation 0.000 -2.500 -0.039 children [ Shape { appearance USE HEADER geometry Box { size 1.000 6.000 0.906 } } ] }
+        Transform { translation 6.000 -2.500 -0.039 children [ Shape { appearance USE HEADER geometry Box { size 1.000 6.000 0.906 } } ] }
+
+        # Through pins on 2.54 mm pitch, exactly matching the footprint pad pattern.
+        Transform { translation 0.000 0.000 -0.925 children [ Shape { appearance USE METAL geometry Box { size 0.252 0.252 2.677 } } ] }
+        Transform { translation 0.000 -1.000 -0.925 children [ Shape { appearance USE METAL geometry Box { size 0.252 0.252 2.677 } } ] }
+        Transform { translation 0.000 -2.000 -0.925 children [ Shape { appearance USE METAL geometry Box { size 0.252 0.252 2.677 } } ] }
+        Transform { translation 0.000 -3.000 -0.925 children [ Shape { appearance USE METAL geometry Box { size 0.252 0.252 2.677 } } ] }
+        Transform { translation 0.000 -4.000 -0.925 children [ Shape { appearance USE METAL geometry Box { size 0.252 0.252 2.677 } } ] }
+        Transform { translation 0.000 -5.000 -0.925 children [ Shape { appearance USE METAL geometry Box { size 0.252 0.252 2.677 } } ] }
+        Transform { translation 6.000 0.000 -0.925 children [ Shape { appearance USE METAL geometry Box { size 0.252 0.252 2.677 } } ] }
+        Transform { translation 6.000 -1.000 -0.925 children [ Shape { appearance USE METAL geometry Box { size 0.252 0.252 2.677 } } ] }
+        Transform { translation 6.000 -2.000 -0.925 children [ Shape { appearance USE METAL geometry Box { size 0.252 0.252 2.677 } } ] }
+        Transform { translation 6.000 -3.000 -0.925 children [ Shape { appearance USE METAL geometry Box { size 0.252 0.252 2.677 } } ] }
+        Transform { translation 6.000 -4.000 -0.925 children [ Shape { appearance USE METAL geometry Box { size 0.252 0.252 2.677 } } ] }
+        Transform { translation 6.000 -5.000 -0.925 children [ Shape { appearance USE METAL geometry Box { size 0.252 0.252 2.677 } } ] }
+
+        # Visible plated row edges on the carrier.
+        Transform { translation 0.217 -2.500 0.480 children [ Shape { appearance USE GOLD geometry Box { size 0.177 5.748 0.039 } } ] }
+        Transform { translation 5.783 -2.500 0.480 children [ Shape { appearance USE GOLD geometry Box { size 0.177 5.748 0.039 } } ] }
+
+        # Main DRV8833 IC and two representative passive parts for scale.
+        Transform { translation 3.000 -2.500 0.768 children [ Shape { appearance USE CHIP geometry Box { size 1.811 1.811 0.591 } } ] }
+        Transform { translation 1.969 -4.488 0.610 children [ Shape { appearance USE CHIP geometry Box { size 0.787 0.492 0.354 } } ] }
+        Transform { translation 4.031 -4.488 0.610 children [ Shape { appearance USE CHIP geometry Box { size 0.787 0.492 0.354 } } ] }
+        Transform { translation 3.000 -0.866 0.610 children [ Shape { appearance USE CHIP geometry Box { size 1.024 0.630 0.354 } } ] }
+      ]
+    }
+  ]
+}

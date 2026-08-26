@@ -1,0 +1,86 @@
+(footprint "CAPS_DRIVER"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at -3 -6 0)
+		(layer "B.Fab")
+		(hide yes)
+		(uuid "718b1163-718b-4163-b18b-1163733b22b9")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(property "Value" "DRIVER CAPS"
+		(at 2 -3 0)
+		(layer "B.Fab")
+		(hide yes)
+		(uuid "f99d4993-f99d-4993-b99d-4993f99d4993")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "B.Fab")
+		(hide yes)
+		(uuid "f99d4993-f99d-4993-b99d-4993f99d4993")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "B.Fab")
+		(hide yes)
+		(uuid "f99d4993-f99d-4993-b99d-4993f99d4993")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(pad "1" thru_hole rect
+		(at 0 0 180)
+		(size 2 2)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "f99d4993-f99d-4993-9c15-ac4fdc37adc7")
+	)
+	(pad "2" thru_hole circle
+		(at 4 0 180)
+		(size 2 2)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "dc37adc7-dc37-4dc7-9c37-adc7cce4cade")
+	)
+	(embedded_fonts no)
+	(model "${KIPRJMOD}/3dmodels/driver-capacitor.wrl"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)

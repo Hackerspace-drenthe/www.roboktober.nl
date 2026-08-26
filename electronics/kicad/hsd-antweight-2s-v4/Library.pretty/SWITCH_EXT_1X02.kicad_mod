@@ -1,0 +1,88 @@
+(footprint "SWITCH_EXT_1X02"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at 2.5 3 0)
+		(layer "B.Fab")
+		(hide yes)
+		(uuid "6b2598b9-6b25-48b9-83ea-645e01b7974f")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(property "Value" "SW EXT VBAT_RAW/VBAT_SW"
+		(at 2.5 -3 0)
+		(layer "B.Fab")
+		(hide yes)
+		(uuid "01b7974f-01b7-474f-81b7-974f01b7974f")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "B.Fab")
+		(hide yes)
+		(uuid "01b7974f-01b7-474f-81b7-974f01b7974f")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "B.Fab")
+		(hide yes)
+		(uuid "01b7974f-01b7-474f-81b7-974f01b7974f")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(property "DNP" "Use 2-pin shunt for bypass"
+		(at 0 0 0)
+		(layer "B.Fab")
+		(hide yes)
+		(uuid "01b7974f-3056-4d22-889b-bcb1c89bbcb1")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+			(justify mirror)
+		)
+	)
+	(pad "1" thru_hole rect
+		(at 0 0 180)
+		(size 2 2)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "c89bbcb1-c89b-4cb1-889b-bcb1c89bbcb1")
+	)
+	(pad "2" thru_hole circle
+		(at 2.54 0 180)
+		(size 2 2)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "c89bbcb1-c89b-4cb1-889b-bcb1c89bbcb1")
+	)
+	(embedded_fonts no)
+)

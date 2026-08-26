@@ -1,0 +1,210 @@
+ERC report (2026-08-24T12:45:46+0200, Encoding UTF8)
+Report includes: Errors, Warnings
+
+***** Sheet /
+[label_dangling]: Label not connected to anything
+    ; error
+    @(135,89 mm, 123,19 mm): Label 'REG_5V_OUT'
+[pin_not_connected]: Pin not connected
+    ; error
+    @(215,90 mm, 72,39 mm): Symbol J4_ALT Pin 1 [Pin_1, Passive, Line]
+[pin_not_connected]: Pin not connected
+    ; error
+    @(215,90 mm, 74,93 mm): Symbol J4_ALT Pin 2 [Pin_2, Passive, Line]
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(38,10 mm, 31,75 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(38,10 mm, 34,29 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(38,10 mm, 36,83 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(38,10 mm, 39,37 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(38,10 mm, 41,91 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(38,10 mm, 44,45 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(38,10 mm, 46,99 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(38,10 mm, 49,53 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(38,10 mm, 64,77 mm): Horizontal Wire, length 25,40 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(38,10 mm, 67,31 mm): Horizontal Wire, length 25,40 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(38,10 mm, 69,85 mm): Horizontal Wire, length 25,40 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(38,10 mm, 72,39 mm): Horizontal Wire, length 25,40 mm
+[footprint_link_issues]: The current configuration does not include the footprint library ''.
+    ; warning
+    @(86,36 mm, 43,18 mm): Symbol JP1 [Conn_01x08]
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(38,10 mm, 74,93 mm): Horizontal Wire, length 25,40 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(38,10 mm, 77,47 mm): Horizontal Wire, length 25,40 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(125,73 mm, 95,25 mm): Field Description ''
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(38,10 mm, 82,55 mm): Horizontal Wire, length 25,40 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(91,44 mm, 35,56 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(91,44 mm, 38,10 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(91,44 mm, 40,64 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(91,44 mm, 43,18 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(91,44 mm, 45,72 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(91,44 mm, 48,26 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(91,44 mm, 50,80 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(91,44 mm, 53,34 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(120,65 mm, 90,17 mm): Horizontal Wire, length 20,32 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(120,65 mm, 92,71 mm): Horizontal Wire, length 20,32 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(120,65 mm, 95,25 mm): Horizontal Wire, length 20,32 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(120,65 mm, 97,79 mm): Horizontal Wire, length 20,32 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(120,65 mm, 100,33 mm): Horizontal Wire, length 20,32 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(120,65 mm, 102,87 mm): Horizontal Wire, length 20,32 mm
+[footprint_link_issues]: The current configuration does not include the footprint library ''.
+    ; warning
+    @(125,73 mm, 95,25 mm): Symbol U2 [Conn_02x06_Odd_Even]
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(135,89 mm, 118,11 mm): Horizontal Wire, length 20,32 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(140,97 mm, 35,56 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(140,97 mm, 38,10 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(135,89 mm, 120,65 mm): Horizontal Wire, length 20,32 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(140,97 mm, 40,64 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(140,97 mm, 43,18 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(140,97 mm, 45,72 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(135,89 mm, 123,19 mm): Horizontal Wire, length 20,32 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(133,35 mm, 90,17 mm): Horizontal Wire, length 10,16 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(140,97 mm, 48,26 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(140,97 mm, 50,80 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(133,35 mm, 92,71 mm): Horizontal Wire, length 10,16 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(140,97 mm, 53,34 mm): Horizontal Wire, length 21,59 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(133,35 mm, 95,25 mm): Horizontal Wire, length 10,16 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(181,61 mm, 62,23 mm): Horizontal Wire, length 20,32 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(133,35 mm, 97,79 mm): Horizontal Wire, length 10,16 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(133,35 mm, 100,33 mm): Horizontal Wire, length 10,16 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(133,35 mm, 102,87 mm): Horizontal Wire, length 10,16 mm
+[footprint_link_issues]: The current configuration does not include the footprint library ''.
+    ; warning
+    @(152,40 mm, 93,98 mm): Symbol C1_C2 [C]
+[footprint_link_issues]: The current configuration does not include the footprint library ''.
+    ; warning
+    @(140,97 mm, 120,65 mm): Symbol U3 [Conn_01x03]
+[footprint_link_issues]: The current configuration does not include the footprint library ''.
+    ; warning
+    @(186,69 mm, 62,23 mm): Symbol SW1 [SW_SPST]
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(181,61 mm, 118,11 mm): Horizontal Wire, length 20,32 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(181,61 mm, 120,65 mm): Horizontal Wire, length 20,32 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(181,61 mm, 123,19 mm): Horizontal Wire, length 20,32 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(215,90 mm, 64,77 mm): Horizontal Wire, length 11,43 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(215,90 mm, 85,09 mm): Horizontal Wire, length 15,24 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(215,90 mm, 87,63 mm): Horizontal Wire, length 15,24 mm
+[footprint_link_issues]: The current configuration does not include the footprint library ''.
+    ; warning
+    @(186,69 mm, 120,65 mm): Symbol J10 [Conn_01x03]
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(215,90 mm, 101,60 mm): Horizontal Wire, length 15,24 mm
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(215,90 mm, 104,14 mm): Horizontal Wire, length 15,24 mm
+[footprint_link_issues]: The current configuration does not include the footprint library ''.
+    ; warning
+    @(220,98 mm, 62,23 mm): Symbol J4 [Conn_01x02]
+[footprint_link_issues]: The current configuration does not include the footprint library ''.
+    ; warning
+    @(220,98 mm, 85,09 mm): Symbol J5 [Conn_01x02]
+[footprint_link_issues]: The current configuration does not include the footprint library ''.
+    ; warning
+    @(220,98 mm, 101,60 mm): Symbol J6 [Conn_01x02]
+
+ ** ERC messages: 68  Errors 3  Warnings 65
