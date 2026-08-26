@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Statische pagina — BOM en bouwstappen voor de Roboktober-kit
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, RouterLink } from 'vue-router'
 import headerImage from '@/assets/headers/header-bouwen.png'
 import { useAuth } from '@/composables/useAuth'
 import stap1Image from '@/assets/instructions/stap1-het-chassis.png'
@@ -20,8 +20,10 @@ const heroStyle = {
 
 const route = useRoute()
 const auth = useAuth()
-const actieveTab = computed<'bouwgids' | 'links'>(() => {
-  return route.name === 'bouwen-links' ? 'links' : 'bouwgids'
+const actieveTab = computed<'bouwgids' | 'pcb' | 'links'>(() => {
+  if (route.name === 'bouwen-pcb') return 'pcb'
+  if (route.name === 'bouwen-links') return 'links'
+  return 'bouwgids'
 })
 const joinCtaPath = computed(() => (auth.isAuthenticated.value ? '/aanmelden' : '/registreren'))
 const joinCtaLabel = computed(() => (auth.isAuthenticated.value ? 'Aanmelden' : 'Maak account aan en meld je aan'))
@@ -43,6 +45,7 @@ interface BouwStap {
   materialen: string[]
   acties: string[]
   veiligheid: string
+  meerInfo?: { label: string; to: string }
 }
 
 const bouwStappen: BouwStap[] = [
@@ -78,18 +81,19 @@ const bouwStappen: BouwStap[] = [
   },
   {
     nummer: 3,
-    titel: 'Sluit driver, accu en schakelaar aan',
-    doel: 'Maak een betrouwbare basisbedrading voor links/rechts motorsturing.',
+    titel: 'Soldeer de print: driver, accu en schakelaar',
+    doel: 'Bouw de controllerprint op met headers, ESP32, DRV8833, accu-connector en schakelaar.',
     duur: '30-50 min',
     afbeelding: stap3Image,
     alt: 'Bedradingsschema met motordriver, accu en schakelaar voor een antweight robot',
-    materialen: ['DRV8833 of TB6612FNG', '2S LiPo 7,4 V (8,4 V volgeladen)', 'Silicone draad 24AWG', 'Aan/uit schakelaar'],
+    materialen: ['Roboktober v4 controllerprint', 'ESP32-C3 SuperMini', 'DRV8833-module', '1S LiPo 3,7 V (3,5–4,2 V volgeladen)', 'Silicone draad 24AWG', 'Aan/uit schakelaar'],
     acties: [
-      'Verbind elke motor met een eigen output van de motordriver.',
-      'Plaats de schakelaar tussen accu plus en driver voedingsingang.',
-      'Houd kabels kort en zet ze vast met tie-wrap of tape.',
+      'Soldeer eerst de headers, plaats daarna de ESP32 boven en de DRV8833 onder.',
+      'Soldeer de accu-connector, de schakelaar en de motorconnectors.',
+      'Zet de jumper op de 1S-stand: rechtstreekse voeding, zonder aparte 5V-regelaar.',
     ],
-    veiligheid: 'Controleer polariteit twee keer voordat je de LiPo koppelt.',
+    veiligheid: 'Controleer polariteit en jumperstand twee keer voordat je de LiPo koppelt.',
+    meerInfo: { label: 'Bekijk de volledige stap-voor-stap PCB-instructies →', to: '/bouwen/pcb' },
   },
   {
     nummer: 4,
@@ -199,6 +203,15 @@ const actieVideos: VideoItem[] = [
             Bouwgids
           </RouterLink>
           <RouterLink
+            to="/bouwen/pcb"
+            role="tab"
+            :aria-selected="actieveTab === 'pcb'"
+            class="rounded-lg px-5 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-robo-orange"
+            :class="actieveTab === 'pcb' ? 'bg-white text-robo-dark shadow-sm' : 'text-slate-200 hover:bg-white/10'"
+          >
+            PCB
+          </RouterLink>
+          <RouterLink
             to="/bouwen/links"
             role="tab"
             :aria-selected="actieveTab === 'links'"
@@ -285,12 +298,12 @@ const actieVideos: VideoItem[] = [
               </tr>
               <tr class="hover:bg-slate-50">
                 <td class="px-4 py-3 font-semibold text-robo-dark">LiPo accu</td>
-                <td class="px-4 py-3 text-slate-600">2S 7,4 V (8,4 V volgeladen) · 500 mAh · 30C+</td>
+                <td class="px-4 py-3 text-slate-600">1S 3,7 V (3,5–4,2 V volgeladen) · 500 mAh · 30C+</td>
                 <td class="px-4 py-3 text-slate-600">1×</td>
                 <td class="px-4 py-3 text-slate-700">€3 – €6</td>
                 <td class="px-4 py-3">
                   <a
-                    href="https://www.aliexpress.com/w/wholesale-2s-lipo-battery-500mah-30c.html"
+                    href="https://www.aliexpress.com/w/wholesale-1s-lipo-battery-500mah-30c.html"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="text-robo-orange underline hover:text-robo-orange-dark"
@@ -298,11 +311,11 @@ const actieVideos: VideoItem[] = [
                 </td>
                 <td class="px-4 py-3">
                   <a
-                    href="https://www.gensace.de/lipo-batteries/2s.html"
+                    href="https://www.gensace.de/lipo-batteries/1s.html"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="text-robo-orange underline hover:text-robo-orange-dark"
-                  >Gens Ace 2S LiPo 7,4 V<span class="sr-only"> (opent in nieuw venster)</span></a>
+                  >Gens Ace 1S LiPo 3,7 V<span class="sr-only"> (opent in nieuw venster)</span></a>
                 </td>
               </tr>
               <tr class="hover:bg-slate-50">
@@ -383,7 +396,7 @@ const actieVideos: VideoItem[] = [
                   Afstandsbediening
                   <span class="ml-1 rounded bg-slate-100 px-1.5 py-0.5 text-xs font-normal text-slate-500">optie A</span>
                 </td>
-                <td class="px-4 py-3 text-slate-600">ESP32-C3 + 2S LiPo 7,4 V (8,4 V volgeladen) + joystick/knopjes + behuizing</td>
+                <td class="px-4 py-3 text-slate-600">ESP32-C3 + 1S LiPo 3,7 V (3,5–4,2 V volgeladen) + joystick/knopjes + behuizing</td>
                 <td class="px-4 py-3 text-slate-600">1×</td>
                 <td class="px-4 py-3 text-slate-700">€5 – €10</td>
                 <td class="px-4 py-3">
@@ -476,6 +489,14 @@ const actieVideos: VideoItem[] = [
                 <strong class="font-bold">Veiligheidscheck:</strong>
                 {{ stap.veiligheid }}
               </div>
+
+              <RouterLink
+                v-if="stap.meerInfo"
+                :to="stap.meerInfo.to"
+                class="inline-flex items-center gap-1 text-sm font-bold text-robo-orange hover:underline"
+              >
+                {{ stap.meerInfo.label }}
+              </RouterLink>
             </div>
           </article>
         </div>

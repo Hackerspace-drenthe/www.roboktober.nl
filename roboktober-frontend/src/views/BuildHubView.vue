@@ -16,8 +16,10 @@ const heroStyle = {
 }
 
 const route = useRoute()
-const actieveTab = computed<'bouwgids' | 'links'>(() => {
-  return route.name === 'bouwen-links' ? 'links' : 'bouwgids'
+const actieveTab = computed<'bouwgids' | 'pcb' | 'links'>(() => {
+  if (route.name === 'bouwen-pcb') return 'pcb'
+  if (route.name === 'bouwen-links') return 'links'
+  return 'bouwgids'
 })
 
 const categorieLabels: Record<LinkCategorie, string> = {
@@ -70,6 +72,15 @@ onMounted(async () => {
             :class="actieveTab === 'bouwgids' ? 'bg-white text-robo-dark shadow-sm' : 'text-slate-200 hover:bg-white/10'"
           >
             Bouwgids
+          </RouterLink>
+          <RouterLink
+            to="/bouwen/pcb"
+            role="tab"
+            :aria-selected="actieveTab === 'pcb'"
+            class="rounded-lg px-5 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-robo-orange"
+            :class="actieveTab === 'pcb' ? 'bg-white text-robo-dark shadow-sm' : 'text-slate-200 hover:bg-white/10'"
+          >
+            PCB
           </RouterLink>
           <RouterLink
             to="/bouwen/links"

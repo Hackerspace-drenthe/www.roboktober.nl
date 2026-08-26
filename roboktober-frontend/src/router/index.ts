@@ -388,6 +388,15 @@ const router = createRouter({
       },
     },
     {
+      path: '/bouwen/pcb',
+      name: 'bouwen-pcb',
+      component: () => import('../views/PcbView.vue'),
+      meta: {
+        title: 'PCB — Roboktober',
+        description: 'Uitleg over de actuele PCB v4 / v3-fix print, voeding, power-path en componenten.',
+      },
+    },
+    {
       path: '/bouwen/links',
       name: 'bouwen-links',
       component: () => import('../views/BuildHubView.vue'),

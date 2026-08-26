@@ -1,0 +1,1 @@
+var e=`/app/assets/header-bouwen-CD63rm0a.png`;export{e as t};
