@@ -206,7 +206,7 @@ log "Composer binary: $COMPOSER_BIN"
 
 cd "$REPO_DIR"
 
-if [[ -n "$(git status --porcelain)" ]]; then
+if [[ -n "$(git status --porcelain --untracked-files=no)" ]]; then
   fail "Working tree is dirty in $REPO_DIR. Commit/stash server-local changes first."
 fi
 
