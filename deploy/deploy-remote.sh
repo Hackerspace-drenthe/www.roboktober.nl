@@ -14,6 +14,9 @@ set -euo pipefail
 #   DEPLOY_BUILD_FRONTEND true/false (default false)
 #   DEPLOY_PHP_BIN  Remote PHP binary override
 #   DEPLOY_COMPOSER_BIN Remote Composer binary override
+#   DEPLOY_BACKUP_ENABLED true/false, mysql backup before deploy (default true)
+#   DEPLOY_BACKUP_DIR Remote directory for mysql backups
+#   DEPLOY_BACKUP_RETENTION_COUNT Number of backups to keep
 #   DEPLOY_DRY_RUN  true/false, prints command only (default false)
 
 DEPLOY_HOST="${DEPLOY_HOST:-}"
@@ -25,6 +28,9 @@ DEPLOY_RUN_MIGRATIONS="${DEPLOY_RUN_MIGRATIONS:-true}"
 DEPLOY_BUILD_FRONTEND="${DEPLOY_BUILD_FRONTEND:-false}"
 DEPLOY_PHP_BIN="${DEPLOY_PHP_BIN:-}"
 DEPLOY_COMPOSER_BIN="${DEPLOY_COMPOSER_BIN:-}"
+DEPLOY_BACKUP_ENABLED="${DEPLOY_BACKUP_ENABLED:-}"
+DEPLOY_BACKUP_DIR="${DEPLOY_BACKUP_DIR:-}"
+DEPLOY_BACKUP_RETENTION_COUNT="${DEPLOY_BACKUP_RETENTION_COUNT:-}"
 DEPLOY_DRY_RUN="${DEPLOY_DRY_RUN:-false}"
 
 log() {
@@ -66,6 +72,18 @@ fi
 
 if [[ -n "$DEPLOY_COMPOSER_BIN" ]]; then
   REMOTE_CMD+=" COMPOSER_BIN='$DEPLOY_COMPOSER_BIN'"
+fi
+
+if [[ -n "$DEPLOY_BACKUP_ENABLED" ]]; then
+  REMOTE_CMD+=" BACKUP_ENABLED='$DEPLOY_BACKUP_ENABLED'"
+fi
+
+if [[ -n "$DEPLOY_BACKUP_DIR" ]]; then
+  REMOTE_CMD+=" BACKUP_DIR='$DEPLOY_BACKUP_DIR'"
+fi
+
+if [[ -n "$DEPLOY_BACKUP_RETENTION_COUNT" ]]; then
+  REMOTE_CMD+=" BACKUP_RETENTION_COUNT='$DEPLOY_BACKUP_RETENTION_COUNT'"
 fi
 
 REMOTE_CMD+=" bash deploy/deploy.sh"

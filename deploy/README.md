@@ -4,7 +4,7 @@ Deze map bevat een eenvoudige deploy-opzet voor de server op 192.168.1.10.
 
 ## Bestanden
 
-- deploy.sh: Pull + composer install + artisan optimize + migrate
+- deploy.sh: Pull + composer install + artisan optimize + mysql backup + migrate
 - deploy-remote.sh: generieke remote runner (SSH + deploy.sh)
 - deploy-staging.sh: staging wrapper bovenop deploy-remote.sh
 - deploy-production.sh: productie wrapper bovenop deploy-remote.sh
@@ -119,6 +119,9 @@ Belangrijke variabelen voor wrappers:
 - `STAGING_BUILD_FRONTEND` / `PRODUCTION_BUILD_FRONTEND` (`true`/`false`)
 - `STAGING_PHP_BIN` / `PRODUCTION_PHP_BIN` (optioneel)
 - `STAGING_COMPOSER_BIN` / `PRODUCTION_COMPOSER_BIN` (optioneel)
+- `STAGING_BACKUP_ENABLED` / `PRODUCTION_BACKUP_ENABLED` (`true`/`false`, default `true`)
+- `STAGING_BACKUP_DIR` / `PRODUCTION_BACKUP_DIR` (optioneel, default `/var/backups/roboktober-mysql`)
+- `STAGING_BACKUP_RETENTION_COUNT` / `PRODUCTION_BACKUP_RETENTION_COUNT` (optioneel, default `14`)
 - `PRODUCTION_CONFIRM` (verplicht voor echte productie deploy, waarde: `deploy-production`)
 
 ## Auto deploy via GitHub webhook
@@ -198,4 +201,5 @@ systemctl list-timers | grep roboktober
 - Standaard verwacht deploy.sh een schone server worktree.
 - Frontend build op server is standaard uit (`BUILD_FRONTEND=false`) omdat assets al in git staan.
 - Wil je handmatig pinnen op een specifieke PHP-versie, zet dan `PHP_BIN` in de service of shell (bijvoorbeeld `PHP_BIN=php8.4`).
+- Voor elke deploy wordt automatisch een `mysqldump` backup gemaakt van de database (op basis van `roboktober-api/.env`), ongeacht `RUN_MIGRATIONS`. Dumps komen standaard in `/var/backups/roboktober-mysql` te staan (gzip, laatste 14 bewaard). Als de backup mislukt, stopt de deploy (`fail`). Uitzetten kan met `BACKUP_ENABLED=false`, maar dat wordt afgeraden.
 - Endpoint implementatie staat in `roboktober-api/public/github-deploy-hook.php`.
