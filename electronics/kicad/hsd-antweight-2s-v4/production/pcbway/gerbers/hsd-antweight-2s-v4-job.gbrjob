@@ -5,11 +5,11 @@
       "Application": "Pcbnew",
       "Version": "9.0.8+dfsg-1"
     },
-    "CreationDate": "2026-08-20T11:33:50+02:00"
+    "CreationDate": "2026-08-27T11:03:26+02:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
-      "Name": "hsd-antweight-2s-v3",
+      "Name": "hsd-antweight-2s-v4",
       "GUID": "6873642d-616e-4747-9765-696768742d32",
       "Revision": "rev?"
     },
@@ -32,27 +32,37 @@
   ],
   "FilesAttributes": [
     {
-      "Path": "hsd-antweight-2s-v3-F_Cu.gtl",
+      "Path": "hsd-antweight-2s-v4-F_Cu.gtl",
       "FileFunction": "Copper,L1,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "hsd-antweight-2s-v3-B_Cu.gbl",
+      "Path": "hsd-antweight-2s-v4-B_Cu.gbl",
       "FileFunction": "Copper,L2,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "hsd-antweight-2s-v3-f_silkscreen.gto",
+      "Path": "hsd-antweight-2s-v4-f_silkscreen.gto",
       "FileFunction": "Legend,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "hsd-antweight-2s-v3-b_silkscreen.gbo",
+      "Path": "hsd-antweight-2s-v4-b_silkscreen.gbo",
       "FileFunction": "Legend,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "hsd-antweight-2s-v3-Edge_Cuts.gm1",
+      "Path": "hsd-antweight-2s-v4-F_Mask.gts",
+      "FileFunction": "SolderMask,Top",
+      "FilePolarity": "Negative"
+    },
+    {
+      "Path": "hsd-antweight-2s-v4-B_Mask.gbs",
+      "FileFunction": "SolderMask,Bot",
+      "FilePolarity": "Negative"
+    },
+    {
+      "Path": "hsd-antweight-2s-v4-Edge_Cuts.gm1",
       "FileFunction": "Profile",
       "FilePolarity": "Positive"
     }
@@ -63,13 +73,18 @@
       "Name": "Top Silk Screen"
     },
     {
+      "Type": "SolderMask",
+      "Thickness": 0.01,
+      "Name": "Top Solder Mask"
+    },
+    {
       "Type": "Copper",
       "Thickness": 0.035,
       "Name": "F.Cu"
     },
     {
       "Type": "Dielectric",
-      "Thickness": 1.53,
+      "Thickness": 1.51,
       "Material": "FR4",
       "Name": "F.Cu/B.Cu",
       "Notes": "Type: dielectric layer 1 (from F.Cu to B.Cu)"
@@ -78,6 +93,11 @@
       "Type": "Copper",
       "Thickness": 0.035,
       "Name": "B.Cu"
+    },
+    {
+      "Type": "SolderMask",
+      "Thickness": 0.01,
+      "Name": "Bottom Solder Mask"
     },
     {
       "Type": "Legend",
