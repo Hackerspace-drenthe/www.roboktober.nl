@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { getAdminPosts, updateAdminPostStatus } from '@/api'
+import { createAdminPost, getAdminPosts, updateAdminPostStatus } from '@/api'
 import type { AdminPost } from '@/types/api'
+import { useRouter } from 'vue-router'
 
 const posts = ref<AdminPost[]>([])
 const loading = ref(false)
+const creating = ref(false)
 const errorMessage = ref<string | null>(null)
+const router = useRouter()
 
 async function laadPosts(): Promise<void> {
   loading.value = true
@@ -34,6 +37,20 @@ async function togglePublished(post: AdminPost): Promise<void> {
   }
 }
 
+async function createDraftPost(): Promise<void> {
+  creating.value = true
+  errorMessage.value = null
+
+  try {
+    const created = await createAdminPost()
+    await router.push(`/admin/posts/${created.id}/edit`)
+  } catch {
+    errorMessage.value = 'Nieuw bericht aanmaken mislukt.'
+  } finally {
+    creating.value = false
+  }
+}
+
 onMounted(async () => {
   await laadPosts()
 })
@@ -41,9 +58,20 @@ onMounted(async () => {
 
 <template>
   <main class="mx-auto min-h-[70vh] max-w-6xl px-6 py-12">
-    <header class="mb-8">
-      <h1 class="text-3xl font-black text-white">Admin · Posts</h1>
-      <p class="mt-2 text-slate-300">Publicatiebeheer voor nieuwsberichten via API.</p>
+    <header class="mb-8 flex flex-wrap items-start justify-between gap-4">
+      <div>
+        <h1 class="text-3xl font-black text-white">Admin · Posts</h1>
+        <p class="mt-2 text-slate-300">Publicatiebeheer voor nieuwsberichten via API.</p>
+      </div>
+
+      <button
+        type="button"
+        :disabled="creating"
+        class="rounded-lg bg-robo-orange px-4 py-2 font-bold text-white hover:bg-robo-orange-dark disabled:opacity-60"
+        @click="createDraftPost"
+      >
+        {{ creating ? 'Aanmaken...' : 'Nieuw bericht' }}
+      </button>
     </header>
 
     <p v-if="errorMessage" class="mb-4 rounded-md border border-red-400/40 bg-red-950/30 px-3 py-2 text-sm text-red-200">{{ errorMessage }}</p>

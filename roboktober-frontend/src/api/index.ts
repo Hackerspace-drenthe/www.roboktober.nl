@@ -23,6 +23,7 @@ import type {
   AdminPage,
   AdminPageContentUpdatePayload,
   AdminPost,
+  AdminPostCreatePayload,
   AdminPostContentUpdatePayload,
   AdminTeam,
   AdminRobot,
@@ -462,6 +463,11 @@ export async function getAdminPosts(params?: {
 
 export async function getAdminPost(id: number): Promise<AdminPost> {
   const { data } = await api.get<{ data: AdminPost }>(`/admin/posts/${id}`)
+  return data.data
+}
+
+export async function createAdminPost(payload?: AdminPostCreatePayload): Promise<AdminPost> {
+  const { data } = await api.post<{ data: AdminPost }>('/admin/posts', payload ?? {})
   return data.data
 }
 

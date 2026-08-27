@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\V1\StoreAdminPostRequest;
 use App\Http\Requests\Api\V1\UpdateAdminPostContentRequest;
 use App\Http\Requests\Api\V1\UpdatePublishStateRequest;
 use App\Http\Resources\Api\V1\AdminPostResource;
@@ -12,10 +13,57 @@ use App\Models\Post;
 use App\Models\User;
 use App\Services\Audit\AuditLogger;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Str;
 
 class PostModerationController extends Controller
 {
     public function __construct(private readonly AuditLogger $audit) {}
+
+    public function store(StoreAdminPostRequest $request): AdminPostResource
+    {
+        $this->authorize('create', Post::class);
+
+        /** @var User $actor */
+        $actor = $request->user();
+
+        /** @var array{titel?: string|null, excerpt?: string|null, content?: string|null, content_format?: string|null, categorie?: string|null, tags?: list<string>|null} $validated */
+        $validated = $request->validated();
+
+        $titel = trim((string) ($validated['titel'] ?? ''));
+        if ($titel === '') {
+            $titel = 'Nieuw bericht';
+        }
+
+        $slug = $this->resolveUniqueSlug($titel);
+
+        $post = Post::query()->create([
+            'slug' => $slug,
+            'titel' => $titel,
+            'excerpt' => $validated['excerpt'] ?? null,
+            'content' => $validated['content'] ?? '',
+            'content_format' => $validated['content_format'] ?? 'html',
+            'categorie' => $validated['categorie'] ?? null,
+            'tags' => $validated['tags'] ?? [],
+            'is_published' => false,
+            'published_at' => null,
+        ]);
+
+        $this->audit->log(
+            actor: $actor,
+            action: 'post.created',
+            subject: $post,
+            before: null,
+            after: [
+                'slug' => $post->slug,
+                'titel' => $post->titel,
+                'is_published' => (bool) $post->is_published,
+            ],
+        );
+
+        $post->load('media');
+
+        return new AdminPostResource($post);
+    }
 
     public function index(): AnonymousResourceCollection
     {
@@ -135,5 +183,19 @@ class PostModerationController extends Controller
         $post->load('media');
 
         return new AdminPostResource($post);
+    }
+
+    private function resolveUniqueSlug(string $title): string
+    {
+        $base = Str::slug($title);
+        $slug = $base !== '' ? $base : 'nieuw-bericht';
+        $counter = 1;
+
+        while (Post::query()->where('slug', $slug)->exists()) {
+            $counter++;
+            $slug = ($base !== '' ? $base : 'nieuw-bericht').'-'.$counter;
+        }
+
+        return $slug;
     }
 }

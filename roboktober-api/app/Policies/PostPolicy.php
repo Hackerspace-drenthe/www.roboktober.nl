@@ -12,6 +12,11 @@ class PostPolicy
 {
     use ChecksAdminRoles;
 
+    public function create(User $user): bool
+    {
+        return $this->canModerate($user);
+    }
+
     public function viewAny(User $user): bool
     {
         return $this->canModerate($user);

@@ -700,6 +700,15 @@ export interface AdminPostContentUpdatePayload {
   tags?: string[]
 }
 
+export interface AdminPostCreatePayload {
+  titel?: string
+  excerpt?: string | null
+  content?: string
+  content_format?: 'html' | 'markdown'
+  categorie?: string | null
+  tags?: string[]
+}
+
 export interface AdminPage {
   id: number
   slug: string

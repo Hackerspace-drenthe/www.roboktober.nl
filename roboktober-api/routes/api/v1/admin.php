@@ -77,6 +77,7 @@ Route::put('/competitie/battles/{competitionBattle}/scores', [CompetitionManagem
     ->name('competition.battles.scores.upsert');
 
 Route::get('/posts', [PostModerationController::class, 'index'])->name('posts.index');
+Route::post('/posts', [PostModerationController::class, 'store'])->name('posts.store');
 Route::get('/posts/{post:id}', [PostModerationController::class, 'show'])->name('posts.show');
 Route::patch('/posts/{post:id}/content', [PostModerationController::class, 'updateContent'])
     ->name('posts.update-content');

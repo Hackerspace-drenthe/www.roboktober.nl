@@ -24,6 +24,10 @@ describe('Admin content moderation API', function (): void {
             ->assertForbidden();
 
         $this->withHeader('Authorization', 'Bearer '.$token)
+            ->postJson('/api/v1/admin/posts', [])
+            ->assertForbidden();
+
+        $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/v1/admin/pages')
             ->assertForbidden();
 
@@ -32,7 +36,7 @@ describe('Admin content moderation API', function (): void {
             ->assertForbidden();
     });
 
-    it('allows moderator to publish and unpublish posts, pages and team updates', function (): void {
+    it('allows moderator to create, publish and unpublish posts, pages and team updates', function (): void {
         $moderator = User::factory()->create([
             'role' => UserRole::Moderator,
         ]);
@@ -67,6 +71,14 @@ describe('Admin content moderation API', function (): void {
         ]);
 
         $token = $moderator->createToken('moderator')->plainTextToken;
+
+        $createdPostResponse = $this->withHeader('Authorization', 'Bearer '.$token)
+            ->postJson('/api/v1/admin/posts', [])
+            ->assertCreated()
+            ->assertJsonPath('data.titel', 'Nieuw bericht')
+            ->assertJsonPath('data.is_published', false);
+
+        $createdPostId = (int) $createdPostResponse->json('data.id');
 
         $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/v1/admin/posts')
@@ -109,6 +121,12 @@ describe('Admin content moderation API', function (): void {
             'is_published' => true,
         ]);
 
+        $this->assertDatabaseHas('posts', [
+            'id' => $createdPostId,
+            'titel' => 'Nieuw bericht',
+            'is_published' => false,
+        ]);
+
         $this->assertDatabaseHas('pages', [
             'id' => $page->id,
             'is_published' => true,
@@ -124,6 +142,13 @@ describe('Admin content moderation API', function (): void {
             'action' => 'post.publish_state_updated',
             'subject_type' => Post::class,
             'subject_id' => $post->id,
+        ]);
+
+        $this->assertDatabaseHas('audit_logs', [
+            'actor_user_id' => $moderator->id,
+            'action' => 'post.created',
+            'subject_type' => Post::class,
+            'subject_id' => $createdPostId,
         ]);
 
         $this->assertDatabaseHas('audit_logs', [
