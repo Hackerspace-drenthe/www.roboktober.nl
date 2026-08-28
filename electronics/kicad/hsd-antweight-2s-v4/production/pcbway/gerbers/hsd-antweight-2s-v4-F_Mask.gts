@@ -1,12 +1,12 @@
 %TF.GenerationSoftware,KiCad,Pcbnew,9.0.8+dfsg-1*%
-%TF.CreationDate,2026-08-27T14:57:31+02:00*%
+%TF.CreationDate,2026-08-28T12:02:37+02:00*%
 %TF.ProjectId,hsd-antweight-2s-v4,6873642d-616e-4747-9765-696768742d32,rev?*%
 %TF.SameCoordinates,Original*%
 %TF.FileFunction,Soldermask,Top*%
 %TF.FilePolarity,Negative*%
 %FSLAX46Y46*%
 G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
-G04 Created by KiCad (PCBNEW 9.0.8+dfsg-1) date 2026-08-27 14:57:31*
+G04 Created by KiCad (PCBNEW 9.0.8+dfsg-1) date 2026-08-28 12:02:37*
 %MOMM*%
 %LPD*%
 G01*

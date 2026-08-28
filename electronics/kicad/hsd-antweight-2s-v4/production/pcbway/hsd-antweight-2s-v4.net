@@ -1,7 +1,7 @@
 (export (version "E")
   (design
     (source "/home/rein/Projects/www.roboktober.nl/electronics/kicad/hsd-antweight-2s-v4/hsd-antweight-2s-v4.kicad_sch")
-    (date "2026-08-27T14:56:56+0200")
+    (date "2026-08-28T12:02:38+0200")
     (tool "Eeschema 9.0.8+dfsg-1")
     (sheet (number "1") (name "/") (tstamps "/")
       (title_block
