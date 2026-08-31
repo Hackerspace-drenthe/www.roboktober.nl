@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import headerImage from '@/assets/headers/header-bouwen.png'
 import chassisRender from '@/assets/3dprint/chassis-render.png'
 import chassisPcbDekselRender from '@/assets/3dprint/chassis-pcb-deksel-render.png'
+import designInfographic from '@/assets/3dprint/infographic-van-idee-naar-print.jpeg'
 import pcbFrontMetComponenten from '@/assets/pcb/pcb-v4-front-met-componenten.png'
 
 const route = useRoute()
@@ -72,13 +73,6 @@ const ontwerpFlow = [
     titel: 'Pas aan en print echt',
     tekst: 'Fix kleine fouten en print de definitieve versie.',
   },
-]
-
-const fitInfographic = [
-  { onderdeel: 'Motor + wiel', check: 'Vrij draaien zonder schuren' },
-  { onderdeel: 'LiPo', check: 'Vast en veilig op zijn plek' },
-  { onderdeel: 'PCB/deksel', check: 'Gaten en maat kloppen' },
-  { onderdeel: 'Schakelaar', check: 'Van buiten goed bereikbaar' },
 ]
 
 const printSettings = [
@@ -219,16 +213,17 @@ const montageChecks = [
           <h3 id="fit-infographic-title" class="border-b border-slate-200 bg-slate-50 px-5 py-3 text-lg font-black text-robo-dark">
             Infographic: snelle passing-check
           </h3>
-          <div class="grid gap-px bg-slate-200 md:grid-cols-2">
-            <div
-              v-for="item in fitInfographic"
-              :key="item.onderdeel"
-              class="bg-white p-4"
-            >
-              <p class="text-xs font-bold uppercase tracking-wider text-slate-500">{{ item.onderdeel }}</p>
-              <p class="mt-1 text-sm font-semibold text-robo-dark">{{ item.check }}</p>
-            </div>
-          </div>
+          <figure class="bg-white p-4">
+            <img
+              :src="designInfographic"
+              alt="Infographic met stappen van idee naar print voor een antweight chassis"
+              class="mx-auto w-full max-w-xl rounded-xl border border-slate-200 object-contain"
+              loading="lazy"
+            />
+            <figcaption class="mt-3 text-center text-sm text-slate-600">
+              Van idee naar print: ontwerpkeuze, meten, testprint en veilige montage.
+            </figcaption>
+          </figure>
         </div>
       </div>
     </section>
