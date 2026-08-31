@@ -1,0 +1,1 @@
+var e=`/app/assets/PCBWay-BU9cX1kT.svg`;export{e as t};

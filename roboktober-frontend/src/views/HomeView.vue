@@ -15,7 +15,7 @@ import headerImage from '@/assets/headers/header-home.png'
 import storyCommunityImage from '@/assets/headers/header-aanmelden.png'
 import storyTechImage from '@/assets/headers/header-build-hub.png'
 import storyArenaImage from '@/assets/headers/header-programma.png'
-import sponsorPcbwayImage from '@/assets/sponsors/pcbway-logo-transparent.png'
+import sponsorPcbwayImage from '@/assets/sponsors/PCBWay.svg'
 
 const posts = ref<Post[]>([])
 const ladenPosts = ref(true)
@@ -250,7 +250,7 @@ onUnmounted(() => {
         <img
           :src="sponsorPcbwayImage"
           alt="PCBWay sponsorbanner"
-            class="mx-auto mt-3 block h-auto w-full max-w-sm rounded-md border border-white/20 bg-robo-dark/60 p-3"
+            class="mx-auto mt-3 block h-auto w-40 md:w-48"
           loading="lazy"
         />
       </div>
