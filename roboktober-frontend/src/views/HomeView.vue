@@ -247,12 +247,20 @@ onUnmounted(() => {
 
       <div class="mx-auto mt-4 max-w-2xl rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-slate-200">
         <p class="font-semibold text-white">Printplaat gesponsord door PCBWay.</p>
-        <img
-          :src="sponsorPcbwayImage"
-          alt="PCBWay sponsorbanner"
-            class="mx-auto mt-3 block h-auto w-40 md:w-48"
-          loading="lazy"
-        />
+          <a
+            href="https://www.pcbway.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-3 inline-block"
+            aria-label="Bezoek PCBWay"
+          >
+            <img
+              :src="sponsorPcbwayImage"
+              alt="PCBWay sponsorbanner"
+              class="mx-auto block h-auto w-40 md:w-48"
+              loading="lazy"
+            />
+          </a>
       </div>
     </div>
   </section>
