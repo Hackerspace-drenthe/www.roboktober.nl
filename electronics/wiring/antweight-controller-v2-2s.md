@@ -1,8 +1,10 @@
-# Antweight controller v2-2S wiring
+# Antweight controller v4 optional 2S wiring
 
 ## Power wiring
 
-The v3-fix design is the active reference. The ESP no longer uses a legacy 3.3V-only supply path as the primary design rule. The standard route is a 5V regulator feeding `ESP_5V_IN`; the ESP32-C3 then generates its own 3.3 V internally.
+This document describes the optional 2S wiring path for the active v4 board. The minimal 1S setup is the default for new builds because it uses fewer parts and is the lowest-cost baseline (about EUR 25 for a full 1S kit).
+
+The ESP no longer uses a legacy 3.3V-only supply path as the primary design rule. In the optional 2S path, a 5V regulator feeds `ESP_5V_IN`; the ESP32-C3 then generates its own 3.3 V internally.
 
 | Connection | Destination | Suggested color |
 | --- | --- | --- |
@@ -51,10 +53,10 @@ flowchart LR
 
 Never charge the 2S pack through this carrier. Remove it and use a compatible 2S balance charger.
 
-## Spanningsomvormer (v3-fix, leidend)
+## Spanningsomvormer (v4, optionele 2S-route)
 
 Use a 5V regulator feeding the board's `ESP_5V_IN` input. The ESP32-C3 module then creates its own 3.3 V domain internally. Keep the regulator interconnects short, insulated and strain-relieved.
 
-Standard for the current design: `VBAT_SW -> 5V regulator -> ESP_5V_IN`. Do not run raw battery power directly onto the ESP32 3.3 V rail. The direct 1S exception remains valid only for the specifically tested ESP32-C3 module in the v3-fix build.
+Standard for this optional path: `VBAT_SW -> 5V regulator -> ESP_5V_IN`. Do not run raw battery power directly onto the ESP32 3.3 V rail. Default for normal builds remains the minimal 1S setup on the active v4 board.
 
 The PCB logo silk uses two lines: small `HACKERSPACE` over normal-size `DRENTHE`.

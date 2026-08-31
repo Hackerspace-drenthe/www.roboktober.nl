@@ -1,4 +1,18 @@
-# V3-fix print: gebruikershandleiding
+# V3-fix print: gebruikershandleiding (archief)
+
+## Archiefstatus
+
+Deze handleiding blijft beschikbaar als historische referentie.
+Het actieve ontwerp is nu v4:
+
+- `electronics/kicad/hsd-antweight-2s-v4/hsd-antweight-2s-v4.kicad_pcb`
+- `electronics/kicad/hsd-antweight-2s-v4/README.md`
+
+Voor nieuwe builds geldt:
+
+- gebruik v4 als bron van waarheid
+- minimale 1S setup is de standaard
+- richtprijs complete 1S-kit is ongeveer EUR 25 per robot
 
 Deze pagina is bedoeld voor mensen die de print voor het eerst willen gebruiken of bouwen. De informatie hier is geschreven voor beginners, maar wel gebaseerd op de werkelijke, geteste print.
 

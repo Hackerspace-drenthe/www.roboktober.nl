@@ -43,10 +43,18 @@ Dit betekent:
 - simpel
 - compact
 - veilig
-- makkelijk te reproduceert
+- makkelijk te reproduceren
 - het werkt het beste voor een kleine antweight-bouw met N20-motoren
 
-### 2.2 Optionele 2S-route
+### 2.2 Kosten: minimale 1S-kit
+
+Voor planning en inkoop hanteren we voor de actieve v4-build een praktische
+richtprijs van ongeveer EUR 25 voor een complete minimale 1S-kit per robot.
+
+Deze prijs is een inkoopindicatie en kan variëren door voorraad, leverancier,
+verzendkosten en batchgrootte.
+
+### 2.3 Optionele 2S-route
 
 Een 2S-configuratie kan als aparte route worden gebruikt, maar dat is bedoeld als alternatief en niet als standaardopstelling.
 

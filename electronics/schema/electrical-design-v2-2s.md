@@ -2,17 +2,24 @@
 
 ## Status
 
-This document is retained for historical comparison only. The lead design for
-new builds is the v3-fix revision under `electronics/kicad/hsd-antweight-2s-v3-fix/`.
+This document describes the optional 2S route and is retained for historical and
+advanced-build comparison. The lead design for new builds is the v4 revision
+under `electronics/kicad/hsd-antweight-2s-v4/` with the minimal 1S setup as default.
 
 Implementation status:
 
-- Lead design path: `electronics/kicad/hsd-antweight-2s-v3-fix/`
+- Lead design path: `electronics/kicad/hsd-antweight-2s-v4/`
 - Layout state: board-level power rule established; source-of-truth design follows the PCB
-- Rule precedence: `v3-fix PCB` > schematic > reference docs
+- Rule precedence: `v4 PCB` > schematic > reference docs
 
-The older 3.3V-only interpretation is superseded by the validated v3-fix
+The older 3.3V-only interpretation is superseded by the validated v4
 architecture and must not be treated as the active power contract.
+
+Current default baseline for new builds:
+
+- Minimal 1S setup is the standard.
+- Approximate full 1S kit purchase price is around EUR 25 per robot.
+- 2S remains optional and requires explicit regulator and validation choices.
 
 ## Design targets
 
@@ -46,7 +53,7 @@ flowchart LR
     GND --- ESP
 ```
 
-The v3-fix architecture uses a single 5V regulator as the primary route to the ESP32-C3 module. The ESP then regulates internally down to 3.3 V; the module's 3.3 V pin is not the primary power input for the board-level design. The standard route is `VBAT -> 5V regulator -> ESP_5V_IN`.
+The optional 2S architecture uses a single 5V regulator as the primary route to the ESP32-C3 module. The ESP then regulates internally down to 3.3 V; the module's 3.3 V pin is not the primary power input for the board-level design. The optional 2S route is `VBAT -> 5V regulator -> ESP_5V_IN`.
 
 The direct 1S exception remains valid only for the tested, purchased ESP32-C3 module: a direct battery feed to `ESP_5V_IN` at roughly 4.0 V was stable for a 5-minute race profile. This is not a general rule for other modules or boards.
 
@@ -74,7 +81,7 @@ The board's 5V rail must be explicit and labeled as `ESP_5V_IN` / `REG_5V_OUT` i
 
 ## Board interfaces
 
-The active v3-fix carrier uses these power interfaces:
+The active v4 carrier uses these power interfaces:
 
 | Connector | Pins | Rating and purpose |
 | --- | --- | --- |
@@ -83,7 +90,7 @@ The active v3-fix carrier uses these power interfaces:
 | U3 | `VBAT_SW`, `GND`, `REG_5V_OUT` | 5V regulator output feeding the ESP module |
 | J10 | `ESP_5V_IN`, `GND`, `VBAT_SW` | Accessory power; pad 1 is the ESP 5V input and is valid in the 3.7-5.0 V tested range for the validated module |
 
-Label J10 pad 1 as `ESP_5V_IN` / `5V(3.7-5V)` in the active board design. The old `3V3` accessory labeling is superseded by the v3-fix power rule.
+Label J10 pad 1 as `ESP_5V_IN` / `5V(3.7-5V)` in the active board design. The old `3V3` accessory labeling is superseded by the v4 power rule.
 
 PCB branding silk currently reads `HACKERSPACE` / `DRENTHE` on the logo area.
 

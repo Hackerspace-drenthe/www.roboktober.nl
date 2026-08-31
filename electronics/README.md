@@ -12,17 +12,18 @@ antweight-builds.
 - `schema/`: elektrische ontwerpkeuzes en netspecificatie.
 - `kicad/antweight-controller-v2/`: historische legacy KiCad-projectmap
   (gearchiveerd).
-- `kicad/hsd-antweight-2s-v3-fix/`: leidend ontwerp voor de huidige
+- `kicad/hsd-antweight-2s-v4/`: leidend ontwerp voor de huidige
   ESP32-C3 controller revisie.
+- `kicad/hsd-antweight-2s-v3-fix/`: historische tussenrevisie (archief).
 
 Het leidende actieve ontwerp in deze repository is nu:
 
-- v3-fix PCB: `kicad/hsd-antweight-2s-v3-fix/`
-- v3-fix power rule: `ESP_5V_IN` is de standaard ESP-voeding; 2S via 5V regulateur,
-  1S direct alleen op de gevalideerde module
-- v3-fix design notes: `docs/WALLIE-DESIGN-ISSUES.md`
+- v4 PCB: `kicad/hsd-antweight-2s-v4/`
+- v4 power rule: minimale 1S setup is de standaard; 2S via regulator is optioneel
+- v4 design notes: `docs/WALLIE-DESIGN-ISSUES.md`
+- richtprijs complete 1S-kit: ongeveer EUR 25 per robot (inkoopindicatie)
 
-De PCB in `kicad/hsd-antweight-2s-v3-fix/` is de bron van waarheid voor het actuele ontwerp.
+De PCB in `kicad/hsd-antweight-2s-v4/` is de bron van waarheid voor het actuele ontwerp.
 Legacy 3.3V-only en oudere 2S-documenten blijven alleen als archiefreferentie
 bestaan voor vergelijking; ze zijn niet meer leidend voor bouw-, validatie- of
 release-werk.
@@ -54,7 +55,7 @@ No-go-criterium (fallback activeren):
 Fallback-uitvoering (handmatige wiring):
 
 1. Gebruik de actuele pin-definitions en wiring-docs als bron van waarheid.
-2. Bouw volgens de actieve 2S bedradingsinstructies.
+2. Bouw volgens de actieve v4 1S-minimum bedradingsinstructies (2S alleen optioneel).
 3. Soldeer en test modulair: voeding, MCU, driver, dan motoruitgangen.
 4. Test eerst met stroombegrensde voeding en zonder gemonteerde motoren.
 5. Leg afwijkingen of workarounds direct vast in de wiring-documentatie.
@@ -70,39 +71,40 @@ Minimale materialen-check voor fallback:
 Publicatiestatus:
 
 - KiCad updates mogen gepubliceerd worden voor review/samenwerking.
-- De actuele 2S-print is proto-ready en mag voor proefseries worden
+- De actuele v4-print is proto-ready en mag voor proefseries worden
   gebruikt.
 - Massaproductie blijft geblokkeerd totdat footprints en thermische
   validatie definitief zijn vastgelegd.
 
 ## Reference design
 
-Het leidende actieve ontwerp is de v3-fix revisie in `kicad/hsd-antweight-2s-v3-fix/`.
+Het leidende actieve ontwerp is de v4 revisie in `kicad/hsd-antweight-2s-v4/`.
 
 Belangrijkste actuele regels:
 
 - ESP32-C3 SuperMini voedt via `ESP_5V_IN`, niet via een legacy 3.3V-only rail;
 - de module maakt intern 3.3V zelf; geen raw batterij op de ESP 3.3V pin;
-- standaard route: `VBAT -> 5V-regelaar -> ESP_5V_IN`;
-- 1S direct op `ESP_5V_IN` is alleen geldig voor de specifiek geteste module in v3-fix;
+- standaard route: minimale 1S setup via charge/protection breakout op de v4;
+- optionele route: `2S -> 5V-regelaar -> ESP_5V_IN`;
 - `VIN -> VOUT` bypass naar de ESP 3.3V rail blijft verboden;
-- de v3-fix PCB en schematic zijn de bron van waarheid, niet de legacy 2S docs.
+- de v4 PCB en schematic zijn de bron van waarheid, niet de legacy 2S docs.
+- richtprijs complete 1S-kit blijft ongeveer EUR 25 per robot.
 
 De oudere 2S/3.3V-only documenten in deze map blijven alleen als historische referentie
 bestaan en mogen niet meer als actieve power-contract gelden.
 
 Zie `docs/WALLIE-DESIGN-ISSUES.md` voor de definitieve design rules en
-`kicad/hsd-antweight-2s-v3-fix/README.md` voor de actuele PCB mapping.
+`kicad/hsd-antweight-2s-v4/README.md` voor de actuele PCB mapping.
 
 ## KiCad
 
 Status van recente KiCad-updates:
 
-- v3-fix is het leidende ontwerp voor nieuwe hardware en validatie.
-- De PCB en het schema in `kicad/hsd-antweight-2s-v3-fix/` zijn de source-of-truth.
+- v4 is het leidende ontwerp voor nieuwe hardware en validatie.
+- De PCB en het schema in `kicad/hsd-antweight-2s-v4/` zijn de source-of-truth.
 - Legacy ontwerpen in `kicad/hsd-antweight-2s-pcb/` en oudere mappen zijn archief.
 
-Open `kicad/hsd-antweight-2s-v3-fix/hsd-antweight-2s-v3.kicad_pro` met KiCad 9 of nieuwer.
+Open `kicad/hsd-antweight-2s-v4/hsd-antweight-2s-v4.kicad_pro` met KiCad 9 of nieuwer.
 
 Voor review/validatie moet de actuele power-path altijd controleren.
 Dit houdt het pincontract controleerbaar zolang de definitieve
@@ -112,8 +114,8 @@ Voer voor een release minimaal uit:
 
 ```bash
 kicad-cli sch erc --severity-error \
-  kicad/hsd-antweight-2s-pcb/rein-2s-controller.kicad_sch
-kicad-cli pcb drc kicad/hsd-antweight-2s-pcb/rein-2s-controller.kicad_pcb
+  kicad/hsd-antweight-2s-v4/hsd-antweight-2s-v4.kicad_sch
+kicad-cli pcb drc kicad/hsd-antweight-2s-v4/hsd-antweight-2s-v4.kicad_pcb
 ```
 
 Het ontwerp is een technisch startpunt, geen gecertificeerd product.

@@ -4,7 +4,9 @@
 - Order status: In verwerking
 - Order date: 2026-08-13
 - Purpose: Components for antweight controller and robot builds
-- Battery policy: only safe 2S LiPo packs are allowed for this project.
+- Current build policy (v4): minimal 1S setup is default for new builds.
+- Current cost target (v4): complete 1S kit purchase price is about EUR 25 per robot.
+- Note: this order list remains historical intake documentation.
 
 ## Financial Summary
 - Number of orders: 9
@@ -48,9 +50,9 @@
 - There are two different 3.3V buck converter product lines; keep them separated until validated.
 - Motor quantity (60) is sufficient for robot builds plus spares and destructive testing.
 
-## 2S Battery Safety Requirement
-- Only use 2S LiPo packs (7.4 V nominal, 8.4 V fully charged).
-- Do not use 1S packs for this controller platform.
+## Optional 2S Battery Safety Requirement
+- 2S is optional for advanced builds and is not the default setup.
+- If 2S is used: only use 2S LiPo packs (7.4 V nominal, 8.4 V fully charged).
 - Prefer protected packs or use an external low-voltage cutoff in firmware/hardware.
 - Require balance charging (2S mode) and storage-charge handling.
 - On intake, reject swollen, damaged, or unlabeled packs.
