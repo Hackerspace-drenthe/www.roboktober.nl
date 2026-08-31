@@ -6,7 +6,7 @@ import pcbFrontMetComponenten from '@/assets/pcb/pcb-v4-front-met-componenten.pn
 import pcbAchterMetComponenten from '@/assets/pcb/pcb-v4-achter-met-componenten.png'
 import pcbFrontKaal from '@/assets/pcb/pcb-v4-front-kaal.png'
 import pcbAchterKaal from '@/assets/pcb/pcb-v4-achter-kaal.png'
-import sponsorPcbwayImage from '@/assets/sponsors/pcbway-printplaat.jpg'
+import sponsorPcbwayImage from '@/assets/sponsors/pcbway-logo-transparent.png'
 
 const route = useRoute()
 const actieveTab = computed<'bouwgids' | '3dprint' | 'pcb' | 'links'>(() => {
@@ -39,7 +39,7 @@ const heroStyle = {
           <img
             :src="sponsorPcbwayImage"
             alt="PCBWay sponsorbanner"
-            class="mt-3 h-auto w-full max-w-xs rounded-md border border-white/20 bg-white p-2"
+            class="mx-auto mt-3 block h-auto w-full max-w-sm rounded-md border border-white/20 bg-robo-dark/60 p-3"
             loading="lazy"
           />
         </div>
