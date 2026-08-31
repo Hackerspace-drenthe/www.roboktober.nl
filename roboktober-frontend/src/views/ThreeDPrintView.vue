@@ -6,7 +6,7 @@ import chassisRender from '@/assets/3dprint/chassis-render.png'
 import chassisPcbDekselRender from '@/assets/3dprint/chassis-pcb-deksel-render.png'
 import designInfographic from '@/assets/3dprint/infographic-van-idee-naar-print.jpeg'
 import chassisVierKleurenFoto from '@/assets/3dprint/chassis-4-kleuren.webp'
-import pcbFrontMetComponenten from '@/assets/pcb/pcb-v4-front-met-componenten.png'
+import pcbFrontKaal from '@/assets/pcb/pcb-v4-front-kaal.png'
 
 const route = useRoute()
 const actieveTab = computed<'bouwgids' | '3dprint' | 'pcb' | 'links'>(() => {
@@ -322,13 +322,13 @@ const montageChecks = [
 
         <figure class="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
           <img
-            :src="pcbFrontMetComponenten"
-            alt="KiCad render van de v4 PCB met componenten"
+            :src="pcbFrontKaal"
+            alt="Finale kleurversie van de v4 PCB voorkant zonder componenten"
             class="w-full object-contain"
             loading="lazy"
           />
           <figcaption class="border-t border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">
-            Referentie: v4 PCB top met componenten (deksel-visual)
+            Referentie: v4 PCB voorkant, finale kleurversie.
           </figcaption>
         </figure>
       </div>

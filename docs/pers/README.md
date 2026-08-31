@@ -23,6 +23,8 @@ Daarnaast is een nieuw toegevoegd assetbeeld meegenomen uit:
 
 Bestanden zijn gekopieerd met behoud van bron-timestamps (`cp -p`) zodat recency zichtbaar blijft.
 
+De asset `front-kaal.png` is vervangen door de finale PCB-kleurversie.
+
 ## Beelden in deze set
 
 - `achter-kaal.png`

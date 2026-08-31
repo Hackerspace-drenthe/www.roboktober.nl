@@ -173,8 +173,8 @@ const heroStyle = {
           </p>
           <div class="grid gap-6 sm:grid-cols-2">
             <figure class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
-              <img :src="pcbFrontKaal" alt="PCB v4 voorkant zonder componenten" class="w-full object-contain" loading="lazy" />
-              <figcaption class="border-t border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Voorkant — zonder componenten</figcaption>
+              <img :src="pcbFrontKaal" alt="PCB v4 voorkant zonder componenten, finale kleurversie" class="w-full object-contain" loading="lazy" />
+              <figcaption class="border-t border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Voorkant — zonder componenten (finale kleurversie)</figcaption>
             </figure>
             <figure class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
               <img :src="pcbAchterKaal" alt="PCB v4 achterkant zonder componenten" class="w-full object-contain" loading="lazy" />
