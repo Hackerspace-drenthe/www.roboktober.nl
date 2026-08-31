@@ -1,0 +1,1 @@
+var e=`/app/assets/header-bouwen-B8l_eibB.png`;export{e as t};

@@ -1,0 +1,1 @@
+var e=`/app/assets/pcb-v4-front-met-componenten-BIr2QRpe.png`;export{e as t};
