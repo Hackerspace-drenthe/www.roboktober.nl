@@ -5,6 +5,7 @@ import headerImage from '@/assets/headers/header-bouwen.png'
 import chassisRender from '@/assets/3dprint/chassis-render.png'
 import chassisPcbDekselRender from '@/assets/3dprint/chassis-pcb-deksel-render.png'
 import designInfographic from '@/assets/3dprint/infographic-van-idee-naar-print.jpeg'
+import chassisVierKleurenFoto from '@/assets/3dprint/chassis-4-kleuren.webp'
 import pcbFrontMetComponenten from '@/assets/pcb/pcb-v4-front-met-componenten.png'
 
 const route = useRoute()
@@ -252,6 +253,18 @@ const montageChecks = [
             met dezelfde buitenmaat en montagegaten.
           </p>
         </div>
+
+        <figure class="mb-8 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+          <img
+            :src="chassisVierKleurenFoto"
+            alt="Foto van vier verschillend gekleurde 3D-geprinte chassisvarianten op tafel"
+            class="w-full object-cover"
+            loading="lazy"
+          />
+          <figcaption class="border-t border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">
+            Praktijkvoorbeeld: vier 3D-geprinte chassisvarianten in verschillende kleuren.
+          </figcaption>
+        </figure>
 
         <div class="mb-6 rounded-xl border border-robo-orange/30 bg-robo-orange/10 p-4 text-sm text-slate-700">
           Gebruik je de KiCad print als deksel? Dan heb je de 3D-geprinte top niet nodig.

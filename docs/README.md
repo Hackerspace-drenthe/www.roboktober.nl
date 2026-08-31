@@ -33,6 +33,7 @@ Dit is de startpagina voor alle projectdocumentatie. De root-README blijft het p
 - [SOLID/security test execution](PLAN-SOLID-SECURITY-TESTS-EXECUTION.md) - implementatie- en hardeninglog.
 - [Testmatrix CTA-funnel](TESTMATRIX-CTA-FUNNEL.md) - verificatie van de publieke CTA-flow.
 - [Antweight Gemini image pack](antweight-gemini-image-pack.md) - content pack voor visuals.
+- [Perspakket](pers/README.md) - actueel persbericht en recente v4-beelden voor herpublicatie.
 
 ## Governance en historiek
 
