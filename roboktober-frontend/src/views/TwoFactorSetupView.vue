@@ -17,7 +17,9 @@ const bootstrapping = ref(true)
 const error = ref('')
 const success = ref('')
 const qrCodeDataUrl = ref('')
-const showBackupSecret = ref(false)
+const setupMethod = ref<'scan' | 'same-device'>('scan')
+const copyStatus = ref('')
+const showSameDeviceSecret = ref(false)
 
 const redirectTarget = typeof route.query.redirect === 'string' && route.query.redirect.startsWith('/')
   ? route.query.redirect
@@ -26,6 +28,10 @@ const redirectTarget = typeof route.query.redirect === 'string' && route.query.r
 onMounted(async () => {
   bootstrapping.value = true
   error.value = ''
+
+  if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 900) {
+    setupMethod.value = 'same-device'
+  }
 
   try {
     provisioning.value = await getTwoFactorSetup()
@@ -43,6 +49,21 @@ onMounted(async () => {
     bootstrapping.value = false
   }
 })
+
+async function copyValue(value: string, label: string): Promise<void> {
+  copyStatus.value = ''
+
+  try {
+    if (!navigator.clipboard?.writeText) {
+      throw new Error('Clipboard API unavailable')
+    }
+
+    await navigator.clipboard.writeText(value)
+    copyStatus.value = `${label} gekopieerd.`
+  } catch {
+    copyStatus.value = `Kon ${label.toLowerCase()} niet automatisch kopieren. Kopieer handmatig.`
+  }
+}
 
 async function handleConfirm(): Promise<void> {
   loading.value = true
@@ -87,28 +108,106 @@ async function handleConfirm(): Promise<void> {
 
       <template v-else>
         <div v-if="provisioning" class="space-y-3">
-          <p class="text-sm text-slate-200">1. Scan de QR-code met je authenticator app (Google Authenticator, 1Password, Authy, etc.).</p>
+          <p class="text-sm text-slate-200">Kies hoe je je authenticator app wilt koppelen.</p>
 
-          <div class="flex justify-center rounded-xl border border-white/15 bg-white p-4">
-            <img v-if="qrCodeDataUrl" :src="qrCodeDataUrl" alt="2FA QR code" class="h-56 w-56" />
-            <p v-else class="text-sm text-slate-500">QR-code genereren...</p>
-          </div>
-
-          <div class="rounded-lg border border-white/10 bg-black/20 p-3">
+          <div class="flex flex-wrap gap-2">
             <button
               type="button"
-              class="text-sm font-semibold text-slate-200 underline decoration-dotted underline-offset-4"
-              @click="showBackupSecret = !showBackupSecret"
+              class="rounded-lg border px-3 py-2 text-sm font-semibold transition"
+              :class="setupMethod === 'scan'
+                ? 'border-robo-orange bg-robo-orange/20 text-white'
+                : 'border-white/20 bg-black/20 text-slate-200 hover:border-white/40'"
+              @click="setupMethod = 'scan'; showSameDeviceSecret = false"
             >
-              {{ showBackupSecret ? 'Verberg backup secret' : 'Toon backup secret (alleen als scannen niet lukt)' }}
+              Scan met ander apparaat
+            </button>
+            <button
+              type="button"
+              class="rounded-lg border px-3 py-2 text-sm font-semibold transition"
+              :class="setupMethod === 'same-device'
+                ? 'border-robo-orange bg-robo-orange/20 text-white'
+                : 'border-white/20 bg-black/20 text-slate-200 hover:border-white/40'"
+              @click="setupMethod = 'same-device'"
+            >
+              Gebruik deze telefoon
+            </button>
+          </div>
+
+          <div v-if="setupMethod === 'scan'" class="space-y-3">
+            <p class="text-sm text-slate-200">1. Scan de QR-code met je authenticator app (Google Authenticator, 1Password, Authy, etc.).</p>
+
+            <div class="flex justify-center rounded-xl border border-white/15 bg-white p-4">
+              <img v-if="qrCodeDataUrl" :src="qrCodeDataUrl" alt="2FA QR code" class="h-56 w-56" />
+              <p v-else class="text-sm text-slate-500">QR-code genereren...</p>
+            </div>
+
+            <p class="text-xs text-slate-400">Geen tweede apparaat beschikbaar? Gebruik de optie "Gebruik deze telefoon".</p>
+          </div>
+
+          <div v-else class="space-y-3 rounded-lg border border-white/10 bg-black/20 p-4">
+            <p class="text-sm text-slate-200">1. Open je authenticator app en kies account toevoegen.</p>
+            <p class="text-sm text-slate-200">2. Gebruik de knop hieronder of vul de secret handmatig in.</p>
+
+            <a
+              :href="provisioning.otpauth_url"
+              class="inline-flex w-full items-center justify-center rounded-lg bg-robo-orange px-4 py-2.5 text-sm font-bold text-white transition hover:bg-robo-orange-dark"
+            >
+              Open authenticator app
+            </a>
+
+            <p class="text-xs text-slate-400">Als openen niet werkt: kopieer de velden hieronder en voeg handmatig een TOTP-account toe.</p>
+
+            <button
+              type="button"
+              class="rounded-lg border border-white/20 bg-black/20 px-3 py-2 text-sm font-semibold text-slate-200 transition hover:border-white/40"
+              @click="showSameDeviceSecret = !showSameDeviceSecret"
+            >
+              {{ showSameDeviceSecret ? 'Verberg secret' : 'Toon secret' }}
             </button>
 
-            <ul v-if="showBackupSecret" class="mt-3 space-y-2 text-sm text-slate-300">
-              <li><span class="font-semibold text-white">Issuer:</span> {{ provisioning.issuer }}</li>
-              <li><span class="font-semibold text-white">Account:</span> {{ provisioning.account }}</li>
-              <li class="break-all"><span class="font-semibold text-white">Secret:</span> {{ provisioning.secret }}</li>
-              <li class="break-all text-xs text-slate-400">otpauth: {{ provisioning.otpauth_url }}</li>
+            <ul class="space-y-2 text-sm text-slate-300">
+              <li class="break-all"><span class="font-semibold text-white">Issuer:</span> {{ provisioning.issuer }}</li>
+              <li class="break-all"><span class="font-semibold text-white">Account:</span> {{ provisioning.account }}</li>
+              <li class="break-all">
+                <span class="font-semibold text-white">Secret:</span>
+                {{ showSameDeviceSecret ? provisioning.secret : '****************' }}
+              </li>
             </ul>
+
+            <div class="grid gap-2 sm:grid-cols-2">
+              <button
+                type="button"
+                class="rounded-lg border border-white/20 bg-black/20 px-3 py-2 text-sm font-semibold text-slate-200 transition hover:border-white/40"
+                @click="copyValue(provisioning.issuer, 'Issuer')"
+              >
+                Kopieer issuer
+              </button>
+              <button
+                type="button"
+                class="rounded-lg border border-white/20 bg-black/20 px-3 py-2 text-sm font-semibold text-slate-200 transition hover:border-white/40"
+                @click="copyValue(provisioning.account, 'Account')"
+              >
+                Kopieer account
+              </button>
+              <button
+                type="button"
+                class="rounded-lg border border-white/20 bg-black/20 px-3 py-2 text-sm font-semibold text-slate-200 transition hover:border-white/40"
+                @click="copyValue(provisioning.secret, 'Secret')"
+              >
+                Kopieer secret
+              </button>
+              <button
+                type="button"
+                class="rounded-lg border border-white/20 bg-black/20 px-3 py-2 text-sm font-semibold text-slate-200 transition hover:border-white/40"
+                @click="copyValue(provisioning.otpauth_url, 'OTP URL')"
+              >
+                Kopieer OTP URL
+              </button>
+            </div>
+
+            <p v-if="copyStatus" class="rounded-md border border-white/10 bg-black/20 px-3 py-2 text-xs text-slate-300">
+              {{ copyStatus }}
+            </p>
           </div>
         </div>
 

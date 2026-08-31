@@ -88,6 +88,76 @@ describe('API auth', function (): void {
             ->assertJsonStructure(['token', 'two_factor_provisioning' => ['secret']]);
     });
 
+    it('keeps existing 2fa secret when provisioning setup for unconfirmed users', function (): void {
+        $existingSecret = 'JBSWY3DPEHPK3PXP';
+
+        $user = User::factory()->create([
+            'email' => 'existing-secret@example.test',
+            'password' => 'SterkWachtwoord123',
+            'two_factor_secret' => $existingSecret,
+            'two_factor_confirmed_at' => null,
+        ]);
+
+        $login = $this->postJson('/api/v1/auth/login', [
+            'email' => $user->email,
+            'password' => 'SterkWachtwoord123',
+            'device_name' => 'pest-suite',
+        ]);
+
+        $bootstrapToken = (string) $login->json('token');
+
+        $login->assertOk()
+            ->assertJsonPath('two_factor_setup_required', true)
+            ->assertJsonPath('two_factor_provisioning.secret', $existingSecret);
+
+        $setup = $this->withHeader('Authorization', 'Bearer '.$bootstrapToken)
+            ->getJson('/api/v1/auth/2fa/setup');
+
+        $setup->assertOk()
+            ->assertJsonPath('data.secret', $existingSecret);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'two_factor_secret' => $existingSecret,
+        ]);
+    });
+
+    it('keeps existing 2fa secret when confirming setup', function (): void {
+        $existingSecret = 'JBSWY3DPEHPK3PXP';
+
+        $user = User::factory()->create([
+            'email' => 'confirm-existing-secret@example.test',
+            'password' => 'SterkWachtwoord123',
+            'two_factor_secret' => $existingSecret,
+            'two_factor_confirmed_at' => null,
+        ]);
+
+        $login = $this->postJson('/api/v1/auth/login', [
+            'email' => $user->email,
+            'password' => 'SterkWachtwoord123',
+            'device_name' => 'pest-suite',
+        ])->assertOk();
+
+        $bootstrapToken = (string) $login->json('token');
+        $code = app(TotpService::class)->currentCode($existingSecret);
+
+        $confirm = $this->withHeader('Authorization', 'Bearer '.$bootstrapToken)
+            ->postJson('/api/v1/auth/2fa/confirm', [
+                'code' => $code,
+                'device_name' => 'pest-suite',
+            ]);
+
+        $confirm->assertOk()
+            ->assertJsonPath('data.two_factor_enabled', true);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'two_factor_secret' => $existingSecret,
+        ]);
+
+        $this->assertNotNull(User::query()->findOrFail($user->id)->two_factor_confirmed_at);
+    });
+
     it('confirms 2fa setup and issues a full api token', function (): void {
         $register = $this->postJson('/api/v1/auth/register', [
             'name' => '2FA User',
