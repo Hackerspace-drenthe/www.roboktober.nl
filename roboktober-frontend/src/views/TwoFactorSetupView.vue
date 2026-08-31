@@ -20,6 +20,17 @@ const qrCodeDataUrl = ref('')
 const setupMethod = ref<'scan' | 'same-device'>('scan')
 const copyStatus = ref('')
 const showSameDeviceSecret = ref(false)
+const showManualSetup = ref(false)
+const isAndroid = ref(false)
+const androidAuthenticatorUrl = ref('')
+
+function buildGoogleAuthenticatorIntent(otpauthUrl: string): string {
+  if (!otpauthUrl.startsWith('otpauth://')) {
+    return otpauthUrl
+  }
+
+  return `intent://${otpauthUrl.slice('otpauth://'.length)}#Intent;scheme=otpauth;package=com.google.android.apps.authenticator2;end`
+}
 
 const redirectTarget = typeof route.query.redirect === 'string' && route.query.redirect.startsWith('/')
   ? route.query.redirect
@@ -28,6 +39,7 @@ const redirectTarget = typeof route.query.redirect === 'string' && route.query.r
 onMounted(async () => {
   bootstrapping.value = true
   error.value = ''
+  isAndroid.value = /Android/i.test(navigator.userAgent)
 
   if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 900) {
     setupMethod.value = 'same-device'
@@ -37,6 +49,10 @@ onMounted(async () => {
     provisioning.value = await getTwoFactorSetup()
 
     if (provisioning.value?.otpauth_url) {
+      if (isAndroid.value) {
+        androidAuthenticatorUrl.value = buildGoogleAuthenticatorIntent(provisioning.value.otpauth_url)
+      }
+
       qrCodeDataUrl.value = await QRCode.toDataURL(provisioning.value.otpauth_url, {
         errorCorrectionLevel: 'M',
         margin: 1,
@@ -117,7 +133,7 @@ async function handleConfirm(): Promise<void> {
               :class="setupMethod === 'scan'
                 ? 'border-robo-orange bg-robo-orange/20 text-white'
                 : 'border-white/20 bg-black/20 text-slate-200 hover:border-white/40'"
-              @click="setupMethod = 'scan'; showSameDeviceSecret = false"
+              @click="setupMethod = 'scan'; showSameDeviceSecret = false; showManualSetup = false; copyStatus = ''"
             >
               Scan met ander apparaat
             </button>
@@ -145,8 +161,8 @@ async function handleConfirm(): Promise<void> {
           </div>
 
           <div v-else class="space-y-3 rounded-lg border border-white/10 bg-black/20 p-4">
-            <p class="text-sm text-slate-200">1. Open je authenticator app en kies account toevoegen.</p>
-            <p class="text-sm text-slate-200">2. Gebruik de knop hieronder of vul de secret handmatig in.</p>
+            <p class="text-sm text-slate-200">1. Tik op een knop hieronder om je account direct toe te voegen zonder kopieren/plakken.</p>
+            <p class="text-sm text-slate-200">2. Alleen als dat niet werkt: gebruik handmatige invoer.</p>
 
             <a
               :href="provisioning.otpauth_url"
@@ -155,59 +171,77 @@ async function handleConfirm(): Promise<void> {
               Open authenticator app
             </a>
 
-            <p class="text-xs text-slate-400">Als openen niet werkt: kopieer de velden hieronder en voeg handmatig een TOTP-account toe.</p>
+            <a
+              v-if="isAndroid && androidAuthenticatorUrl"
+              :href="androidAuthenticatorUrl"
+              class="inline-flex w-full items-center justify-center rounded-lg border border-white/20 bg-black/20 px-4 py-2.5 text-sm font-bold text-slate-100 transition hover:border-white/40"
+            >
+              Open in Google Authenticator (Android)
+            </a>
 
             <button
               type="button"
               class="rounded-lg border border-white/20 bg-black/20 px-3 py-2 text-sm font-semibold text-slate-200 transition hover:border-white/40"
-              @click="showSameDeviceSecret = !showSameDeviceSecret"
+              @click="showManualSetup = !showManualSetup; showSameDeviceSecret = false; copyStatus = ''"
             >
-              {{ showSameDeviceSecret ? 'Verberg secret' : 'Toon secret' }}
+              {{ showManualSetup ? 'Verberg handmatige invoer' : 'Lukt openen niet? Handmatige invoer' }}
             </button>
 
-            <ul class="space-y-2 text-sm text-slate-300">
-              <li class="break-all"><span class="font-semibold text-white">Issuer:</span> {{ provisioning.issuer }}</li>
-              <li class="break-all"><span class="font-semibold text-white">Account:</span> {{ provisioning.account }}</li>
-              <li class="break-all">
-                <span class="font-semibold text-white">Secret:</span>
-                {{ showSameDeviceSecret ? provisioning.secret : '****************' }}
-              </li>
-            </ul>
+            <div v-if="showManualSetup" class="space-y-3 rounded-lg border border-white/10 bg-black/20 p-3">
+              <p class="text-xs text-slate-400">Kopieer de velden hieronder en voeg handmatig een TOTP-account toe.</p>
 
-            <div class="grid gap-2 sm:grid-cols-2">
               <button
                 type="button"
                 class="rounded-lg border border-white/20 bg-black/20 px-3 py-2 text-sm font-semibold text-slate-200 transition hover:border-white/40"
-                @click="copyValue(provisioning.issuer, 'Issuer')"
+                @click="showSameDeviceSecret = !showSameDeviceSecret"
               >
-                Kopieer issuer
+                {{ showSameDeviceSecret ? 'Verberg secret' : 'Toon secret' }}
               </button>
-              <button
-                type="button"
-                class="rounded-lg border border-white/20 bg-black/20 px-3 py-2 text-sm font-semibold text-slate-200 transition hover:border-white/40"
-                @click="copyValue(provisioning.account, 'Account')"
-              >
-                Kopieer account
-              </button>
-              <button
-                type="button"
-                class="rounded-lg border border-white/20 bg-black/20 px-3 py-2 text-sm font-semibold text-slate-200 transition hover:border-white/40"
-                @click="copyValue(provisioning.secret, 'Secret')"
-              >
-                Kopieer secret
-              </button>
-              <button
-                type="button"
-                class="rounded-lg border border-white/20 bg-black/20 px-3 py-2 text-sm font-semibold text-slate-200 transition hover:border-white/40"
-                @click="copyValue(provisioning.otpauth_url, 'OTP URL')"
-              >
-                Kopieer OTP URL
-              </button>
+
+              <ul class="space-y-2 text-sm text-slate-300">
+                <li class="break-all"><span class="font-semibold text-white">Issuer:</span> {{ provisioning.issuer }}</li>
+                <li class="break-all"><span class="font-semibold text-white">Account:</span> {{ provisioning.account }}</li>
+                <li class="break-all">
+                  <span class="font-semibold text-white">Secret:</span>
+                  {{ showSameDeviceSecret ? provisioning.secret : '****************' }}
+                </li>
+              </ul>
+
+              <div class="grid gap-2 sm:grid-cols-2">
+                <button
+                  type="button"
+                  class="rounded-lg border border-white/20 bg-black/20 px-3 py-2 text-sm font-semibold text-slate-200 transition hover:border-white/40"
+                  @click="copyValue(provisioning.issuer, 'Issuer')"
+                >
+                  Kopieer issuer
+                </button>
+                <button
+                  type="button"
+                  class="rounded-lg border border-white/20 bg-black/20 px-3 py-2 text-sm font-semibold text-slate-200 transition hover:border-white/40"
+                  @click="copyValue(provisioning.account, 'Account')"
+                >
+                  Kopieer account
+                </button>
+                <button
+                  type="button"
+                  class="rounded-lg border border-white/20 bg-black/20 px-3 py-2 text-sm font-semibold text-slate-200 transition hover:border-white/40"
+                  @click="copyValue(provisioning.secret, 'Secret')"
+                >
+                  Kopieer secret
+                </button>
+                <button
+                  type="button"
+                  class="rounded-lg border border-white/20 bg-black/20 px-3 py-2 text-sm font-semibold text-slate-200 transition hover:border-white/40"
+                  @click="copyValue(provisioning.otpauth_url, 'OTP URL')"
+                >
+                  Kopieer OTP URL
+                </button>
+              </div>
+
+              <p v-if="copyStatus" class="rounded-md border border-white/10 bg-black/20 px-3 py-2 text-xs text-slate-300">
+                {{ copyStatus }}
+              </p>
             </div>
-
-            <p v-if="copyStatus" class="rounded-md border border-white/10 bg-black/20 px-3 py-2 text-xs text-slate-300">
-              {{ copyStatus }}
-            </p>
           </div>
         </div>
 
