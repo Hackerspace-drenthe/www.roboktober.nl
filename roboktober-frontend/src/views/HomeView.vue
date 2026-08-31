@@ -15,6 +15,7 @@ import headerImage from '@/assets/headers/header-home.png'
 import storyCommunityImage from '@/assets/headers/header-aanmelden.png'
 import storyTechImage from '@/assets/headers/header-build-hub.png'
 import storyArenaImage from '@/assets/headers/header-programma.png'
+import sponsorPcbwayImage from '@/assets/sponsors/pcbway-printplaat.jpg'
 
 const posts = ref<Post[]>([])
 const ladenPosts = ref(true)
@@ -242,6 +243,16 @@ onUnmounted(() => {
           Join de Telegram chat
           <span class="sr-only"> (opent in nieuw venster)</span>
         </a>
+      </div>
+
+      <div class="mx-auto mt-4 max-w-2xl rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-slate-200">
+        <p class="font-semibold text-white">Printplaat gesponsord door PCBWay.</p>
+        <img
+          :src="sponsorPcbwayImage"
+          alt="PCBWay sponsorbanner"
+          class="mt-3 h-auto w-full max-w-xs rounded-md border border-white/20 bg-white p-2"
+          loading="lazy"
+        />
       </div>
     </div>
   </section>

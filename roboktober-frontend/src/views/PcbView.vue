@@ -6,6 +6,7 @@ import pcbFrontMetComponenten from '@/assets/pcb/pcb-v4-front-met-componenten.pn
 import pcbAchterMetComponenten from '@/assets/pcb/pcb-v4-achter-met-componenten.png'
 import pcbFrontKaal from '@/assets/pcb/pcb-v4-front-kaal.png'
 import pcbAchterKaal from '@/assets/pcb/pcb-v4-achter-kaal.png'
+import sponsorPcbwayImage from '@/assets/sponsors/pcbway-printplaat.jpg'
 
 const route = useRoute()
 const actieveTab = computed<'bouwgids' | '3dprint' | 'pcb' | 'links'>(() => {
@@ -32,6 +33,16 @@ const heroStyle = {
         <p class="mx-auto max-w-2xl text-lg text-slate-300">
           De print is de bron van waarheid: dit is de echte controllerprint van je robot, stap voor stap uitgelegd. Ook als je nog nooit gesoldeerd hebt.
         </p>
+
+        <div class="mx-auto mt-5 max-w-2xl rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-slate-200">
+          <p class="font-semibold text-white">Printplaat gesponsord door PCBWay.</p>
+          <img
+            :src="sponsorPcbwayImage"
+            alt="PCBWay sponsorbanner"
+            class="mt-3 h-auto w-full max-w-xs rounded-md border border-white/20 bg-white p-2"
+            loading="lazy"
+          />
+        </div>
 
         <div class="mx-auto mt-8 inline-flex rounded-xl border border-white/15 bg-robo-dark/70 p-1" role="tablist" aria-label="Bouwen tabs">
           <RouterLink
