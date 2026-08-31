@@ -190,7 +190,7 @@ const actieVideos: VideoItem[] = [
         <h1 class="mb-4 text-4xl font-black md:text-5xl">Bouw je eigen antweight</h1>
         <p class="mx-auto max-w-2xl text-lg text-slate-300">
           Alles wat je nodig hebt om te beginnen. Geen ervaring vereist —
-          een basisrobot bouw je voor <strong class="text-white">€15 à €20</strong>.
+          een basisrobot bouw je voor <strong class="text-white">€25 – €35</strong>.
         </p>
 
         <div class="mx-auto mt-8 inline-flex rounded-xl border border-white/15 bg-robo-dark/70 p-1" role="tablist" aria-label="Bouwen tabs">
@@ -398,7 +398,7 @@ const actieVideos: VideoItem[] = [
               <tr class="border-t-2 border-robo-orange/20 bg-orange-50/50 font-semibold hover:bg-orange-50">
                 <td class="px-4 py-3 text-robo-dark">Totaal basis</td>
                 <td class="px-4 py-3 text-slate-400" colspan="2">—</td>
-                <td class="px-4 py-3 text-robo-dark">≈ €10 – €20</td>
+                <td class="px-4 py-3 text-robo-dark">≈ €25 – €35</td>
                 <td class="px-4 py-3 text-slate-400" colspan="2">—</td>
               </tr>
               <tr class="hover:bg-slate-50">
