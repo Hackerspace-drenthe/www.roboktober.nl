@@ -230,6 +230,19 @@ onUnmounted(() => {
           Bekijk het programma
         </RouterLink>
       </div>
+
+      <div class="mx-auto mt-6 max-w-2xl rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-slate-200">
+        Roboktober heeft een eigen Telegram chatkanaal.
+        <a
+          href="https://t.me/+HL-bBBahRJJlMGQ0"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="ml-2 font-bold text-robo-orange underline decoration-robo-orange/60 underline-offset-4 hover:text-white"
+        >
+          Join de Telegram chat
+          <span class="sr-only"> (opent in nieuw venster)</span>
+        </a>
+      </div>
     </div>
   </section>
 

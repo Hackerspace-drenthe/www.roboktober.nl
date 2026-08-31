@@ -8,8 +8,9 @@ import pcbFrontKaal from '@/assets/pcb/pcb-v4-front-kaal.png'
 import pcbAchterKaal from '@/assets/pcb/pcb-v4-achter-kaal.png'
 
 const route = useRoute()
-const actieveTab = computed<'bouwgids' | 'pcb' | 'links'>(() => {
+const actieveTab = computed<'bouwgids' | '3dprint' | 'pcb' | 'links'>(() => {
   if (route.name === 'bouwen-links') return 'links'
+  if (route.name === 'bouwen-3dprint') return '3dprint'
   if (route.name === 'bouwen-pcb') return 'pcb'
   return 'bouwgids'
 })
@@ -41,6 +42,15 @@ const heroStyle = {
             :class="actieveTab === 'bouwgids' ? 'bg-white text-robo-dark shadow-sm' : 'text-slate-200 hover:bg-white/10'"
           >
             Bouwgids
+          </RouterLink>
+          <RouterLink
+            to="/bouwen/3dprint"
+            role="tab"
+            :aria-selected="actieveTab === '3dprint'"
+            class="rounded-lg px-5 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-robo-orange"
+            :class="actieveTab === '3dprint' ? 'bg-white text-robo-dark shadow-sm' : 'text-slate-200 hover:bg-white/10'"
+          >
+            3D print
           </RouterLink>
           <RouterLink
             to="/bouwen/pcb"

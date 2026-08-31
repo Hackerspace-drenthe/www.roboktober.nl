@@ -16,7 +16,8 @@ const heroStyle = {
 }
 
 const route = useRoute()
-const actieveTab = computed<'bouwgids' | 'pcb' | 'links'>(() => {
+const actieveTab = computed<'bouwgids' | '3dprint' | 'pcb' | 'links'>(() => {
+  if (route.name === 'bouwen-3dprint') return '3dprint'
   if (route.name === 'bouwen-pcb') return 'pcb'
   if (route.name === 'bouwen-links') return 'links'
   return 'bouwgids'
@@ -74,6 +75,15 @@ onMounted(async () => {
             Bouwgids
           </RouterLink>
           <RouterLink
+            to="/bouwen/3dprint"
+            role="tab"
+            :aria-selected="actieveTab === '3dprint'"
+            class="rounded-lg px-5 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-robo-orange"
+            :class="actieveTab === '3dprint' ? 'bg-white text-robo-dark shadow-sm' : 'text-slate-200 hover:bg-white/10'"
+          >
+            3D print
+          </RouterLink>
+          <RouterLink
             to="/bouwen/pcb"
             role="tab"
             :aria-selected="actieveTab === 'pcb'"
@@ -98,6 +108,22 @@ onMounted(async () => {
     <section class="bg-white py-20" aria-labelledby="buildhub-title">
       <div class="mx-auto max-w-4xl px-6">
         <h2 id="buildhub-title" class="sr-only">Overzicht van links</h2>
+
+        <section class="mb-10 rounded-2xl border border-robo-orange/30 bg-robo-orange/10 p-6" aria-labelledby="telegram-title">
+          <h3 id="telegram-title" class="text-xl font-black text-robo-dark">Roboktober Telegram kanaal</h3>
+          <p class="mt-2 text-slate-700">
+            Praat mee met andere bouwers, stel vragen en deel je voortgang in onze eigen Telegram chat.
+          </p>
+          <a
+            href="https://t.me/+HL-bBBahRJJlMGQ0"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-4 inline-flex rounded-lg bg-robo-orange px-4 py-2.5 text-sm font-bold text-white transition hover:bg-robo-orange-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-robo-orange"
+          >
+            Open Roboktober Telegram
+            <span class="sr-only"> (opent in nieuw venster)</span>
+          </a>
+        </section>
 
         <!-- Laden -->
         <div v-if="laden" class="space-y-10" aria-busy="true" aria-label="Links laden">

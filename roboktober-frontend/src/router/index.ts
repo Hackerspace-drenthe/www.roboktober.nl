@@ -388,6 +388,15 @@ const router = createRouter({
       },
     },
     {
+      path: '/bouwen/3dprint',
+      name: 'bouwen-3dprint',
+      component: () => import('../views/ThreeDPrintView.vue'),
+      meta: {
+        title: '3D print chassis — Roboktober',
+        description: 'Print je robotchassis, controleer passing en gebruik de v4 PCB-footprint als deksel.',
+      },
+    },
+    {
       path: '/bouwen/pcb',
       name: 'bouwen-pcb',
       component: () => import('../views/PcbView.vue'),
