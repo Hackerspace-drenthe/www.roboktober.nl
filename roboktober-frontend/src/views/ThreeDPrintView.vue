@@ -20,6 +20,67 @@ const heroStyle = {
   backgroundPosition: 'center',
 }
 
+const ontwerpRichtingen = [
+  {
+    titel: 'Bestaand design gebruiken',
+    uitleg: 'Dit is het snelst. Print eerst een test om te kijken of alles past.',
+  },
+  {
+    titel: 'Bestaand design aanpassen',
+    uitleg: 'Pas alleen aan wat nodig is, zoals wielruimte, motorhouders of accuvak.',
+  },
+  {
+    titel: 'Nieuw design maken',
+    uitleg: 'Begin met een simpele schets. Bouw daarna je model rond motor, wiel en PCB-maat.',
+  },
+]
+
+const ontwerpTools = [
+  'Tinkercad: simpel en snel starten.',
+  'Fusion 360: sterk voor maten en technische onderdelen.',
+  'FreeCAD: gratis en open source.',
+  'Onshape: CAD in je browser, fijn voor samenwerken.',
+  'Blender: goed voor vorm, minder voor strakke maten.',
+]
+
+const ontwerpChecks = [
+  'Motor en wiel passen zonder klemmen.',
+  'PCB/deksel, LiPo en schakelaar hebben elk een eigen plek.',
+  'Kabels lopen vrij en raken geen draaiende delen.',
+  'Montagegaten blijven bereikbaar met gereedschap.',
+  'Houd het zwaartepunt laag en in het midden.',
+]
+
+const ontwerpFlow = [
+  {
+    stap: '1',
+    titel: 'Kies je route',
+    tekst: 'Gebruik bestaand, pas aan, of maak nieuw.',
+  },
+  {
+    stap: '2',
+    titel: 'Meet onderdelen',
+    tekst: 'Meet motor, wiel, LiPo en PCB eerst op.',
+  },
+  {
+    stap: '3',
+    titel: 'Maak een testprint',
+    tekst: 'Print klein of snel om passing te testen.',
+  },
+  {
+    stap: '4',
+    titel: 'Pas aan en print echt',
+    tekst: 'Fix kleine fouten en print de definitieve versie.',
+  },
+]
+
+const fitInfographic = [
+  { onderdeel: 'Motor + wiel', check: 'Vrij draaien zonder schuren' },
+  { onderdeel: 'LiPo', check: 'Vast en veilig op zijn plek' },
+  { onderdeel: 'PCB/deksel', check: 'Gaten en maat kloppen' },
+  { onderdeel: 'Schakelaar', check: 'Van buiten goed bereikbaar' },
+]
+
 const printSettings = [
   { label: 'Materiaal', value: 'PLA of PETG' },
   { label: 'Nozzle', value: '0.4 mm' },
@@ -48,8 +109,8 @@ const montageChecks = [
         <p class="mb-3 text-sm font-bold uppercase tracking-widest text-robo-orange">Bouwplatform</p>
         <h1 class="mb-4 text-4xl font-black md:text-5xl">3D print chassis</h1>
         <p class="mx-auto max-w-2xl text-lg text-slate-300">
-          Print je chassis, monteer motoren en LiPo, en gebruik de v4 PCB-footprint als deksel.
-          Deze pagina is de snelle route van STL naar een rijklare basis.
+          Bouw stap voor stap je eigen chassis.
+          Eerst nadenken, dan testen, daarna pas echt printen.
         </p>
 
         <div class="mx-auto mt-8 inline-flex rounded-xl border border-white/15 bg-robo-dark/70 p-1" role="tablist" aria-label="Bouwen tabs">
@@ -93,13 +154,92 @@ const montageChecks = [
       </div>
     </section>
 
+    <section class="bg-white py-16" aria-labelledby="design-step-title">
+      <div class="mx-auto max-w-5xl px-6">
+        <div class="mb-8 space-y-4">
+          <h2 id="design-step-title" class="text-3xl font-black text-robo-dark">Stap 0: bepaal je ontwerp</h2>
+          <p class="max-w-3xl text-slate-600">
+            Denk eerst na over je vorm en indeling. Gebruik je het bestaande design,
+            pas je het aan, of maak je een nieuw ontwerp? In de hackerspace hebben we genoeg 3D-printers,
+            maar goed plannen voorkomt misprints.
+          </p>
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-3">
+          <article
+            v-for="richting in ontwerpRichtingen"
+            :key="richting.titel"
+            class="rounded-2xl border border-slate-200 bg-slate-50 p-5"
+          >
+            <h3 class="text-lg font-black text-robo-dark">{{ richting.titel }}</h3>
+            <p class="mt-2 text-sm text-slate-700">{{ richting.uitleg }}</p>
+          </article>
+        </div>
+
+        <div class="mt-8 rounded-2xl border border-slate-200 bg-robo-orange/5 p-6" aria-labelledby="flow-infographic-title">
+          <h3 id="flow-infographic-title" class="text-xl font-black text-robo-dark">Infographic: van idee naar print</h3>
+          <div class="mt-4 grid gap-3 md:grid-cols-4">
+            <article
+              v-for="item in ontwerpFlow"
+              :key="item.stap"
+              class="rounded-xl border border-robo-orange/20 bg-white p-4"
+            >
+              <div class="mb-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-robo-orange text-sm font-black text-white">
+                {{ item.stap }}
+              </div>
+              <h4 class="text-sm font-black text-robo-dark">{{ item.titel }}</h4>
+              <p class="mt-1 text-xs text-slate-600">{{ item.tekst }}</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 bg-white p-5">
+            <h3 class="text-lg font-black text-robo-dark">Tools die je kunt gebruiken</h3>
+            <ul class="mt-3 space-y-2 text-sm text-slate-700">
+              <li v-for="tool in ontwerpTools" :key="tool" class="flex items-start gap-2">
+                <span class="mt-1 inline-block h-2 w-2 rounded-full bg-robo-orange" aria-hidden="true" />
+                <span>{{ tool }}</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="rounded-2xl border border-slate-200 bg-white p-5">
+            <h3 class="text-lg font-black text-robo-dark">Pasvorm-check voor je gaat printen</h3>
+            <ul class="mt-3 space-y-2 text-sm text-slate-700">
+              <li v-for="check in ontwerpChecks" :key="check" class="flex items-start gap-2">
+                <span class="mt-1 inline-block h-2 w-2 rounded-full bg-robo-orange" aria-hidden="true" />
+                <span>{{ check }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white" aria-labelledby="fit-infographic-title">
+          <h3 id="fit-infographic-title" class="border-b border-slate-200 bg-slate-50 px-5 py-3 text-lg font-black text-robo-dark">
+            Infographic: snelle passing-check
+          </h3>
+          <div class="grid gap-px bg-slate-200 md:grid-cols-2">
+            <div
+              v-for="item in fitInfographic"
+              :key="item.onderdeel"
+              class="bg-white p-4"
+            >
+              <p class="text-xs font-bold uppercase tracking-wider text-slate-500">{{ item.onderdeel }}</p>
+              <p class="mt-1 text-sm font-semibold text-robo-dark">{{ item.check }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="bg-white py-20" aria-labelledby="print-assets-title">
       <div class="mx-auto max-w-5xl px-6">
         <div class="mb-10 space-y-4">
-          <h2 id="print-assets-title" class="text-3xl font-black text-robo-dark">STL en deksel-concept</h2>
+          <h2 id="print-assets-title" class="text-3xl font-black text-robo-dark">Stap 1: STL en deksel-concept</h2>
           <p class="max-w-3xl text-slate-600">
-            Het chassis komt uit STL. De deksel volgt de footprint van de v4 print:
-            dezelfde buitenmaat en dezelfde montagegaten (onder voorbehoud van correcte print-schaal en toleranties).
+            Dit chassis komt uit STL. De deksel volgt de maat van de v4 print,
+            met dezelfde buitenmaat en montagegaten.
           </p>
         </div>
 
@@ -145,10 +285,10 @@ const montageChecks = [
 
     <section class="bg-slate-50 py-16" aria-labelledby="print-settings-title">
       <div class="mx-auto max-w-5xl px-6">
-        <h2 id="print-settings-title" class="mb-6 text-2xl font-black text-robo-dark">Aanbevolen printinstellingen</h2>
+        <h2 id="print-settings-title" class="mb-6 text-2xl font-black text-robo-dark">Stap 2: aanbevolen printinstellingen</h2>
 
         <div class="mb-6 rounded-xl border border-robo-orange/30 bg-robo-orange/10 p-4 text-sm text-slate-700">
-          Vragen over slicer instellingen of passing? Stel ze in het Roboktober Telegram kanaal:
+          Vragen over slicer of passing? Stel ze in het Roboktober Telegram kanaal:
           <a
             href="https://t.me/+HL-bBBahRJJlMGQ0"
             target="_blank"
@@ -182,7 +322,7 @@ const montageChecks = [
     <section class="bg-white py-16" aria-labelledby="montage-check-title">
       <div class="mx-auto max-w-5xl px-6">
         <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 id="montage-check-title" class="mb-4 text-2xl font-black text-robo-dark">Snelle montage-checklist</h2>
+          <h2 id="montage-check-title" class="mb-4 text-2xl font-black text-robo-dark">Stap 3: snelle montage-checklist</h2>
           <ul class="space-y-3 text-slate-700">
             <li v-for="check in montageChecks" :key="check" class="flex items-start gap-3">
               <span class="mt-1 inline-block h-2.5 w-2.5 rounded-full bg-robo-orange" aria-hidden="true" />
@@ -191,8 +331,8 @@ const montageChecks = [
           </ul>
 
           <div class="mt-6 rounded-xl bg-robo-orange/10 p-4 text-sm text-slate-700">
-            Als de gaten net niet uitlijnen: controleer eerst slicer scale (moet 100% zijn), daarna
-            printkrimp en gatdiameter-compensatie. Pas pas daarna het model aan.
+            Lijnen de gaten net niet uit? Check eerst schaal (100%), daarna krimp en gatcompensatie.
+            Pas daarna je model aan.
           </div>
 
           <div class="mt-6 flex flex-wrap gap-3">
