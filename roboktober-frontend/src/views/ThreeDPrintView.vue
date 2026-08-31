@@ -83,10 +83,10 @@ const stlDownloads = [
     omschrijving: 'Basis chassis voor de robot.',
   },
   {
-    titel: 'Top STL',
+    titel: 'Top STL (optioneel)',
     bestandsnaam: 'wallieonline-mini-robot-top.STL',
     href: '/app/downloads/stl/wallieonline-mini-robot-top.STL',
-    omschrijving: 'Bovenkant/deksel van het ontwerp.',
+    omschrijving: 'Alleen nodig als je een geprinte deksel wilt. Gebruik je de KiCad print als deksel, dan kun je deze overslaan.',
   },
 ]
 
@@ -251,6 +251,11 @@ const montageChecks = [
             Dit chassis komt uit STL. De deksel volgt de maat van de v4 print,
             met dezelfde buitenmaat en montagegaten.
           </p>
+        </div>
+
+        <div class="mb-6 rounded-xl border border-robo-orange/30 bg-robo-orange/10 p-4 text-sm text-slate-700">
+          Gebruik je de KiCad print als deksel? Dan heb je de 3D-geprinte top niet nodig.
+          Print in dat geval alleen het chassis.
         </div>
 
         <div class="mb-8 rounded-2xl border border-slate-200 bg-slate-50 p-5" aria-labelledby="stl-downloads-title">
