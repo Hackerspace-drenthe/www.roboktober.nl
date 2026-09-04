@@ -1,0 +1,1 @@
+var e=`/app/assets/pcb-v4-front-kaal-DwbiPYfQ.png`;export{e as t};
