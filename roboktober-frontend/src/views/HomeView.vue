@@ -353,6 +353,10 @@ onUnmounted(() => {
           <p class="mt-4 text-slate-300">
             Een basisrobot hoeft niet meer te kosten dan <strong class="text-white">€25 – €35</strong>. Wil je verder gaan met leds, geluid of een actief robotonderdeel zoals een flipper of spinner? Dat kan altijd nog.
           </p>
+          <p class="mt-4 rounded-lg border border-robo-orange/40 bg-robo-orange/10 px-4 py-3 text-sm text-slate-200">
+            Je kunt onderdelen zelf inkopen, maar je kunt ook bij ons een standaard kit krijgen voor <strong class="text-white">€25</strong>.
+            Daar zit alles in om een simpele robot te maken (exclusief chassis).
+          </p>
           <p class="mt-4 text-slate-300">
             Leuk om samen met vrienden of kinderen te doen. Leer omgaan met elektronica, software en 3D-printen — op een educatieve maar vooral <em>leuke</em> manier.
           </p>

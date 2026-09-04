@@ -336,6 +336,11 @@ async function verstuur(): Promise<void> {
           Later wijzigen? Geen probleem. Je beheert je aanmelding daarna via je account.
         </div>
 
+        <div class="rounded-lg border border-robo-orange/40 bg-robo-orange/10 p-4 text-sm text-slate-200">
+          Je kunt onderdelen zelf inkopen, maar je kunt ook bij ons een standaard kit krijgen voor <strong class="text-white">€25</strong>.
+          Daar zit alles in om een simpele robot te maken (exclusief chassis).
+        </div>
+
         <ol class="grid gap-2 sm:grid-cols-3" aria-label="Stappen aanmelding">
           <li class="rounded-lg border px-3 py-2 text-sm font-semibold" :class="stap === 1 ? 'border-robo-orange bg-robo-orange/15 text-white' : 'border-white/15 text-slate-300'">1. Teamgegevens</li>
           <li class="rounded-lg border px-3 py-2 text-sm font-semibold" :class="stap === 2 ? 'border-robo-orange bg-robo-orange/15 text-white' : 'border-white/15 text-slate-300'">2. Robots</li>

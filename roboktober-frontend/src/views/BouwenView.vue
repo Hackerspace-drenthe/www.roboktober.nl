@@ -436,8 +436,9 @@ const actieVideos: VideoItem[] = [
 
         <div class="mt-6 rounded-xl border border-robo-orange/30 bg-orange-50 p-5">
           <p class="text-sm text-slate-700">
-            <strong class="text-robo-dark">Roboktober-kit:</strong> Tijdens de kickoff-avond zijn er kant-en-klare kits beschikbaar
-            met alle bovenstaande elektronica-onderdelen (behalve chassis). Of er ook PCB's bij zitten is nog niet zeker — dat wordt nader bekendgemaakt.
+            <strong class="text-robo-dark">Onderdelen of kit:</strong> Je kunt de onderdelen zelf inkopen,
+            maar je kunt ook bij ons een standaard kit krijgen voor €25.
+            Daar zit alles in om een simpele robot te maken (exclusief chassis).
           </p>
         </div>
       </div>
