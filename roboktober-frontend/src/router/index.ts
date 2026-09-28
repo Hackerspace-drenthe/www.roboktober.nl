@@ -406,6 +406,15 @@ const router = createRouter({
       },
     },
     {
+      path: '/bouwen/firmware',
+      name: 'bouwen-firmware',
+      component: () => import('../views/FirmwareView.vue'),
+      meta: {
+        title: 'Firmware — Roboktober',
+        description: 'Download de originele Wallie firmware of de aangepaste Roboktober-versie, met uitleg voor veilig flashen.',
+      },
+    },
+    {
       path: '/bouwen/links',
       name: 'bouwen-links',
       component: () => import('../views/BuildHubView.vue'),

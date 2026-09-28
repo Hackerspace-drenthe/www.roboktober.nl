@@ -9,9 +9,10 @@ import pcbAchterKaal from '@/assets/pcb/pcb-v4-achter-kaal.png'
 import sponsorPcbwayImage from '@/assets/sponsors/PCBWay.svg'
 
 const route = useRoute()
-const actieveTab = computed<'bouwgids' | '3dprint' | 'pcb' | 'links'>(() => {
+const actieveTab = computed<'bouwgids' | '3dprint' | 'pcb' | 'firmware' | 'links'>(() => {
   if (route.name === 'bouwen-links') return 'links'
   if (route.name === 'bouwen-3dprint') return '3dprint'
+  if (route.name === 'bouwen-firmware') return 'firmware'
   if (route.name === 'bouwen-pcb') return 'pcb'
   return 'bouwgids'
 })
@@ -79,6 +80,15 @@ const heroStyle = {
             :class="actieveTab === 'pcb' ? 'bg-white text-robo-dark shadow-sm' : 'text-slate-200 hover:bg-white/10'"
           >
             PCB
+          </RouterLink>
+          <RouterLink
+            to="/bouwen/firmware"
+            role="tab"
+            :aria-selected="actieveTab === 'firmware'"
+            class="rounded-lg px-5 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-robo-orange"
+            :class="actieveTab === 'firmware' ? 'bg-white text-robo-dark shadow-sm' : 'text-slate-200 hover:bg-white/10'"
+          >
+            Firmware
           </RouterLink>
           <RouterLink
             to="/bouwen/links"

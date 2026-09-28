@@ -1,16 +1,12 @@
 #define CONFIG_ESP32_WIFI_AMPDU_RX_ENABLED 0
 #define CONFIG_ESP32_WIFI_AMPDU_TX_ENABLED 0
 
-#if !defined(WOKWI)
 #include <WiFi.h>
 #include <esp_now.h>
 #include <esp_wifi.h>
-#endif
-
 #include <esp_arduino_version.h>
 
 #include <cstring>
-#include <cstdio>
 
 namespace Pins {
 constexpr uint8_t DriverSleep = 5;
@@ -60,71 +56,18 @@ uint32_t lastValidPacketMilliseconds = 0;
 bool linkActive = false;
 bool radioReady = false;
 
-#if defined(WOKWI)
-constexpr bool SimulationMode = true;
-#else
-constexpr bool SimulationMode = false;
-#endif
-
 bool senderMacConfigured() {
   for (uint8_t octet : AllowedSenderMac) {
     if (octet != 0) {
       return true;
     }
   }
-
   return false;
 }
 
 bool senderAllowed(const uint8_t* senderMac) {
   return senderMacConfigured() && std::memcmp(senderMac, AllowedSenderMac, sizeof(AllowedSenderMac)) == 0;
 }
-
-#if defined(WOKWI)
-bool takeSimulationPacket(RcData& packet) {
-  static char lineBuffer[96];
-  static size_t lineLength = 0;
-
-  while (Serial.available() > 0) {
-    const char incoming = static_cast<char>(Serial.read());
-    if (incoming == '\r') {
-      continue;
-    }
-
-    if (incoming == '\n') {
-      lineBuffer[lineLength] = '\0';
-      lineLength = 0;
-
-      unsigned int values[8] = {};
-      const int matched = std::sscanf(
-        lineBuffer,
-        "packet %u %u %u %u %u %u %u %u",
-        &values[0], &values[1], &values[2], &values[3],
-        &values[4], &values[5], &values[6], &values[7]);
-
-      if (matched == 8) {
-        packet.aileron = static_cast<uint16_t>(values[0]);
-        packet.elevator = static_cast<uint16_t>(values[1]);
-        packet.throttle = static_cast<uint16_t>(values[2]);
-        packet.rudder = static_cast<uint16_t>(values[3]);
-        packet.auxiliary1 = static_cast<uint16_t>(values[4]);
-        packet.auxiliary2 = static_cast<uint16_t>(values[5]);
-        packet.auxiliary3 = static_cast<uint16_t>(values[6]);
-        packet.auxiliary4 = static_cast<uint16_t>(values[7]);
-        return true;
-      }
-
-      return false;
-    }
-
-    if (lineLength + 1 < sizeof(lineBuffer)) {
-      lineBuffer[lineLength++] = incoming;
-    }
-  }
-
-  return false;
-}
-#endif
 
 bool channelValid(uint16_t value) {
   return value >= RcMinimum && value <= RcMaximum;
@@ -140,6 +83,32 @@ int channelToMotorCommand(uint16_t value) {
   }
 
   return map(value, RcNeutral, RcMaximum, 0, Pwm::MaximumDuty);
+}
+
+void writePwm(uint8_t channel, uint32_t duty) {
+#if ESP_ARDUINO_VERSION_MAJOR >= 3
+  ledcWriteChannel(channel, duty);
+#else
+  ledcWrite(channel, duty);
+#endif
+}
+
+bool attachPwm(uint8_t pin, uint8_t channel) {
+#if ESP_ARDUINO_VERSION_MAJOR >= 3
+  return ledcAttachChannel(pin, Pwm::FrequencyHz, Pwm::ResolutionBits, channel);
+#else
+  ledcSetup(channel, Pwm::FrequencyHz, Pwm::ResolutionBits);
+  ledcAttachPin(pin, channel);
+  return true;
+#endif
+}
+
+void setDriverEnabled(bool enabled) {
+  digitalWrite(Pins::DriverSleep, enabled ? HIGH : LOW);
+}
+
+void setStatusLed(bool enabled) {
+  digitalWrite(Pins::StatusLed, enabled ? HIGH : LOW);
 }
 
 void writeBridge(uint8_t input1Channel, uint8_t input2Channel, int command) {
@@ -162,53 +131,34 @@ void stopMotors() {
   writeBridge(Pwm::RightIn1Channel, Pwm::RightIn2Channel, 0);
 }
 
-void setDriverEnabled(bool enabled) {
-  if (!enabled) {
-#if defined(WOKWI)
-  RcData packet{};
-  if (takeSimulationPacket(packet)) {
-    applyPacket(packet, millis());
-  }
-#else
-  const uint32_t now = millis();
-    stopMotors();
-  ledcWriteChannel(channel, duty);
-#else
-  ledcWrite(channel, duty);
-  return ledcAttachChannel(pin, Pwm::FrequencyHz, Pwm::ResolutionBits, channel);
-
-  const uint32_t now = millis();
-  if (!linkActive || static_cast<uint32_t>(now - lastValidPacketMilliseconds) >= LinkTimeoutMilliseconds) {
-    linkActive = false;
-    stopMotors();
-  }
-#else
-  ledcSetup(channel, Pwm::FrequencyHz, Pwm::ResolutionBits);
-  ledcAttachPin(pin, channel);
-  return true;
-#endif
+void failSafeStop() {
+  linkActive = false;
+  stopMotors();
+  setDriverEnabled(false);
+  setStatusLed(false);
 }
 
 bool configureMotorOutputs() {
   pinMode(Pins::DriverSleep, OUTPUT);
-  digitalWrite(Pins::DriverSleep, LOW);
+  pinMode(Pins::StatusLed, OUTPUT);
 
   pinMode(Pins::MotorLeftIn1, OUTPUT);
   pinMode(Pins::MotorLeftIn2, OUTPUT);
   pinMode(Pins::MotorRightIn1, OUTPUT);
   pinMode(Pins::MotorRightIn2, OUTPUT);
+
   digitalWrite(Pins::MotorLeftIn1, LOW);
   digitalWrite(Pins::MotorLeftIn2, LOW);
   digitalWrite(Pins::MotorRightIn1, LOW);
   digitalWrite(Pins::MotorRightIn2, LOW);
 
-  const bool attached =
+  failSafeStop();
+
+  return
     attachPwm(Pins::MotorLeftIn1, Pwm::LeftIn1Channel) &&
     attachPwm(Pins::MotorLeftIn2, Pwm::LeftIn2Channel) &&
     attachPwm(Pins::MotorRightIn1, Pwm::RightIn1Channel) &&
     attachPwm(Pins::MotorRightIn2, Pwm::RightIn2Channel);
-  stopMotors();
-  return attached;
 }
 
 void handleReceivedData(const uint8_t* senderMac, const uint8_t* incomingData, int length) {
@@ -249,9 +199,6 @@ bool takeReceivedPacket(RcData& packet) {
 }
 
 bool configureRadio() {
-#if defined(WOKWI)
-  return true;
-#else
   WiFi.mode(WIFI_STA);
   WiFi.setSleep(false);
 
@@ -269,13 +216,11 @@ bool configureRadio() {
   }
 
   return esp_now_register_recv_cb(onDataReceived) == ESP_OK;
-#endif
 }
 
 void applyPacket(const RcData& packet, uint32_t now) {
   if (!channelValid(packet.elevator) || !channelValid(packet.aileron)) {
-    linkActive = false;
-    stopMotors();
+    failSafeStop();
     return;
   }
 
@@ -286,24 +231,19 @@ void applyPacket(const RcData& packet, uint32_t now) {
 
   lastValidPacketMilliseconds = now;
   linkActive = true;
+  setDriverEnabled(true);
+  setStatusLed(true);
   writeBridge(Pwm::LeftIn1Channel, Pwm::LeftIn2Channel, leftMotor);
   writeBridge(Pwm::RightIn1Channel, Pwm::RightIn2Channel, rightMotor);
 }
 
 void setup() {
   Serial.begin(115200);
+
   if (!configureMotorOutputs()) {
     Serial.println("Driver disabled: PWM initialization failed");
     return;
   }
-
-#if defined(WOKWI)
-  Serial.println("Wokwi simulation mode active");
-  Serial.println("Send packets as: packet aileron elevator throttle rudder aux1 aux2 aux3 aux4");
-  radioReady = true;
-  setDriverEnabled(true);
-  return;
-#endif
 
   if (!senderMacConfigured()) {
     Serial.println("Driver disabled: configure AllowedSenderMac first");
@@ -316,34 +256,27 @@ void setup() {
     return;
   }
 
-  setDriverEnabled(true);
   Serial.print("Receiver MAC: ");
   Serial.println(WiFi.macAddress());
 }
 
 void loop() {
   if (!radioReady) {
-    stopMotors();
+    failSafeStop();
     delay(20);
     return;
   }
 
   const uint32_t now = millis();
+  RcData packet{};
 
-#if defined(WOKWI)
-  RcData packet{};
-  if (takeSimulationPacket(packet)) {
-    applyPacket(packet, now);
-  }
-#else
-  RcData packet{};
   if (takeReceivedPacket(packet)) {
     applyPacket(packet, now);
   }
-#endif
 
   if (!linkActive || static_cast<uint32_t>(now - lastValidPacketMilliseconds) >= LinkTimeoutMilliseconds) {
-    linkActive = false;
-    stopMotors();
+    failSafeStop();
   }
+
+  delay(2);
 }
