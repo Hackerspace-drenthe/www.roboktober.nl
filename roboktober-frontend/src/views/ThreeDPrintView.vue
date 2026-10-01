@@ -77,20 +77,7 @@ const ontwerpFlow = [
   },
 ]
 
-const stlDownloads = [
-  {
-    titel: 'Chassis STL',
-    bestandsnaam: 'wallieonline-mini-robot.STL',
-    href: '/app/downloads/stl/wallieonline-mini-robot.STL',
-    omschrijving: 'Basis chassis voor de robot.',
-  },
-  {
-    titel: 'Top STL (optioneel)',
-    bestandsnaam: 'wallieonline-mini-robot-top.STL',
-    href: '/app/downloads/stl/wallieonline-mini-robot-top.STL',
-    omschrijving: 'Alleen nodig als je een geprinte deksel wilt. Gebruik je de KiCad print als deksel, dan kun je deze overslaan.',
-  },
-]
+const makerWorldUrl = 'https://makerworld.com/en/models/622437-wallieonline-mini-robot-chassis#profileId-546592'
 
 const printSettings = [
   { label: 'Materiaal', value: 'PLA of PETG' },
@@ -283,25 +270,19 @@ const montageChecks = [
 
         <div class="mb-8 rounded-2xl border border-slate-200 bg-slate-50 p-5" aria-labelledby="stl-downloads-title">
           <h3 id="stl-downloads-title" class="text-xl font-black text-robo-dark">Download STL-bestanden</h3>
-          <p class="mt-2 text-sm text-slate-600">Download hier direct de STL's voor printen of aanpassen.</p>
-
-          <div class="mt-4 grid gap-3 md:grid-cols-2">
-            <article
-              v-for="bestand in stlDownloads"
-              :key="bestand.bestandsnaam"
-              class="rounded-xl border border-slate-200 bg-white p-4"
-            >
-              <h4 class="text-sm font-black text-robo-dark">{{ bestand.titel }}</h4>
-              <p class="mt-1 text-xs text-slate-600">{{ bestand.omschrijving }}</p>
-              <a
-                :href="bestand.href"
-                :download="bestand.bestandsnaam"
-                class="mt-3 inline-flex rounded-lg bg-robo-orange px-3 py-2 text-xs font-bold text-white transition hover:bg-robo-orange-dark"
-              >
-                Download {{ bestand.bestandsnaam }}
-              </a>
-            </article>
-          </div>
+          <p class="mt-2 text-sm text-slate-600">
+            Download de STL's van het chassis (en optioneel de top) op de originele pagina van
+            WallieOnline Mini Robot Chassis op MakerWorld.
+          </p>
+          <a
+            :href="makerWorldUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-4 inline-flex rounded-lg bg-robo-orange px-4 py-2 text-sm font-bold text-white transition hover:bg-robo-orange-dark"
+          >
+            Download STL op MakerWorld
+            <span class="sr-only"> (opent in nieuw venster)</span>
+          </a>
         </div>
 
         <div class="grid gap-6 lg:grid-cols-2">

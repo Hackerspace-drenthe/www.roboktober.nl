@@ -20,9 +20,9 @@ const heroStyle = {
 
 const wallieBronnen = [
   {
-    titel: 'WORC Robot Controller guide (EN)',
+    titel: 'WORC Robot Controller guide (NL)',
     omschrijving: 'Originele Wallie pagina met onderdelen, webflash en WebUI uitleg.',
-    href: 'https://wallieonline.nl/blogs/worc-robot-controller-en.html',
+    href: 'https://wallieonline.nl/blogs/worc-robot-controller-nl.html',
     knop: 'Open guide',
   },
   {
@@ -30,19 +30,7 @@ const wallieBronnen = [
     omschrijving: 'Originele upstream firmware bron voor WORC robot controller.',
     href: 'https://github.com/wallieonline/worc-robot-controller-esp32c3',
     knop: 'Open GitHub repo',
-  },
-  {
-    titel: 'Wallie remote-controller firmware repo',
-    omschrijving: 'Originele bron voor de ESP-NOW remote controller app.',
-    href: 'https://github.com/wallieonline/worc-remote-controller-esp32',
-    knop: 'Open remote repo',
-  },
-  {
-    titel: 'Webflasher manifest',
-    omschrijving: 'Manifest dat gebruikt wordt door de Wallie webflasher.',
-    href: 'https://wallieonline.nl/software/worc-robot-controller-manifest.json',
-    knop: 'Open manifest JSON',
-  },
+  }
 ]
 
 const onderdelen = [
@@ -74,12 +62,7 @@ const remoteStappen = [
   'Upload de remote firmware naar je ESP32-zender en test veilig met wielen vrij.',
 ]
 
-const troubleshooting = [
-  'Webflasher opent niet: gebruik Chrome of Edge.',
-  'Controller wordt niet gezien: controleer of je USB-kabel data ondersteunt.',
-  'Poort ontbreekt: installeer zo nodig CH340 of ESP32-C3 USB driver.',
-  'Geen besturing: check MAC-adres, voeding en ESP-NOW instellingen.',
-]
+
 </script>
 
 <template>
@@ -89,9 +72,7 @@ const troubleshooting = [
       <div class="relative z-10 mx-auto max-w-4xl px-6 text-center">
         <p class="mb-3 text-sm font-bold uppercase tracking-widest text-robo-orange">Wallie firmware + remote app</p>
         <h1 class="mb-4 text-4xl font-black md:text-5xl">Firmware en remote app bouwen</h1>
-        <p class="mx-auto max-w-2xl text-lg text-slate-300">
-          Samengevoegde tab: alle stappen en links via de originele Wallie bronnen.
-        </p>
+       
 
         <div class="mx-auto mt-8 inline-flex rounded-xl border border-white/15 bg-robo-dark/70 p-1" role="tablist" aria-label="Bouwen tabs">
           <RouterLink
@@ -146,9 +127,7 @@ const troubleshooting = [
     <section class="bg-white py-16" aria-labelledby="wallie-bronnen-title">
       <div class="mx-auto max-w-5xl px-6">
         <h2 id="wallie-bronnen-title" class="text-3xl font-black text-robo-dark">Originele Wallie links en referenties</h2>
-        <p class="mt-2 max-w-3xl text-slate-600">
-          In deze tab staan alleen originele Wallie bronnen. Geen lokale codevoorbeelden.
-        </p>
+       
 
         <div class="mt-8 grid gap-4 md:grid-cols-2">
           <article v-for="item in wallieBronnen" :key="item.href" class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
@@ -221,18 +200,6 @@ const troubleshooting = [
       </div>
     </section>
 
-    <section class="bg-white py-16" aria-labelledby="troubleshooting-title">
-      <div class="mx-auto max-w-5xl px-6">
-        <div class="rounded-2xl border border-robo-orange/30 bg-robo-orange/10 p-6">
-          <h2 id="troubleshooting-title" class="text-2xl font-black text-robo-dark">Troubleshooting</h2>
-          <ul class="mt-4 space-y-2 text-slate-700">
-            <li v-for="item in troubleshooting" :key="item" class="flex items-start gap-2">
-              <span class="mt-2 inline-block h-2 w-2 rounded-full bg-robo-orange" aria-hidden="true" />
-              <span>{{ item }}</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
+   
   </main>
 </template>
