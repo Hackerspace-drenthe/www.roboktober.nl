@@ -108,6 +108,9 @@ The main menu links only to Nieuws. `/galerij` remains available as a standalone
 page without a redirect; both pages reuse `src/components/EventGallery.vue`.
 The programme page also reuses three generated workshop/robot photos from this
 media collection. Its dates, activities and location still come from the API.
+The programme page and gallery video section share a kickoff recording card
+in `src/components/KickoffRecording.vue`. It links to YouTube without loading
+an external video player before a visitor chooses to open it.
 
 ### Design gallery by Rein van Hackerspace Drenthe
 

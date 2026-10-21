@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import media from '@/data/event-media.json'
+import KickoffRecording from '@/components/KickoffRecording.vue'
 
 defineProps<{ embedded?: boolean }>()
 
@@ -82,6 +83,7 @@ function openPhoto(photo: Photo): void {
           <component :is="embedded ? 'h3' : 'h2'" id="video-title" class="text-3xl font-black text-robo-dark">Video</component>
           <p class="mb-6 mt-3 text-slate-600">Roboktober in bewegend beeld. Start de video zelf; er wordt niets automatisch afgespeeld.</p>
           <div class="grid gap-6">
+            <KickoffRecording :heading-level="embedded ? 'h4' : 'h3'" />
             <figure v-for="video in media.videos" :key="video.file" class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
               <video
                 controls

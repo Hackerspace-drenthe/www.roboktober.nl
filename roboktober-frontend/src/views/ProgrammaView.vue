@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { getEditionProgrammaItems, getEditions } from '@/api'
+import KickoffRecording from '@/components/KickoffRecording.vue'
 import { useAuth } from '@/composables/useAuth'
 import type { Edition, ProgrammaItem } from '@/types/api'
 import { computed, onMounted, ref } from 'vue'
@@ -239,6 +240,12 @@ onMounted(async () => {
           />
           <figcaption class="px-5 py-4 text-sm text-slate-300">Van onderdelen naar een eigen robot bij Hackerspace Drenthe.</figcaption>
         </figure>
+      </div>
+    </section>
+
+    <section class="bg-white py-10" aria-label="Kickoff-presentatie">
+      <div class="mx-auto max-w-6xl px-6">
+        <KickoffRecording />
       </div>
     </section>
 

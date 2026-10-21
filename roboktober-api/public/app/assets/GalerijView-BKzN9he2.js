@@ -1,0 +1,1 @@
+import{Ft as e,Rt as t,Wt as n,zt as r}from"./index-BAHS8C5t.js";import{t as i}from"./EventGallery-C7NS9q2w.js";var a={id:`main-content`},o=r({__name:`GalerijView`,setup(r){return(r,o)=>(n(),e(`main`,a,[t(i)]))}});export{o as default};
