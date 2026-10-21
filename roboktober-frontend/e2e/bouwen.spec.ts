@@ -31,6 +31,46 @@ test.describe('bouwen: 3D print pagina', () => {
     await expect(page.getByRole('heading', { name: /Stap 3: snelle montage-checklist/ })).toBeVisible()
   })
 
+  test('toont Reins ontwerpen met previews, versies en werkende downloads', async ({ page, request }) => {
+    await page.goto('bouwen/3dprint')
+    const gallery = page.getByRole('region', { name: 'De ontwerpen van Rein van Hackerspace Drenthe' })
+    await expect(gallery.locator('article')).toHaveCount(13)
+    await expect(gallery.getByRole('img')).toHaveCount(13)
+
+    const racer = gallery.getByRole('article', { name: 'Nordic Racer', exact: true })
+    await expect(racer.locator('a[download]')).toHaveCount(4)
+    await expect(racer.locator('a[download]').first()).toHaveAttribute('download', 'antweight_racer_v0.4_nordic.scad')
+    await expect(gallery.getByRole('article', { name: 'Mostly Harmless', exact: true }).locator('a[download]')).toHaveCount(2)
+
+    const links = await gallery.locator('a[download]').evaluateAll((elements) =>
+      [...new Set(elements.map((element) => element.getAttribute('href')!))],
+    )
+    expect(links).toHaveLength(25)
+    for (const href of links) {
+      expect(href).toMatch(/^\/app\/downloads\/designs\/rein\/.+\.(scad|stl)$/)
+      const response = await request.get(href)
+      expect(response.ok(), href).toBeTruthy()
+      expect(response.headers()['content-type']).not.toContain('text/html')
+      expect((await response.body()).length).toBeGreaterThan(100)
+    }
+  })
+
+  test('ontwerpgalerij past op een mobiel scherm', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.goto('bouwen/3dprint')
+    const gallery = page.getByRole('region', { name: 'De ontwerpen van Rein van Hackerspace Drenthe' })
+    await gallery.scrollIntoViewIfNeeded()
+    const bounds = await gallery.boundingBox()
+    expect(bounds).not.toBeNull()
+    expect(bounds!.width).toBeLessThanOrEqual(390)
+    for (const card of await gallery.locator('article').all()) {
+      const cardBounds = await card.boundingBox()
+      expect(cardBounds!.x).toBeGreaterThanOrEqual(0)
+      expect(cardBounds!.x + cardBounds!.width).toBeLessThanOrEqual(390)
+      expect(await card.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true)
+    }
+  })
+
   test('afbeeldingen laden zonder fouten', async ({ page }) => {
     await page.goto('bouwen/3dprint')
     await expect(page.getByRole('heading', { level: 1, name: '3D print chassis' })).toBeVisible()

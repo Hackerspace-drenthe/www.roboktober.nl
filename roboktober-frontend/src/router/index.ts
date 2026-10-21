@@ -80,12 +80,21 @@ const router = createRouter({
       },
     },
     {
+      path: '/galerij',
+      name: 'galerij',
+      component: () => import('../views/GalerijView.vue'),
+      meta: {
+        title: "Foto's en video's — Roboktober",
+        description: "Bekijk foto's en video's van Roboktober bij Hackerspace Drenthe: robots, samen bouwen en controllers.",
+      },
+    },
+    {
       path: '/nieuws',
       name: 'nieuws',
       component: () => import('../views/NieuwsView.vue'),
       meta: {
         title: 'Nieuws — Roboktober',
-        description: 'Lees het laatste nieuws, updates en aankondigingen rond Roboktober en combat robotics in Drenthe.',
+        description: "Lees het laatste nieuws en bekijk foto's en video's van Roboktober en combat robotics in Drenthe.",
       },
     },
     {

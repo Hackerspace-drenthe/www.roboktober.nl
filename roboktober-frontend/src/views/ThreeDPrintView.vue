@@ -7,6 +7,7 @@ import chassisPcbDekselRender from '@/assets/3dprint/chassis-pcb-deksel-render.p
 import designInfographic from '@/assets/3dprint/infographic-van-idee-naar-print.jpeg'
 import chassisVierKleurenFoto from '@/assets/3dprint/chassis-4-kleuren.webp'
 import pcbFrontKaal from '@/assets/pcb/pcb-v4-front-kaal.png'
+import ReinDesignGallery from '@/components/ReinDesignGallery.vue'
 
 const route = useRoute()
 const actieveTab = computed<'bouwgids' | '3dprint' | 'pcb' | 'firmware' | 'links'>(() => {
@@ -324,6 +325,8 @@ const montageChecks = [
         </figure>
       </div>
     </section>
+
+    <ReinDesignGallery />
 
     <section class="bg-slate-50 py-16" aria-labelledby="print-settings-title">
       <div class="mx-auto max-w-5xl px-6">

@@ -92,6 +92,44 @@ npm run format
 
 ## Notes for contributors
 
+### Event photo and video gallery
+
+The gallery at the bottom of `/nieuws` uses the originals in the repository-root
+[fotos/](../fotos/) folder. Add photos to `robots/`, `mensenbezig/` or
+`controller/`, and MP4 videos to `video/`. Then run `npm run media:generate`.
+This requires FFmpeg with WebP support; ordinary builds do not require FFmpeg.
+The script leaves the originals untouched and generates WebP images,
+thumbnails, video posters and video copies in `public/media/evenement/`,
+plus the reusable catalogue `src/data/event-media.json`.
+Commit the generated files with the originals. When removing media, also remove
+its generated public files. Only publish material you have permission to share,
+including permission from recognizable participants.
+The main menu links only to Nieuws. `/galerij` remains available as a standalone
+page without a redirect; both pages reuse `src/components/EventGallery.vue`.
+The programme page also reuses three generated workshop/robot photos from this
+media collection. Its dates, activities and location still come from the API.
+
+### Design gallery by Rein van Hackerspace Drenthe
+
+The 3D print page keeps the original WallieOnline/MakerWorld download and also
+shows Rein's designs, grouped by design with newest versions first.
+The catalogue is in [src/data/rein-designs.json](src/data/rein-designs.json).
+Downloads and static 3D previews are served from
+`public/downloads/designs/rein/`, so they work without external model viewers.
+
+After adding or updating a design in [../3dprinter/reinsdesigns](../3dprinter/reinsdesigns),
+update the catalogue and run `npm run designs:generate` from this folder.
+This requires OpenSCAD and `xvfb-run`; normal builds do not require either tool.
+To regenerate only selected designs, pass their catalogue IDs, for example
+`npm run designs:generate -- disc-mini disc-wedge`.
+Commit the generated downloads and PNG previews along with the catalogue.
+Each preview uses the first version's assembly (`previewPart` overrides the part
+selector). Preserve original filenames so OpenSCAD `include`/`use` references
+continue to work, and list any required companion file as `dependency`.
+Disc Mini and Disc Wedge share `disc_geometry.scad`; keep it alongside either
+download. The helper is not a separate robot design.
+The Mostly Harmless downloads are separate chassis/roof parts, not versions.
+
 - Keep all HTTP calls in `src/api/index.ts`.
 - Reuse shared types in `src/types` for API contracts.
 - Keep route-level code split via lazy-loaded views in `src/router/index.ts`.

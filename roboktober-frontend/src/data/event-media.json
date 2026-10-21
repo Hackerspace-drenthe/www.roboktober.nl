@@ -1,0 +1,122 @@
+{
+  "categories": [
+    {
+      "id": "robots",
+      "title": "Robots",
+      "description": "Eigen ontwerpen, geprinte chassis en robots van dichtbij.",
+      "photos": [
+        {
+          "id": "robots-5837211261278556179",
+          "title": "Robots — foto 1",
+          "image": "robots/5837211261278556179.webp",
+          "thumbnail": "robots/5837211261278556179-thumb.webp"
+        },
+        {
+          "id": "robots-5922473448800194839",
+          "title": "Robots — foto 2",
+          "image": "robots/5922473448800194839.webp",
+          "thumbnail": "robots/5922473448800194839-thumb.webp"
+        },
+        {
+          "id": "robots-5922473448800194840",
+          "title": "Robots — foto 3",
+          "image": "robots/5922473448800194840.webp",
+          "thumbnail": "robots/5922473448800194840-thumb.webp"
+        },
+        {
+          "id": "robots-5936117584942010023",
+          "title": "Robots — foto 4",
+          "image": "robots/5936117584942010023.webp",
+          "thumbnail": "robots/5936117584942010023-thumb.webp"
+        },
+        {
+          "id": "robots-5945232600760783560",
+          "title": "Robots — foto 5",
+          "image": "robots/5945232600760783560.webp",
+          "thumbnail": "robots/5945232600760783560-thumb.webp"
+        },
+        {
+          "id": "robots-5945232600760783561",
+          "title": "Robots — foto 6",
+          "image": "robots/5945232600760783561.webp",
+          "thumbnail": "robots/5945232600760783561-thumb.webp"
+        }
+      ]
+    },
+    {
+      "id": "mensenbezig",
+      "title": "Samen bouwen",
+      "description": "Aan de werktafel bij Hackerspace Drenthe: bouwen, uitproberen en elkaar helpen.",
+      "photos": [
+        {
+          "id": "mensenbezig-5945232600760783554",
+          "title": "Samen bouwen — foto 1",
+          "image": "mensenbezig/5945232600760783554.webp",
+          "thumbnail": "mensenbezig/5945232600760783554-thumb.webp"
+        },
+        {
+          "id": "mensenbezig-5945232600760783555",
+          "title": "Samen bouwen — foto 2",
+          "image": "mensenbezig/5945232600760783555.webp",
+          "thumbnail": "mensenbezig/5945232600760783555-thumb.webp"
+        },
+        {
+          "id": "mensenbezig-5945232600760783556",
+          "title": "Samen bouwen — foto 3",
+          "image": "mensenbezig/5945232600760783556.webp",
+          "thumbnail": "mensenbezig/5945232600760783556-thumb.webp"
+        },
+        {
+          "id": "mensenbezig-5945232600760783557",
+          "title": "Samen bouwen — foto 4",
+          "image": "mensenbezig/5945232600760783557.webp",
+          "thumbnail": "mensenbezig/5945232600760783557-thumb.webp"
+        },
+        {
+          "id": "mensenbezig-5945232600760783558",
+          "title": "Samen bouwen — foto 5",
+          "image": "mensenbezig/5945232600760783558.webp",
+          "thumbnail": "mensenbezig/5945232600760783558-thumb.webp"
+        },
+        {
+          "id": "mensenbezig-5945232600760783559",
+          "title": "Samen bouwen — foto 6",
+          "image": "mensenbezig/5945232600760783559.webp",
+          "thumbnail": "mensenbezig/5945232600760783559-thumb.webp"
+        }
+      ]
+    },
+    {
+      "id": "controller",
+      "title": "Controllers",
+      "description": "Een kijkje bij de besturing van de robots.",
+      "photos": [
+        {
+          "id": "controller-5895346452538527319",
+          "title": "Controllers — foto 1",
+          "image": "controller/5895346452538527319.webp",
+          "thumbnail": "controller/5895346452538527319-thumb.webp"
+        },
+        {
+          "id": "controller-5895346452538527320",
+          "title": "Controllers — foto 2",
+          "image": "controller/5895346452538527320.webp",
+          "thumbnail": "controller/5895346452538527320-thumb.webp"
+        },
+        {
+          "id": "controller-5895346452538527321",
+          "title": "Controllers — foto 3",
+          "image": "controller/5895346452538527321.webp",
+          "thumbnail": "controller/5895346452538527321-thumb.webp"
+        }
+      ]
+    }
+  ],
+  "videos": [
+    {
+      "title": "Roboktober in beeld — video 1",
+      "file": "video/IMG_6782.mp4",
+      "poster": "video/IMG_6782-poster.webp"
+    }
+  ]
+}

@@ -105,7 +105,7 @@ async function handleLogout(): Promise<void> {
       </RouterLink>
 
       <!-- Desktop navigatie -->
-      <div class="hidden items-center gap-6 md:flex">
+      <div class="hidden items-center gap-6 xl:flex">
         <ul class="flex items-center gap-3" role="list">
           <li>
             <RouterLink to="/programma" :class="desktopNavLinkClass" :active-class="desktopNavActiveClass">Programma</RouterLink>
@@ -201,7 +201,7 @@ async function handleLogout(): Promise<void> {
 
       <!-- Mobiel hamburger knop -->
       <button
-        class="rounded-lg p-2 text-white hover:bg-white/10 md:hidden"
+        class="rounded-lg p-2 text-white hover:bg-white/10 xl:hidden"
         :aria-expanded="menuOpen"
         aria-controls="mobile-menu"
         aria-label="Menu openen"
@@ -217,7 +217,7 @@ async function handleLogout(): Promise<void> {
     <div
       v-show="menuOpen"
       id="mobile-menu"
-      class="border-t border-white/10 bg-robo-dark px-6 py-4 md:hidden"
+      class="border-t border-white/10 bg-robo-dark px-6 py-4 xl:hidden"
     >
       <ul
         class="space-y-3"

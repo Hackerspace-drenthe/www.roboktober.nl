@@ -1,0 +1,126 @@
+[
+  {
+    "id": "racer",
+    "title": "Nordic Racer",
+    "description": "Een laag racechassis met een gestroomlijnde neus, canopy en achtervleugel.",
+    "versions": [
+      { "label": "v0.4 Nordic", "file": "antweight_racer_v0.4_nordic.scad" },
+      { "label": "v0.3 Nordic", "file": "antweight_racer_v0.3_nordic.scad" },
+      { "label": "v0.2 Nordic", "file": "antweight_racer_v0.2_nordic.scad" },
+      { "label": "v0.1 Nordic", "file": "antweight_racer_v0.1_nordic.scad" }
+    ]
+  },
+  {
+    "id": "chassis",
+    "title": "Antweight Chassis",
+    "description": "Van basischassis tot een geïntegreerd ontwerp met een omkeerbare wigvormige neus.",
+    "versions": [
+      { "label": "v0.4 Integrated", "file": "antweight_chassis_v0.4_integrated.scad" },
+      { "label": "v0.3 Design", "file": "antweight_chassis_v0.3_design.scad" },
+      { "label": "v0.2 Basis", "file": "antweight_chassis.scad" }
+    ]
+  },
+  {
+    "id": "disc-spinner",
+    "title": "Disc Spinner",
+    "description": "Een rond chassis met radiale punten en een scharnierende wig aan de vlakke voorkant.",
+    "versions": [
+      { "label": "v0.5", "file": "antweight_disc_spinner_v0.5.scad" },
+      { "label": "v0.4", "file": "antweight_disc_spinner_v0.4.scad" },
+      { "label": "v0.3", "file": "antweight_disc_spinner_v0.3.scad" },
+      { "label": "v0.2", "file": "antweight_disc_spinner_v0.2.scad" },
+      { "label": "v0.1", "file": "antweight_disc_spinner_v0.1.scad" }
+    ]
+  },
+  {
+    "id": "limulus",
+    "title": "Limulus",
+    "description": "Geïnspireerd op een degenkrab, met een breed schild en in v0.2 een scharnierende staart.",
+    "versions": [
+      {
+        "label": "v0.2",
+        "file": "antweight_limulus_v0.2.scad",
+        "dependency": "antweight_limulus_v0.1.scad"
+      },
+      { "label": "v0.1", "file": "antweight_limulus_v0.1.scad" }
+    ]
+  },
+  {
+    "id": "passive-aggressive",
+    "title": "Passive Aggressive",
+    "description": "Een omkeerbare tweewielaangedreven duwrobot met een passieve wig.",
+    "versions": [
+      { "label": "v0.1", "file": "antweight_passive_aggressive_v0.1.scad" }
+    ]
+  },
+  {
+    "id": "passive-aggressive-4wd",
+    "title": "Passive Aggressive 4WD",
+    "description": "De vierwielaangedreven variant van Passive Aggressive, met een eigen chassisindeling.",
+    "versions": [
+      { "label": "v0.1", "file": "antweight_passive_aggressive_4wd_v0.1.scad" }
+    ]
+  },
+  {
+    "id": "rhomboid",
+    "title": "Rhomboid",
+    "description": "Een licht, ruitvormig chassis voor een omkeerbare tweewielaangedreven duwrobot.",
+    "versions": [
+      { "label": "v0.1", "file": "antweight_rhomboid_v0.1.scad" }
+    ]
+  },
+  {
+    "id": "disc",
+    "title": "Disc",
+    "description": "Een rond antweight-chassis met ruimte voor de aandrijving en elektronica.",
+    "versions": [
+      { "label": "v0.1", "file": "antweight_disc_v0.1.scad" }
+    ]
+  },
+  {
+    "id": "disc-mini",
+    "title": "Disc Mini",
+    "description": "Een compacte uitvoering van het ronde Disc-ontwerp.",
+    "versions": [
+      { "label": "v0.1", "file": "antweight_disc_mini_v0.1.scad", "dependency": "disc_geometry.scad" }
+    ]
+  },
+  {
+    "id": "disc-wedge",
+    "title": "Disc Wedge",
+    "description": "Een rond chassis op basis van Disc Mini, uitgebreid met een scharnierende wig.",
+    "previewPart": "disc_assembly",
+    "versions": [
+      {
+        "label": "v0.1",
+        "file": "antweight_disc_wedge_v0.1.scad",
+        "dependency": "disc_geometry.scad"
+      }
+    ]
+  },
+  {
+    "id": "aurora",
+    "title": "Aurora 50 g",
+    "description": "Een kleine radiografisch bestuurbare demonstratierobot, ontworpen rond een gewicht van 50 gram.",
+    "versions": [
+      { "label": "v0.1", "file": "aurora_50g_rc_v0.1.scad" }
+    ]
+  },
+  {
+    "id": "duobot",
+    "title": "Duobot",
+    "description": "Twee zelfstandige N20-robots met een passieve koppeling. De koppelmechaniek is een prototype.",
+    "versions": [
+      { "label": "v0.1", "file": "duobot_v0.1.scad" }
+    ]
+  },
+  {
+    "id": "mostly-harmless",
+    "title": "Mostly Harmless",
+    "description": "Chassis en los dak als STL-bestanden, direct te openen in je slicer.",
+    "versions": [
+      { "label": "Chassis", "file": "mostlyharmless.stl" },
+      { "label": "Dak", "file": "mopstlyharmlessroof.stl" }
+    ]
+  }
+]

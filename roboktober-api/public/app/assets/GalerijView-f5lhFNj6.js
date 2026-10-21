@@ -1,0 +1,1 @@
+import{Ft as e,Rt as t,Wt as n,zt as r}from"./index-BaDi0E2a.js";import{t as i}from"./EventGallery-JnWdpdP2.js";var a={id:`main-content`},o=r({__name:`GalerijView`,setup(r){return(r,o)=>(n(),e(`main`,a,[t(i)]))}});export{o as default};

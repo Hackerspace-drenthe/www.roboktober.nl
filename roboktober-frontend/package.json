@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "designs:generate": "node scripts/generate-design-gallery.mjs",
+    "media:generate": "node scripts/generate-event-media.mjs",
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",

@@ -4,6 +4,7 @@ import type { Post } from '@/types/api'
 import { applySeoMeta, removeJsonLd, upsertJsonLd } from '@/utils/seo'
 import { onMounted, onUnmounted, ref } from 'vue'
 import headerImage from '@/assets/headers/header-nieuws.png'
+import EventGallery from '@/components/EventGallery.vue'
 
 const posts = ref<Post[]>([])
 const laden = ref(true)
@@ -46,7 +47,7 @@ function formatDatum(iso: string | null): string {
 onMounted(async () => {
   applySeoMeta({
     title: 'Nieuws — Roboktober',
-    description: 'Lees het laatste nieuws, updates en aankondigingen rond Roboktober en combat robotics in Drenthe.',
+    description: "Lees het laatste nieuws en bekijk foto's en video's van Roboktober en combat robotics in Drenthe.",
     canonicalPath: '/nieuws',
   })
 
@@ -72,7 +73,10 @@ onUnmounted(() => {
       <div class="absolute inset-0 bg-robo-dark/75" aria-hidden="true" />
       <div class="relative z-10 mx-auto max-w-3xl px-6 text-center">
         <h1 class="mb-4 text-4xl font-black md:text-5xl">Nieuws</h1>
-        <p class="text-lg text-slate-300">Updates over Roboktober, bouw-logs en aankondigingen.</p>
+        <p class="text-lg text-slate-300">Updates over Roboktober, bouw-logs, foto's en video's.</p>
+        <a href="#galerij" class="mt-6 inline-block rounded-lg border border-white/30 px-4 py-2 font-bold transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-robo-orange">
+          Bekijk foto's en video's
+        </a>
       </div>
     </section>
 
@@ -133,5 +137,6 @@ onUnmounted(() => {
         </ul>
       </div>
     </section>
+    <EventGallery embedded />
   </main>
 </template>
