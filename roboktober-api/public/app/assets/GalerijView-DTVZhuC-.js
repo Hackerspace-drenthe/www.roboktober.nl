@@ -1,0 +1,1 @@
+import{l as e,m as t,p as n,x as r}from"./runtime-core.esm-bundler-CFuDZTt-.js";import{t as i}from"./EventGallery-Cv2z4Fx1.js";var a={id:`main-content`},o=t({__name:`GalerijView`,setup(t){return(t,o)=>(r(),e(`main`,a,[n(i)]))}});export{o as default};
