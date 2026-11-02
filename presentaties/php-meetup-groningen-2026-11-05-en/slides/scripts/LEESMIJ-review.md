@@ -20,7 +20,8 @@ Central question: what happens when you push the joystick forward on your phone?
 | `F` | Full screen |
 
 - Slide 8 contains a video of Wallie with audio; click play. **The video is in Dutch and has no subtitles.**
-- Slide 32 is a gallery with 10 click steps. Model names link to the source files in this package's `3dprinter/` folder.
+- Slide 20 contains the complete public ESP-NOW firmware: eight clicks highlight the code blocks, each with its own explanation alongside (what, why, and effect on the robot); scroll inside the code window for all 205 lines. Revision `fb3afa886117`, © 2026 wallieonline, GPL-3.0-or-later; the license is included locally. This is not the WebUI source.
+- Slide 33 is a gallery with 10 click steps. Model names link to the source files in this package's `3dprinter/` folder.
 
 ## Contents
 

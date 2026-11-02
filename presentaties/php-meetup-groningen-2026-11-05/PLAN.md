@@ -97,6 +97,12 @@ De tijden zijn een repetitiedoel, geen gemeten duur. Repetitie inclusief 84 seco
 
 ### 3.5.1 Overzicht: van duim naar wiel
 
+De bestaande overzichtsslide toont zeven onderdelen één voor één, elk met een groot beeld en een eigen functie: chassis → accu → aan/uit → kale PCB → ESP32 → motordriver → motoren/wielen. Chassis staat direct in beeld, zes klikken tonen de andere onderdelen. Aan/uit toont een schakelaar of uitneembare plug/pincap die de accuvoeding fysiek onderbreekt, niet de softwarematige failsafe. Kies een van buiten bereikbare uitvoering geschikt voor de motorstroom; ontkoppel ook andere voedingen vóór werkzaamheden. PCB en ESP32 zijn afzonderlijke stappen: de print verbindt, de microcontroller voert code uit. Chassis en PCB gebruiken bestaande renders; accu en voedingsonderbreking zijn schematisch. N20-motor en wiel staan als afzonderlijke productfoto's naast elkaar binnen de zevende stap, met bronvermelding (AliExpress, aangeleverd door Rein; gebruiksrechten nog te controleren). Wijs de onderdelen ook op de uitgeschakelde, geopende robot aan. Reserveer ongeveer 60 seconden binnen de bestaande 2 minuten.
+
+De ESP32-C3 SuperMini wordt met een echte foto getoond (Tobias Weltner, done.land, CC BY-ND 4.0; ongewijzigd en lokaal meegeleverd). De DRV8833 gebruikt de door Rein aangeleverde AliExpress-productfoto, eveneens lokaal meegeleverd; controleer de gebruiksrechten vóór verdere openbare verspreiding.
+
+De volgende klik toont op dezelfde slide het overzicht met de eerste commandostap; nog vier klikken voltooien de bestaande vijf animatiestappen. Totaal elf klikken, geen extra slide. Brug: "Wat gebeurt er als je op je telefoon vooruit duwt?"
+
 1. Telefoon/WebSocket of remote/ESP-NOW levert gas en sturen.
 2. ESP32-C3 ontvangt, controleert, schaalt en mixt.
 3. PWM is het snel aan/uit schakelen van stuursignalen.
@@ -117,6 +123,7 @@ Laat de echte print zien, maar leg pinnen en voedingsvarianten nog niet uit.
 ### 3.5.3 Firmware, PWM, H-brug en failsafe
 
 - Flashen via USB en Web Serial, ondersteunde Chromium-browser; datakabel vereist.
+- Na flashen: één extra slide met de volledige openbare ESP-NOW/DRV8833-firmware (205 regels, bronversie `fb3afa886117`, GPL-3.0-or-later). Acht klikken belichten achtereenvolgens bericht/grenzen, toestand, setup/PWM, radio/callback, ontvangst, mixing, richting/PWM en loop/failsafe; bibliotheken/pinnen zijn direct uitgelicht. De code scrolt mee en blijft volledig offline beschikbaar, inclusief licentie. Dit is niet de WebUI-broncode. Per codeblok verschijnt eigen uitleg (wat, waarom, effect op de robot), synchroon met de highlights, ook bij terugklikken. Benoem ook de beperking bij ontvangst: ongeldige kanaalwaarden behouden hun vorige waarde, maar berichten met de juiste lengte vernieuwen wel de timeout. Circa twee minuten binnen het bestaande firmwareblok; houd de volgende detaildia's korter.
 - Ontvangen: berichtlengte en kanaalbereik controleren. Schalen naar −255…255, deadband maakt ruis rond neutraal nul.
 - Rekenvoorbeeld vanaf hier: gas 200, sturen 0. De concrete RC-invoer hangt af van de ingestelde grenzen.
 - Mixing: links = gas + sturen; rechts = gas − sturen; begrenzen op −255…255.
@@ -149,7 +156,7 @@ Laat de echte print zien, maar leg pinnen en voedingsvarianten nog niet uit.
 - OpenSCAD past bij mijn tekstgebaseerde workflow: parameters, diffs, review en expliciete maatvoorwaarden.
 - Visuele CAD-tools kunnen óók parametrisch en automatiseerbaar zijn; geen karikatuur van Fusion/FreeCAD.
 - Een `assert` bewaakt alleen de geprogrammeerde voorwaarde. Testprints blijven nodig voor pasvorm en toleranties.
-- Slide 32: een ontwerpgalerij met 10 klikstappen en 24 beelden, circa twee minuten. Eén klik per ontwerpfamilie, met versies en onderdelen naast elkaar: Wallie (origineel, topplaat en reconstructies), chassis v0.2/v0.3/v0.4, Disc/Mini/Wedge, Disc Spinner v0.1–v0.5, Rhomboid, Limulus v0.1/v0.2, Passive Aggressive/4WD, Mostly Harmless met dak, Aurora en DuoBot. Nordic Racer is alleen uit deze galerij verwijderd; het voorbeeld op de volgende vergelijkingsslide blijft staan.
+- Slide 33: een ontwerpgalerij met 10 klikstappen en 24 beelden, circa twee minuten. Eén klik per ontwerpfamilie, met versies en onderdelen naast elkaar: Wallie (origineel, topplaat en reconstructies), chassis v0.2/v0.3/v0.4, Disc/Mini/Wedge, Disc Spinner v0.1–v0.5, Rhomboid, Limulus v0.1/v0.2, Passive Aggressive/4WD, Mostly Harmless met dak, Aurora en DuoBot. Nordic Racer is alleen uit deze galerij verwijderd; het voorbeeld op de volgende vergelijkingsslide blijft staan.
 - Elke klik leert één extra concept met een kort bronfragment: hergebruik, parameters, geometrie, berekeningen, lussen, include, combinaties van lussen, STL-import, assert en samenstellingen. Circa twee minuten inclusief deze uitleg; overige chassiscontext kort houden. Het importvoorbeeld is expliciet gelabeld, de andere fragmenten komen uit de gekoppelde bronmodellen of hun gedeelde bibliotheek.
 - Verschillende ontwerplijnen expliciet benoemen, niet één lineaire versiegeschiedenis. Geen dubbele meshconversies, exportbestanden of hulpbibliotheken. Renders zijn niet op gelijke schaal en bewijzen geen pasvorm of werking.
 - Per stap een eigen render en kort geselecteerd codefragment. Bronbestanden blijven bereikbaar; vooruit én achteruit bladeren werkt met reveal.js-fragmenten.
@@ -184,6 +191,7 @@ Laat de echte print zien, maar leg pinnen en voedingsvarianten nog niet uit.
 
 ### 3.10 Afsluiting
 
+- Slide 43 vat vier projectlessen samen: open software en standaarden als basis; een helder plan met definities, grenzen en testprocedures; AI als hulp naast eigen validatie en veel testen; ook PCB en chassis ontwerpen met code. De commandoketen en bestaande kernboodschap blijven staan.
 - Beantwoord de openingsvraag in de volgorde controller → firmware → PWM/H-brug → motor.
 - Benoem veilig stoppen expliciet.
 - Afsluitzin: **je blijft developer — alleen rijdt je bug nu weg.**
@@ -208,7 +216,7 @@ Niet schrappen: openingsvraag, complete commandoroute, failsafe en afsluiting.
 - [ ] Battle Day-uitslag/winnaar bevestigen (optioneel).
 - [ ] Reglement, kitprijs en de cijfers op de slides nogmaals controleren.
 - [ ] Toestemming Wallie en hoorbaarheid van de video controleren.
-- [x] Hele talk vanaf `file://` getest vanuit het uitgepakte reviewpakket: 44 dia's, alle afbeeldingen, video en galerijlinks laden lokaal. Op de avond de map inclusief `vendor/` en `js/wallie-video.js` meenemen.
+- [x] Offline reviewpakket gecontroleerd: 45 dia's; afbeeldingen, video en galerijlinks zijn lokaal aanwezig. De volledige firmwaredia laadt ook vanaf `file://`, met alle 205 bronregels en negen uitlichtstappen. Op de avond de map inclusief `vendor/` en `js/wallie-video.js` meenemen.
 - [x] Reviewpakket voor meelezers in `review/` (niet in git): `bash slides/scripts/build-review-package.sh [--full] review`. Compact (±12 MB) of volledig met video's en alle 3D-bronnen (±112 MB). Begint met `00-LEES-MIJ-EERST.html`; tekst in `slides/scripts/LEESMIJ-review.md`.
 - [ ] Feedback van reviewers verwerken.
 - [ ] Na wijziging van de MP4: `bash slides/scripts/embed-wallie-video.sh`.

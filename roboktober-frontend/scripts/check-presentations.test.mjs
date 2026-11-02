@@ -1,9 +1,11 @@
 import assert from 'node:assert/strict'
 import { execFileSync } from 'node:child_process'
+import { createHash } from 'node:crypto'
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import test from 'node:test'
 import { fileURLToPath } from 'node:url'
+import { runInNewContext } from 'node:vm'
 
 const root = fileURLToPath(new URL('../public/presentaties/php-meetup-groningen-2026-11-05/', import.meta.url))
 
@@ -22,7 +24,66 @@ for (const language of ['nl', 'en']) {
     assert.match(html, new RegExp(`<html lang="${language}">`))
     assert.match(html, /Rein Velt/)
     assert.match(html, /drenthenoodnetwerk\.nl/)
-    assert.equal([...html.matchAll(/<section(?:\s|>)/g)].length, 44)
+    assert.equal([...html.matchAll(/<section(?:\s|>)/g)].length, 45)
+    const recap = html.split(/<section(?:\s[^>]*)?>/)[43].split('</section>')[0]
+    assert.equal([...recap.matchAll(/<li>/g)].length, 4)
+    for (const point of language === 'nl'
+      ? ['open software en standaarden', 'definities, grenzen en testprocedures', 'zelf blijven valideren en veel testen', 'PCB en chassis ontwerpen met code']
+      : ['open software and standards', 'definitions, constraints and test procedures', 'keep validating and testing', 'PCB and chassis designed with code']) {
+      assert.ok(recap.includes(point), `Missing recap lesson: ${point}`)
+    }
+    assert.match(html, /class="cols firmware-full"/)
+    const ranges = '19-30|32-50|51-73|152-167|170-189|129-150|93-105|106-127|191-205'
+    assert.ok(html.includes(`data-line-numbers="${ranges}"`))
+    const explanations = [...html.matchAll(/<article class="([^"]*firmware-explanation[^"]*)"([^>]*)>([\s\S]*?)<\/article>/g)]
+    assert.equal(explanations.length, 9, 'Explain each highlighted firmware block')
+    explanations.forEach(([, classes, attributes, body], index) => {
+      assert.ok(attributes.includes(`data-lines="${ranges.split('|')[index]}"`))
+      if (index === 0) assert.match(classes, /firmware-initial/)
+      else assert.ok(attributes.includes(`data-fragment-index="${index - 1}"`))
+      assert.match(body, /<h2>[^<]+<\/h2>/)
+      assert.match(body, language === 'nl' ? /<b>Wat:<\/b>/ : /<b>What:<\/b>/)
+      assert.match(body, language === 'nl' ? /<b>Waarom:<\/b>/ : /<b>Why:<\/b>/)
+      assert.match(body, /class="firmware-result"/)
+    })
+    assert.match(explanations[7][3], /ledcWrite\((?:kanaal, waarde|channel, value)\)/)
+    assert.match(explanations[7][3], /Arduino-ESP32/)
+    assert.match(explanations[7][3], /LEDC = LED Control/)
+    assert.ok(html.indexOf('js/firmware-source.js') < html.indexOf('Reveal.initialize('))
+    const firmware = {}
+    runInNewContext(readFileSync(join(slides, 'js/firmware-source.js'), 'utf8'), {
+      document: { querySelector: (selector) => {
+        assert.equal(selector, '.firmware-full code')
+        return firmware
+      } },
+    })
+    const source = firmware.textContent
+    assert.equal(source.split('\n').length, 205, 'Include every source line')
+    assert.equal(createHash('sha256').update(source.split('\n').map((line) => line.trimEnd()).join('\n')).digest('hex'),
+      'd7596879a9e4ad269b62722fa1a0a1008967eb0cd5230c3866b1297c58a47bca',
+      'Match pinned upstream firmware, ignoring trailing whitespace on blank lines')
+    assert.match(readFileSync(join(slides, 'js/firmware-LICENSE.txt'), 'utf8'), /GNU GENERAL PUBLIC LICENSE/)
+    const overview = html.match(/<section class="pcbflow-slide"[^>]*>([\s\S]*?)<\/section>/)?.[1]
+    assert.ok(overview, 'Missing robot overview')
+    const parts = [...overview.matchAll(/<article class="(?:fragment )?pf-part">([\s\S]*?)<\/article>/g)]
+    assert.equal(parts.length, 7, 'Show the seven robot parts separately')
+    assert.equal([...overview.matchAll(/class="fragment pf-part"/g)].length, 6)
+    assert.equal([...overview.matchAll(/class="fragment pf-step"/g)].length, 5)
+    for (const [, part] of parts) {
+      assert.match(part, /<(?:img|svg)\s/, 'Each part needs its own visual')
+      assert.match(part, /<h2>[^<]+<\/h2>/, 'Each part needs its own title')
+    }
+    assert.match(parts[2][1], /<h2>(?:Aan\/uit|On\/off)<\/h2>/)
+    assert.match(parts[2][1], /<img src="img\/part-power-disconnect\.svg"/)
+    assert.match(parts[3][1], /<h2>(?:Printplaat|Circuit board) · PCB<\/h2>/)
+    assert.match(parts[4][1], /<h2>ESP32-C3 SuperMini<\/h2>/)
+    assert.match(parts[4][1], /<img src="img\/esp32-c3-supermini-photo\.png"/)
+    assert.match(parts[4][1], /Tobias Weltner · done\.land/)
+    assert.match(parts[4][1], /https:\/\/creativecommons\.org\/licenses\/by-nd\/4\.0\//)
+    assert.match(parts[5][1], /<img src="img\/drv8833-module-photo\.jpg"/)
+    assert.match(parts[5][1], /AliExpress/)
+    assert.match(parts[6][1], /<img src="img\/n20-motor-photo\.jpg"/)
+    assert.match(parts[6][1], /<img src="img\/n20-wheel-photo\.jpg"/)
     for (const match of html.matchAll(/(?:src|href)="([^"]+)"/g)) {
       if (/^(?:https?:|#|\$\{)/.test(match[1])) continue
       assert.ok(existsSync(join(slides, match[1])), `Missing resource: ${match[1]}`)

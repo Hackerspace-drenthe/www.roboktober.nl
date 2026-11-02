@@ -302,11 +302,41 @@
   <p class="num">DE ROBOT</p>
   <h2>Volg één commando</h2>
   <p class="question">Van duim op het scherm tot wiel op de vloer</p>
-  <aside class="notes">[3.5 · start kernblok, 27 min] Eerst de hele route, daarna controller → firmware met PWM/H-brug en failsafe → print → chassis.</aside>
+  <aside class="notes">[3.5 · start kernblok, 27 min] Eerst de echte robot open op tafel en de onderdelen aanwijzen, dan op dezelfde overzichtsslide de commandoroute. Daarna controller → firmware met PWM/H-brug en failsafe → print → chassis.</aside>
 </section>
 
 <section class="pcbflow-slide" data-step="0">
-  <p class="kicker">Op de robot · wat gebeurt er als het signaal binnenkomt?</p>
+  <p class="kicker"><span class="pf-intro">De robot open op tafel · wat zit waar?</span><span class="pf-route">Van onderdelen naar beweging · volg één commando</span></p>
+  <div class="pf-tour">
+    <article class="pf-part">
+      <figure><img src="img/chassis-render.png" alt="3D-render van het lege robotchassis met ruimte voor elektronica en motoren"><figcaption>3D-render · chassis zonder elektronica</figcaption></figure>
+      <div><p class="num">1 / 7 · DE BEHUIZING</p><h2>Chassis</h2><p>Houdt alle onderdelen op hun plek.</p><p class="muted">Ruimte voor accu, print en aandrijving. Zelf te ontwerpen en te 3D-printen.</p></div>
+    </article>
+    <article class="fragment pf-part">
+      <figure><img src="img/part-battery.svg" alt="Schematische render van een 1S LiPo-accu met aansluitkabel"><figcaption>Schematische render · 1S LiPo</figcaption></figure>
+      <div><p class="num">2 / 7 · DE ENERGIE</p><h2>Accu</h2><p>Levert de energie voor de robot.</p><p class="muted">1S LiPo: 3,7 V nominaal, 4,2 V vol. De motorstroom komt hiervandaan, niet uit de ESP32.</p></div>
+    </article>
+    <article class="fragment pf-part">
+      <figure><img src="img/part-power-disconnect.svg" alt="Schematisch beeld van een schakelaar in de uitstand en een uitgenomen plug of pincap: beide onderbreken de plusleiding naar de robot"><figcaption>Schematisch · schakelaar óf uitneembare plug/pincap · beide uit</figcaption></figure>
+      <div><p class="num">3 / 7 · FYSIEK UITSCHAKELEN</p><h2>Aan/uit</h2><p>Schakelaar of uitneembare plug/pincap.</p><p class="muted">Onderbreekt de accuvoeding fysiek. Bereikbaar van buitenaf en geschikt voor de motorstroom.</p><p><b>Motoren stoppen via software is niet hetzelfde als stroom uit.</b></p></div>
+    </article>
+    <article class="fragment pf-part">
+      <figure><img src="img/pcb-v4-front-kaal.png" alt="KiCad-render van de kale robotprint met koperbanen en aansluitpunten"><figcaption>KiCad 3D-render · kale PCB v4</figcaption></figure>
+      <div><p class="num">4 / 7 · DE VERBINDINGEN</p><h2>Printplaat · PCB</h2><p>Verbindt de onderdelen met koperbanen.</p><p class="muted">Aansluitpunten voor voeding, ESP32, motordriver en motoren. De printplaat zelf voert geen code uit.</p></div>
+    </article>
+    <article class="fragment pf-part">
+      <figure><img src="img/esp32-c3-supermini-photo.png" alt="Echte foto van een ESP32-C3 SuperMini met USB-C-aansluiting, twee drukknoppen en antenne"><figcaption>Foto: <a href="https://done.land/components/microcontroller/families/esp/esp32/developmentboards/esp32-c3/c3supermini/" target="_blank" rel="noopener">Tobias Weltner · done.land</a><br><a href="https://creativecommons.org/licenses/by-nd/4.0/" target="_blank" rel="noopener">CC BY-ND 4.0</a> · ongewijzigd</figcaption></figure>
+      <div><p class="num">5 / 7 · HET BREIN</p><h2>ESP32-C3 SuperMini</h2><p>Hier draait onze firmware.</p><p class="muted">Ontvangt draadloze commando's, rekent gas en sturen om en geeft stuursignalen aan de motordriver.</p></div>
+    </article>
+    <article class="fragment pf-part">
+      <figure><img src="img/drv8833-module-photo.jpg" alt="Productfoto van een DRV8833-motordrivermodule met aansluitgaten en afmetingen 18,4 bij 16 mm"><figcaption>Productfoto: <a href="https://ae-pic-a1.aliexpress-media.com/kf/S74f2a70c6db24777afee9bef22fa2001N.jpg?width=1000&amp;height=1000&amp;hash=2000" target="_blank" rel="noopener">AliExpress · aangeleverde bron</a></figcaption></figure>
+      <div><p class="num">6 / 7 · DE MOTORAANSTURING</p><h2>Motordriver</h2><p>DRV8833: tussen ESP32 en motoren.</p><p class="muted">Schakelt de accuspanning naar twee motoren. De ESP32 bepaalt wat er moet gebeuren; de driver schakelt de motorstroom.</p></div>
+    </article>
+    <article class="fragment pf-part">
+      <figure><div class="pf-drive-images"><img src="img/n20-motor-photo.jpg" alt="Productfoto van een N20-motor met metalen tandwielkast en uitgaande as"><img src="img/n20-wheel-photo.jpg" alt="Productfoto van een wiel met rubberband en witte naaf voor de motoras"></div><figcaption>Productfoto’s: AliExpress · <a href="https://ae-pic-a1.aliexpress-media.com/kf/He59f980f66ec4a4baa1d3b447724f1e0S.jpg" target="_blank" rel="noopener">N20-motor (uitsnede)</a> · <a href="https://ae-pic-a1.aliexpress-media.com/kf/S4df94380f31f496cb5fecc3295f65284O.jpg" target="_blank" rel="noopener">wiel</a></figcaption></figure>
+      <div><p class="num">7 / 7 · DE BEWEGING</p><h2>Motoren + wielen</h2><p>Twee N20-motoren drijven de wielen aan.</p><p class="muted">Links en rechts apart aansturen laat de robot rijden en sturen.</p><p><b>Wat gebeurt er nu als je vooruit duwt?</b></p></div>
+    </article>
+  </div>
   <div class="pf">
     <figure class="pf-stage">
       <svg viewBox="-300 -10 1420 1010" role="img" aria-label="Robot-PCB v4 met ESP32-C3, DRV8833, 1S-accu en twee N20-motoren">
@@ -377,7 +407,7 @@
           <g class="pf-tag" transform="translate(830 760)"><rect x="0" y="-34" width="200" height="52" rx="26"/><text x="100" y="2">aan / uit</text></g>
         </g>
       </svg>
-      <figcaption>KiCad 3D-render · PCB v4, onderkant</figcaption>
+      <figcaption>PCB v4, onderkant · accu, motoren en wielen schematisch · chassis niet afgebeeld</figcaption>
     </figure>
 
     <ol class="df-rows pf-rows">
@@ -389,7 +419,9 @@
     </ol>
   </div>
   <aside class="notes">
-    [3.5.1 · 2 min] Klik 5×. Overzicht, nog geen pinnen uit het hoofd leren. Rekenvoorbeeld voor de rest van de talk: NA schalen gas 200, sturen 0 → links 200, rechts 200 → ongeveer 78% dutycycle.
+    [3.5.1 · 2 min totaal] Zet de echte robot open op tafel, uitgeschakeld. Begin met het chassis, klik dan 6×: accu → aan/uit → kale PCB → ESP32 → motordriver → motoren/wielen. Per stap één functie, ongeveer 60 seconden samen. De schakelaar of plug/pincap onderbreekt de voeding fysiek, in serie met de accu, nooit over de accupolen. Gebruik alleen een uitvoering geschikt voor de motorstroom en volg het evenementreglement. Dit is geen softwarefailsafe; ontkoppel ook USB of andere voedingen vóór werkzaamheden. PCB en ESP32 expliciet onderscheiden: koperbanen verbinden, de microcontroller voert code uit. De ESP32-C3 SuperMini is een echte, ongewijzigde foto van Tobias Weltner (done.land, CC BY-ND 4.0), lokaal meegeleverd. DRV8833, N20-motor en wiel zijn door Rein aangeleverde AliExpress-productfoto's; er is geen vrije licentie vastgesteld. De motorfoto is uitgesneden tot één complete motor; het wiel staat ernaast. Accu en voedingsonderbreking zijn schematisch. Nog geen pinnen, schema's of CAD-code.
+    Brug: "Dit zijn de onderdelen. Wat gebeurt er nu als ik op mijn telefoon vooruit duw?" De volgende klik toont het overzicht met de eerste commandostap. Klik daarna 4× tot de wielen draaien. In totaal 11 klikken op deze slide; terugklikken doorloopt alle stappen in omgekeerde volgorde.
+    Overzicht, nog geen pinnen uit het hoofd leren. Rekenvoorbeeld voor de rest van de talk: NA schalen gas 200, sturen 0 → links 200, rechts 200 → ongeveer 78% dutycycle.
     Joystickwaarden in het RC-protocol en motorcommando's zijn verschillende schalen. Bij de ontvanger leggen we die omzetting uit.
     De ESP levert de stuursignalen; de accu levert via de DRV8833 de motorstroom.
     Alle lijnen zijn de échte koperbanen uit KiCad (pads/tracks omgerekend naar de render, ±1 px).
@@ -520,6 +552,79 @@ void OnDataRecv(const uint8_t *mac,
   <aside class="notes">[3.5.3 start] Eerst: hoe komt de firmware op de chip? Daarna: wat staat erin.</aside>
 </section>
 
+
+<section>
+  <p class="kicker">De volledige firmware · ESP-NOW + DRV8833</p>
+  <div class="cols firmware-full">
+    <pre><code class="language-cpp" data-fragment-index="0" data-line-numbers="19-30|32-50|51-73|152-167|170-189|129-150|93-105|106-127|191-205"></code></pre>
+    <div class="firmware-guide">
+      <article class="firmware-explanation firmware-initial" data-lines="19-30">
+        <p class="accent">1 / 9 · L19–30</p><h2>Welke hardware gebruiken we?</h2>
+        <p><b>Wat:</b> bibliotheken laden en aansluitpinnen benoemen.</p>
+        <p><b>Waarom:</b> software koppelen aan de juiste hardware.</p>
+        <p class="firmware-result">Voor de robot: <code>IN2A_OUT_PIN</code> betekent GPIO 6. Het is een aansluitnummer, geen snelheid.</p>
+      </article>
+      <article class="fragment firmware-explanation" data-fragment-index="0" data-lines="32-50">
+        <p class="accent">2 / 9 · L32–50</p><h2>Een vast berichtformaat</h2>
+        <p><b>Wat:</b> acht 16-bitkanalen vormen één bericht van 16 bytes.</p>
+        <p><b>Waarom:</b> zender en ontvanger spreken hetzelfde formaat.</p>
+        <p class="firmware-result">Voor de robot: <code>gELE</code> is gas, <code>gAIL</code> sturen. De grenzen en deadband bepalen straks hoe die waarden worden omgerekend.</p>
+      </article>
+      <article class="fragment firmware-explanation" data-fragment-index="1" data-lines="51-73">
+        <p class="accent">3 / 9 · L51–73</p><h2>Geheugen tussen berichten</h2>
+        <p><b>Wat:</b> rijcommando's, instellingen en tijdstip bewaren.</p>
+        <p><b>Waarom:</b> waarden blijven beschikbaar tussen berichten.</p>
+        <p class="firmware-result">Voor de robot: gas en sturen beginnen op 0. <code>lastCommandTime</code> en de grens van 500 ms maken later de timeout mogelijk.</p>
+      </article>
+      <article class="fragment firmware-explanation" data-fragment-index="2" data-lines="152-167">
+        <p class="accent">4 / 9 · L152–167</p><h2>Eén keer voorbereiden</h2>
+        <p><b>Wat:</b> instellingen laden en PWM instellen: 5 kHz, 8 bit.</p>
+        <p><b>Waarom:</b> motoruitgangen één keer klaarmaken bij opstarten.</p>
+        <p class="firmware-result">Voor de robot: tijdens de opstart staat de driver in standby; na twee seconden wordt hij vrijgegeven. De motorcommando's zijn nog 0.</p>
+      </article>
+      <article class="fragment firmware-explanation" data-fragment-index="3" data-lines="170-189">
+        <p class="accent">5 / 9 · L170–189</p><h2>Luisteren naar de remote</h2>
+        <p><b>Wat:</b> ESP-NOW starten en <code>OnDataRecv</code> registreren.</p>
+        <p><b>Waarom:</b> binnenkomende berichten automatisch verwerken.</p>
+        <p class="firmware-result">Voor de robot: de remote moet hetzelfde radiokanaal gebruiken. Mislukt het starten van ESP-NOW, dan meldt de code dat en herstart de ESP32.</p>
+      </article>
+      <article class="fragment firmware-explanation" data-fragment-index="4" data-lines="129-150">
+        <p class="accent">6 / 9 · L129–150</p><h2>Van bytes naar gas en sturen</h2>
+        <p><b>Wat:</b> berichtlengte controleren, kanalen schalen en deadband toepassen.</p>
+        <p><b>Waarom:</b> joystickwaarden omzetten zonder kruipen rond neutraal.</p>
+        <p class="firmware-result">Let op: een kanaal buiten bereik behoudt zijn vorige waarde. Elk bericht met de juiste lengte vernieuwt hier de timeout, ook dan.</p>
+      </article>
+      <article class="fragment firmware-explanation" data-fragment-index="5" data-lines="93-105">
+        <p class="accent">7 / 9 · L93–105</p><h2>Twee wielen uit één joystick</h2>
+        <p><b>Wat:</b> mixing: links = gas + sturen, rechts = gas − sturen.</p>
+        <p><b>Waarom:</b> verschil tussen de wielen laat de robot draaien.</p>
+        <p class="firmware-result">Voorbeeld na schalen: gas 200 + sturen 100 → links 255, rechts 100. Omkeerinstellingen corrigeren daarna de draairichting.</p>
+      </article>
+      <article class="fragment firmware-explanation" data-fragment-index="6" data-lines="106-127">
+        <p class="accent">8 / 9 · L106–127</p><h2>Getallen worden stuursignalen</h2>
+        <p><b>Wat:</b> <code>ledcWrite(kanaal, waarde)</code> stelt PWM in via de Arduino-ESP32-core, niet via een eigen functie.</p>
+        <p><b>Waarom:</b> motorcommando's omzetten naar elektrische stuursignalen.</p>
+        <p class="firmware-result">LEDC = LED Control, ook bruikbaar voor motoren. Waarde 200 ≈ 78% aan-tijd, niet 78% snelheid. Motorstroom komt uit de accu.</p>
+      </article>
+      <article class="fragment firmware-explanation" data-fragment-index="7" data-lines="191-205">
+        <p class="accent">9 / 9 · L191–205</p><h2>Blijven rijden — of stoppen</h2>
+        <p><b>Wat:</b> steeds motoren bijwerken; na &gt;500 ms stilte gas/sturen op 0.</p>
+        <p><b>Waarom:</b> stoppen als de verbinding wegvalt.</p>
+        <p class="firmware-result">Voor de robot: elke ronde voert <code>updateMotors()</code> de waarden uit, dus ook het stopcommando. Dit is een softwarefailsafe, geen fysieke stroomonderbreking.</p>
+      </article>
+      <p class="firmware-help muted">→ volgend blok · ← terug · scroll voor alle code<br>Openbare ESP-NOW-versie, niet de WebUI-broncode.</p>
+    </div>
+  </div>
+  <p class="src">© 2026 wallieonline · <a href="https://github.com/wallieonline/worc-robot-controller-esp32c3/blob/fb3afa886117/worc-esp32c3-drv8833-espnow/worc-esp32c3-drv8833-espnow.ino">volledige bron · fb3afa886117</a> · <a href="js/firmware-LICENSE.txt">GPL-3.0-or-later</a></p>
+  <aside class="notes">
+    [3.5.3 · ±2 min binnen de bestaande 12 min] Volledige, ongewijzigde openbare firmware; geen WebUI-code en geen nieuw compilatievoorbeeld. Per klik verschijnt naast de code uitleg: wat, waarom en effect op de robot. Gebruik dit als overzicht; houd de volgende detaildia's korter.
+    Begin bij bibliotheken/pinnen. Acht klikken: bericht/grenzen → toestand → setup PWM → radio/callback → ontvangst → mixing → richting/PWM → loop/failsafe.
+    Alle 205 bronregels staan in het codevenster, inclusief licentie en EEPROM-functies; scroll om buiten de uitgelichte blokken te kijken.
+    De bronvolgorde blijft intact; we springen tussen functies om de uitvoeringsroute te volgen. setup draait één keer, ontvangst via callback, loop steeds opnieuw.
+    Niet regel voor regel voorlezen. Benadruk de ontvangstbeperking: lengtecheck is geen volledige validatie; een kanaal buiten bereik houdt zijn vorige waarde, terwijl ieder bericht met de juiste lengte lastCommandTime vernieuwt. Dit beschrijft de bestaande bron, geen firmwarewijziging.
+    ledcWrite is een bibliotheekfunctie uit de Arduino-ESP32-core, gedeclareerd in esp32-hal-ledc.h en geïmplementeerd in esp32-hal-ledc.c. LEDC betekent LED Control: de PWM-hardware kan ook motoren aansturen. Deze oorspronkelijke code gebruikt de kanaal-API uit core 2.x; core 3.x gebruikt ledcWriteChannel voor kanalen en ledcWrite voor pinnen. We behouden de oorspronkelijke functienaam.
+  </aside>
+</section>
 
 <section>
   <p class="kicker">Schalen + deadband · rust rond het midden</p>
@@ -1004,17 +1109,17 @@ updateMotors();
   <p class="kicker">Wat gebeurt er als je de joystick naar voren duwt?</p>
   <div class="flow" data-hl="1,2,3,4,5"></div>
   <ol class="smaller">
-    <li><b>Telefoon → robot</b> is een API-call over een open WebSocket.</li>
-    <li><b>Mixing</b> valideert en mapt input, net als een controller in je PHP-app.</li>
-    <li><b>Failsafe</b> is een timeout: geen verse commando's → stoppen, zoals een verlopen sessie.</li>
-    <li><b>Praktijk:</b> DRC en asserts vangen veel, maar fysiek testen blijft nodig — 25 van de 30 werkten.</li>
+    <li><b>Open als basis:</b> open software en standaarden.</li>
+    <li><b>Eerst een helder plan:</b> definities, grenzen en testprocedures.</li>
+    <li><b>AI helpt mee:</b> zelf blijven valideren en veel testen, ook fysiek.</li>
+    <li><b>Ook hardware is ‘geprogrammeerd’:</b> PCB en chassis ontwerpen met code.</li>
   </ol>
   <div class="takeaway fragment" style="font-size:1em;text-align:center;padding:.5em .8em">
     <div style="font-size:1.35em;line-height:1.15">Als je kunt programmeren, kun je ook robots bouwen.</div>
     <div style="font-size:.6em;font-weight:400;color:var(--robo-muted);margin-top:.35em">Elektronica, 3D-ontwerpen, websites, robots: allemaal te maken, aan te sturen en te valideren met code.</div>
   </div>
   <p class="bridge fragment">Je blijft developer — alleen rijdt je bug nu weg.</p>
-  <aside class="notes">[3.10 · recap] Rode-draadvraag beantwoorden met het hele schema. Drie punten vertalen de keten naar wat PHP-developers al kennen (API-call, controller, sessie-timeout); het vierde is de les uit de praktijk (25 van 30 gemonteerde printplaten werkten, uitval door afwijkende ESP32's en montagefouten). Klik: de kernboodschap — als je kunt programmeren, kun je ook robots bouwen. KiCad + DRC voor elektronica, OpenSCAD voor 3D, PHP voor de website, firmware voor de robot — telkens code, versiebeheer, review en tests. Even laten landen. Klik: grap als afsluiter.</aside>
+  <aside class="notes">[3.10 · recap] Beantwoord de rode-draadvraag kort met het hele schema. Vier projectlessen: bouwen op open software en standaarden; beginnen met een helder plan, definities, grenzen en testprocedures; AI gebruiken als hulp, niet als vervanging voor eigen validatie en veel testen; ook hardware-engineering is ‘programmeren’, met code voor PCB en parametrisch chassis. Open als basis betekent niet dat elk onderdeel of protocol open is: de WebUI-broncode is nog niet openbaar en ESP-NOW is een leveranciersprotocol. DRC en asserts vervangen fysiek testen niet: 25 van 30 gemonteerde printplaten werkten. Klik: de kernboodschap — als je kunt programmeren, kun je ook robots bouwen. KiCad + DRC voor elektronica, OpenSCAD voor 3D, PHP voor de website, firmware voor de robot — telkens code, versiebeheer, review en tests. Even laten landen. Klik: grap als afsluiter.</aside>
 </section>
 
 <section>
@@ -1053,6 +1158,7 @@ updateMotors();
 <script src="js/wallie-video.js"></script>
 <script src="js/scad-designs.js"></script>
 <script src="js/visuals.js"></script>
+<script src="js/firmware-source.js"></script>
 <script src="vendor/reveal.js/dist/reveal.js"></script>
 <script src="vendor/reveal.js/plugin/highlight/highlight.js"></script>
 <script src="vendor/reveal.js/plugin/notes/notes.js"></script>

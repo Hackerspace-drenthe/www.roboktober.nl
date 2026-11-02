@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+  <defs>
+    <linearGradient id="housing" x2="0" y2="1"><stop stop-color="#64748b"/><stop offset="1" stop-color="#1e293b"/></linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#f97316"/></marker>
+  </defs>
+  <rect x="20" y="35" width="410" height="520" rx="24" fill="#111827" stroke="#475569" stroke-width="2"/>
+  <rect x="470" y="35" width="410" height="520" rx="24" fill="#111827" stroke="#475569" stroke-width="2"/>
+  <rect x="110" y="130" width="230" height="185" rx="24" fill="#020617" stroke="#94a3b8" stroke-width="5"/>
+  <path d="M130 160 315 145 315 260 130 290Z" fill="url(#housing)" stroke="#64748b" stroke-width="4"/>
+  <text x="220" y="206" fill="#cbd5e1" font-family="system-ui,sans-serif" font-size="35" text-anchor="middle">I</text>
+  <text x="220" y="261" fill="#f97316" font-family="system-ui,sans-serif" font-size="35" text-anchor="middle">O</text>
+  <path d="M165 315V350M285 315V350" stroke="#eab308" stroke-width="13"/>
+  <rect x="575" y="118" width="180" height="100" rx="12" fill="url(#housing)" stroke="#94a3b8" stroke-width="4"/>
+  <path d="M615 195H715" stroke="#eab308" stroke-width="10"/>
+  <path d="M615 320V265M715 320V265" stroke="#eab308" stroke-width="15"/>
+  <rect x="585" y="315" width="160" height="40" rx="6" fill="#334155"/>
+  <path d="M790 290V175" stroke="#f97316" stroke-width="6" marker-end="url(#arrow)"/>
+  <g fill="none" stroke="#cbd5e1" stroke-width="5" stroke-linecap="round">
+    <path d="M75 440H180M270 440H325"/>
+    <path d="M180 440 252 392" stroke="#f97316"/>
+    <circle cx="180" cy="440" r="7" fill="#111827"/><circle cx="270" cy="440" r="7" fill="#111827"/>
+    <path d="M525 440H620M710 440H775"/>
+    <circle cx="620" cy="440" r="7" fill="#111827"/><circle cx="710" cy="440" r="7" fill="#111827"/>
+  </g>
+  <g fill="#f97316" font-family="system-ui,sans-serif" font-size="28" font-weight="700" text-anchor="middle">
+    <text x="70" y="418">+</text><text x="520" y="418">+</text>
+    <text x="225" y="510">OFF</text><text x="675" y="510">OFF</text>
+  </g>
+  <g fill="#334155" stroke="#94a3b8" stroke-width="2">
+    <rect x="325" y="415" width="75" height="50" rx="8"/><rect x="775" y="415" width="75" height="50" rx="8"/>
+  </g>
+  <g fill="#fff" font-family="system-ui,sans-serif" font-size="14" font-weight="700" text-anchor="middle"><text x="362" y="446">ROBOT</text><text x="812" y="446">ROBOT</text></g>
+</svg>

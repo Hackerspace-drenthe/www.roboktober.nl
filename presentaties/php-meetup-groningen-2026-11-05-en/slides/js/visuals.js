@@ -110,11 +110,15 @@
   });
 })();
 
-// Animated PCB slide: the step = number of visible .pf-step fragments.
+// Parts tour first, then the cumulative command-route highlights.
 window.roboPcbFlow = function (Reveal) {
   // Cumulative step classes (s1…s5) so earlier highlights stay visible.
   const render = (slide) => {
     const step = slide.querySelectorAll('.pf-step.visible').length;
+    const part = slide.querySelectorAll('.pf-part.fragment.visible').length;
+    slide.querySelectorAll('.pf-part').forEach((panel, index) => {
+      panel.classList.toggle('is-active', index === part);
+    });
     slide.dataset.step = step;
     for (let i = 1; i <= 5; i++) slide.classList.toggle(`s${i}`, step >= i);
   };

@@ -96,6 +96,17 @@
 .reveal table:not(.hljs-ln) td { border-bottom: 1px solid var(--robo-line); padding: 0.3em 0.5em; vertical-align: top; }
 
 /* Code */
+.reveal .firmware-full { grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.reveal .firmware-full pre { font-size: 17px; margin: 0; }
+.reveal .firmware-full pre code { height: 565px; max-height: 565px; line-height: 1.35; }
+.reveal .firmware-guide { font-size: 22px; }
+.reveal .firmware-guide h2 { font-size: 1.4em; }
+.reveal .firmware-guide p { margin: 0.7em 0; }
+.reveal .firmware-explanation { display: none; }
+.reveal .firmware-initial, .reveal .firmware-explanation.current-fragment { display: block; }
+.reveal .firmware-guide:has(.visible) .firmware-initial { display: none; }
+.reveal .firmware-result { border-left: 3px solid var(--robo-orange); padding-left: 0.6em; }
+.reveal .firmware-guide .firmware-help { font-size: 15px; }
 .reveal pre { position: relative; width: 100%; margin: 0.3em 0; box-shadow: none; font-size: 0.5em; }
 .reveal pre code { border-radius: 12px; padding: 0.8em 1em; max-height: 590px; line-height: 1.45; background: #0b1220; border: 1px solid var(--robo-line); }
 .reveal code { font-family: var(--r-code-font); }
@@ -145,6 +156,22 @@
 .reveal .pf-stage { margin: 0; }
 .reveal .pf-stage svg { width: 100%; height: auto; max-height: 590px; display: block; }
 .reveal .pf-stage figcaption { font-size: 0.4em; color: var(--robo-muted); text-align: center; }
+.reveal .pf-tour { height: 590px; }
+.reveal .pf-part { display: none; grid-template-columns: 1.3fr 1fr; gap: 1em; align-items: center; height: 100%; }
+.reveal .pf-part.is-active { display: grid; }
+.reveal .pf-part figure { margin: 0; }
+.reveal .pf-part img, .reveal .pf-part svg { display: block; width: 100%; height: 470px; object-fit: contain; margin: 0; }
+.reveal .pf-drive-images { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: center; height: 470px; }
+.reveal .pf-drive-images img { height: 300px; background: #fff; }
+.reveal .pf-part figcaption { margin-top: 0.6em; color: var(--robo-muted); font-size: 0.4em; text-align: center; }
+.reveal .pf-part h2 { font-size: 1.2em; }
+.reveal .pf-part p { font-size: 0.7em; }
+.reveal .pf-part .num { color: var(--robo-orange); font-size: 0.45em; font-weight: 700; }
+.reveal .pcbflow-slide:not(.s1) .pf { display: none; }
+.reveal .pcbflow-slide.s1 .pf-tour { display: none; }
+.reveal .pcbflow-slide .pf-route { display: none; }
+.reveal .pcbflow-slide.s1 .pf-intro { display: none; }
+.reveal .pcbflow-slide.s1 .pf-route { display: inline; }
 .reveal .pf text { font-family: var(--r-main-font); text-anchor: middle; }
 .reveal .pf-lbl { font-size: 38px; font-weight: 800; fill: #fff; paint-order: stroke; stroke: rgba(0,0,0,.75); stroke-width: 8px; }
 .reveal .pf-t { font-size: 40px; font-weight: 800; fill: #fff; }

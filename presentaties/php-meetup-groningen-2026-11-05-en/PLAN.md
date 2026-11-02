@@ -97,6 +97,12 @@ These timings are a rehearsal target, not a measured duration. Rehearse with the
 
 ### 3.5.1 Overview: from thumb to wheel
 
+The existing overview slide shows seven parts one at a time, each with a large image and its own purpose: chassis → battery → on/off → bare PCB → ESP32 → motor driver → motors/wheels. The chassis appears immediately; six clicks show the other parts. On/off shows a switch or removable link plug/jumper cap that physically interrupts battery power, not the software failsafe. Choose a component accessible from outside and rated for the motor current; disconnect other power sources before working on the robot. PCB and ESP32 are separate steps: the board connects parts, the microcontroller runs code. Chassis and PCB use existing renders; battery and power disconnect are schematic. N20 motor and wheel appear as separate product photos alongside each other within the seventh step, with attribution (AliExpress, supplied by Rein; usage rights still to be checked). Also point out the parts on the opened, powered-off robot. Allow about 60 seconds within the existing 2 minutes.
+
+The ESP32-C3 SuperMini is shown with a real photo (Tobias Weltner, done.land, CC BY-ND 4.0; unchanged and included locally). The DRV8833 uses the AliExpress product photo supplied by Rein, also included locally; check usage rights before further public distribution.
+
+The next click shows the overview with the first command step on the same slide; four more clicks complete the existing five animation steps. Eleven clicks in total, no extra slide. Bridge: "What happens when you push forward on your phone?"
+
 1. A phone/WebSocket or remote/ESP-NOW provides throttle and steering.
 2. The ESP32-C3 receives, validates, scales, and mixes the inputs.
 3. PWM rapidly switches the control signals on and off.
@@ -117,6 +123,7 @@ Show the actual PCB, but do not explain pins or power-supply variations yet.
 ### 3.5.3 Firmware, PWM, H-bridge, and failsafe
 
 - Flash over USB using Web Serial in a supported Chromium browser; a data-capable cable is required.
+- After flashing: one extra slide with the complete public ESP-NOW/DRV8833 firmware (205 lines, revision `fb3afa886117`, GPL-3.0-or-later). Eight clicks highlight message/limits, state, setup/PWM, radio/callback, receipt, mixing, direction/PWM, and loop/failsafe; libraries/pins are highlighted initially. Code scrolls with the highlights and remains fully available offline, including its license. This is not the WebUI source. Each code block gets its own explanation (what, why, effect on the robot), synchronized with the highlights, including when stepping backwards. Also explain the receipt limitation: invalid channel values retain their previous value, but correctly sized messages still refresh the timeout. Allow about two minutes within the existing firmware section; keep the following detail slides shorter.
 - Receive: validate message length and channel range. Scale to −255…255; deadband sets noise around neutral to zero.
 - Start the numerical example here: throttle 200, steering 0. The actual RC input depends on the configured limits.
 - Mixing: left = throttle + steering; right = throttle − steering; clamp to −255…255.
@@ -149,7 +156,7 @@ Show the actual PCB, but do not explain pins or power-supply variations yet.
 - OpenSCAD fits my text-based workflow: parameters, diffs, review, and explicit dimensional constraints.
 - Visual CAD tools can also be parametric and automated; do not caricature Fusion/FreeCAD.
 - An `assert` only checks the condition that has been programmed. Test prints are still needed to check fit and tolerances.
-- Slide 32: a design gallery with 10 click steps and 24 images, about two minutes. One click per design family, with versions and parts side by side: Wallie (original, top plate, and reconstructions), chassis v0.2/v0.3/v0.4, Disc/Mini/Wedge, Disc Spinner v0.1–v0.5, Rhomboid, Limulus v0.1/v0.2, Passive Aggressive/4WD, Mostly Harmless with roof, Aurora, and DuoBot. Nordic Racer was removed only from this gallery; the example remains on the following comparison slide.
+- Slide 33: a design gallery with 10 click steps and 24 images, about two minutes. One click per design family, with versions and parts side by side: Wallie (original, top plate, and reconstructions), chassis v0.2/v0.3/v0.4, Disc/Mini/Wedge, Disc Spinner v0.1–v0.5, Rhomboid, Limulus v0.1/v0.2, Passive Aggressive/4WD, Mostly Harmless with roof, Aurora, and DuoBot. Nordic Racer was removed only from this gallery; the example remains on the following comparison slide.
 - Each click teaches one additional concept with a short source excerpt: reuse, parameters, geometry, calculations, loops, include, loop combinations, STL import, assert, and assemblies. About two minutes including this explanation; keep the remaining chassis context brief. The import example is explicitly labeled; the other excerpts come from the linked source models or their shared library.
 - Explicitly name the different design lines rather than presenting them as one linear version history. No duplicate mesh conversions, export files, or helper libraries. Renders are not to scale and do not prove fit or functionality.
 - Give each step its own render and a short selected code excerpt. Source files remain accessible; reveal.js fragments work when navigating both forward and backward.
@@ -184,6 +191,7 @@ Show the actual PCB, but do not explain pins or power-supply variations yet.
 
 ### 3.10 Closing
 
+- Slide 43 summarizes four project lessons: open software and standards as foundations; a clear plan with definitions, constraints and test procedures; AI assistance alongside your own validation and extensive testing; PCB and chassis design with code too. Keep the command chain and existing core message.
 - Answer the opening question in this order: controller → firmware → PWM/H-bridge → motor.
 - Explicitly mention safe stopping.
 - Closing line: **you’re still a developer — now your bug drives away.**
@@ -208,7 +216,7 @@ Do not cut: the opening question, the complete command route, the failsafe, or t
 - [ ] Confirm the Battle Day result/winner (optional).
 - [ ] Recheck the rules, kit price, and figures on the slides.
 - [ ] Confirm Wallie's permission and check that the video is audible.
-- [x] Tested the whole talk from `file://` using the unpacked review package: all 44 slides, images, video, and gallery links load locally. Bring the folder, including `vendor/` and `js/wallie-video.js`, on the day.
+- [x] Offline review package checked: 45 slides; images, video, and gallery links are present locally. The complete firmware slide also loads from `file://`, with all 205 source lines and nine highlighting stages. Bring the folder, including `vendor/` and `js/wallie-video.js`, on the day.
 - [x] Build the reviewer package into `review/` (not in git): `bash slides/scripts/build-review-package.sh [--full] review`. Compact (±12 MB) or full, with videos and all 3D sources (±112 MB). It starts with `00-READ-ME-FIRST.html`; text is in `slides/scripts/LEESMIJ-review.md`.
 - [ ] Process reviewer feedback.
 - [ ] After changing the MP4: `bash slides/scripts/embed-wallie-video.sh`.

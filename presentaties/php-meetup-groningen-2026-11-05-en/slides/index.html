@@ -302,11 +302,41 @@
   <p class="num">THE ROBOT</p>
   <h2>Follow one command</h2>
   <p class="question">From thumb on screen to wheel on floor</p>
-  <aside class="notes">[3.5 · start of the core section, 27 min] First the full route, then controller → firmware with PWM/H-bridge and failsafe → PCB → chassis.</aside>
+  <aside class="notes">[3.5 · start of the core section, 27 min] First open the actual robot on the table and point out its parts, then follow the command route on the same overview slide. Next: controller → firmware with PWM/H-bridge and failsafe → PCB → chassis.</aside>
 </section>
 
 <section class="pcbflow-slide" data-step="0">
-  <p class="kicker">On the robot · what happens when the signal arrives?</p>
+  <p class="kicker"><span class="pf-intro">The robot opened up · what goes where?</span><span class="pf-route">From parts to movement · follow one command</span></p>
+  <div class="pf-tour">
+    <article class="pf-part">
+      <figure><img src="img/chassis-render.png" alt="3D render of the empty robot chassis with space for electronics and motors"><figcaption>3D render · chassis without electronics</figcaption></figure>
+      <div><p class="num">1 / 7 · THE BODY</p><h2>Chassis</h2><p>Holds all the parts in place.</p><p class="muted">Space for the battery, PCB and drivetrain. You can design and 3D-print it yourself.</p></div>
+    </article>
+    <article class="fragment pf-part">
+      <figure><img src="img/part-battery.svg" alt="Schematic render of a 1S LiPo battery with its connection cable"><figcaption>Schematic render · 1S LiPo</figcaption></figure>
+      <div><p class="num">2 / 7 · THE ENERGY</p><h2>Battery</h2><p>Supplies the robot's energy.</p><p class="muted">1S LiPo: 3.7 V nominal, 4.2 V fully charged. Motor current comes from here, not from the ESP32.</p></div>
+    </article>
+    <article class="fragment pf-part">
+      <figure><img src="img/part-power-disconnect.svg" alt="Schematic view of a switch in the off position and a removed link plug or jumper cap: both interrupt the positive supply to the robot"><figcaption>Schematic · switch OR removable link plug/jumper cap · both off</figcaption></figure>
+      <div><p class="num">3 / 7 · PHYSICAL POWER DISCONNECT</p><h2>On/off</h2><p>Switch or removable link plug/jumper cap.</p><p class="muted">Physically disconnects battery power. Accessible from outside and rated for the motor current.</p><p><b>Stopping motors in software is not the same as switching power off.</b></p></div>
+    </article>
+    <article class="fragment pf-part">
+      <figure><img src="img/pcb-v4-front-kaal.png" alt="KiCad render of the bare robot PCB with copper traces and connection points"><figcaption>KiCad 3D render · bare PCB v4</figcaption></figure>
+      <div><p class="num">4 / 7 · THE CONNECTIONS</p><h2>Circuit board · PCB</h2><p>Connects the parts with copper traces.</p><p class="muted">Connections for power, ESP32, motor driver and motors. The circuit board itself does not run code.</p></div>
+    </article>
+    <article class="fragment pf-part">
+      <figure><img src="img/esp32-c3-supermini-photo.png" alt="Real photo of an ESP32-C3 SuperMini with USB-C connector, two push buttons and antenna"><figcaption>Photo: <a href="https://done.land/components/microcontroller/families/esp/esp32/developmentboards/esp32-c3/c3supermini/" target="_blank" rel="noopener">Tobias Weltner · done.land</a><br><a href="https://creativecommons.org/licenses/by-nd/4.0/" target="_blank" rel="noopener">CC BY-ND 4.0</a> · unchanged</figcaption></figure>
+      <div><p class="num">5 / 7 · THE BRAIN</p><h2>ESP32-C3 SuperMini</h2><p>Our firmware runs here.</p><p class="muted">Receives wireless commands, processes throttle and steering, and sends control signals to the motor driver.</p></div>
+    </article>
+    <article class="fragment pf-part">
+      <figure><img src="img/drv8833-module-photo.jpg" alt="Product photo of a DRV8833 motor driver module with connection holes and dimensions of 18.4 by 16 mm"><figcaption>Product photo: <a href="https://ae-pic-a1.aliexpress-media.com/kf/S74f2a70c6db24777afee9bef22fa2001N.jpg?width=1000&amp;height=1000&amp;hash=2000" target="_blank" rel="noopener">AliExpress · supplied source</a></figcaption></figure>
+      <div><p class="num">6 / 7 · MOTOR CONTROL</p><h2>Motor driver</h2><p>DRV8833: between ESP32 and motors.</p><p class="muted">Switches battery voltage to two motors. The ESP32 decides what should happen; the driver switches the motor current.</p></div>
+    </article>
+    <article class="fragment pf-part">
+      <figure><div class="pf-drive-images"><img src="img/n20-motor-photo.jpg" alt="Product photo of an N20 motor with metal gearbox and output shaft"><img src="img/n20-wheel-photo.jpg" alt="Product photo of a wheel with rubber tyre and white hub for the motor shaft"></div><figcaption>Product photos: AliExpress · <a href="https://ae-pic-a1.aliexpress-media.com/kf/He59f980f66ec4a4baa1d3b447724f1e0S.jpg" target="_blank" rel="noopener">N20 motor (cropped)</a> · <a href="https://ae-pic-a1.aliexpress-media.com/kf/S4df94380f31f496cb5fecc3295f65284O.jpg" target="_blank" rel="noopener">wheel</a></figcaption></figure>
+      <div><p class="num">7 / 7 · THE MOVEMENT</p><h2>Motors + wheels</h2><p>Two N20 motors drive the wheels.</p><p class="muted">Controlling left and right independently makes the robot drive and steer.</p><p><b>Now what happens when you push forward?</b></p></div>
+    </article>
+  </div>
   <div class="pf">
     <figure class="pf-stage">
       <svg viewBox="-300 -10 1420 1010" role="img" aria-label="Robot PCB v4 with ESP32-C3, DRV8833, a 1S battery and two N20 motors">
@@ -377,7 +407,7 @@
           <g class="pf-tag" transform="translate(830 760)"><rect x="0" y="-34" width="200" height="52" rx="26"/><text x="100" y="2">on / off</text></g>
         </g>
       </svg>
-      <figcaption>KiCad 3D render · PCB v4, underside</figcaption>
+      <figcaption>PCB v4, underside · battery, motors and wheels shown schematically · chassis not shown</figcaption>
     </figure>
 
     <ol class="df-rows pf-rows">
@@ -389,7 +419,9 @@
     </ol>
   </div>
   <aside class="notes">
-    [3.5.1 · 2 min] Click 5×. Overview, no need to memorise pins yet. Worked example for the rest of the talk: AFTER scaling, throttle 200, steering 0 → left 200, right 200 → approximately 78% duty cycle.
+    [3.5.1 · 2 min total] Open the actual robot on the table with its power switched off. Start with the chassis, then click 6×: battery → on/off → bare PCB → ESP32 → motor driver → motors/wheels. One purpose per step, about 60 seconds in total. The switch or removable link plug/jumper cap physically interrupts power, in series with the battery, never across its terminals. Use a component rated for the motor current and follow the event rules. This is not a software failsafe; disconnect USB or other power sources before working on the robot. Explicitly distinguish PCB from ESP32: copper traces connect parts; the microcontroller runs code. The ESP32-C3 SuperMini is a real, unchanged photo by Tobias Weltner (done.land, CC BY-ND 4.0), included locally. DRV8833, N20 motor and wheel are AliExpress product photos supplied by Rein; no open license has been established. The motor photo is cropped to one complete motor; the wheel is shown alongside it. Battery and power disconnect are schematic. No pins, schematics or CAD code yet.
+    Bridge: "These are the parts. Now what happens when I push forward on my phone?" The next click shows the overview with the first command step. Then click 4× until the wheels turn. This slide has 11 clicks in total; stepping backwards visits every stage in reverse order.
+    Overview, no need to memorise pins yet. Worked example for the rest of the talk: AFTER scaling, throttle 200, steering 0 → left 200, right 200 → approximately 78% duty cycle.
     Joystick values in the RC protocol and motor commands use different scales. Explain the conversion at the receiver.
     The ESP supplies control signals; the battery supplies motor current through the DRV8833.
     All lines are actual copper traces from KiCad (pads/tracks mapped onto the render, ±1 px).
@@ -520,6 +552,79 @@ void OnDataRecv(const uint8_t *mac,
   <aside class="notes">[3.5.3 start] First: how does the firmware get onto the chip? Then: what does it contain?</aside>
 </section>
 
+
+<section>
+  <p class="kicker">The complete firmware · ESP-NOW + DRV8833</p>
+  <div class="cols firmware-full">
+    <pre><code class="language-cpp" data-fragment-index="0" data-line-numbers="19-30|32-50|51-73|152-167|170-189|129-150|93-105|106-127|191-205"></code></pre>
+    <div class="firmware-guide">
+      <article class="firmware-explanation firmware-initial" data-lines="19-30">
+        <p class="accent">1 / 9 · L19–30</p><h2>Which hardware are we using?</h2>
+        <p><b>What:</b> load libraries and name connection pins.</p>
+        <p><b>Why:</b> connect software to the right hardware.</p>
+        <p class="firmware-result">For the robot: <code>IN2A_OUT_PIN</code> means GPIO 6. It is a connection number, not a speed.</p>
+      </article>
+      <article class="fragment firmware-explanation" data-fragment-index="0" data-lines="32-50">
+        <p class="accent">2 / 9 · L32–50</p><h2>A fixed message format</h2>
+        <p><b>What:</b> eight 16-bit channels form one 16-byte message.</p>
+        <p><b>Why:</b> sender and receiver share the same format.</p>
+        <p class="firmware-result">For the robot: <code>gELE</code> is throttle, <code>gAIL</code> steering. The limits and deadband determine how these values will be converted.</p>
+      </article>
+      <article class="fragment firmware-explanation" data-fragment-index="1" data-lines="51-73">
+        <p class="accent">3 / 9 · L51–73</p><h2>Memory between messages</h2>
+        <p><b>What:</b> store driving commands, settings and a timestamp.</p>
+        <p><b>Why:</b> keep values available between messages.</p>
+        <p class="firmware-result">For the robot: throttle and steering start at 0. <code>lastCommandTime</code> and the 500 ms limit enable the timeout later.</p>
+      </article>
+      <article class="fragment firmware-explanation" data-fragment-index="2" data-lines="152-167">
+        <p class="accent">4 / 9 · L152–167</p><h2>Prepare once at startup</h2>
+        <p><b>What:</b> load settings and configure PWM: 5 kHz, 8 bit.</p>
+        <p><b>Why:</b> prepare motor outputs once at startup.</p>
+        <p class="firmware-result">For the robot: the driver is held in standby during startup, then enabled after two seconds. Motor commands are still 0.</p>
+      </article>
+      <article class="fragment firmware-explanation" data-fragment-index="3" data-lines="170-189">
+        <p class="accent">5 / 9 · L170–189</p><h2>Listen to the remote</h2>
+        <p><b>What:</b> start ESP-NOW and register <code>OnDataRecv</code>.</p>
+        <p><b>Why:</b> process incoming messages automatically.</p>
+        <p class="firmware-result">For the robot: the remote must use the same radio channel. If ESP-NOW fails to start, the code logs the error and restarts the ESP32.</p>
+      </article>
+      <article class="fragment firmware-explanation" data-fragment-index="4" data-lines="129-150">
+        <p class="accent">6 / 9 · L129–150</p><h2>Bytes become driving commands</h2>
+        <p><b>What:</b> check message length, scale channels and apply deadband.</p>
+        <p><b>Why:</b> convert joystick values without creeping near neutral.</p>
+        <p class="firmware-result">Caution: an out-of-range channel keeps its previous value. Every correctly sized message refreshes the timeout here, even in that case.</p>
+      </article>
+      <article class="fragment firmware-explanation" data-fragment-index="5" data-lines="93-105">
+        <p class="accent">7 / 9 · L93–105</p><h2>Two wheels from one joystick</h2>
+        <p><b>What:</b> mixing: left = throttle + steering, right = throttle − steering.</p>
+        <p><b>Why:</b> different wheel outputs turn the robot.</p>
+        <p class="firmware-result">Example after scaling: throttle 200 + steering 100 → left 255, right 100. Inversion settings then correct motor direction.</p>
+      </article>
+      <article class="fragment firmware-explanation" data-fragment-index="6" data-lines="106-127">
+        <p class="accent">8 / 9 · L106–127</p><h2>Numbers become control signals</h2>
+        <p><b>What:</b> <code>ledcWrite(channel, value)</code> sets PWM through the Arduino-ESP32 core, not a custom function.</p>
+        <p><b>Why:</b> turn motor commands into electrical control signals.</p>
+        <p class="firmware-result">LEDC = LED Control, also usable for motors. Value 200 ≈ 78% on-time, not 78% speed. Motor current comes from the battery.</p>
+      </article>
+      <article class="fragment firmware-explanation" data-fragment-index="7" data-lines="191-205">
+        <p class="accent">9 / 9 · L191–205</p><h2>Keep driving — or stop</h2>
+        <p><b>What:</b> keep updating motors; after &gt;500 ms silence, throttle/steering become 0.</p>
+        <p><b>Why:</b> stop when the connection drops.</p>
+        <p class="firmware-result">For the robot: every iteration calls <code>updateMotors()</code>, including for the stop command. This is a software failsafe, not a physical power disconnect.</p>
+      </article>
+      <p class="firmware-help muted">→ next block · ← back · scroll for all code<br>Public ESP-NOW version, not the WebUI source.</p>
+    </div>
+  </div>
+  <p class="src">© 2026 wallieonline · <a href="https://github.com/wallieonline/worc-robot-controller-esp32c3/blob/fb3afa886117/worc-esp32c3-drv8833-espnow/worc-esp32c3-drv8833-espnow.ino">complete source · fb3afa886117</a> · <a href="js/firmware-LICENSE.txt">GPL-3.0-or-later</a></p>
+  <aside class="notes">
+    [3.5.3 · ±2 min within the existing 12 min] Complete, unchanged public firmware; not WebUI code or a new compilation example. Each click shows an explanation beside the code: what, why, and effect on the robot. Use this overview to keep the following detail slides shorter.
+    Start at libraries/pins. Eight clicks: message/limits → state → setup PWM → radio/callback → receipt → mixing → direction/PWM → loop/failsafe.
+    All 205 source lines are in the code window, including the license and EEPROM functions; scroll to explore outside the highlighted blocks.
+    Source order is unchanged; jump between functions to follow execution. setup runs once, receipt uses a callback, loop runs repeatedly.
+    Do not read every line aloud. Highlight the receipt limitation: length checking is not full validation; an out-of-range channel retains its previous value, while every correctly sized message refreshes lastCommandTime. This describes the existing source, not a firmware change.
+    ledcWrite is a library function from the Arduino-ESP32 core, declared in esp32-hal-ledc.h and implemented in esp32-hal-ledc.c. LEDC means LED Control: the PWM hardware can also control motors. This original code uses the core 2.x channel API; core 3.x uses ledcWriteChannel for channels and ledcWrite for pins. Keep the original function name.
+  </aside>
+</section>
 
 <section>
   <p class="kicker">Scaling + deadband · calm around the centre</p>
@@ -1004,17 +1109,17 @@ updateMotors();
   <p class="kicker">What happens when you push the joystick forward?</p>
   <div class="flow" data-hl="1,2,3,4,5"></div>
   <ol class="smaller">
-    <li><b>Phone → robot</b> is an API call over an open WebSocket.</li>
-    <li><b>Mixing</b> validates and maps input, like a controller in your PHP app.</li>
-    <li><b>Failsafe</b> is a timeout: no fresh commands → stop, like an expired session.</li>
-    <li><b>In practice:</b> DRC and asserts catch a lot, but physical testing is still needed — 25 of 30 worked.</li>
+    <li><b>Open foundations:</b> open software and standards.</li>
+    <li><b>A clear plan first:</b> definitions, constraints and test procedures.</li>
+    <li><b>AI lends a hand:</b> keep validating and testing, including physically.</li>
+    <li><b>Even hardware is “programmed”:</b> PCB and chassis designed with code.</li>
   </ol>
   <div class="takeaway fragment" style="font-size:1em;text-align:center;padding:.5em .8em">
     <div style="font-size:1.35em;line-height:1.15">If you can program, you can build robots too.</div>
     <div style="font-size:.6em;font-weight:400;color:var(--robo-muted);margin-top:.35em">Electronics, 3D designs, websites, robots: all can be created, controlled and validated with code.</div>
   </div>
   <p class="bridge fragment">You're still a developer — only now your bug drives away.</p>
-  <aside class="notes">[3.10 · recap] Answer the opening question using the full diagram. Three points relate the chain to familiar PHP concepts (API call, controller, session timeout); the fourth is the practical lesson (25 of 30 assembled PCBs worked; failures from unusual ESP32s and assembly errors). Click: the core message — if you can program, you can build robots too. KiCad + DRC for electronics, OpenSCAD for 3D, PHP for the website, firmware for the robot — always code, version control, review and tests. Let it land. Click: closing joke.</aside>
+  <aside class="notes">[3.10 · recap] Briefly answer the opening question using the full diagram. Four project lessons: build on open software and standards; start with a clear plan, definitions, constraints and test procedures; use AI as assistance, not a substitute for your own validation and extensive testing; even hardware engineering is “programming”, with code for the PCB and parametric chassis. Open foundations does not mean every component or protocol is open: the WebUI source is not yet public and ESP-NOW is a vendor protocol. DRC and asserts do not replace physical testing: 25 of 30 assembled PCBs worked. Click: the core message — if you can program, you can build robots too. KiCad + DRC for electronics, OpenSCAD for 3D, PHP for the website, firmware for the robot — always code, version control, review and tests. Let it land. Click: closing joke.</aside>
 </section>
 
 <section>
@@ -1053,6 +1158,7 @@ updateMotors();
 <script src="js/wallie-video.js"></script>
 <script src="js/scad-designs.js"></script>
 <script src="js/visuals.js"></script>
+<script src="js/firmware-source.js"></script>
 <script src="vendor/reveal.js/dist/reveal.js"></script>
 <script src="vendor/reveal.js/plugin/highlight/highlight.js"></script>
 <script src="vendor/reveal.js/plugin/notes/notes.js"></script>

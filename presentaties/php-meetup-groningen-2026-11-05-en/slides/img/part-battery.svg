@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+  <defs>
+    <linearGradient id="foil" x2="0.8" y2="1"><stop stop-color="#f8fafc"/><stop offset=".45" stop-color="#94a3b8"/><stop offset=".55" stop-color="#e2e8f0"/><stop offset="1" stop-color="#64748b"/></linearGradient>
+    <linearGradient id="edge" x2="0" y2="1"><stop stop-color="#64748b"/><stop offset="1" stop-color="#334155"/></linearGradient>
+  </defs>
+  <ellipse cx="450" cy="465" rx="310" ry="38" fill="#020617" opacity=".5"/>
+  <path d="M170 220 610 150 750 260 310 335Z" fill="url(#foil)" stroke="#cbd5e1" stroke-width="4"/>
+  <path d="M310 335 750 260V390L310 465Z" fill="url(#edge)" stroke="#94a3b8" stroke-width="4"/>
+  <path d="M170 220 310 335V465L170 350Z" fill="#475569" stroke="#94a3b8" stroke-width="4"/>
+  <path d="M195 225 225 220 360 328 330 333Z" fill="#f97316"/>
+  <path d="M330 333 360 328V456L330 461Z" fill="#ea580c"/>
+  <path d="M370 245 590 210 670 270 450 308Z" fill="#0f172a"/>
+  <text x="520" y="270" fill="#fff" font-family="system-ui,sans-serif" font-size="35" font-weight="700" text-anchor="middle" transform="rotate(-9 520 270)">1S LiPo</text>
+  <text x="540" y="388" fill="#f8fafc" font-family="system-ui,sans-serif" font-size="36" text-anchor="middle" transform="rotate(-9 540 388)">3.7 V</text>
+  <path d="M185 275C80 265 85 120 190 90H260" fill="none" stroke="#ef4444" stroke-width="14" stroke-linecap="round"/>
+  <path d="M185 307C45 280 55 95 190 65H260" fill="none" stroke="#334155" stroke-width="14" stroke-linecap="round"/>
+  <path d="M255 52H320V104H255Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="3"/>
+  <path d="M305 65H320M305 88H320" stroke="#64748b" stroke-width="7"/>
+</svg>
