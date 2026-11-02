@@ -1,0 +1,2 @@
+# Generated review packages; do not commit large binary archives.
+*.zip

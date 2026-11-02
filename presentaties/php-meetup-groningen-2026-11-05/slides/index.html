@@ -73,8 +73,9 @@
 <!-- ============================================================ -->
 
 <section data-background-color="#000" data-chapter="Intro" data-topic="Start">
+  <img class="plain" src="img/logo-roboktober.png" alt="Roboktober" style="display:block;width:100%;height:600px;max-height:80vh;object-fit:contain;margin:0 auto">
   <aside class="notes">
-    [3.1 · 0:00–0:30] COLD OPEN — scherm zwart. Robot rijdt via de telefoon het podium op en duwt iets van tafel.
+    [3.1 · 0:00–0:30] COLD OPEN — groot Roboktober-logo in beeld. Robot rijdt via de telefoon op een begrensd vlak. Geen voorwerpen van tafel of richting publiek duwen.
     Pas daarna: "Goedenavond, ik ben Rein." → volgende slide.
   </aside>
 </section>
@@ -82,8 +83,9 @@
 <section class="title">
   <img class="logo plain" src="img/logo-roboktober.png" alt="Roboktober">
   <h1>Van joystick tot wiel</h1>
-  <p class="big" style="font-size:1em">De hele hardware-stack van een vechtrobot van 150 gram</p>
-  <p class="muted smaller">Rein · PHP Meetup Groningen · 5 november 2026</p>
+  <p class="big" style="font-size:1em">Van software naar beweging in een robot van 150 gram</p>
+  <p class="muted smaller">Rein Velt · PHP Meetup Groningen · 5 november 2026</p>
+  <p class="center" style="margin-top:.4em"><img class="plain" src="img/hackermakerspacelogo.svg" alt="Hackerspace Drenthe" style="background:#fff;border-radius:12px;padding:6px;height:90px;vertical-align:middle"> <small class="muted">Hackerspace Drenthe</small></p>
   <aside class="notes">
     [3.1] Titel. Niet lang blijven hangen.
   </aside>
@@ -91,7 +93,7 @@
 
 <section>
   <p class="kicker">Wie ben ik</p>
-  <h2>Rein <span class="muted">· software engineer &amp; maker</span></h2>
+  <h2>Rein Velt <span class="muted">· software engineer &amp; maker</span></h2>
   <p class="accent" style="margin-top:-0.4em">Overdag code, 's avonds de soldeerbout.</p>
   <div class="cols wl">
     <div>
@@ -100,8 +102,8 @@
       <li>Oprichter <b>Nederlandse PHP Gebruikersgroep</b> (2001) → <b>PHPBenelux</b></li>
       <li>Oprichter <b>Hackerspace Drenthe</b> (Coevorden)</li>
       <li class="fragment">Van een PHP-community bouwen… naar een <em>maker-community</em> bouwen</li>
-      <li class="fragment">Voorjaar: <b>DrentheNoodNetwerk.nl</b> · mei = MeshCore-maand</li>
-      <li class="fragment">Vanaf augustus: <b>Roboktober</b> → website, PCB's, onderdelen, 3D-ontwerpen, organisatie</li>
+      <li class="fragment">Dit voorjaar (maart–mei): <b>Mei MeshCore Maand</b> · <a href="https://drenthenoodnetwerk.nl">Drenthenoodnetwerk.nl</a></li>
+      <li class="fragment">Deze zomer: <b>Roboktober</b> → website, printplaten, onderdelen, chassis en organisatie</li>
     </ul>
     <p class="fragment muted smaller">Ik ben meer bouwer dan prater — dus vandaag laat ik vooral zien wát we gebouwd hebben.</p>
     </div>
@@ -109,7 +111,8 @@
   </div>
   <aside class="notes">
     [3.1 · ±1 min] Dawn alleen als werkgever noemen, geen relatie met Roboktober.
-    Haakje: "Hoe ik dat in 3 maanden deed, daar kom ik aan het eind op terug."
+    In maart, april en mei bezig geweest met Mei MeshCore Maand / Drenthenoodnetwerk.nl; daarna deze zomer Roboktober.
+    Haakje: "Van eerste commit in juli naar de kickoff in oktober — daar kom ik aan het eind op terug."
     Bouwer, geen prater: luchtig brengen, kort houden — daarna door naar de inhoud.
   </aside>
 </section>
@@ -160,7 +163,13 @@
   <p class="kicker">Hoe het begon</p>
   <h2>Wallie <span class="muted">(WallieOnline)</span></h2>
   <div class="cols wr">
-    <figure class="center"><img class="avatar" src="img/wallie.jpeg" alt="Wallie"></figure>
+    <figure class="center">
+      <p class="muted smaller">▶ Wallie aan het woord · 1:24</p>
+      <video id="wallie-video" controls preload="metadata" playsinline onloadedmetadata="this.muted=false;this.volume=1" aria-label="Wallie vertelt over zichzelf" style="width:100%; max-width:460px; max-height:320px; border-radius:10px">
+        Je browser kan deze video niet afspelen.
+      </video>
+      <figcaption>Fragment uit de kickoff · 0:26–1:50</figcaption>
+    </figure>
     <ul>
       <li>Al heel lang bezig met <b>antweight</b>-robots</li>
       <li>Team captain <b>Team Upstart</b> — o.a. Cookiemonster, TLC, Kecil</li>
@@ -170,17 +179,7 @@
     </ul>
   </div>
   <aside class="notes">
-    [3.2 · ±1 min] Optioneel één zin: "Zoals veel clubs ontstaan: iemand met kennis + een plek om samen te komen."
-    Wallie is er vanavond niet — dus hij komt zelf aan het woord via video.
-  </aside>
-</section>
-
-<section>
-  <p class="kicker">Wallie aan het woord</p>
-  <div class="todo" style="min-height:440px">Videofragment 30–60 s uit de kickoff-livestream (7 okt) — tijdstempel kiezen, lokaal opslaan als <code>video/wallie-kickoff.mp4</code> en hier een &lt;video&gt;-tag plaatsen (offline afspelen, zaal-WiFi niet vertrouwen)</div>
-  <p class="src">Bron: <a href="https://www.youtube.com/live/qtz0UkJw4DU">youtube.com/live/qtz0UkJw4DU</a></p>
-  <aside class="notes">
-    [3.2 · ±1 min] Fragment: Wallie die uitlegt wat een antweight is of waarom hij het doet. Toestemming Wallie vragen.
+    [3.2 · ±2 min] Geef kort context bij Wallie en speel daarna het fragment af met de bediening onder de video. Fragment uit de kickoff-opname, 0:26–1:50. Offline beschikbaar; toestemming van Wallie controleren.
   </aside>
 </section>
 
@@ -189,31 +188,30 @@
 <!-- ============================================================ -->
 
 <section class="level-slide" data-topic="Niveau">
-  <p class="kicker">Vandaag · niveau omhoog</p>
-  <h2>Zuid-Oost Drents niveau → <span class="accent">Gronings niveau</span></h2>
+  <p class="kicker">Vandaag · onder de motorkap</p>
+  <h2>Zelfde robot, <span class="accent">een andere blik</span></h2>
   <div class="cols top">
     <div class="card">
-      <h3>🌾 Normaal (Drenthe)</h3>
+      <h3>Bij de bouwavonden</h3>
       <ul>
-        <li>Zoals Wallie het vertelt in de YouTube-video</li>
-        <li>Uitleg die <b>kinderen</b> ook snappen</li>
-        <li>Werkt prima in Drenthe!</li>
+        <li>Samen bouwen en uitproberen</li>
+        <li>Kinderen, families en makers</li>
+        <li>Zo snel mogelijk iets dat rijdt</li>
       </ul>
     </div>
     <div class="card fragment" style="border-color:var(--robo-orange)">
-      <h3>🏙️ Vandaag (Groningen)</h3>
+      <h3>Vandaag als developers</h3>
       <ul>
-        <li>We hoorden dat Groningers <b>slimmer</b> zijn… 😉</li>
-        <li>Dus: een stukje <b>dieper</b></li>
-        <li><b>Broncode</b> en <b>schema's</b></li>
+        <li>Wat gebeurt er tussen input en beweging?</li>
+        <li><b>Interfaces, code en schema's</b></li>
+        <li>Welke softwarekennis neem je mee?</li>
       </ul>
     </div>
   </div>
-  <p class="big fragment" style="margin-top:1.2em">Dus vandaag: <span class="accent">code</span> · <span class="accent">PCB</span> · <span class="accent">schema's</span></p>
-  <p class="bridge fragment">Te diep? Steek je hand op — dan gaan we terug naar Zuid-Oost Drents niveau.</p>
+  <p class="big fragment" style="margin-top:1.2em">Dus vandaag: <span class="accent">code</span> · <span class="accent">printplaat</span> · <span class="accent">schema's</span></p>
+  <p class="bridge fragment">Geen elektronicakennis nodig. Stel gerust een vraag als ik een stap oversla.</p>
   <aside class="notes">
-    [3.2 · ±30 s] Met een knipoog brengen. Normaal geven we dit verhaal zoals Wallie: op kinderniveau, dat werkt goed in Drenthe.
-    Maar we hoorden dat Groningers slimmer zijn — dus vandaag de diepte in: broncode, PCB-ontwerp en schema's.
+    [3.3 · ±20 s] Geen verschil in slimheid, maar een andere invalshoek. We leggen nieuwe hardwarebegrippen uit vanuit bekende softwareprincipes.
   </aside>
 </section>
 
@@ -235,12 +233,12 @@
     <figure><img src="img/bouwavond.jpg" alt="Bouwavond"><figcaption>Bouwavond in de hackerspace</figcaption></figure>
   </div>
   <aside class="notes">
-    [3.3 · 2 min] Kort. Cijfers bewaren voor de terugblik (3.9).
+    [3.3 · ±1 min] Kort. Cijfers bewaren voor de terugblik (3.9). Inclusief de invalshoekslide maximaal 2 minuten.
   </aside>
 </section>
 
 <!-- ============================================================ -->
-<!-- 3.4 Wat is een antweight? (3 min)                             -->
+<!-- 3.4 Wat is een antweight? (2 min)                             -->
 <!-- ============================================================ -->
 
 <section>
@@ -263,16 +261,15 @@
 </section>
 
 <section>
-  <p class="kicker">Gewichtsklassen &amp; regels</p>
+  <p class="kicker">Onze klasse &amp; de veiligheidsgrenzen</p>
   <div class="cols top">
     <div class="card">
-      <h3>Gewichtsklassen (UK)</h3>
+      <h3>Onze robot</h3>
       <ul>
-        <li>Fleaweight — 50 g</li>
-        <li><b>Antweight — 150 g</b> ← wij</li>
-        <li>Beetleweight — 1,5 kg</li>
-        <li>…</li>
-        <li>Heavyweight — 110 kg <small>(Robot Wars)</small></li>
+        <li><b>Antweight — maximaal 150 g</b></li>
+        <li>Accu en elektronica tellen mee</li>
+        <li>Bij Roboktober: duwen, niet slopen</li>
+        <li>Andere evenementen: controleer het eigen reglement</li>
       </ul>
     </div>
     <div class="card">
@@ -285,15 +282,14 @@
       <h3 style="margin-top:.5em">Veiligheid</h3>
       <ul>
         <li><b>Open arena</b> → bij Roboktober 2026 <b>geen actieve wapens</b> (alleen duwen/wedges)</li>
-        <li>Gesloten arena → spinners en flippers wél mogelijk</li>
+        <li>Actieve wapens vragen geschikte afscherming, regels en keuring</li>
         <li>Keuring · <b>failsafe</b></li>
       </ul>
     </div>
   </div>
   <p class="bridge">Veiligheid zit niet alleen in de arena, maar ook in de code — dat zien we zo.</p>
   <aside class="notes">
-    [3.4 · ±1,5 min] Klassen ter context, CHECK de getallen.
-    Roboktober 2026: open arena → geen actieve wapens. In een gesloten (afgeschermde) arena kan het wel.
+    [3.4 · ±1 min] Alleen onze klasse uitleggen. Een gesloten arena is op zichzelf geen toestemming voor actieve wapens.
   </aside>
 </section>
 
@@ -306,7 +302,7 @@
   <p class="num">DE ROBOT</p>
   <h2>Volg één commando</h2>
   <p class="question">Van duim op het scherm tot wiel op de vloer</p>
-  <aside class="notes">[3.5 · start kernblok, 26 min] </aside>
+  <aside class="notes">[3.5 · start kernblok, 27 min] Eerst de hele route, daarna controller → firmware met PWM/H-brug en failsafe → print → chassis.</aside>
 </section>
 
 <section class="pcbflow-slide" data-step="0">
@@ -344,7 +340,7 @@
         <g class="pf-st pf-st1">
           <rect x="402" y="86" width="315" height="280" rx="14" class="pf-box"/>
           <path class="pf-wave" d="M512 60a60 60 0 0 1 90 0M487 35a95 95 0 0 1 140 0M462 10a130 130 0 0 1 190 0"/>
-          <g class="pf-tag pf-tag-sm" transform="translate(462 290)"><rect x="0" y="-30" width="196" height="46" rx="23"/><text x="98" y="2">📶 gas 2000</text></g>
+          <g class="pf-tag pf-tag-sm" transform="translate(462 290)"><rect x="0" y="-30" width="196" height="46" rx="23"/><text x="98" y="2">📶 gas + sturen</text></g>
         </g>
 
         <!-- 2 · PWM naar DRV8833 -->
@@ -357,7 +353,7 @@
           <g class="pf-pad pf-pad-sig"><circle cx="664.6" cy="138.7" r="11"/><circle cx="699.6" cy="138.7" r="11"/><circle cx="664.5" cy="279" r="11"/><circle cx="699.5" cy="279" r="11"/><circle cx="616.4" cy="467.7" r="11"/><circle cx="476.3" cy="467.6" r="11"/></g>
           <text x="855" y="132" class="pf-pin">GPIO6</text>
           <text x="660" y="400" class="pf-pin">GPIO10</text>
-          <g class="pf-tag" transform="translate(835 410)"><rect x="0" y="-34" width="230" height="52" rx="26"/><text x="115" y="2">PWM 92 %</text></g>
+          <g class="pf-tag" transform="translate(835 410)"><rect x="0" y="-34" width="230" height="52" rx="26"/><text x="115" y="2">PWM ≈ 78 %</text></g>
         </g>
 
         <!-- 3 · accu levert stroom -->
@@ -378,24 +374,24 @@
           <path class="pf-out" d="M397 830V712M397.4 676.2V648.6L542.1 648.7L546.2 678"/>
           <path class="pf-out" d="M581.2 678L583.4 710.9L735 711V676.5M735 712V830"/>
           <path class="pf-out" d="M763 830V712M762.6 676.6V649L617.9 648.8L616.2 678.1"/>
-          <g class="pf-tag" transform="translate(830 760)"><rect x="0" y="-34" width="200" height="52" rx="26"/><text x="100" y="2">≈ 3,4 V</text></g>
+          <g class="pf-tag" transform="translate(830 760)"><rect x="0" y="-34" width="200" height="52" rx="26"/><text x="100" y="2">aan / uit</text></g>
         </g>
       </svg>
       <figcaption>KiCad 3D-render · PCB v4, onderkant</figcaption>
     </figure>
 
     <ol class="df-rows pf-rows">
-      <li class="fragment pf-step"><span class="ft">📶 Signaal binnen</span><span class="ex">ESP32-C3 ontvangt <b>gas 2000</b></span></li>
-      <li class="fragment pf-step"><span class="ft">🧠 ESP stuurt aan</span><span class="ex">PWM <b>92 %</b> → DRV8833</span></li>
+      <li class="fragment pf-step"><span class="ft">📶 Signaal binnen</span><span class="ex">ESP32-C3 ontvangt <b>gas + sturen</b></span></li>
+      <li class="fragment pf-step"><span class="ft">🧠 ESP stuurt aan</span><span class="ex">motorcommando <b>200</b> → PWM <b>≈ 78 %</b></span></li>
       <li class="fragment pf-step"><span class="ft">🔋 Accu levert stroom</span><span class="ex">1S LiPo → DRV8833</span></li>
-      <li class="fragment pf-step"><span class="ft">⚡ DRV8833 schakelt</span><span class="ex">accu → motoren, <b>≈ 3,4 V</b></span></li>
-      <li class="fragment pf-step"><span class="ft">🛞 Wielen draaien</span><span class="ex">beide even hard → <b>rechtdoor</b></span></li>
+      <li class="fragment pf-step"><span class="ft">⚡ DRV8833 schakelt</span><span class="ex">schakelt de <b>accuspanning</b> naar de motoren</span></li>
+      <li class="fragment pf-step"><span class="ft">🛞 Wielen draaien</span><span class="ex">beide even snel aangestuurd → (ongeveer) <b>rechtdoor</b></span></li>
     </ol>
   </div>
   <aside class="notes">
-    [3.5.1 · 2 min] Klik 5×. Echte KiCad-render van PCB v4 (onderkant, dus gespiegeld): ESP32-C3-headers, rode DRV8833-module, accu-connector, M1/M2-connectoren.
-    1) ESP-NOW-pakket komt binnen (gas 2000, sturen 1500). 2) ESP rekent 236 uit (niet 255: RC_MAX = 2040) en zet PWM op 2 pinnen per motor (GPIO6/10, 5 kHz, 236/256 ≈ 92 %).
-    3) De ESP levert geen stroom voor de motoren — dat doet de accu via de DRV8833. 4) H-brug schakelt de accu 5000×/s op de motor → gemiddeld ≈ 3,4 V. 5) Rechtdoor.
+    [3.5.1 · 2 min] Klik 5×. Overzicht, nog geen pinnen uit het hoofd leren. Rekenvoorbeeld voor de rest van de talk: NA schalen gas 200, sturen 0 → links 200, rechts 200 → ongeveer 78% dutycycle.
+    Joystickwaarden in het RC-protocol en motorcommando's zijn verschillende schalen. Bij de ontvanger leggen we die omzetting uit.
+    De ESP levert de stuursignalen; de accu levert via de DRV8833 de motorstroom.
     Alle lijnen zijn de échte koperbanen uit KiCad (pads/tracks omgerekend naar de render, ±1 px).
     Blauw fel = GPIO6 + GPIO10 (PWM), blauw dim = GPIO7 + GPIO9 (staan op 0). Rood = accu → aan/uit-schakelaar → helemaal over de rand → VM van de DRV8833.
     Geel = motoruitgangen M1A/M1B en M2A/M2B naar de JST-connectoren. Failsafe: na 500 ms geen pakket → alles 0.
@@ -403,200 +399,11 @@
 </section>
 
 <!-- ============================================================ -->
-<!-- 3.5.4 KiCad + chassis (8 min)                                 -->
+<!-- 3.5.2 RC-controller: web én ESP32 (5 min)                     -->
 <!-- ============================================================ -->
 
 <section class="chapter" data-transition="zoom-in fade-out" data-background-gradient="radial-gradient(circle at 80% 20%, #4a2410 0%, #1a1208 45%, #0b0f19 100%)">
-  <p class="num">HARDWARE · ELEKTRONICA · 6 MIN</p>
-  <h2>De print</h2>
-  <p class="question">Eerst de hardware: wat zit er in de robot — en hoe komt er stroom bij de motor?</p>
-  <aside class="notes">[3.5.4 start] Uitleg-niveau afstemmen op de handopsteek-peiling. PCB ±6 min.</aside>
-</section>
-
-<section>
-  <p class="kicker">Componenten &amp; voeding</p>
-  <div class="cols wl pm-cols">
-    <div class="pcbm" data-states='[
-      {},
-      {"k":"esp","t":{"esp":"WiFi + ESP-NOW"}},
-      {"k":"esp drv","t":{"esp":"WiFi + ESP-NOW","drv":"2× H-brug"}},
-      {"k":"esp drv mot","t":{"esp":"WiFi + ESP-NOW","drv":"2× H-brug","mot":"6 V · 50:1"}},
-      {"k":"esp drv mot batt pwr","t":{"esp":"WiFi + ESP-NOW","drv":"2× H-brug","mot":"6 V · 50:1","batt":"!stroom → DRV"}},
-      {"k":"warn","t":{"warn":"!5V ↛ 3V3"}}
-    ]'></div>
-    <ul class="smaller">
-      <li class="fragment"><b>ESP32-C3 SuperMini</b> — WiFi + ESP-NOW</li>
-      <li class="fragment"><b>DRV8833</b> — dubbele H-brug</li>
-      <li class="fragment"><b>2× N20</b> 6 V, 50:1</li>
-      <li class="fragment"><b>LiPo 1S</b> → aan/uit → DRV8833; 2S optioneel via 5V-regelaar → <code>ESP_5V_IN</code></li>
-      <li class="fragment">⚠ Nooit <code>VIN → 3.3V</code> overbruggen</li>
-    </ul>
-  </div>
-  <aside class="notes">[3.5.4 · 0–1 min] Klik 5×: ESP → DRV8833 → motoren → accu (rode baan = accu → aan/uit-schakelaar → DRV8833) → waarschuwing. Waarom een bypass naar 3.3V verboden is: de ESP32 krijgt dan accuspanning. Render is de onderkant, dus gespiegeld.</aside>
-</section>
-
-<section>
-  <p class="kicker">Pin-contract</p>
-  <div class="cols wr pm-cols">
-    <div>
-      <table class="pm-table">
-        <tr><th>GPIO</th><th>Functie</th><th>Firmware</th></tr>
-        <tr class="fragment"><td>5</td><td>DRV8833 <code>nSLEEP</code></td><td><code>STBY_OUT_PIN</code></td></tr>
-        <tr class="fragment"><td>6 / 7</td><td>Motor links IN2/IN1</td><td><code>IN2A</code> / <code>IN1A</code></td></tr>
-        <tr class="fragment"><td>9 / 10</td><td>Motor rechts IN1/IN2</td><td><code>IN1B</code> / <code>IN2B</code></td></tr>
-        <tr class="fragment"><td>8</td><td>Failsafe-LED</td><td><code>FLED_OUT_PIN</code></td></tr>
-      </table>
-    </div>
-    <div class="pcbm" data-base="dimsig" data-states='[
-      {},
-      {"k":"g5"},
-      {"k":"g6 g7 m2","t":{"l":"links"}},
-      {"k":"g9 g10 m1","t":{"r":"rechts"}},
-      {"k":"led","t":{"led":"GPIO8 · LED"}}
-    ]'></div>
-  </div>
-  <aside class="notes">[3.5.4 · 1–2,5 min] Klik per rij: de bijbehorende echte koperbaan licht op (KiCad v4). Blauw dim = de andere stuurlijnen. GPIO8 = LED op de SuperMini zelf.</aside>
-</section>
-
-<section>
-  <p class="kicker">KiCad · één kans</p>
-  <div class="cols">
-    <div>
-      <p class="big" style="font-size:1.2em">Mijn eerste PCB ooit — en die moest <span class="accent">in één keer werken</span>.</p>
-      <div class="stats"><div class="stat"><b>150</b><span>stuks geproduceerd</span></div><div class="stat"><b>78×56</b><span>mm</span></div></div>
-      <ul class="smaller">
-        <li>Revisies <b>v2 → v3 → v4</b> vóór productie</li>
-        <li>v2: 2S-prototype · v3: DRC-fixes + power-issues · v4: 1S, ~€25 per kit</li>
-        <li>J8 expansion header voor uitbreidingen</li>
-        <li>🔁 <b>Rondgeven:</b> kale + bestukte PCB</li>
-      </ul>
-    </div>
-    <div class="cols" style="gap:.4em">
-      <figure><img src="img/pcb-v4-front-kaal.png" alt="PCB v4 voorkant kaal"><figcaption>v4 voorkant</figcaption></figure>
-      <figure><img src="img/pcb-v4-achter-kaal.png" alt="PCB v4 achterkant kaal"><figcaption>v4 achterkant</figcaption></figure>
-    </div>
-  </div>
-  <p class="bridge">Een drukproef vóór de oplage: een fout zit er straks 150× in.</p>
-  <aside class="notes">
-    [3.5.4 · 2,5–4,5 min] Wat ging er fout per revisie, wat leerden we. TODO: KiCad-render + schema-fragment (voeding, H-brug) toevoegen.
-  </aside>
-</section>
-
-<section>
-  <p class="kicker">Validatie · unit tests voor elektronica</p>
-  <div class="cols val-cols">
-    <ol class="pdca">
-      <li class="fragment" data-fragment-index="0"><b>Plan</b><span>pincontract in Markdown: welke pin → welk net</span></li>
-      <li class="fragment" data-fragment-index="1"><b>Do</b><span>AI + ik passen schema &amp; layout aan in KiCad</span></li>
-      <li class="fragment" data-fragment-index="2"><b>Check</b><span><code>kicad-cli</code> ERC/DRC + AI-test: elke pad tegen het contract</span></li>
-      <li class="fragment" data-fragment-index="3"><b>Act</b><span>fout? fixen → nieuwe revisie <small>(v2 → v3 → v4)</small></span></li>
-    </ol>
-    <div>
-<div class="term fragment" data-fragment-index="2">$ kicad-cli pcb drc hsd-antweight-2s-v4.kicad_pcb
-<span class="ok">** Found 0 DRC violations **
-** Found 0 unconnected pads **</span>
-$ kicad-cli sch erc --severity-error …kicad_sch
-<span class="warn">** ERC messages: 3 → elk uitleggen of fixen</span>
-
-<span class="dim"># AI-review: pad → net, tegen pincontract</span>
-<span class="ok">✓</span> U1 pad 2  AIN2_GPIO6  → U2 pad 3
-<span class="ok">✓</span> U1 pad 5  BIN1_GPIO9  → U2 pad 9
-<span class="ok">✓</span> U2 pad 10/8  M1A/M1B   → J5
-<span class="ok">✓</span> VBAT_SW · ESP_5V_IN · GND
-<span class="ok">Status: GO</span></div>
-      <div class="card val-human fragment" data-fragment-index="4"><b>+ menselijk:</b> review door <b>Wallie</b> — vond de power-issues in v2</div>
-    </div>
-  </div>
-  <p class="big center fragment val-done" data-fragment-index="5">Alle 150 printplaten werkten. <span class="accent">Wat een opluchting.</span></p>
-  <aside class="notes">[3.5.4 · 4,5–6 min] Voor developers: dit is CI voor een printplaat. PDCA per revisie.
-    Plan = pincontract (electronics/pin-definitions/*.md). Do = wijzigen in KiCad (met AI). Check = kicad-cli ERC/DRC (zoals PHPStan/lint) + AI-review die elke pad/net uit de echte .kicad_pcb tegen het contract legt (zoals unit tests) → FINAL-REVIEW-PINS-EN-VERBINDINGEN.md. Act = fixen, volgende revisie.
-    Eerlijk: ERC geeft 3 meldingen (alternatieve connector J4_ALT niet aangesloten, label REG_5V_OUT) — bewust, maar je moet ze kunnen uitleggen.
-    Wallie als menselijke review. Na "Wat een opluchting." even stilte laten vallen.</aside>
-</section>
-
-<section class="chapter" data-transition="zoom-in fade-out" data-background-gradient="radial-gradient(circle at 80% 20%, #4a2410 0%, #1a1208 45%, #0b0f19 100%)">
-  <p class="num">HARDWARE · 3D-PRINT · 2 MIN</p>
-  <h2>Het chassis</h2>
-  <p class="question">Waar zit de print in? Een behuizing als code — en dan 3D-printen</p>
-  <aside class="notes">[3.5.4 · chassis ±2 min] OpenSCAD: het chassis is een parametrisch script.</aside>
-</section>
-
-<section>
-  <p class="kicker">Waarom OpenSCAD?</p>
-  <p class="big" style="font-size:1.1em">Een 3D-model als <span class="accent">tekstbestand</span> — niet klikken, maar programmeren.</p>
-  <div class="cols scad-vs">
-    <div class="card scad-old"><h3>Fusion / FreeCAD</h3><ul>
-      <li>Klikken en slepen met de muis</li>
-      <li>Binair projectbestand</li>
-      <li>Maat wijzigen = handwerk</li>
-      <li>Lastig voor AI om mee te werken</li>
-    </ul></div>
-    <div class="card good"><h3>OpenSCAD</h3><ul>
-      <li class="fragment" data-fragment-index="0"><b>Git-diffs</b>: zie precies wat er veranderde</li>
-      <li class="fragment" data-fragment-index="1"><b>Parameters</b>: <code>pcb_clear = 0.3;</code> → alles schuift mee</li>
-      <li class="fragment" data-fragment-index="2"><b>Asserts</b>: 8 maatcontroles, het model weigert als iets niet past</li>
-      <li class="fragment" data-fragment-index="3"><b>AI kan het lezen én schrijven</b>: 505 regels tekst</li>
-    </ul></div>
-  </div>
-  <div class="term fragment scad-diff" data-fragment-index="0"><span class="dim">$ git diff antweight_chassis.scad</span>
-<span class="del">- pcb_clear = 0.2;</span>
-<span class="ok">+ pcb_clear = 0.3;   // print paste te strak</span></div>
-  <p class="bridge">Voor developers: het is gewoon code — dus versiebeheer, review en tests werken ook hier.</p>
-  <aside class="notes">[3.5.4 · chassis] Waarom geen Fusion: alles wat je als developer gewend bent (git, diff, review, parameters, AI) werkt alleen als het model tekst is. antweight_chassis_v0.4_integrated.scad = 505 regels, 8 asserts.</aside>
-</section>
-
-<section>
-  <p class="kicker">Chassis als code · OpenSCAD</p>
-  <div class="cols wl top">
-<pre><code class="language-cpp" data-trim data-line-numbers="1|3-5|7|8">
-part = "lid"; // [assembly, tub, lid, lid_accent, motor_clamp, ...]
-/* [PCB] */
-pcb_w = 78;
-pcb_l = 56;
-pcb_holes = [[9.14, 3.14], [68.86, 3.14], [3.95, 44.56], [74.05, 44.56]];
-// …
-assert(well_y1 + iw_t &lt;= 41 - pcb_clear, "wheel well hits wide PCB part");
-assert(90 - ramp_angle &lt;= 50, "nose overhang too steep to print without support");
-</code></pre>
-    <figure><img src="img/chassis-v04-openscad.png" alt="OpenSCAD-render van chassis v0.4 integrated"><figcaption>OpenSCAD-render · v0.4 integrated</figcaption></figure>
-  </div>
-  <table>
-    <tr><th>In de code</th><th>Herkenbaar als</th></tr>
-    <tr><td><code>part = "tub"</code></td><td>Eén ontwerp, losse onderdelen exporteren</td></tr>
-    <tr><td>Afgeleide maten (<code>axle_z = nose_h / 2</code>)</td><td>Spreadsheetformule: één maat aanpassen, de rest rekent mee</td></tr>
-    <tr><td><code>assert(…)</code></td><td>Automatische maatcontrole: het model weigert als iets niet past</td></tr>
-  </table>
-  <p class="src"><a href="../../../3dprinter/reinsdesigns/antweight_chassis_v0.4_integrated.scad">antweight_chassis_v0.4_integrated.scad</a> (L7–16, L186, L191)</p>
-  <aside class="notes">
-    [3.5.4 · 6–7 min] Tekstbestand → versiebeheer, parameters, diffs.
-    Racer v0.1 → v0.2 is een diff van twee regels: nose_l 40 → 30, full_width_y 44 → 54.
-    Varianten ook gemaakt in SolidWorks, Blender, Onshape (alleen noemen).
-  </aside>
-</section>
-
-<section>
-  <p class="kicker">Zelfde print, ander chassis</p>
-  <div class="cols c3">
-    <figure><img src="img/chassis-render.png" alt="Basischassis"><figcaption>v0.2 basis — "hello world"</figcaption></figure>
-    <figure><img src="img/robots-werkbank.jpg" alt="Geprinte varianten"><figcaption>v0.4 integrated — combat, V-neus</figcaption></figure>
-    <figure><img src="img/racer-nordic.png" alt="Racer nordic"><figcaption>Racer nordic — showpiece, multi-colour</figcaption></figure>
-  </div>
-  <p class="center">PCB-contour, gaten, motor- en wielmaten gedeeld → elk chassis past op dezelfde print.</p>
-  <p class="bridge">Een standaardmaat zoals LEGO-noppen.</p>
-  <aside class="notes">
-    [3.5.4 · 7–8 min] FYSIEK MOMENT: de drie geprinte varianten laten rondgaan. Gewicht binnen 150 g, print op 100%.
-    TODO: echte OpenSCAD-renders (F5) van v0.2 en v0.4 integrated; middelste foto is nu een werkbankfoto.
-  </aside>
-</section>
-
-
-
-<!-- ============================================================ -->
-<!-- 3.5.2 RC-controller: web én ESP32 (8 min)                     -->
-<!-- ============================================================ -->
-
-<section class="chapter" data-transition="zoom-in fade-out" data-background-gradient="radial-gradient(circle at 80% 20%, #4a2410 0%, #1a1208 45%, #0b0f19 100%)">
-  <p class="num">SOFTWARE · AFSTANDSBEDIENING · 8 MIN</p>
+  <p class="num">STAP 1 · AFSTANDSBEDIENING · 5 MIN</p>
   <h2>De controller</h2>
   <p class="question">Hoe wordt een tik op je scherm een commando?</p>
   <aside class="notes">[3.5.2 start] Bekend terrein: telefoon, browser, WiFi.</aside>
@@ -607,14 +414,15 @@ assert(90 - ramp_angle &lt;= 50, "nose overhang too steep to print without suppo
   <div class="flow" data-hl="1,2"></div>
   <div class="cols top">
     <div class="card"><h3>📱 Telefoon (WebUI)</h3><ul><li>Robot is zelf het WiFi-netwerk</li><li>Browser, geen app</li><li>WebSocket</li></ul></div>
-    <div class="card"><h3>🎮 Eigen remote</h3><ul><li>Tweede ESP32 + analoge stick</li><li>Of een gewone RC-zender (CPPM)</li><li>ESP-NOW</li></ul></div>
+    <div class="card"><h3>🎮 Eigen remote</h3><ul><li>Tweede ESP32 + analoge stick → <b>ESP-NOW</b></li><li>Óf een gewone RC-zender + ontvanger → <b>CPPM</b></li><li>Twee aparte routes, zelfde resultaat</li></ul></div>
   </div>
   <p class="center">Beide leveren hetzelfde af: <b>gas + sturen</b></p>
+  <p class="bridge">We beginnen bij de telefoon; voor de code kijken we daarna naar de openbare ESP-NOW-variant.</p>
   <aside class="notes">[3.5.2 · 0–1,5 min] Twee manieren om te sturen: met je telefoon, of met een zelfgebouwde afstandsbediening.</aside>
 </section>
 
 <section>
-  <p class="kicker">WebUI · de robot als WiFi-router</p>
+  <p class="kicker">WebUI · de robot als WiFi-toegangspunt</p>
   <div class="cols wr">
     <div class="cols" style="gap:.5em">
       <img class="phone" src="img/webui-joystick.jpg" alt="WebUI joystick-modus">
@@ -626,7 +434,7 @@ assert(90 - ramp_angle &lt;= 50, "nose overhang too steep to print without suppo
       <li>Geen app, geen router, geen zender</li>
       <li><b>WebSocket:</b> één open lijn i.p.v. steeds opnieuw verbinden → weinig vertraging</li>
       <li>Kies: <b>joystick</b> of <b>tank</b> (twee sliders)</li>
-      <li>Mixer, invert links/rechts: instellen i.p.v. code wijzigen</li>
+      <li>Gas en sturen mixen, draairichting omkeren: instellen i.p.v. code wijzigen</li>
       <li class="muted">Firmware van Wallie (met onze fix) — broncode volgt in Wallie's repo</li>
     </ul>
   </div>
@@ -639,7 +447,7 @@ assert(90 - ramp_angle &lt;= 50, "nose overhang too steep to print without suppo
 
 <section class="espnow-code">
   <p class="kicker">Eigen remote · ESP32 → ESP-NOW</p>
-  <p class="smaller"><b>Eén gedeeld format</b> — staat letterlijk in béide sketches:</p>
+  <p class="smaller"><b>Eén gedeeld formaat</b> — dezelfde structuur in beide programma's:</p>
 <pre class="struct-pre"><code class="language-cpp" data-trim>
 typedef struct rc_data_t {
   uint16_t gAIL, gELE, gTHR, gRUD, gAUX1, gAUX2, gAUX3, gAUX4;  // 8 × 2 = 16 bytes
@@ -649,47 +457,23 @@ rc_data_t gEspn;
   <div class="cols top">
     <div class="fragment">
       <p class="smaller"><b>① Zender</b> vult in en verstuurt (elke 20 ms)</p>
-<pre class="xfer"><code class="language-cpp" data-trim data-line-numbers data-ln-start-from="221">
-if (gMode == MODE_STICK &amp;&amp; current_millis &gt;= last_stick_millis + 20) {
-  last_stick_millis = current_millis;
-  gStick[AIL] = myProcessInput(myReadAnalogAvg(VRX_IN_PIN), 0, 4095, 50);
-  gStick[ELE] = myProcessInput(myReadAnalogAvg(VRY_IN_PIN), 0, 4095, 1);
-  //gStick[AIL] = map(analogRead(VRX_IN_PIN), 0, 4095, 2000, 1000);
-  //gStick[ELE] = map(analogRead(VRY_IN_PIN), 0, 4095, 2000, 1000);
-  if (gStick[AIL]) gEspn.gAIL = gStick[AIL];
-  if (gStick[ELE]) gEspn.gELE = gStick[ELE];
-  if (gStick[THR]) gEspn.gTHR = gStick[THR];
-  if (gStick[RUD]) gEspn.gRUD = gStick[RUD];
-  if (gStick[AUX1]) gEspn.gAUX1 = gStick[AUX1];
-  if (gStick[AUX2]) gEspn.gAUX2 = gStick[AUX2];
-  if (gStick[AUX3]) gEspn.gAUX3 = gStick[AUX3];
-  if (gStick[AUX4]) gEspn.gAUX4 = gStick[AUX4];
-  esp_now_send(0, (uint8_t *) &amp;gEspn, sizeof(gEspn)); //Send to all peers
+<pre class="xfer"><code class="language-cpp" data-trim>
+// Ingekort: kanalen vullen, daarna verzenden.
+if (gStick[AIL]) gEspn.gAIL = gStick[AIL]; // sturen
+if (gStick[ELE]) gEspn.gELE = gStick[ELE]; // gas
+// … overige kanalen …
+esp_now_send(0, (uint8_t *) &amp;gEspn, sizeof(gEspn));
 </code></pre>
       <p class="src"><a href="https://github.com/wallieonline/worc-remote-controller-esp32/blob/e8aa232700c6/worc-remote-esp32/worc-remote-esp32.ino#L221-L235">worc-remote-esp32.ino#L221–235</a></p>
     </div>
     <div class="fragment">
-      <p class="smaller"><b>② Ontvanger</b> gebruikt hetzelfde format en herkent de waarden</p>
-<pre class="xfer"><code class="language-cpp" data-trim data-line-numbers data-ln-start-from="129">
-void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
+      <p class="smaller"><b>② Ontvanger</b> controleert de lengte en leest de structuur</p>
+<pre class="xfer"><code class="language-cpp" data-trim>
+void OnDataRecv(const uint8_t *mac,
+                const uint8_t *incomingData, int len) {
   if (len == sizeof(gEspn)) {
     memcpy(&amp;gEspn, incomingData, sizeof(gEspn));
-    if (gEspn.gELE &gt; unThrottleMin &amp;&amp; gEspn.gELE &lt; unThrottleMax) {
-      gThrottle = map(gEspn.gELE,unThrottleMin,unThrottleMax,-255,255);
-      gThrottle = constrain(gThrottle,-255,255);
-      if (abs(gThrottle) &lt;= RC_DEADBAND) {
-        gThrottle = 0;
-      }
-    }
-    if (gEspn.gAIL &gt; unSteeringMin &amp;&amp; gEspn.gAIL &lt; unSteeringMax) {
-      gSteering = map(gEspn.gAIL,unSteeringMin,unSteeringMax,-255,255);
-      gSteering = constrain(gSteering,-255,255);
-      if (abs(gSteering) &lt;= RC_DEADBAND) {
-        gSteering = 0;
-      }
-    }
-    //Serial.print(gEspn.gTHR); Serial.print("  ");
-    //Serial.print(gEspn.gRUD); Serial.println();
+    // … kanaalwaarden controleren en schalen …
     lastCommandTime = millis();
   }
 }
@@ -697,9 +481,9 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
       <p class="src"><a href="https://github.com/wallieonline/worc-robot-controller-esp32c3/blob/fb3afa886117/worc-esp32c3-drv8833-espnow/worc-esp32c3-drv8833-espnow.ino#L129-L150">worc-esp32c3-drv8833-espnow.ino#L129–150</a></p>
     </div>
   </div>
-  <p class="bridge fragment">Geen JSON, geen parser: 16 ruwe bytes. Zender en ontvanger moeten precies <b>hetzelfde format</b> gebruiken.</p>
+  <p class="bridge fragment">Zoals pack()/unpack(): 16 ruwe bytes. Zender en ontvanger moeten precies <b>hetzelfde formaat</b> gebruiken.</p>
   <aside class="notes">
-    [3.5.2 · 3–5 min] Geen access point, geen router, lage latency. Ook CPPM-ingang van een gewone RC-zender (auto-detect).
+    [3.5.2 · laatste 2 min] Vanaf hier openbare ESP-NOW-code. De WebUI gebruikt een ander transport; mixing en motorcode zijn hetzelfde.
     Struct staat in beide repo's als 8 losse regels; hier op één regel gezet. Commentaar (sturen/gas, waarden) is van mij.
     Klik 1: zender (gEspn vullen → esp_now_send). Klik 2: ontvanger (memcpy terug in dezelfde struct). Klik 3: conclusie.
     Voor PHP'ers: zoals pack()/unpack() met hetzelfde formaat aan beide kanten — verschil in struct = onzin-waarden.
@@ -709,13 +493,13 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
 
 
 <!-- ============================================================ -->
-<!-- 3.5.3 Robot-firmware (8 min)                                  -->
+<!-- 3.5.3 Robot-firmware, motorsturing en failsafe (12 min)        -->
 <!-- ============================================================ -->
 
 <section class="chapter" data-transition="zoom-in fade-out" data-background-gradient="radial-gradient(circle at 80% 20%, #4a2410 0%, #1a1208 45%, #0b0f19 100%)">
-  <p class="num">SOFTWARE · OP DE ROBOT · 8 MIN</p>
+  <p class="num">STAP 2–4 · FIRMWARE EN MOTORSTURING · 12 MIN</p>
   <h2>De firmware</h2>
-  <p class="question">Het getal −255 … 255 moet een motor worden</p>
+  <p class="question">Van ontvangen bericht naar een motor die draait</p>
   <aside class="notes">[3.5.3 start]</aside>
 </section>
 
@@ -728,30 +512,23 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
       <li>Alleen Chromium-browsers</li>
       <li class="fragment">Valkuilen: <b>USB-kabel die alleen laadt</b>, ontbrekende driver</li>
     </ul>
-    <div class="todo">Screenshot van de WallieOnline web flasher</div>
+    <div class="card"><h3>Van browser naar chip</h3><p>Browser → USB → ESP32</p><p class="smaller">Web Serial geeft de browser toegang tot de seriële verbinding.</p></div>
   </div>
   <p class="src">Inspiratie: <a href="https://wallieonline.nl/blogs/worc-robot-controller-nl.html">wallieonline.nl/blogs/worc-robot-controller-nl.html</a></p>
   <p class="bridge">Firmware-update zoals bij je printer of router — maar dan via de browser.</p>
-  <p class="big fragment" style="font-size:1.1em">Hoe komt die firmware op de chip — en wat staat erin?</p>
+  <p class="big fragment" style="font-size:1.1em">Nu staat de software op de chip. Wat doet die met een commando?</p>
   <aside class="notes">[3.5.3 start] Eerst: hoe komt de firmware op de chip? Daarna: wat staat erin.</aside>
 </section>
 
 
 <section>
-  <p class="kicker">Schalen + deadband</p>
-<pre><code class="language-cpp" data-trim data-line-numbers="1|2|4|5-6|7-9|11">
-void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
-  if (len == sizeof(gEspn)) {
-    memcpy(&amp;gEspn, incomingData, sizeof(gEspn));
-    if (gEspn.gELE &gt; unThrottleMin &amp;&amp; gEspn.gELE &lt; unThrottleMax) {
-      gThrottle = map(gEspn.gELE, unThrottleMin, unThrottleMax, -255, 255);
-      gThrottle = constrain(gThrottle, -255, 255);
-      if (abs(gThrottle) &lt;= RC_DEADBAND) {
-        gThrottle = 0;
-      }
-    }
-    // … idem gAIL → gSteering …
-    lastCommandTime = millis();
+  <p class="kicker">Schalen + deadband · rust rond het midden</p>
+<pre><code class="language-cpp" data-trim data-line-numbers="1|2-3|4-6">
+if (gEspn.gELE &gt; unThrottleMin &amp;&amp; gEspn.gELE &lt; unThrottleMax) {
+  gThrottle = map(gEspn.gELE, unThrottleMin, unThrottleMax, -255, 255);
+  gThrottle = constrain(gThrottle, -255, 255);
+  if (abs(gThrottle) &lt;= RC_DEADBAND) {
+    gThrottle = 0;
   }
 }
 </code></pre>
@@ -761,8 +538,8 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
   </div>
   <p class="src"><a href="https://github.com/wallieonline/worc-robot-controller-esp32c3/blob/fb3afa886117/worc-esp32c3-drv8833-espnow/worc-esp32c3-drv8833-espnow.ino#L129-L150"><code>OnDataRecv()</code> L129–150</a> (ingekort)</p>
   <aside class="notes">
-    [3.5.3 · 1–2 min] 1000–2000 µs → −255…255. Deadband: ruis rond het midden = 0, anders kruipt de robot.
-    Lengtecheck op regel 2: pakketten met de verkeerde lengte worden genegeerd.
+    [3.5.3 · ±1 min] RC-kanaalwaarden rond 1500 zijn niet hetzelfde als motorcommando's rond 0. De ingestelde grenzen bepalen de omzetting naar −255…255.
+    Vanaf nu rekenen we met gas 200 en sturen 0, NA schalen en deadband. Lengtecheck stond op de vorige codeslide.
   </aside>
 </section>
 
@@ -770,20 +547,12 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
   <p class="kicker">Mixing</p>
   <div class="cols mix-cols">
     <div>
-<pre><code class="language-cpp" data-trim data-line-numbers="2-5|6-9|11-12" data-fragment-index="3" data-ln-start-from="93">
-void updateMotors() {
-  if (gMixerOn) {
-    //Mix gThrottle and gSteering
-    gMotorLeft = constrain((gThrottle + gSteering), -255, 255);
-    gMotorRight = constrain((gThrottle - gSteering), -255, 255);
-  } else {
-    //Mixer off
-    gMotorLeft = constrain(gThrottle, -255, 255);
-    gMotorRight = constrain(gSteering, -255, 255);
-  }
-  //Apply per-channel direction inversion
-  if (gInvertLeft) gMotorLeft = -gMotorLeft;
-  if (gInvertRight) gMotorRight = -gMotorRight;
+<pre><code class="language-cpp" data-trim data-line-numbers="1-2|4-5" data-fragment-index="3">
+gMotorLeft = constrain(gThrottle + gSteering, -255, 255);
+gMotorRight = constrain(gThrottle - gSteering, -255, 255);
+
+if (gInvertLeft) gMotorLeft = -gMotorLeft;
+if (gInvertRight) gMotorRight = -gMotorRight;
 </code></pre>
       <table class="mix-table">
         <tr><th>Gas</th><th>Sturen</th><th>L</th><th>R</th></tr>
@@ -799,10 +568,10 @@ void updateMotors() {
         {"L":150,"R":-150,"t":{"l":"L 150","r":"R −150","top":"draaien op de plek"}}
       ]'></div>
   </div>
-  <p class="src"><a href="https://github.com/wallieonline/worc-robot-controller-esp32c3/blob/fb3afa886117/worc-esp32c3-drv8833-espnow/worc-esp32c3-drv8833-espnow.ino#L93-L105"><code>updateMotors()</code> L93–105</a></p>
+  <p class="src"><a href="https://github.com/wallieonline/worc-robot-controller-esp32c3/blob/fb3afa886117/worc-esp32c3-drv8833-espnow/worc-esp32c3-drv8833-espnow.ino#L93-L105"><code>updateMotors()</code> L93–105</a> · ingekort, mixer aan</p>
   <p class="bridge">Sturen als een tank of graafmachine: verschil in snelheid links/rechts = draaien.</p>
   <aside class="notes">
-    [3.5.3 · 1–2,5 min] Klik per tabelrij: de wielen op de PCB draaien met die snelheid (L = motor A, GPIO6/7 → J6; R = motor B, GPIO9/10 → J5; onderkant dus gespiegeld).
+    [3.5.3 · ±2 min] Klik per tabelrij: wielen bewegen naar het getoonde commando; dit is een illustratie, geen voorspelling van het toerental (L = motor A, GPIO6/7 → J6; R = motor B, GPIO9/10 → J5; onderkant dus gespiegeld).
     Negatief = andere pin krijgt PWM (GPIO9 i.p.v. GPIO10) → wiel draait achteruit. Daarna nog 2 code-stappen.
     Mixer uit = tank-modus in de WebUI (elke slider één motor).
     Invert: motor verkeerd om gesoldeerd? Instelling aanpassen i.p.v. code. Instellingen staan in EEPROM.
@@ -837,9 +606,9 @@ void updateMotors() {
       {"t":{"top":"stop: beide 0"}}
     ]'></div>
   </div>
-  <p class="center smaller">5000 Hz, 8 bit: <code>0</code> = uit · <code>255</code> = altijd aan · <code>128</code> ≈ half vermogen</p>
+  <p class="center smaller">5000 Hz, 8 bit: <code>0</code> = uit · <code>200</code> ≈ 78% aan · <code>255</code> = altijd aan</p>
   <p class="src"><a href="https://github.com/wallieonline/worc-robot-controller-esp32c3/blob/fb3afa886117/worc-esp32c3-drv8833-espnow/worc-esp32c3-drv8833-espnow.ino#L106-L125"><code>ledcWrite()</code> L106–125</a> · rechter motor idem op kanaal 2/3</p>
-  <aside class="notes">[3.5.3 · 2,5–3,5 min] Heel snel aan/uit, "x% van de tijd aan". Richting = welke van de twee pinnen de PWM krijgt: volg de codestappen op de PCB — vooruit krijgt GPIO6 (IN2A) de PWM, achteruit GPIO7 (IN1A), stop: beide 0. Gele banen lopen dan andersom → wiel draait andersom.</aside>
+  <aside class="notes">[3.5.3 · ±2 min] Heel snel aan/uit, "x% van de tijd aan". Richting = welke van de twee pinnen de PWM krijgt: vooruit GPIO6 (IN2A), achteruit GPIO7 (IN1A), stop beide 0. Dutycycle is niet hetzelfde als snelheid of vermogen; belasting en motor tellen mee.</aside>
 </section>
 
 <section>
@@ -849,29 +618,21 @@ void updateMotors() {
     <figure><div class="hbridge" data-closed="B,C" data-dir="←"></div><figcaption>Achteruit: B + C dicht</figcaption></figure>
   </div>
   <p class="center smaller">DRV8833 = twee H-bruggen in één chip. IN1/IN2 bepalen welke schakelaars dicht zijn.</p>
-  <p class="bridge">Batterij omgekeerd aansluiten — maar dan elektronisch, duizenden keren per seconde.</p>
+  <p class="bridge">De H-brug kiest de stroomrichting; PWM bepaalt welk deel van de tijd de motor wordt aangestuurd.</p>
   <aside class="notes">[3.5.3] Nooit A + C tegelijk: kortsluiting. Daarom doet de chip dit voor je.</aside>
 </section>
 
-<section>
-  <p class="kicker">Failsafe</p>
+<section data-topic="Failsafe">
+  <p class="kicker">Failsafe · geen commando is óók een toestand</p>
   <div class="cols mix-cols">
-<pre class="fs-pre"><code class="language-cpp" data-trim data-line-numbers="3|4-7|9|15" data-ln-start-from="191">
-void loop() {
-  // Check for command timeout (safety feature)
-  if (millis() - lastCommandTime &gt; COMMAND_TIMEOUT) {
-    if (gThrottle != 0 || gSteering != 0) {
-      gThrottle = 0;
-      gSteering = 0;
-      Serial.println("Command timeout - stopping motors");
-    }
-    digitalWrite(FLED_OUT_PIN, (millis() / 250) % 2); //Failsafe LED blinking
-  } else {
-    digitalWrite(FLED_OUT_PIN, LOW); //Link ok LED solid on
-  }
-
-  updateMotors();
+<pre class="fs-pre"><code class="language-cpp" data-trim data-line-numbers="1|2-3|4|7">
+if (millis() - lastCommandTime &gt; COMMAND_TIMEOUT) {
+  gThrottle = 0;
+  gSteering = 0;
+  digitalWrite(FLED_OUT_PIN, (millis() / 250) % 2);
 }
+
+updateMotors();
 </code></pre>
     <div>
       <div class="pcbm" data-states='[
@@ -883,19 +644,227 @@ void loop() {
       <p class="center fs-live"><b>500 ms</b> geen pakket → stop <span class="fragment">· 🔴 LIVE: remote uit</span></p>
     </div>
   </div>
-  <p class="src"><a href="https://github.com/wallieonline/worc-robot-controller-esp32c3/blob/fb3afa886117/worc-esp32c3-drv8833-espnow/worc-esp32c3-drv8833-espnow.ino#L191-L205"><code>loop()</code> L191–205</a> · <code>COMMAND_TIMEOUT = 500</code></p>
-  <p class="bridge">Dodemansknop in de trein: laat je los, dan stopt alles.</p>
+  <p class="src"><a href="https://github.com/wallieonline/worc-robot-controller-esp32c3/blob/fb3afa886117/worc-esp32c3-drv8833-espnow/worc-esp32c3-drv8833-espnow.ino#L191-L205"><code>loop()</code> L191–205</a> · vereenvoudigd, LED/logging ingekort · <code>COMMAND_TIMEOUT = 500</code></p>
+  <p class="bridge">Zoals een heartbeat-timeout: zonder verse commando's naar een veilige toestand.</p>
   <aside class="notes">
-    [3.5.3 · 3,5–5 min] Volg de codestappen op de PCB: pakketjes komen binnen (LED groen, wielen draaien) → &gt; 500 ms niets → gas 0 → LED knippert → updateMotors() zet beide motoren op 0.
+    [3.5.3 · laatste 2 min van het firmwareblok] Wat gebeurt er als input uitblijft? Pakketjes → wielen draaien → &gt; 500 ms niets → gas/sturen 0 → motoren stoppen.
     DEMO (enige failsafe-demo): remote uit (of telefoon-WiFi uit bij WebUI) → robot stopt, LED knippert.
     Testen met wielen in de lucht! Onze v2 zet daarnaast nSLEEP LOW (motordriver echt uit).
   </aside>
 </section>
 
+<!-- ============================================================ -->
+<!-- 3.5.4 Printplaat en validatie (4 min)                         -->
+<!-- ============================================================ -->
+
+<section class="chapter" data-transition="zoom-in fade-out" data-background-gradient="radial-gradient(circle at 80% 20%, #4a2410 0%, #1a1208 45%, #0b0f19 100%)">
+  <p class="num">UITVOERING · PRINTPLAAT · 4 MIN</p>
+  <h2>De print</h2>
+  <p class="question">De motor draait. Hoe verbinden we de onderdelen betrouwbaar?</p>
+  <aside class="notes">[3.5.4 start] Van werking naar uitvoering. Printplaat ±4 min; pinnen zijn een interface, geen leerstof.</aside>
+</section>
+
+<section>
+  <p class="kicker">Componenten &amp; voeding</p>
+  <div class="cols wl pm-cols">
+    <div class="pcbm" data-states='[
+      {},
+      {"k":"esp","t":{"esp":"WiFi + ESP-NOW"}},
+      {"k":"esp drv","t":{"esp":"WiFi + ESP-NOW","drv":"2× H-brug"}},
+      {"k":"esp drv mot","t":{"esp":"WiFi + ESP-NOW","drv":"2× H-brug","mot":"6 V · 50:1"}},
+      {"k":"esp drv mot batt pwr","t":{"esp":"WiFi + ESP-NOW","drv":"2× H-brug","mot":"6 V · 50:1","batt":"!stroom → DRV"}},
+      {"k":"warn","t":{"warn":"!5V ↛ 3V3"}}
+    ]'></div>
+    <ul class="smaller">
+      <li class="fragment"><b>ESP32-C3 SuperMini</b> — WiFi + ESP-NOW</li>
+      <li class="fragment"><b>DRV8833</b> — dubbele H-brug</li>
+      <li class="fragment"><b>2× N20</b> 6 V, 50:1</li>
+      <li class="fragment"><b>LiPo 1S</b> → aan/uit → DRV8833; 2S optioneel via 5V-regelaar → <code>ESP_5V_IN</code></li>
+      <li class="fragment">⚠ Nooit <code>VIN → 3.3V</code> overbruggen</li>
+    </ul>
+  </div>
+  <aside class="notes">[3.5.4 · 0–1 min] Klik 5×: ESP → DRV8833 → motoren → accu (rode baan = accu → aan/uit-schakelaar → DRV8833) → waarschuwing. Waarom een bypass naar 3.3V verboden is: de ESP32 krijgt dan accuspanning. Render is de onderkant, dus gespiegeld.</aside>
+</section>
+
+<section>
+  <p class="kicker">Pincontract · de interface tussen code en print</p>
+  <div class="cols wr pm-cols">
+    <div>
+      <table class="pm-table">
+        <tr><th>GPIO</th><th>Functie</th><th>Firmware</th></tr>
+        <tr class="fragment"><td>5</td><td>DRV8833 <code>nSLEEP</code></td><td><code>STBY_OUT_PIN</code></td></tr>
+        <tr class="fragment"><td>6 / 7</td><td>Motor links IN2/IN1</td><td><code>IN2A</code> / <code>IN1A</code></td></tr>
+        <tr class="fragment"><td>9 / 10</td><td>Motor rechts IN1/IN2</td><td><code>IN1B</code> / <code>IN2B</code></td></tr>
+        <tr class="fragment"><td>8</td><td>Failsafe-LED</td><td><code>FLED_OUT_PIN</code></td></tr>
+      </table>
+    </div>
+    <div class="pcbm" data-base="dimsig" data-states='[
+      {},
+      {"k":"g5"},
+      {"k":"g6 g7 m2","t":{"l":"links"}},
+      {"k":"g9 g10 m1","t":{"r":"rechts"}},
+      {"k":"led","t":{"led":"GPIO8 · LED"}}
+    ]'></div>
+  </div>
+  <p class="bridge">Je hoeft de pinnummers niet te onthouden. Schema en firmware moeten dezelfde afspraak volgen.</p>
+  <aside class="notes">[3.5.4 · ±1 min] Klik per rij, geen registerles. De bijbehorende koperbaan licht op. Bij tijdgebrek alleen motor links als voorbeeld.</aside>
+</section>
+
+<section>
+  <p class="kicker">KiCad · één kans</p>
+  <div class="cols">
+    <div>
+      <p class="big" style="font-size:1.2em">Mijn eerste PCB ooit — en die moest <span class="accent">in één keer werken</span>.</p>
+      <div class="stats"><div class="stat"><b>150</b><span>kale printplaten geproduceerd</span></div><div class="stat"><b>78×56</b><span>mm</span></div></div>
+      <ul class="smaller">
+        <li>Revisies <b>v2 → v3 → v4</b> vóór productie</li>
+        <li>v2: prototype · v3: voedingsproblemen opgelost · v4: productieversie</li>
+        <li>🔁 <b>Rondgeven:</b> kale + bestukte PCB</li>
+      </ul>
+    </div>
+    <div class="cols" style="gap:.4em">
+      <figure><img src="img/pcb-v4-front-kaal.png" alt="PCB v4 voorkant kaal"><figcaption>v4 voorkant</figcaption></figure>
+      <figure><img src="img/pcb-v4-achter-kaal.png" alt="PCB v4 achterkant kaal"><figcaption>v4 achterkant</figcaption></figure>
+    </div>
+  </div>
+  <p class="bridge">Een drukproef vóór de oplage: een fout zit er straks 150× in.</p>
+  <aside class="notes">
+    [3.5.4 · ±1 min] De oplage maakte vooraf controleren belangrijk. Wallie vond voedingsproblemen; revisies vonden plaats vóór productie. Kale en bestukte print laten zien.
+  </aside>
+</section>
+
+<section class="drc-slide">
+  <p class="kicker">Validatie · automatische controles én menselijke review</p>
+  <div class="cols val-cols">
+    <ol class="pdca">
+      <li class="fragment" data-fragment-index="0"><b>Plan</b><span>pincontract in Markdown: welke pin → welk net</span></li>
+      <li class="fragment" data-fragment-index="1"><b>Do</b><span>AI + ik passen schema &amp; layout aan in KiCad</span></li>
+      <li class="fragment" data-fragment-index="2"><b>Check</b><span>ontwerpregels controleren + aansluitingen tegen het pincontract leggen</span></li>
+      <li class="fragment" data-fragment-index="5"><b>Act</b><span>fout? fixen → nieuwe revisie <small>(v2 → v3 → v4)</small></span></li>
+    </ol>
+    <div>
+      <figure class="drc-board">
+        <svg viewBox="0 0 1100 800" role="img" aria-label="Illustratie van DRC-controles op de printplaat: koperafstand, baanbreedte en verbindingen">
+          <image href="img/pcb-v4-onder-met-componenten.png" width="1100" height="800"/>
+          <g class="fragment drc-check" data-fragment-index="2">
+            <rect class="drc-scan" x="180" y="40" width="740" height="12" rx="6"/>
+            <circle class="drc-focus" cx="775" cy="300" r="95"/>
+            <path class="drc-measure" d="M756 300H797M756 280V320M797 280V320"/>
+            <rect class="drc-label" x="440" y="110" width="460" height="70" rx="16"/>
+            <text x="670" y="157">1 · Koperafstand</text>
+          </g>
+          <g class="fragment drc-check" data-fragment-index="3">
+            <circle class="drc-focus" cx="865" cy="440" r="90"/>
+            <path class="drc-measure" d="M840 420H890M840 400V440M890 400V440"/>
+            <rect class="drc-label" x="440" y="535" width="460" height="70" rx="16"/>
+            <text x="670" y="582">2 · Baanbreedte</text>
+          </g>
+          <g class="fragment drc-check" data-fragment-index="4">
+            <path class="drc-route" d="M664.6 138.7H699.6L797.4 138.3L797.2 497.2L618 497L616.4 467.7"/>
+            <circle class="drc-pad" cx="664.6" cy="138.7" r="20"/>
+            <circle class="drc-pad" cx="616.4" cy="467.7" r="20"/>
+            <rect class="drc-label" x="190" y="620" width="710" height="70" rx="16"/>
+            <text x="545" y="667">3 · Niet-verbonden aansluitingen</text>
+          </g>
+        </svg>
+        <figcaption>PCB v4 · illustratie van controles, geen live KiCad-check of maatmeting</figcaption>
+      </figure>
+      <div class="term fragment drc-result" data-fragment-index="5">$ kicad-cli pcb drc …
+<span class="ok">0 DRC violations · 0 unconnected pads</span>
+<span class="warn">ERC apart: 3 meldingen toelichten of oplossen</span></div>
+      <div class="card val-human fragment" data-fragment-index="6"><b>+ menselijk:</b> pincontract controleren, review door <b>Wallie</b> en fysiek testen</div>
+    </div>
+  </div>
+  <div class="fragment val-done center" data-fragment-index="7">
+    <p style="margin:0">25 van de 30 gemonteerde printplaten werken. <span class="accent">Wat een opluchting.</span></p>
+    <p class="smaller" style="margin:.1em 0 0;font-size:.6em">Uitval: een paar afwijkende ESP32's met slechte wifi · een paar montagefouten</p>
+  </div>
+  <aside class="notes">[3.5.4 · ±1 min] Voor developers: geautomatiseerde controles zoals in CI. PDCA per revisie.
+    Klik: Plan → Do → koperafstand → baanbreedte → niet-verbonden aansluitingen → resultaat/Act → menselijke review → productie.
+    De geanimeerde overlays zijn didactische markeringen op de printplaat, geen gemeten afstanden of opname van KiCad. De oplichtende route is een bestaande GPIO6-verbinding.
+    ERC controleert elektrische regels in het schema; DRC controleert ontwerpregels op de print. Vergelijk met lint/static analysis, niet met een bewijs dat de schakeling werkt.
+    Daarnaast aansluitingen tegen het pincontract controleren, menselijke review en fysieke tests. Een AI-review is geen deterministische test.
+    Eerlijk: ERC geeft 3 meldingen (alternatieve connector J4_ALT niet aangesloten, label REG_5V_OUT) — bewust, maar je moet ze kunnen uitleggen.
+    Wallie als menselijke review. Na "Wat een opluchting." even stilte laten vallen.
+    150 kale printplaten geproduceerd (zonder onderdelen); tot nu toe 30 gemonteerd, daarvan werken er 25. De 5 uitvallers: sommige hebben een afwijkende ESP32 met slechte wifi, andere zijn niet goed in elkaar gezet (montagefout). Geen ontwerpfout gevonden. Vergelijk: DRC groen is geen garantie voor de productie- en bouwstap.</aside>
+</section>
+
+<section class="chapter" data-transition="zoom-in fade-out" data-background-gradient="radial-gradient(circle at 80% 20%, #4a2410 0%, #1a1208 45%, #0b0f19 100%)">
+  <p class="num">HARDWARE · 3D-PRINT · 4 MIN</p>
+  <h2>Het chassis</h2>
+  <p class="question">Losse onderdelen zijn nog geen robot. Waar bouwen we ze in?</p>
+  <aside class="notes">[3.5.5 · chassis, totaal 4 min] OpenSCAD: het chassis is een parametrisch script. Circa twee minuten voor de ontwerpgalerij met leerpunten; de rest voor context, downloadlink en fysieke varianten.</aside>
+</section>
+
+<section>
+  <p class="kicker">Waarom OpenSCAD?</p>
+  <p class="big" style="font-size:1.1em">Een 3D-model als <span class="accent">tekstbestand</span> — niet klikken, maar programmeren.</p>
+  <div class="cols scad-vs">
+    <div class="card scad-old"><h3>Visueel CAD-ontwerp</h3><ul>
+      <li>Direct vormen tekenen en bewerken</li>
+      <li>Ook parametrisch en automatiseerbaar</li>
+      <li>Prima gereedschap voor 3D-ontwerp</li>
+      <li>Voor mij: minder directe tekst-diffs</li>
+    </ul></div>
+    <div class="card good"><h3>OpenSCAD</h3><ul>
+      <li class="fragment" data-fragment-index="0"><b>Git-diffs</b>: zie precies wat er veranderde</li>
+      <li class="fragment" data-fragment-index="1"><b>Parameters</b>: <code>pcb_clear = 0.3;</code> → alles schuift mee</li>
+      <li class="fragment" data-fragment-index="2"><b>Asserts</b>: expliciete maatvoorwaarden controleren</li>
+      <li class="fragment" data-fragment-index="3"><b>AI kan het lezen én schrijven</b>: alle ontwerpen samen ±9.700 regels tekst</li>
+    </ul></div>
+  </div>
+  <div class="term fragment scad-diff" data-fragment-index="0"><span class="dim">$ git diff antweight_chassis.scad</span>
+<span class="del">- pcb_clear = 0.2;</span>
+<span class="ok">+ pcb_clear = 0.3;   // print paste te strak</span></div>
+  <p class="bridge">Voor developers: het is gewoon code — dus versiebeheer, review en tests werken ook hier.</p>
+  <p class="src">Gratis en open source · Windows, macOS en Linux · Download: <a href="https://openscad.org/downloads.html">openscad.org/downloads.html</a></p>
+  <aside class="notes">[3.5.5 · chassis] Geen wedstrijd tussen CAD-tools: voor mijn workflow helpt een tekstmodel bij diff, review en AI-assistentie. Asserts bewaken alleen de voorwaarden die je opschrijft; testprints blijven nodig.</aside>
+</section>
+
+<section class="scad-walkthrough">
+  <p class="kicker">Chassis als code · OpenSCAD</p>
+  <div class="scad-stage">
+    <div class="scad-intro">
+      <h2>Eén project, veel verschillende ontwerpen</h2>
+      <p>10 ontwerpfamilies · 24 beelden · bij elke klik een nieuw code-inzicht.</p>
+      <img src="img/chassis-v04-openscad.png" alt="Voorbeeld van het uiteindelijke chassis">
+      <p class="smaller">Klik om te beginnen →</p>
+    </div>
+  </div>
+  <aside class="notes">
+    [3.5.5 · ontwerpgalerij, circa twee minuten] 10 klikken, één per ontwerpfamilie; alle 24 beelden blijven zichtbaar binnen hun familie. Versies staan naast elkaar, met de juiste modelnaam en bronlink. De Nordic Racer-reeks is hier bewust weggelaten.
+    Meshconversies en exportbestanden met dezelfde geometrie zijn geen extra ontwerpen; disc_geometry.scad is een hulpbibliotheek.
+    Verschillende ontwerplijnen, niet één lineaire versiegeschiedenis. Niet elk detail voorlezen: benoem de families en klik vlot door de versies.
+    Renders zijn niet op dezelfde schaal; prototypegeometrie bewijst geen pasvorm of werking.
+    Per familie één leerpunt: mesh hergebruiken → parameters → profiel uitsnijden en roteren → maten berekenen → lus → include → combinaties van lussen → STL-import → assert → samenstelling. Bronfragmenten zijn geselecteerd en opnieuw afgebroken, geen zelfstandige scripts. Mostly Harmless is expliciet een importvoorbeeld.
+    Reken circa twee minuten voor de reeks met de code-uitleg; houd de overige chassiscontext kort.
+    Bij de Disc Spinner-familie expliciet zeggen: ontwerpstudies, niet toegestaan bij Roboktober 2026 — daar geen actieve wapens, alleen duwen/wedges.
+  </aside>
+</section>
+
+<section>
+  <p class="kicker">Zelfde print, ander chassis</p>
+  <div class="cols c3">
+    <figure><img src="img/chassis-render.png" alt="Basischassis"><figcaption>v0.2 basis — "hello world"</figcaption></figure>
+    <figure><img src="img/chassis-v04-openscad.png" alt="Chassis v0.4 integrated"><figcaption>v0.4 integrated — geïntegreerde behuizing</figcaption></figure>
+    <figure><img src="img/racer-nordic.png" alt="Racer nordic"><figcaption>Racer nordic — meerkleurig ontwerp</figcaption></figure>
+  </div>
+  <p class="center">PCB-contour, gaten, motor- en wielmaten gedeeld → elk chassis past op dezelfde print.</p>
+  <p class="bridge">Een standaardmaat zoals LEGO-noppen.</p>
+  <aside class="notes">
+    [3.5.5 · afsluiting chassisblok] FYSIEK MOMENT: geprinte varianten laten zien. Niet wachten tot alles is rondgegaan.
+    Afsluiten: van commando tot beweging, met veilig stoppen in de firmware; nu past alles ook in een robot. → publiek stuurt.
+  </aside>
+</section>
+
+
+
+
+
 <section class="chapter" data-transition="zoom-in fade-out" data-background-gradient="radial-gradient(circle at 80% 20%, #4a2410 0%, #1a1208 45%, #0b0f19 100%)">
   <p class="num">NA DE TECHNIEK</p>
   <h2>Demo &amp; traject</h2>
-  <p class="question">Zelf sturen — en hoe bouw je dit in 3 maanden?</p>
+  <p class="question">Zelf sturen — en hoe kwam dit project tot stand?</p>
   <aside class="notes">[3.6 start]</aside>
 </section>
 
@@ -903,7 +872,7 @@ void loop() {
   <p class="kicker">Nu weet je wat er gebeurt</p>
   <div class="flow" data-hl="1,2,3,4,5"></div>
   <p class="big center">Wie wil sturen?</p>
-  <aside class="notes">[3.5 einde · ±36 min] Overgang naar de demo.</aside>
+  <aside class="notes">[3.5 einde · ±36 min] Route in één zin herhalen: input → verwerken → PWM → H-brug → motor. Daarna toepassen.</aside>
 </section>
 
 <!-- ============================================================ -->
@@ -915,16 +884,16 @@ void loop() {
   <div class="cols wr">
     <img class="phone" src="img/webui-joystick.jpg" alt="WebUI">
     <ol>
-      <li>WiFi: <code class="todo-inline">worc-…</code> <small>(per robot een eigen SSID)</small></li>
-      <li>Wachtwoord: <code class="todo-inline">…</code></li>
+      <li>Kies het WiFi-netwerk van jouw demo-robot</li>
+      <li>Gebruik het wachtwoord op het kaartje bij de robot</li>
       <li>Browser: <code>http://192.168.4.1</code></li>
       <li>Duwgevecht! 🥊</li>
     </ol>
   </div>
-  <p class="failsafe-line fragment"><b>Laatste test:</b> zet je WiFi uit → robot stopt.</p>
+  <p class="failsafe-line fragment"><b>Eén bestuurder per robot.</b> Wissel pas als de robot stilstaat.</p>
   <aside class="notes">
-    [3.6 · 4 min] Twee robots, één bestuurder per robot. Eind: failsafe nog één keer als bewijs.
-    SSID's en wachtwoorden invullen zodra de demo-robots geflasht zijn.
+    [3.6 · 4 min] Twee robots, één bestuurder per robot. De failsafe is al gedemonstreerd: hier alleen rijden en toepassen.
+    Vooraf kaartjes maken met het werkelijk ingestelde SSID en wachtwoord; verbindingen testen. Begrensd rijvlak, geen actief wapen.
   </aside>
 </section>
 
@@ -938,44 +907,41 @@ void loop() {
   <div class="cols wl top">
     <ul class="smaller">
       <li>API-first: <b>Laravel API + Filament admin</b>, <b>Vue 3 + Vite</b></li>
-      <li><b>Build Hub</b>: BOM, STL- en firmware-downloads, bouwgids — de site als distributiekanaal voor hardware</li>
-      <li>Teamregistratie (account-first) met captain-review</li>
-      <li class="muted">PHPStan · Rector · Pint · PHPUnit · Vitest · Playwright · ADR's</li>
+      <li><b>Build Hub</b>: onderdelenlijst, 3D-bestanden, firmware en bouwgids</li>
+      <li>De site als distributiekanaal voor een fysiek bouwproject</li>
+      <li class="muted">Dezelfde werkwijze: versiebeheer, statische analyse en tests</li>
     </ul>
-    <div class="todo">Screenshot Build Hub</div>
+    <figure><img src="img/bouwavond.jpg" alt="Deelnemers bouwen hun robots"><figcaption>Van bouwinformatie op de site naar bouwen aan tafel</figcaption></figure>
   </div>
   <div class="gh-open fragment">
-    <div class="gh-head"><b>Alles open source op GitHub</b> <code>github.com/Hackerspace-drenthe/www.roboktober.nl</code></div>
+    <div class="gh-head"><b>Website en bouwbestanden op GitHub</b> <code>github.com/Hackerspace-drenthe/www.roboktober.nl</code></div>
     <ul class="gh-tags">
-      <li>🌐 Laravel + Vue</li><li>🔌 KiCad-PCB</li><li>📦 OpenSCAD-chassis</li><li>⚙️ Firmware</li>
-      <li>📌 Pin-contracten</li><li>🗺️ Plannen &amp; ADR's</li><li>🤖 AI-reviews</li><li>🧾 BOM &amp; inkoop</li>
+      <li>🌐 Laravel + Vue</li><li>🔌 KiCad-printplaat</li><li>📦 OpenSCAD-chassis</li>
+      <li>📌 Pincontracten</li><li>🗺️ Ontwerpkeuzes</li><li>🧾 Onderdelenlijst</li>
     </ul>
     <p>Niet alleen het eindresultaat: ook de plannen, de iteraties en de fouten. Fork het, bouw het na, verbeter het.</p>
+    <p class="smaller">ESP-NOW-firmware: WallieOnline. De broncode van de WebUI volgt nog.</p>
   </div>
-  <aside class="notes">[3.7 · 2 min] Alles staat publiek op GitHub: site, KiCad, OpenSCAD, firmware, pin-contracten, docs/PLAN.md + ADR's, AI-reviewrapporten, inkoop. Brug: "Deelnemers moesten al deze bestanden, firmware en bouwstappen ergens vandaan halen." Kort houden.</aside>
+  <aside class="notes">[3.7 · 2 min] Brug: "Deelnemers moesten al deze bestanden, firmware en bouwstappen ergens vandaan halen." Geen tweede architectuurtalk. Benoem expliciet het onderscheid tussen openbare ESP-NOW-firmware en nog niet openbare WebUI-broncode.</aside>
 </section>
 
 <!-- ============================================================ -->
-<!-- 3.8 3 maanden, één developer + AI (2 min)                     -->
+<!-- 3.8 Traject en AI-ondersteuning (2 min)                       -->
 <!-- ============================================================ -->
 
 <section data-topic="Het traject">
-  <p class="kicker">3 maanden · het traject</p>
+  <p class="kicker">Van eerste commit tot kickoff · juli–oktober</p>
   <div class="timeline">
     <div class="when">2 jul</div><div class="what c-web"><span class="tag c-web">web</span>Plan bevroren + eerste commit Laravel API + Vue</div>
-    <div class="when">4–15 jul</div><div class="what c-web"><span class="tag c-web">web</span>Teamregistratie, edities, deploy, PHPStan in CI</div>
-    <div class="when">29 jul</div><div class="what c-pcb"><span class="tag c-pcb">pcb</span><span class="tag c-fw">fw</span>Eerste KiCad-ontwerp (v2) + firmware-review</div>
-    <div class="when">12 aug</div><div class="what c-pcb"><span class="tag c-pcb">pcb</span>Eerste PCB naar PCBWay (2S-prototype)</div>
-    <div class="when">13 aug</div><div class="what c-buy"><span class="tag c-buy">inkoop</span>9 AliExpress-orders, €327: 60 motoren, 50 DRV8833's, 40 ESP32-C3's</div>
-    <div class="when">17–24 aug</div><div class="what c-pcb"><span class="tag c-pcb">pcb</span>v3: DRC-fixes, power-issues opgelost</div>
-    <div class="when">27–31 aug</div><div class="what c-pcb"><span class="tag c-pcb">pcb</span>v4 definitief — PCBWay sponsor, 150 stuks</div>
-    <div class="when">sep</div><div class="what c-fw"><span class="tag c-fw">fw</span>Upstream firmware-fixes bij Wallie</div>
-    <div class="when">sep–okt</div><div class="what c-3d"><span class="tag c-3d">3d</span>Bijna alle 3D-ontwerpen + testprints</div>
-    <div class="when">7–28 okt</div><div class="what c-event"><span class="tag c-event">event</span>Materialen klaarzetten, deelnemers helpen, Battle Day</div>
+    <div class="when">jul–aug</div><div class="what c-pcb"><span class="tag c-pcb">print</span>Ontwerpen, reviewen en onderdelen bestellen</div>
+    <div class="when">eind aug</div><div class="what c-pcb"><span class="tag c-pcb">productie</span>v4 definitief — PCBWay sponsor, 150 stuks</div>
+    <div class="when">sep–okt</div><div class="what c-3d"><span class="tag c-3d">testen</span>Firmware, chassis en testprints</div>
+    <div class="when">7 okt</div><div class="what c-event"><span class="tag c-event">kickoff</span>Van voorbereiding naar samen bouwen</div>
+    <div class="when">14–28 okt</div><div class="what c-event"><span class="tag c-event">event</span>Bouwavonden, begeleiden en Battle Day</div>
   </div>
-  <p class="smaller center" style="margin-top:.5em">Zwaarst: <b>de elektronica</b>. 3D = snel itereren · PCB = één kans.</p>
+  <p class="smaller center" style="margin-top:.5em">Ongeveer drie maanden voorbereiding tot de kickoff; daarna de bouwavonden en Battle Day.</p>
   <aside class="notes">
-    [3.8 · 1 min] Bron: git-historie (157 commits op 33 dagen) + inkoopdocs. Alles liep parallel.
+    [3.8 · 1 min] Bron: git-historie + inkoopdocs. Ongeveer drie maanden van eerste commit tot kickoff, niet de hele uitvoering. Alles liep parallel.
     Eerlijk: wel eerder met elektronica gepruts, nooit een print die in één keer moet werken en 150× wordt geproduceerd.
   </aside>
 </section>
@@ -983,7 +949,7 @@ void loop() {
 <section>
   <p class="kicker">Hoe: AI-assisted development</p>
   <div class="loop">
-    <div>Uitgebreid plan<br><small>specs + randvoorwaarden</small></div><span>→</span>
+    <div>Uitgebreid plan<br><small>doelen + randvoorwaarden</small></div><span>→</span>
     <div class="ai">AI voert iteratief uit</div><span>→</span>
     <div>Testen &amp; valideren<br><small>tegen het plan</small></div><span>→</span>
     <div>Zelf aanpassen<br><small>en verfijnen</small></div><span>↺</span>
@@ -994,7 +960,7 @@ void loop() {
       <li>Validatie per domein: DRC/ERC · PHPStan + tests · testprints · code review</li>
       <li>VS Code + GitHub Copilot, met custom instructions</li>
     </ul>
-    <div class="card"><h3>Wat AI níet deed</h3><b>Het plan maken</b> — en het duizend keer itereren en verbeteren. Dát is de basis.<br><b>Elke stap valideren en eventueel corrigeren.</b><br><small>En het fysieke werk: bestellen, solderen, deelnemers helpen.</small></div>
+    <div class="card"><h3>Mijn verantwoordelijkheid</h3><b>Doelen en grenzen bepalen.</b><br>Ontwerpkeuzes maken, uitkomsten controleren en fouten corrigeren.<br><small>En het fysieke werk: bestellen, solderen, deelnemers helpen. Wallie bracht robotkennis en review mee.</small></div>
   </div>
   <div class="takeaway">AI maakt één developer breed inzetbaar — mits je plan en je tests kloppen.</div>
   <aside class="notes">[3.8 · 1 min] Eventueel één anekdote: een AI-fout die door validatie werd gevangen.</aside>
@@ -1012,44 +978,49 @@ void loop() {
 </section>
 
 <section>
-  <p class="kicker">Hoe ging het? · Roboktober 2026</p>
+  <p class="kicker">Hoe ging het? · Battle Day 28 oktober</p>
   <div class="stats">
-    <div class="stat"><b>12</b><span>teams</span></div>
-    <div class="stat"><b>35</b><span>deelnemers</span></div>
-    <div class="stat"><b>150/150</b><span>PCB's werkend</span></div>
-    <div class="stat"><b class="todo-inline">?</b><span>robots gebouwd</span></div>
+    <div class="stat"><b>30+</b><span>bezoekers · volle bak</span></div>
+    <div class="stat"><b>18</b><span>robots in eerste instantie</span></div>
+    <div class="stat"><b>12</b><span>robots in de competitie</span></div>
   </div>
   <div class="cols">
-    <div class="todo">Foto's / video Battle Day (28 okt) + winnaar</div>
+    <figure><img src="img/robots-werkbank.jpg" alt="Robots op de werkbank"><figcaption>Robots tijdens het bouwtraject</figcaption></figure>
     <ul class="smaller">
-      <li>Hoogtepunten en beste/raarste robots <span class="todo-inline">invullen</span></li>
-      <li>Wat ging mis (hardware én software) <span class="todo-inline">invullen</span></li>
-      <li>Wat leerden we <span class="todo-inline">invullen</span></li>
+      <li>Niet elke robot haalde de arena: van 18 naar 12</li>
+      <li>Ik had 5 werkende robots meegenomen</li>
+      <li>Die gingen naar kinderen zónder werkende robot — zo kon iedereen toch meedoen</li>
+      <li>De gedeelde basis maakte uitlenen en snel wisselen mogelijk</li>
     </ul>
   </div>
-  <aside class="notes">[3.9 · 2 min] Na Battle Day (28 okt) aanvullen.</aside>
+  <aside class="notes">[3.9 · 2 min] Ruim 30 bezoekers, volle bak. In eerste instantie 18 robots, uiteindelijk 12 in de competitie. Mijn 5 eigen werkende robots heb ik uitgeleend aan kinderen die wel wilden battlen maar geen werkende robot hadden. Les: niet elke bouw lukt op tijd; reserve-hardware houdt iedereen in het spel. Geen winnaar noemen tenzij bevestigd. De foto is van het bouwtraject, niet van Battle Day.</aside>
 </section>
 
 <!-- ============================================================ -->
-<!-- 3.10 Afsluiting (3 min)                                       -->
+<!-- 3.10 Afsluiting (1 min)                                       -->
 <!-- ============================================================ -->
 
 <section>
   <p class="kicker">Wat gebeurt er als je de joystick naar voren duwt?</p>
   <div class="flow" data-hl="1,2,3,4,5"></div>
   <ol class="smaller">
-    <li>Antweight: 150 g, ~€25, laagdrempelig.</li>
-    <li>Elektronica heeft vaste afspraken en controles, en een 3D-model kan gewoon code zijn.</li>
-    <li>De controller is software: geen app nodig, wel invoer controleren en weten wie je bestuurt.</li>
-    <li>Met een goed plan + AI + tests bouwt één developer dit in 3 maanden.</li>
+    <li><b>Telefoon → robot</b> is een API-call over een open WebSocket.</li>
+    <li><b>Mixing</b> valideert en mapt input, net als een controller in je PHP-app.</li>
+    <li><b>Failsafe</b> is een timeout: geen verse commando's → stoppen, zoals een verlopen sessie.</li>
+    <li><b>Praktijk:</b> DRC en asserts vangen veel, maar fysiek testen blijft nodig — 25 van de 30 werkten.</li>
   </ol>
-  <aside class="notes">[3.10 · recap] Rode-draadvraag beantwoorden met het hele schema.</aside>
+  <div class="takeaway fragment" style="font-size:1em;text-align:center;padding:.5em .8em">
+    <div style="font-size:1.35em;line-height:1.15">Als je kunt programmeren, kun je ook robots bouwen.</div>
+    <div style="font-size:.6em;font-weight:400;color:var(--robo-muted);margin-top:.35em">Elektronica, 3D-ontwerpen, websites, robots: allemaal te maken, aan te sturen en te valideren met code.</div>
+  </div>
+  <p class="bridge fragment">Je blijft developer — alleen rijdt je bug nu weg.</p>
+  <aside class="notes">[3.10 · recap] Rode-draadvraag beantwoorden met het hele schema. Drie punten vertalen de keten naar wat PHP-developers al kennen (API-call, controller, sessie-timeout); het vierde is de les uit de praktijk (25 van 30 gemonteerde printplaten werkten, uitval door afwijkende ESP32's en montagefouten). Klik: de kernboodschap — als je kunt programmeren, kun je ook robots bouwen. KiCad + DRC voor elektronica, OpenSCAD voor 3D, PHP voor de website, firmware voor de robot — telkens code, versiebeheer, review en tests. Even laten landen. Klik: grap als afsluiter.</aside>
 </section>
 
 <section>
   <p class="kicker">Hoe begin je morgen?</p>
   <div class="cols c3">
-    <div class="card"><h3>🧰 Kit</h3>BOM + bouwgids via <b>roboktober.nl</b></div>
+    <div class="card"><h3>🧰 Kit</h3>Onderdelenlijst + bouwgids via <b>roboktober.nl</b></div>
     <div class="card"><h3>💾 Firmware</h3>WallieOnline op GitHub of de web flasher</div>
     <div class="card"><h3>🖨️ Chassis</h3>Pas een <code>.scad</code>-bestand aan en print</div>
   </div>
@@ -1064,20 +1035,23 @@ void loop() {
       <li>Kickoff + Wallie: <a href="https://www.youtube.com/live/qtz0UkJw4DU">youtube.com/live/qtz0UkJw4DU</a></li>
     </ul>
   </div>
-  <p class="center"><img class="plain" src="img/PCBWay.svg" alt="PCBWay" style="height:40px"> <small>PCB's gesponsord door PCBWay</small></p>
-  <aside class="notes">[3.10 · call to action] TODO: QR-code naar roboktober.nl.</aside>
+  <p class="center" style="display:flex;align-items:center;justify-content:center;gap:1.2em"><span><img class="plain" src="img/qr-roboktober.svg" alt="QR-code naar roboktober.nl" style="height:110px;vertical-align:middle"> <small>roboktober.nl</small></span><span><img class="plain" src="img/hackermakerspacelogo.svg" alt="Hackerspace Drenthe" style="background:#fff;border-radius:12px;padding:6px;height:80px;vertical-align:middle"> <small>Hackerspace Drenthe · kom langs!</small></span><span><img class="plain" src="img/PCBWay.svg" alt="PCBWay" style="height:40px;vertical-align:middle"> <small>PCB's gesponsord door PCBWay</small></span></p>
+  <aside class="notes">[3.10 · call to action] QR-code wijst naar https://roboktober.nl — even laten staan zodat mensen kunnen scannen.</aside>
 </section>
 
 <section class="title">
   <img class="logo plain" src="img/logo-roboktober.png" alt="Roboktober">
   <h1>Vragen?</h1>
   <p class="muted">De robots blijven rijden — kom gerust sturen.</p>
+  <p class="center"><img class="plain" src="img/hackermakerspacelogo.svg" alt="Hackerspace Drenthe" style="background:#fff;border-radius:12px;padding:6px;height:90px"></p>
   <aside class="notes">[Q&amp;A · 11 min] Robots blijven rondgaan/rijden.</aside>
 </section>
 
 </div>
 </div>
 
+<script src="js/wallie-video.js"></script>
+<script src="js/scad-designs.js"></script>
 <script src="js/visuals.js"></script>
 <script src="vendor/reveal.js/dist/reveal.js"></script>
 <script src="vendor/reveal.js/plugin/highlight/highlight.js"></script>

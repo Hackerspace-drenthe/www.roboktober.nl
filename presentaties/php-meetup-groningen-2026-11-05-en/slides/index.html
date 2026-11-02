@@ -1,0 +1,1116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Roboktober — from joystick to wheel · PHP Meetup Groningen</title>
+
+  <!-- reveal.js: lokaal uit vendor/ (zie scripts/vendor-reveal.sh), anders CDN-fallback -->
+  <link rel="stylesheet" href="vendor/reveal.js/dist/reveal.css" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css'">
+  <link rel="stylesheet" href="vendor/reveal.js/plugin/highlight/monokai.css" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/monokai.css'">
+  <link rel="stylesheet" href="css/roboktober.css">
+</head>
+<body>
+<!-- PCB v4 (onderkant) als herbruikbare animatie: echte KiCad-banen; zie roboPcbMini in js/visuals.js -->
+<template id="pcb-tpl">
+<svg viewBox="-300 -10 1420 1010" role="img" aria-label="Robot PCB v4 with ESP32-C3, DRV8833, a 1S battery and two N20 motors">
+  <image href="img/pcb-v4-onder-met-componenten.png" x="0" y="0" width="1100" height="800"/>
+  <g class="pf-batt"><rect x="-280" y="440" width="200" height="190" rx="18"/><rect x="-200" y="424" width="40" height="18" rx="4"/><text x="-180" y="520" class="pf-t">1S LiPo</text><text x="-180" y="565" class="pf-s">3.7–4.2 V</text></g>
+  <path class="pf-cable" d="M-80 524H262M-80 552H262"/>
+  <path class="pf-cable" d="M370 712V830M397 712V830M735 712V830M763 712V830"/>
+  <g class="pf-motor"><rect x="329" y="830" width="110" height="60" rx="10"/><text x="384" y="872" class="pf-s">N20</text></g>
+  <g class="pf-motor"><rect x="694" y="830" width="110" height="60" rx="10"/><text x="749" y="872" class="pf-s">N20</text></g>
+  <g transform="translate(240 900)"><g class="pf-wheel wh-r"><circle r="62" class="pf-tyre"/><circle r="22" class="pf-hub"/><path d="M0-58V58M-58 0H58M-41-41L41 41M-41 41L41-41" class="pf-spoke"/></g></g>
+  <g transform="translate(895 900)"><g class="pf-wheel wh-l"><circle r="62" class="pf-tyre"/><circle r="22" class="pf-hub"/><path d="M0-58V58M-58 0H58M-41-41L41 41M-41 41L41-41" class="pf-spoke"/></g></g>
+  <text x="240" y="990" class="pf-s pm-side">R</text><text x="895" y="990" class="pf-s pm-side">L</text>
+
+  <rect data-k="esp" x="402" y="86" width="315" height="280" rx="14" class="pf-box pm-k"/>
+  <rect data-k="drv" x="458" y="452" width="214" height="244" rx="12" class="pf-box pm-k"/>
+  <g data-k="batt" class="pm-k"><rect x="-292" y="412" width="224" height="230" rx="22" class="pf-box"/><rect x="200" y="180" width="80" height="88" rx="12" class="pf-box"/><text x="170" y="300" class="pf-pin">ON/OFF</text></g>
+  <g data-k="mot" class="pm-k"><rect x="317" y="818" width="134" height="84" rx="14" class="pf-box"/><rect x="682" y="818" width="134" height="84" rx="14" class="pf-box"/><rect x="344" y="650" width="80" height="54" rx="10" class="pf-box"/><rect x="709" y="650" width="80" height="54" rx="10" class="pf-box"/></g>
+  <g data-k="wave" class="pm-k"><path class="pf-wave" d="M512 60a60 60 0 0 1 90 0M487 35a95 95 0 0 1 140 0M462 10a130 130 0 0 1 190 0"/></g>
+
+  <g data-k="g5" class="pm-tr pm-sig"><path d="M664.6 103.6L666.6 62.2L308.2 61.8L307.9 462.1L335.5 476L342.3 627.8L480.1 627.9L476.2 677.9"/><circle cx="664.6" cy="103.6" r="11"/><circle cx="476.2" cy="677.9" r="11"/></g>
+  <g data-k="g7" class="pm-tr pm-sig"><path d="M664.5 173.8H699.5L776.7 172.8L776.5 469.5L651.4 467.7"/><circle cx="664.5" cy="173.8" r="11"/><circle cx="651.4" cy="467.7" r="11"/></g>
+  <g data-k="g9" class="pm-tr pm-sig"><path d="M664.5 243.9H699.5L756 241.8L755.9 441.9L514.7 441.6L511.4 467.6"/><circle cx="664.5" cy="243.9" r="11"/><circle cx="511.4" cy="467.6" r="11"/></g>
+  <g data-k="g6" class="pm-tr pm-sig"><path d="M664.6 138.7H699.6L797.4 138.3L797.2 497.2L618 497L616.4 467.7"/><circle cx="664.6" cy="138.7" r="11"/><circle cx="616.4" cy="467.7" r="11"/></g>
+  <g data-k="g10" class="pm-tr pm-sig"><path d="M664.5 279H699.5L735.3 283.2L735.2 421.2L480.2 420.9L476.3 467.6"/><circle cx="664.5" cy="279" r="11"/><circle cx="476.3" cy="467.6" r="11"/></g>
+  <g data-k="pwr" class="pm-tr pm-pwr"><path d="M-80 524H262"/><path d="M294.1 524.2H239L239.2 241.2L239.2 206.1L239.3 130.8V41.1L900.9 41.8L900.8 159.1L900.7 193.6L797.4 221.1L794.9 324.6L790.3 524.8L583.5 524.5L581.4 467.7"/><circle cx="294.1" cy="524.2" r="12"/><circle cx="239.2" cy="241.2" r="12"/><circle cx="239.2" cy="206.1" r="12"/><circle cx="581.4" cy="467.7" r="12"/></g>
+  <g data-k="m1" class="pm-tr pm-out"><path d="M511.2 677.9L507.6 710.8L369.8 710.6V676.1M370 712V830"/><path d="M397 830V712M397.4 676.2V648.6L542.1 648.7L546.2 678"/></g>
+  <g data-k="m2" class="pm-tr pm-out"><path d="M581.2 678L583.4 710.9L735 711V676.5M735 712V830"/><path d="M763 830V712M762.6 676.6V649L617.9 648.8L616.2 678.1"/></g>
+  <g data-k="warn" class="pm-k pm-warn"><circle cx="419.5" cy="103.4" r="16"/><circle cx="419.5" cy="173.5" r="16"/><path d="M398 82L441 195M441 82L398 195"/></g>
+  <circle data-k="led" class="pm-k pm-led" cx="664.5" cy="208.8" r="17"/>
+
+  <g class="pm-pl">
+    <text data-k="g5" x="855" y="112" class="pf-pin pm-k">GPIO5</text>
+    <text data-k="g6" x="855" y="147" class="pf-pin pm-k">GPIO6</text>
+    <text data-k="g7" x="855" y="182" class="pf-pin pm-k">GPIO7</text>
+    <text data-k="g9" x="855" y="252" class="pf-pin pm-k">GPIO9</text>
+    <text data-k="g10" x="855" y="287" class="pf-pin pm-k">GPIO10</text>
+    <text data-k="g5" x="410" y="606" class="pf-pin pm-k">nSLEEP</text>
+  </g>
+
+  <text x="560" y="215" class="pf-lbl">ESP32-C3</text>
+  <text x="565" y="520" class="pf-lbl">DRV8833</text>
+
+  <g class="pm-tag" data-tag="top" transform="translate(560 30)"><rect y="-30" height="46" rx="23"/><text y="2"></text></g>
+  <g class="pm-tag" data-tag="esp" transform="translate(560 320)"><rect y="-30" height="46" rx="23"/><text y="2"></text></g>
+  <g class="pm-tag" data-tag="drv" transform="translate(565 640)"><rect y="-30" height="46" rx="23"/><text y="2"></text></g>
+  <g class="pm-tag" data-tag="batt" transform="translate(-180 690)"><rect y="-30" height="46" rx="23"/><text y="2"></text></g>
+  <g class="pm-tag" data-tag="warn" transform="translate(230 140)"><rect y="-30" height="46" rx="23"/><text y="2"></text></g>
+  <g class="pm-tag" data-tag="sig" transform="translate(960 400)"><rect y="-30" height="46" rx="23"/><text y="2"></text></g>
+  <g class="pm-tag" data-tag="led" transform="translate(960 215)"><rect y="-30" height="46" rx="23"/><text y="2"></text></g>
+  <g class="pm-tag" data-tag="mot" transform="translate(565 960)"><rect y="-30" height="46" rx="23"/><text y="2"></text></g>
+  <g class="pm-tag" data-tag="r" transform="translate(90 900)"><rect y="-30" height="46" rx="23"/><text y="2"></text></g>
+  <g class="pm-tag" data-tag="l" transform="translate(1045 900)"><rect y="-30" height="46" rx="23"/><text y="2"></text></g>
+</svg>
+</template>
+<div class="reveal">
+<div class="slides">
+
+<!-- ============================================================ -->
+<!-- 3.1 Cold open + intro (3 min)                                 -->
+<!-- ============================================================ -->
+
+<section data-background-color="#000" data-chapter="Intro" data-topic="Start">
+  <img class="plain" src="img/logo-roboktober.png" alt="Roboktober" style="display:block;width:100%;height:600px;max-height:80vh;object-fit:contain;margin:0 auto">
+  <aside class="notes">
+    [3.1 · 0:00–0:30] COLD OPEN — large Roboktober logo on screen. Drive the robot by phone on a bounded surface. Do not push objects off the table or towards the audience.
+    Only then: "Good evening, I'm Rein." → next slide.
+  </aside>
+</section>
+
+<section class="title">
+  <img class="logo plain" src="img/logo-roboktober.png" alt="Roboktober">
+  <h1>From joystick to wheel</h1>
+  <p class="big" style="font-size:1em">From software to motion in a 150-gram robot</p>
+  <p class="muted smaller">Rein Velt · PHP Meetup Groningen · 5 November 2026</p>
+  <p class="center" style="margin-top:.4em"><img class="plain" src="img/hackermakerspacelogo.svg" alt="Hackerspace Drenthe" style="background:#fff;border-radius:12px;padding:6px;height:90px;vertical-align:middle"> <small class="muted">Hackerspace Drenthe</small></p>
+  <aside class="notes">
+    [3.1] Title. Keep it brief.
+  </aside>
+</section>
+
+<section>
+  <p class="kicker">Who am I?</p>
+  <h2>Rein Velt <span class="muted">· software engineer &amp; maker</span></h2>
+  <p class="accent" style="margin-top:-0.4em">Code by day, soldering iron by night.</p>
+  <div class="cols wl">
+    <div>
+    <ul style="font-size:0.85em">
+      <li>Software Engineer at <b>Dawn Technology</b></li>
+      <li>Founder of the <b>Dutch PHP User Group</b> (2001) → <b>PHPBenelux</b></li>
+      <li>Founder of <b>Hackerspace Drenthe</b> (Coevorden)</li>
+      <li class="fragment">From building a PHP community… to building a <em>maker community</em></li>
+      <li class="fragment">This spring (March–May): <b>Mei MeshCore Maand</b> (MeshCore Month in May) · <a href="https://drenthenoodnetwerk.nl">Drenthenoodnetwerk.nl</a></li>
+      <li class="fragment">This summer: <b>Roboktober</b> → website, PCBs, parts, chassis and organising the event</li>
+    </ul>
+    <p class="fragment muted smaller">I'm more of a builder than a talker — so today I'll mostly show you what we built.</p>
+    </div>
+    <figure><img src="img/solderen.jpg" alt="Soldering at the hackerspace"><figcaption>Hackerspace Drenthe, build night</figcaption></figure>
+  </div>
+  <aside class="notes">
+    [3.1 · ±1 min] Mention Dawn only as my employer, not as affiliated with Roboktober.
+    Worked on Mei MeshCore Maand / Drenthenoodnetwerk.nl during March, April and May; then on Roboktober this summer.
+    Hook: "From the first commit in July to the kickoff in October — I'll come back to that at the end."
+    Builder, not talker: say it lightly, keep it short, then move on to the content.
+  </aside>
+</section>
+
+<section>
+  <p class="kicker">Hands up</p>
+  <p class="big">Who has ever soldered anything?</p>
+  <p class="big fragment">Who has programmed an Arduino or ESP32?</p>
+  <aside class="notes">
+    [3.1] Poll: this determines how much explanation the KiCad section (3.5.4) needs. Remember the ratio.
+  </aside>
+</section>
+
+<section>
+  <p class="kicker">The thread through this talk</p>
+  <p class="big">What happens when you push the joystick <span class="accent">forward</span>?</p>
+  <p class="muted rd-sub">We'll follow it together: <b>from smartphone to motor</b>.</p>
+  <div class="rd-stage">
+    <figure class="rd-phone-wrap">
+      <div class="rd-phone"><img src="img/webui-joystick.jpg" alt="WebUI joystick on a smartphone"></div>
+      <figcaption><b>①</b> Phone or remote</figcaption>
+    </figure>
+    <svg class="rd-air" viewBox="0 0 120 200" aria-hidden="true">
+      <path d="M20 70a40 40 0 0 1 0 60"/><path d="M45 50a65 65 0 0 1 0 100"/><path d="M70 30a90 90 0 0 1 0 140"/>
+      <text x="60" y="196">WiFi · ESP-NOW</text>
+    </svg>
+    <div class="pcbm" data-states='[
+      {"k":"wave esp drv","L":200,"R":200,"t":{"esp":"② ESP32-C3 receives","sig":"③ PWM","drv":"④ H-bridge","mot":"⑤ N20 motors turn"}}
+    ]'></div>
+  </div>
+  <aside class="notes">
+    [3.1 · ±3:00] Promise to the audience. Actual WebUI screenshot + actual PCB v4 (KiCad render, underside): ① phone → ② ESP32-C3 → ③ PWM → ④ DRV8833 → ⑤ wheels. Show briefly; revisit in 3.5.1.
+  </aside>
+</section>
+
+<!-- ============================================================ -->
+<!-- 3.2 De link met Wallie (2 min)                                -->
+<!-- ============================================================ -->
+
+<section class="chapter" data-transition="zoom-in fade-out" data-background-gradient="radial-gradient(circle at 80% 20%, #4a2410 0%, #1a1208 45%, #0b0f19 100%)">
+  <p class="num">THE EVENT</p>
+  <h2>Roboktober</h2>
+  <p class="question">How it started — and what exactly is an antweight?</p>
+  <aside class="notes">[3.2 start]</aside>
+</section>
+
+<section>
+  <p class="kicker">How it started</p>
+  <h2>Wallie <span class="muted">(WallieOnline)</span></h2>
+  <div class="cols wr">
+    <figure class="center">
+      <p class="muted smaller">▶ Meet Wallie · 1:24 · in Dutch</p>
+      <video id="wallie-video" controls preload="metadata" playsinline onloadedmetadata="this.muted=false;this.volume=1" aria-label="Wallie introduces himself in Dutch" style="width:100%; max-width:460px; max-height:320px; border-radius:10px">
+        Your browser cannot play this video.
+      </video>
+      <figcaption>Kickoff excerpt · 0:26–1:50 · no subtitles</figcaption>
+    </figure>
+    <ul class="smaller">
+      <li>Has been building <b>antweight</b> robots for many years</li>
+      <li>Team captain of <b>Team Upstart</b> — including Cookiemonster, TLC and Kecil</li>
+      <li>🏆 <b>Many awards</b> — including <b>2nd place</b> at Boeliebots 2026 (Groningen)</li>
+      <li class="fragment">Often visits the hackerspace to make robot parts using the milling machine and CNC equipment</li>
+      <li class="fragment"><b>The idea:</b> organise an event together → get people excited about technology <em>and</em> the hackerspace</li>
+    </ul>
+  </div>
+  <aside class="notes">
+    [3.2 · ±2 min] Briefly introduce Wallie, then play the excerpt using the video controls. From the kickoff recording, 0:26–1:50. Available offline; confirm Wallie's permission. The original audio is Dutch, without subtitles; summarise the introduction in English for the audience.
+  </aside>
+</section>
+
+<!-- ============================================================ -->
+<!-- 3.3 Wat is Roboktober? (2 min)                                -->
+<!-- ============================================================ -->
+
+<section class="level-slide" data-topic="Perspective">
+  <p class="kicker">Today · under the hood</p>
+  <h2>Same robot, <span class="accent">a new perspective</span></h2>
+  <div class="cols top">
+    <div class="card">
+      <h3>At the build nights</h3>
+      <ul>
+        <li>Build and experiment together</li>
+        <li>Children, families and makers</li>
+        <li>Get something moving quickly</li>
+      </ul>
+    </div>
+    <div class="card fragment" style="border-color:var(--robo-orange)">
+      <h3>Today, as developers</h3>
+      <ul>
+        <li>What happens between input and motion?</li>
+        <li><b>Interfaces, code and schematics</b></li>
+        <li>Which software skills transfer?</li>
+      </ul>
+    </div>
+  </div>
+  <p class="big fragment" style="margin-top:1.2em">So today: <span class="accent">code</span> · <span class="accent">PCBs</span> · <span class="accent">schematics</span></p>
+  <p class="bridge fragment">No electronics knowledge needed. Ask if I skip a step.</p>
+  <aside class="notes">
+    [3.3 · ±20 s] Not a difference in ability, but a different perspective. Explain new hardware concepts using familiar software principles.
+  </aside>
+</section>
+
+<section>
+  <p class="kicker">The event</p>
+  <h2>Roboktober</h2>
+  <div class="cols wl top">
+    <div>
+      <p>A month of building, testing and robot action — <b>Hackerspace Drenthe + WallieOnline</b>. Solo or as a team: children, families, colleagues.</p>
+      <table>
+        <tr><th>When</th><th>What</th></tr>
+        <tr><td>7 Oct</td><td>Kickoff: live demo, try driving, start building <small>(<a href="https://www.youtube.com/live/qtz0UkJw4DU">livestream</a>)</small></td></tr>
+        <tr><td>14 Oct</td><td>Antweight building workshop</td></tr>
+        <tr><td>21 Oct</td><td>Finish building and test</td></tr>
+        <tr><td>28 Oct</td><td>Technical inspection + <b>Battle Day</b></td></tr>
+      </table>
+      <p class="smaller muted">3D printers, laser cutters and guidance at the hackerspace.</p>
+    </div>
+    <figure><img src="img/bouwavond.jpg" alt="Build night"><figcaption>Build night at the hackerspace</figcaption></figure>
+  </div>
+  <aside class="notes">
+    [3.3 · ±1 min] Keep it brief. Save the numbers for the retrospective (3.9). No more than 2 minutes including the perspective slide.
+  </aside>
+</section>
+
+<!-- ============================================================ -->
+<!-- 3.4 Wat is een antweight? (2 min)                             -->
+<!-- ============================================================ -->
+
+<section>
+  <p class="kicker">What is an antweight?</p>
+  <div class="cols">
+    <div class="center">
+      <div class="huge">150 g</div>
+      <p>maximum weight, everything included</p>
+      <div class="stats">
+        <div class="stat"><b>~€25</b><span>per kit</span></div>
+        <div class="stat"><b>15 cm</b><span>max. 15×15×15 cm</span></div>
+      </div>
+    </div>
+    <figure><img src="img/robot-pusher.jpg" alt="Antweight pusher"><figcaption>Small, affordable, relatively safe, quick results</figcaption></figure>
+  </div>
+  <aside class="notes">
+    [3.4 · ±1 min] Why antweight: affordable, small, relatively safe; get something driving quickly.
+    Maximum size: fits inside a 15×15×15 cm cube.
+  </aside>
+</section>
+
+<section>
+  <p class="kicker">Our class &amp; safety limits</p>
+  <div class="cols top">
+    <div class="card">
+      <h3>Our robot</h3>
+      <ul>
+        <li><b>Antweight — maximum 150 g</b></li>
+        <li>Battery and electronics count too</li>
+        <li>At Roboktober: push, don't destroy</li>
+        <li>Other events: check their own rules</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Types</h3>
+      <ul>
+        <li>Pushers / wedges</li>
+        <li>Flippers</li>
+        <li>Spinners</li>
+      </ul>
+      <h3 style="margin-top:.5em">Safety</h3>
+      <ul>
+        <li><b>Open arena</b> → <b>no active weapons</b> at Roboktober 2026 (pushers/wedges only)</li>
+        <li>Active weapons require suitable containment, rules and inspection</li>
+        <li>Inspection · <b>failsafe</b></li>
+      </ul>
+    </div>
+  </div>
+  <p class="bridge">Safety isn't just in the arena — it's in the code too. We'll see how.</p>
+  <aside class="notes">
+    [3.4 · ±1 min] Explain only our class. An enclosed arena alone does not authorise active weapons.
+  </aside>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- 3.5.1 Overzicht: volg één commando (2 min)                    -->
+<!-- ============================================================ -->
+
+<section class="chapter" data-transition="zoom-in fade-out" data-background-gradient="radial-gradient(circle at 80% 20%, #4a2410 0%, #1a1208 45%, #0b0f19 100%)">
+  <p class="num">THE ROBOT</p>
+  <h2>Follow one command</h2>
+  <p class="question">From thumb on screen to wheel on floor</p>
+  <aside class="notes">[3.5 · start of the core section, 27 min] First the full route, then controller → firmware with PWM/H-bridge and failsafe → PCB → chassis.</aside>
+</section>
+
+<section class="pcbflow-slide" data-step="0">
+  <p class="kicker">On the robot · what happens when the signal arrives?</p>
+  <div class="pf">
+    <figure class="pf-stage">
+      <svg viewBox="-300 -10 1420 1010" role="img" aria-label="Robot PCB v4 with ESP32-C3, DRV8833, a 1S battery and two N20 motors">
+        <defs>
+          <filter id="pfGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+
+        <image href="img/pcb-v4-onder-met-componenten.png" x="0" y="0" width="1100" height="800"/>
+
+        <!-- accu + kabel naar accu-connector -->
+        <g class="pf-batt">
+          <rect x="-280" y="440" width="200" height="190" rx="18"/>
+          <rect x="-200" y="424" width="40" height="18" rx="4"/>
+          <text x="-180" y="520" class="pf-t">1S LiPo</text>
+          <text x="-180" y="565" class="pf-s">3.7–4.2 V</text>
+        </g>
+        <path class="pf-cable" d="M-80 524H262M-80 552H262"/>
+
+        <!-- motoren + kabels -->
+        <path class="pf-cable" d="M370 712V830M397 712V830M735 712V830M763 712V830"/>
+        <g class="pf-motor"><rect x="329" y="830" width="110" height="60" rx="10"/><text x="384" y="872" class="pf-s">N20</text></g>
+        <g class="pf-motor"><rect x="694" y="830" width="110" height="60" rx="10"/><text x="749" y="872" class="pf-s">N20</text></g>
+        <g transform="translate(240 900)"><g class="pf-wheel"><circle r="62" class="pf-tyre"/><circle r="22" class="pf-hub"/><path d="M0-58V58M-58 0H58M-41-41L41 41M-41 41L41-41" class="pf-spoke"/></g></g>
+        <g transform="translate(895 900)"><g class="pf-wheel"><circle r="62" class="pf-tyre"/><circle r="22" class="pf-hub"/><path d="M0-58V58M-58 0H58M-41-41L41 41M-41 41L41-41" class="pf-spoke"/></g></g>
+
+        <!-- vaste labels -->
+        <text x="560" y="215" class="pf-lbl">ESP32-C3</text>
+        <text x="565" y="520" class="pf-lbl">DRV8833</text>
+
+        <!-- 1 · signaal binnen -->
+        <g class="pf-st pf-st1">
+          <rect x="402" y="86" width="315" height="280" rx="14" class="pf-box"/>
+          <path class="pf-wave" d="M512 60a60 60 0 0 1 90 0M487 35a95 95 0 0 1 140 0M462 10a130 130 0 0 1 190 0"/>
+          <g class="pf-tag pf-tag-sm" transform="translate(462 290)"><rect x="0" y="-30" width="280" height="46" rx="23"/><text x="140" y="2">📶 throttle + steering</text></g>
+        </g>
+
+        <!-- 2 · PWM naar DRV8833 -->
+        <g class="pf-st pf-st2">
+          <!-- echte koperbanen (KiCad, F.Cu) -->
+          <path class="pf-sig0" d="M664.5 173.8H699.5L776.7 172.8L776.5 469.5L651.4 467.7"/>
+          <path class="pf-sig0" d="M664.5 243.9H699.5L756 241.8L755.9 441.9L514.7 441.6L511.4 467.6"/>
+          <path class="pf-sig" d="M664.6 138.7H699.6L797.4 138.3L797.2 497.2L618 497L616.4 467.7"/>
+          <path class="pf-sig" d="M664.5 279H699.5L735.3 283.2L735.2 421.2L480.2 420.9L476.3 467.6"/>
+          <g class="pf-pad pf-pad-sig"><circle cx="664.6" cy="138.7" r="11"/><circle cx="699.6" cy="138.7" r="11"/><circle cx="664.5" cy="279" r="11"/><circle cx="699.5" cy="279" r="11"/><circle cx="616.4" cy="467.7" r="11"/><circle cx="476.3" cy="467.6" r="11"/></g>
+          <text x="855" y="132" class="pf-pin">GPIO6</text>
+          <text x="660" y="400" class="pf-pin">GPIO10</text>
+          <g class="pf-tag" transform="translate(835 410)"><rect x="0" y="-34" width="230" height="52" rx="26"/><text x="115" y="2">PWM ≈ 78 %</text></g>
+        </g>
+
+        <!-- 3 · accu levert stroom -->
+        <g class="pf-st pf-st3">
+          <path class="pf-pwr" d="M-80 524H262"/>
+          <!-- VBAT_RAW: J4 → aan/uit-schakelaar SW1 → VBAT_SW → DRV8833 VM (pin 5) -->
+          <path class="pf-pwr" d="M294.1 524.2H239L239.2 241.2L239.2 206.1L239.3 130.8V41.1L900.9 41.8L900.8 159.1L900.7 193.6L797.4 221.1L794.9 324.6L790.3 524.8L583.5 524.5L581.4 467.7"/>
+          <g class="pf-pad pf-pad-pwr"><circle cx="294.1" cy="524.2" r="12"/><circle cx="239.2" cy="241.2" r="12"/><circle cx="239.2" cy="206.1" r="12"/><circle cx="581.4" cy="467.7" r="12"/></g>
+          <text x="170" y="290" class="pf-pin">ON/OFF</text>
+          <g class="pf-tag pf-tag-red" transform="translate(-270 400)"><rect x="0" y="-34" width="180" height="52" rx="26"/><text x="90" y="2">⚡ 3.7 V</text></g>
+        </g>
+
+        <!-- 4 · DRV8833 schakelt naar motoren -->
+        <g class="pf-st pf-st4">
+          <rect x="458" y="452" width="214" height="244" rx="12" class="pf-box"/>
+          <!-- motoruitgangen: A-draad heen, B-draad terug -->
+          <path class="pf-out" d="M511.2 677.9L507.6 710.8L369.8 710.6V676.1M370 712V830"/>
+          <path class="pf-out" d="M397 830V712M397.4 676.2V648.6L542.1 648.7L546.2 678"/>
+          <path class="pf-out" d="M581.2 678L583.4 710.9L735 711V676.5M735 712V830"/>
+          <path class="pf-out" d="M763 830V712M762.6 676.6V649L617.9 648.8L616.2 678.1"/>
+          <g class="pf-tag" transform="translate(830 760)"><rect x="0" y="-34" width="200" height="52" rx="26"/><text x="100" y="2">on / off</text></g>
+        </g>
+      </svg>
+      <figcaption>KiCad 3D render · PCB v4, underside</figcaption>
+    </figure>
+
+    <ol class="df-rows pf-rows">
+      <li class="fragment pf-step"><span class="ft">📶 Signal arrives</span><span class="ex">ESP32-C3 receives <b>throttle + steering</b></span></li>
+      <li class="fragment pf-step"><span class="ft">🧠 ESP controls</span><span class="ex">motor command <b>200</b> → PWM <b>≈ 78 %</b></span></li>
+      <li class="fragment pf-step"><span class="ft">🔋 Battery supplies power</span><span class="ex">1S LiPo → DRV8833</span></li>
+      <li class="fragment pf-step"><span class="ft">⚡ DRV8833 switches</span><span class="ex">switches <b>battery voltage</b> to the motors</span></li>
+      <li class="fragment pf-step"><span class="ft">🛞 Wheels turn</span><span class="ex">equal commands on both sides → (roughly) <b>straight ahead</b></span></li>
+    </ol>
+  </div>
+  <aside class="notes">
+    [3.5.1 · 2 min] Click 5×. Overview, no need to memorise pins yet. Worked example for the rest of the talk: AFTER scaling, throttle 200, steering 0 → left 200, right 200 → approximately 78% duty cycle.
+    Joystick values in the RC protocol and motor commands use different scales. Explain the conversion at the receiver.
+    The ESP supplies control signals; the battery supplies motor current through the DRV8833.
+    All lines are actual copper traces from KiCad (pads/tracks mapped onto the render, ±1 px).
+    Bright blue = GPIO6 + GPIO10 (PWM), dim blue = GPIO7 + GPIO9 (held at 0). Red = battery → on/off switch → around the board edge → DRV8833 VM.
+    Yellow = motor outputs M1A/M1B and M2A/M2B to the JST connectors. Failsafe: no packet for 500 ms → everything 0.
+  </aside>
+</section>
+
+<!-- ============================================================ -->
+<!-- 3.5.2 RC-controller: web én ESP32 (5 min)                     -->
+<!-- ============================================================ -->
+
+<section class="chapter" data-transition="zoom-in fade-out" data-background-gradient="radial-gradient(circle at 80% 20%, #4a2410 0%, #1a1208 45%, #0b0f19 100%)">
+  <p class="num">STEP 1 · REMOTE CONTROL · 5 MIN</p>
+  <h2>The controller</h2>
+  <p class="question">How does a touch on your screen become a command?</p>
+  <aside class="notes">[3.5.2 start] Familiar territory: phone, browser, WiFi.</aside>
+</section>
+
+<section>
+  <p class="kicker">Two controllers, one goal</p>
+  <div class="flow" data-hl="1,2"></div>
+  <div class="cols top">
+    <div class="card"><h3>📱 Phone (WebUI)</h3><ul><li>The robot creates its own WiFi network</li><li>Browser, no app</li><li>WebSocket</li></ul></div>
+    <div class="card"><h3>🎮 Dedicated remote</h3><ul><li>Second ESP32 + analogue stick → <b>ESP-NOW</b></li><li>Or a regular RC transmitter + receiver → <b>CPPM</b></li><li>Two separate routes, same result</li></ul></div>
+  </div>
+  <p class="center">Both deliver the same thing: <b>throttle + steering</b></p>
+  <p class="bridge">Start with the phone; for the code, we'll then use the public ESP-NOW version.</p>
+  <aside class="notes">[3.5.2 · 0–1.5 min] Two ways to drive: with your phone or with a home-built remote.</aside>
+</section>
+
+<section>
+  <p class="kicker">WebUI · the robot as a WiFi access point</p>
+  <div class="cols wr">
+    <div class="cols" style="gap:.5em">
+      <img class="phone" src="img/webui-joystick.jpg" alt="WebUI joystick mode">
+      <img class="phone" src="img/webui-tank.jpg" alt="WebUI tank mode">
+    </div>
+    <ul class="smaller">
+      <li>WiFi <code>worc-424242</code> · password <code>worc1234</code></li>
+      <li>Open <code>http://192.168.4.1</code> in your browser</li>
+      <li>No app, router or transmitter needed</li>
+      <li><b>WebSocket:</b> one open connection, rather than reconnecting → low latency</li>
+      <li>Choose: <b>joystick</b> or <b>tank</b> (two sliders)</li>
+      <li>Mix throttle and steering, reverse direction: change settings, not code</li>
+      <li class="muted">Wallie's firmware (with our fix) — source code to follow in Wallie's repo</li>
+    </ul>
+  </div>
+  <p class="bridge">Just like your home router's settings page.</p>
+  <aside class="notes">
+    [3.5.2 · 1.5–3 min] NO code on this slide: the WebUI source is not public yet. Do not promise a date.
+    Same mixing/motor code as the ESP-NOW firmware, just a different transport.
+  </aside>
+</section>
+
+<section class="espnow-code">
+  <p class="kicker">Dedicated remote · ESP32 → ESP-NOW</p>
+  <p class="smaller"><b>One shared format</b> — the same structure in both programs:</p>
+<pre class="struct-pre"><code class="language-cpp" data-trim>
+typedef struct rc_data_t {
+  uint16_t gAIL, gELE, gTHR, gRUD, gAUX1, gAUX2, gAUX3, gAUX4;  // 8 × 2 = 16 bytes
+} rc_data_t;
+rc_data_t gEspn;
+</code></pre>
+  <div class="cols top">
+    <div class="fragment">
+      <p class="smaller"><b>① Transmitter</b> fills and sends it (every 20 ms)</p>
+<pre class="xfer"><code class="language-cpp" data-trim>
+// Abridged: fill the channels, then send.
+if (gStick[AIL]) gEspn.gAIL = gStick[AIL]; // steering
+if (gStick[ELE]) gEspn.gELE = gStick[ELE]; // throttle
+// … other channels …
+esp_now_send(0, (uint8_t *) &amp;gEspn, sizeof(gEspn));
+</code></pre>
+      <p class="src"><a href="https://github.com/wallieonline/worc-remote-controller-esp32/blob/e8aa232700c6/worc-remote-esp32/worc-remote-esp32.ino#L221-L235">worc-remote-esp32.ino#L221–235</a></p>
+    </div>
+    <div class="fragment">
+      <p class="smaller"><b>② Receiver</b> checks the length and reads the structure</p>
+<pre class="xfer"><code class="language-cpp" data-trim>
+void OnDataRecv(const uint8_t *mac,
+                const uint8_t *incomingData, int len) {
+  if (len == sizeof(gEspn)) {
+    memcpy(&amp;gEspn, incomingData, sizeof(gEspn));
+    // … validate and scale channel values …
+    lastCommandTime = millis();
+  }
+}
+</code></pre>
+      <p class="src"><a href="https://github.com/wallieonline/worc-robot-controller-esp32c3/blob/fb3afa886117/worc-esp32c3-drv8833-espnow/worc-esp32c3-drv8833-espnow.ino#L129-L150">worc-esp32c3-drv8833-espnow.ino#L129–150</a></p>
+    </div>
+  </div>
+  <p class="bridge fragment">Like pack()/unpack(): 16 raw bytes. Transmitter and receiver must use exactly <b>the same format</b>.</p>
+  <aside class="notes">
+    [3.5.2 · final 2 min] Public ESP-NOW code from here on. The WebUI uses a different transport; mixing and motor code are the same.
+    The struct is written as 8 separate lines in both repos; condensed to one here. Comments (steering/throttle, values) are mine.
+    Click 1: transmitter (fill gEspn → esp_now_send). Click 2: receiver (memcpy back into the same struct). Click 3: conclusion.
+    For PHP developers: like pack()/unpack() with the same format at both ends — different structs = nonsense values.
+    PHYSICAL MOMENT: pass the remote around.
+  </aside>
+</section>
+
+
+<!-- ============================================================ -->
+<!-- 3.5.3 Robot-firmware, motorsturing en failsafe (12 min)        -->
+<!-- ============================================================ -->
+
+<section class="chapter" data-transition="zoom-in fade-out" data-background-gradient="radial-gradient(circle at 80% 20%, #4a2410 0%, #1a1208 45%, #0b0f19 100%)">
+  <p class="num">STEPS 2–4 · FIRMWARE AND MOTOR CONTROL · 12 MIN</p>
+  <h2>The firmware</h2>
+  <p class="question">From an incoming message to a turning motor</p>
+  <aside class="notes">[3.5.3 start]</aside>
+</section>
+
+<section>
+  <p class="kicker">Flashing from the browser</p>
+  <div class="cols wl">
+    <ul>
+      <li><b>Web flasher</b> (Web Serial): plug in USB, press a button, done</li>
+      <li>No toolchain, no Arduino IDE</li>
+      <li>Chromium browsers only</li>
+      <li class="fragment">Pitfalls: <b>charge-only USB cable</b>, missing driver</li>
+    </ul>
+    <div class="card"><h3>From browser to chip</h3><p>Browser → USB → ESP32</p><p class="smaller">Web Serial gives the browser access to the serial connection.</p></div>
+  </div>
+  <p class="src">Inspiration: <a href="https://wallieonline.nl/blogs/worc-robot-controller-nl.html">wallieonline.nl/blogs/worc-robot-controller-nl.html</a></p>
+  <p class="bridge">A firmware update like your printer or router — but through the browser.</p>
+  <p class="big fragment" style="font-size:1.1em">The software is now on the chip. What does it do with a command?</p>
+  <aside class="notes">[3.5.3 start] First: how does the firmware get onto the chip? Then: what does it contain?</aside>
+</section>
+
+
+<section>
+  <p class="kicker">Scaling + deadband · calm around the centre</p>
+<pre><code class="language-cpp" data-trim data-line-numbers="1|2-3|4-6">
+if (gEspn.gELE &gt; unThrottleMin &amp;&amp; gEspn.gELE &lt; unThrottleMax) {
+  gThrottle = map(gEspn.gELE, unThrottleMin, unThrottleMax, -255, 255);
+  gThrottle = constrain(gThrottle, -255, 255);
+  if (abs(gThrottle) &lt;= RC_DEADBAND) {
+    gThrottle = 0;
+  }
+}
+</code></pre>
+  <div class="db-box">
+    <div class="db-bar"><span class="db-zone">0</span><i>−255</i><i>−40</i><i>+40</i><i>+255</i></div>
+    <p><strong class="accent">Deadband</strong> (<code>RC_DEADBAND 40</code>): a resting joystick is never exactly at 0 — there's always some noise and play. Everything from −40 to +40 becomes <code>0</code>, otherwise the robot creeps away while you do nothing.</p>
+  </div>
+  <p class="src"><a href="https://github.com/wallieonline/worc-robot-controller-esp32c3/blob/fb3afa886117/worc-esp32c3-drv8833-espnow/worc-esp32c3-drv8833-espnow.ino#L129-L150"><code>OnDataRecv()</code> L129–150</a> (abridged)</p>
+  <aside class="notes">
+    [3.5.3 · ±1 min] RC channel values around 1500 are not the same as motor commands around 0. The configured limits determine the conversion to −255…255.
+    From now on use throttle 200 and steering 0, AFTER scaling and deadband. The length check was on the previous code slide.
+  </aside>
+</section>
+
+<section>
+  <p class="kicker">Mixing</p>
+  <div class="cols mix-cols">
+    <div>
+<pre><code class="language-cpp" data-trim data-line-numbers="1-2|4-5" data-fragment-index="3">
+gMotorLeft = constrain(gThrottle + gSteering, -255, 255);
+gMotorRight = constrain(gThrottle - gSteering, -255, 255);
+
+if (gInvertLeft) gMotorLeft = -gMotorLeft;
+if (gInvertRight) gMotorRight = -gMotorRight;
+</code></pre>
+      <table class="mix-table">
+        <tr><th>Throttle</th><th>Steering</th><th>L</th><th>R</th></tr>
+        <tr class="fragment" data-fragment-index="0"><td>200</td><td>0</td><td>200</td><td>200</td></tr>
+        <tr class="fragment" data-fragment-index="1"><td>200</td><td>100</td><td>255</td><td>100</td></tr>
+        <tr class="fragment" data-fragment-index="2"><td>0</td><td>150</td><td>150</td><td>−150</td></tr>
+      </table>
+    </div>
+    <div class="pcbm" data-states='[
+        {},
+        {"L":200,"R":200,"t":{"l":"L 200","r":"R 200","top":"straight ahead"}},
+        {"L":255,"R":100,"t":{"l":"L 255","r":"R 100","top":"turn right"}},
+        {"L":150,"R":-150,"t":{"l":"L 150","r":"R −150","top":"turn on the spot"}}
+      ]'></div>
+  </div>
+  <p class="src"><a href="https://github.com/wallieonline/worc-robot-controller-esp32c3/blob/fb3afa886117/worc-esp32c3-drv8833-espnow/worc-esp32c3-drv8833-espnow.ino#L93-L105"><code>updateMotors()</code> L93–105</a> · abridged, mixer enabled</p>
+  <p class="bridge">Steer like a tank or excavator: different left/right speeds = turning.</p>
+  <aside class="notes">
+    [3.5.3 · ±2 min] Click per table row: wheels respond to the displayed command; this is an illustration, not an RPM prediction (L = motor A, GPIO6/7 → J6; R = motor B, GPIO9/10 → J5; underside, so mirrored).
+    Negative = the other pin receives PWM (GPIO9 rather than GPIO10) → the wheel reverses. Then 2 more code steps.
+    Mixer off = tank mode in the WebUI (one motor per slider).
+    Invert: motor soldered the wrong way round? Change a setting, not code. Settings are stored in EEPROM.
+  </aside>
+</section>
+
+<section>
+  <p class="kicker">PWM: a dimmer</p>
+  <div class="cols mix-cols">
+    <div>
+    <div class="pwm">
+        <b>25%</b><div class="pwm-wave" data-duty="25"></div>
+        <b>50%</b><div class="pwm-wave" data-duty="50"></div>
+        <b>90%</b><div class="pwm-wave" data-duty="90"></div>
+      </div>
+<pre><code class="language-cpp" data-trim data-line-numbers="1-3|4-6|7-9" data-ln-start-from="106">
+  if (gMotorLeft &gt; 0) { //DIRECTION_FORWARD
+    ledcWrite(0, LOW); //IN1A_OUT_PIN
+    ledcWrite(1, abs(gMotorLeft)); //IN2A_OUT_PIN
+  } else if (gMotorLeft &lt; 0) { //DIRECTION_REVERSE
+    ledcWrite(0, abs(gMotorLeft)); //IN1A_OUT_PIN
+    ledcWrite(1, LOW); //IN2A_OUT_PIN
+  } else { //DIRECTION_STOP
+    ledcWrite(0, LOW); //IN1A_OUT_PIN
+    ledcWrite(1, LOW); //IN2A_OUT_PIN
+  }
+</code></pre>
+    </div>
+    <div class="pcbm" data-base="dimsig" data-states='[
+      {"L":200,"t":{"top":"forward: GPIO6 = PWM","l":"L 200"}},
+      {"L":-200,"t":{"top":"reverse: GPIO7 = PWM","l":"L −200"}},
+      {"t":{"top":"stop: both 0"}}
+    ]'></div>
+  </div>
+  <p class="center smaller">5000 Hz, 8 bit: <code>0</code> = off · <code>200</code> ≈ 78% on · <code>255</code> = always on</p>
+  <p class="src"><a href="https://github.com/wallieonline/worc-robot-controller-esp32c3/blob/fb3afa886117/worc-esp32c3-drv8833-espnow/worc-esp32c3-drv8833-espnow.ino#L106-L125"><code>ledcWrite()</code> L106–125</a> · same for the right motor on channels 2/3</p>
+  <aside class="notes">[3.5.3 · ±2 min] Very fast on/off switching: "on for x% of the time". Direction = which pin gets PWM: forward GPIO6 (IN2A), reverse GPIO7 (IN1A), stop both 0. Duty cycle is not the same as speed or power; load and motor characteristics matter.</aside>
+</section>
+
+<section>
+  <p class="kicker">H-bridge: four switches</p>
+  <div class="hb">
+    <figure><div class="hbridge" data-closed="A,D" data-dir="→"></div><figcaption>Forward: A + D closed</figcaption></figure>
+    <figure><div class="hbridge" data-closed="B,C" data-dir="←"></div><figcaption>Reverse: B + C closed</figcaption></figure>
+  </div>
+  <p class="center smaller">DRV8833 = two H-bridges in one chip. IN1/IN2 determine which switches are closed.</p>
+  <p class="bridge">The H-bridge selects current direction; PWM sets how much of the time the motor is driven.</p>
+  <aside class="notes">[3.5.3] Never A + C at the same time: short circuit. That's why the chip handles switching for you.</aside>
+</section>
+
+<section data-topic="Failsafe">
+  <p class="kicker">Failsafe · no command is a state too</p>
+  <div class="cols mix-cols">
+<pre class="fs-pre"><code class="language-cpp" data-trim data-line-numbers="1|2-3|4|7">
+if (millis() - lastCommandTime &gt; COMMAND_TIMEOUT) {
+  gThrottle = 0;
+  gSteering = 0;
+  digitalWrite(FLED_OUT_PIN, (millis() / 250) % 2);
+}
+
+updateMotors();
+</code></pre>
+    <div>
+      <div class="pcbm" data-states='[
+        {"k":"wave led","L":200,"R":200,"t":{"top":"packet < 500 ms ago","l":"L 200","r":"R 200"}},
+        {"k":"led","t":{"top":"!> 500 ms no packet → throttle 0"}},
+        {"k":"led","c":"ledblink","t":{"top":"!> 500 ms no packet","led":"!LED blinks"}},
+        {"k":"led","c":"ledblink","t":{"top":"!> 500 ms no packet","led":"!LED blinks","mot":"motors: 0"}}
+      ]'></div>
+      <p class="center fs-live"><b>500 ms</b> no packet → stop <span class="fragment">· 🔴 LIVE: remote off</span></p>
+    </div>
+  </div>
+  <p class="src"><a href="https://github.com/wallieonline/worc-robot-controller-esp32c3/blob/fb3afa886117/worc-esp32c3-drv8833-espnow/worc-esp32c3-drv8833-espnow.ino#L191-L205"><code>loop()</code> L191–205</a> · simplified, LED/logging abridged · <code>COMMAND_TIMEOUT = 500</code></p>
+  <p class="bridge">Like a heartbeat timeout: without fresh commands, enter a safe state.</p>
+  <aside class="notes">
+    [3.5.3 · final 2 min of the firmware section] What happens when input stops? Packets → wheels turn → &gt; 500 ms of silence → throttle/steering 0 → motors stop.
+    DEMO (the only failsafe demo): remote off (or phone WiFi off for WebUI) → robot stops, LED blinks.
+    Test with the wheels lifted! Our v2 also sets nSLEEP LOW (motor driver actually disabled).
+  </aside>
+</section>
+
+<!-- ============================================================ -->
+<!-- 3.5.4 Printplaat en validatie (4 min)                         -->
+<!-- ============================================================ -->
+
+<section class="chapter" data-transition="zoom-in fade-out" data-background-gradient="radial-gradient(circle at 80% 20%, #4a2410 0%, #1a1208 45%, #0b0f19 100%)">
+  <p class="num">IMPLEMENTATION · PCB · 4 MIN</p>
+  <h2>The PCB</h2>
+  <p class="question">The motor turns. How do we connect the parts reliably?</p>
+  <aside class="notes">[3.5.4 start] From operation to implementation. PCB ±4 min; pins are an interface, not something to memorise.</aside>
+</section>
+
+<section>
+  <p class="kicker">Components &amp; power</p>
+  <div class="cols wl pm-cols">
+    <div class="pcbm" data-states='[
+      {},
+      {"k":"esp","t":{"esp":"WiFi + ESP-NOW"}},
+      {"k":"esp drv","t":{"esp":"WiFi + ESP-NOW","drv":"2× H-bridge"}},
+      {"k":"esp drv mot","t":{"esp":"WiFi + ESP-NOW","drv":"2× H-bridge","mot":"6 V · 50:1"}},
+      {"k":"esp drv mot batt pwr","t":{"esp":"WiFi + ESP-NOW","drv":"2× H-bridge","mot":"6 V · 50:1","batt":"!power → DRV"}},
+      {"k":"warn","t":{"warn":"!5V ↛ 3V3"}}
+    ]'></div>
+    <ul class="smaller">
+      <li class="fragment"><b>ESP32-C3 SuperMini</b> — WiFi + ESP-NOW</li>
+      <li class="fragment"><b>DRV8833</b> — dual H-bridge</li>
+      <li class="fragment"><b>2× N20</b> 6 V, 50:1</li>
+      <li class="fragment"><b>LiPo 1S</b> → on/off → DRV8833; optional 2S via a 5V regulator → <code>ESP_5V_IN</code></li>
+      <li class="fragment">⚠ Never bridge <code>VIN → 3.3V</code></li>
+    </ul>
+  </div>
+  <aside class="notes">[3.5.4 · 0–1 min] Click 5×: ESP → DRV8833 → motors → battery (red trace = battery → on/off switch → DRV8833) → warning. A bypass to 3.3V is forbidden because it would apply battery voltage to the ESP32. Underside render, so mirrored.</aside>
+</section>
+
+<section>
+  <p class="kicker">Pin contract · the interface between code and PCB</p>
+  <div class="cols wr pm-cols">
+    <div>
+      <table class="pm-table">
+        <tr><th>GPIO</th><th>Function</th><th>Firmware</th></tr>
+        <tr class="fragment"><td>5</td><td>DRV8833 <code>nSLEEP</code></td><td><code>STBY_OUT_PIN</code></td></tr>
+        <tr class="fragment"><td>6 / 7</td><td>Left motor IN2/IN1</td><td><code>IN2A</code> / <code>IN1A</code></td></tr>
+        <tr class="fragment"><td>9 / 10</td><td>Right motor IN1/IN2</td><td><code>IN1B</code> / <code>IN2B</code></td></tr>
+        <tr class="fragment"><td>8</td><td>Failsafe-LED</td><td><code>FLED_OUT_PIN</code></td></tr>
+      </table>
+    </div>
+    <div class="pcbm" data-base="dimsig" data-states='[
+      {},
+      {"k":"g5"},
+      {"k":"g6 g7 m2","t":{"l":"left"}},
+      {"k":"g9 g10 m1","t":{"r":"right"}},
+      {"k":"led","t":{"led":"GPIO8 · LED"}}
+    ]'></div>
+  </div>
+  <p class="bridge">You don't need to memorise pin numbers. Schematic and firmware must follow the same contract.</p>
+  <aside class="notes">[3.5.4 · ±1 min] Click per row, no register lesson. The corresponding copper trace lights up. If short on time, use just the left motor as an example.</aside>
+</section>
+
+<section>
+  <p class="kicker">KiCad · one shot</p>
+  <div class="cols">
+    <div>
+      <p class="big" style="font-size:1.2em">My first ever PCB — and it had to <span class="accent">work first time</span>.</p>
+      <div class="stats"><div class="stat"><b>150</b><span>bare PCBs produced</span></div><div class="stat"><b>78×56</b><span>mm</span></div></div>
+      <ul class="smaller">
+        <li>Revisions <b>v2 → v3 → v4</b> before production</li>
+        <li>v2: prototype · v3: power issues fixed · v4: production version</li>
+        <li>🔁 <b>Pass around:</b> bare + populated PCB</li>
+      </ul>
+    </div>
+    <div class="cols" style="gap:.4em">
+      <figure><img src="img/pcb-v4-front-kaal.png" alt="Bare PCB v4 front"><figcaption>v4 front</figcaption></figure>
+      <figure><img src="img/pcb-v4-achter-kaal.png" alt="Bare PCB v4 back"><figcaption>v4 back</figcaption></figure>
+    </div>
+  </div>
+  <p class="bridge">Proofread before printing: one mistake becomes 150 copies.</p>
+  <aside class="notes">
+    [3.5.4 · ±1 min] The production run made advance checks important. Wallie found power issues; revisions happened before production. Show bare and populated boards.
+  </aside>
+</section>
+
+<section class="drc-slide">
+  <p class="kicker">Validation · automated checks and human review</p>
+  <div class="cols val-cols">
+    <ol class="pdca">
+      <li class="fragment" data-fragment-index="0"><b>Plan</b><span>pin contract in Markdown: which pin → which net</span></li>
+      <li class="fragment" data-fragment-index="1"><b>Do</b><span>AI + I update the schematic &amp; layout in KiCad</span></li>
+      <li class="fragment" data-fragment-index="2"><b>Check</b><span>check design rules + compare connections with the pin contract</span></li>
+      <li class="fragment" data-fragment-index="5"><b>Act</b><span>error? fix it → new revision <small>(v2 → v3 → v4)</small></span></li>
+    </ol>
+    <div>
+      <figure class="drc-board">
+        <svg viewBox="0 0 1100 800" role="img" aria-label="Illustration of PCB DRC checks: copper clearance, trace width and connections">
+          <image href="img/pcb-v4-onder-met-componenten.png" width="1100" height="800"/>
+          <g class="fragment drc-check" data-fragment-index="2">
+            <rect class="drc-scan" x="180" y="40" width="740" height="12" rx="6"/>
+            <circle class="drc-focus" cx="775" cy="300" r="95"/>
+            <path class="drc-measure" d="M756 300H797M756 280V320M797 280V320"/>
+            <rect class="drc-label" x="440" y="110" width="460" height="70" rx="16"/>
+            <text x="670" y="157">1 · Copper clearance</text>
+          </g>
+          <g class="fragment drc-check" data-fragment-index="3">
+            <circle class="drc-focus" cx="865" cy="440" r="90"/>
+            <path class="drc-measure" d="M840 420H890M840 400V440M890 400V440"/>
+            <rect class="drc-label" x="440" y="535" width="460" height="70" rx="16"/>
+            <text x="670" y="582">2 · Trace width</text>
+          </g>
+          <g class="fragment drc-check" data-fragment-index="4">
+            <path class="drc-route" d="M664.6 138.7H699.6L797.4 138.3L797.2 497.2L618 497L616.4 467.7"/>
+            <circle class="drc-pad" cx="664.6" cy="138.7" r="20"/>
+            <circle class="drc-pad" cx="616.4" cy="467.7" r="20"/>
+            <rect class="drc-label" x="190" y="620" width="710" height="70" rx="16"/>
+            <text x="545" y="667">3 · Unconnected pads</text>
+          </g>
+        </svg>
+        <figcaption>PCB v4 · illustrative checks, not live KiCad output or measurements</figcaption>
+      </figure>
+      <div class="term fragment drc-result" data-fragment-index="5">$ kicad-cli pcb drc …
+<span class="ok">0 DRC violations · 0 unconnected pads</span>
+<span class="warn">Separate ERC: explain or resolve 3 messages</span></div>
+      <div class="card val-human fragment" data-fragment-index="6"><b>+ human:</b> check the pin contract, review by <b>Wallie</b> and physical testing</div>
+    </div>
+  </div>
+  <div class="fragment val-done center" data-fragment-index="7">
+    <p style="margin:0">25 of the 30 assembled PCBs work. <span class="accent">What a relief.</span></p>
+    <p class="smaller" style="margin:.1em 0 0;font-size:.6em">Failures: some unusual ESP32s with poor WiFi · some assembly errors</p>
+  </div>
+  <aside class="notes">[3.5.4 · ±1 min] For developers: automated checks like CI. PDCA for each revision.
+    Click: Plan → Do → copper clearance → trace width → unconnected pads → result/Act → human review → production.
+    Animated overlays are teaching markers on the PCB, not measured distances or a KiCad recording. The highlighted route is an existing GPIO6 connection.
+    ERC checks electrical rules in the schematic; DRC checks design rules on the board. Compare with lint/static analysis, not proof that the circuit works.
+    Also compare connections with the pin contract, get human review and run physical tests. AI review is not a deterministic test.
+    Be honest: ERC reports 3 messages (unused alternative connector J4_ALT, label REG_5V_OUT) — intentional, but you must be able to explain them.
+    Wallie provides human review. Pause after "What a relief."
+    150 bare PCBs produced (without components); 30 assembled so far, of which 25 work. The 5 failures: some have unusual ESP32s with poor WiFi, others were assembled incorrectly. No design fault found. The comparison: green DRC does not guarantee successful manufacturing and assembly.</aside>
+</section>
+
+<section class="chapter" data-transition="zoom-in fade-out" data-background-gradient="radial-gradient(circle at 80% 20%, #4a2410 0%, #1a1208 45%, #0b0f19 100%)">
+  <p class="num">HARDWARE · 3D PRINTING · 4 MIN</p>
+  <h2>The chassis</h2>
+  <p class="question">Loose parts aren't a robot yet. What do we put them in?</p>
+  <aside class="notes">[3.5.5 · chassis, 4 min total] OpenSCAD: the chassis is a parametric script. About two minutes for the design gallery and lessons; the rest for context, download link and physical variants.</aside>
+</section>
+
+<section>
+  <p class="kicker">Why OpenSCAD?</p>
+  <p class="big" style="font-size:1.1em">A 3D model as a <span class="accent">text file</span> — program it instead of clicking.</p>
+  <div class="cols scad-vs">
+    <div class="card scad-old"><h3>Visual CAD design</h3><ul>
+      <li>Draw and edit shapes directly</li>
+      <li>Can be parametric and automated too</li>
+      <li>Excellent tools for 3D design</li>
+      <li>For me: less direct text-based diffs</li>
+    </ul></div>
+    <div class="card good"><h3>OpenSCAD</h3><ul>
+      <li class="fragment" data-fragment-index="0"><b>Git diffs</b>: see exactly what changed</li>
+      <li class="fragment" data-fragment-index="1"><b>Parameters</b>: <code>pcb_clear = 0.3;</code> → everything adjusts</li>
+      <li class="fragment" data-fragment-index="2"><b>Asserts</b>: check explicit dimensional constraints</li>
+      <li class="fragment" data-fragment-index="3"><b>AI can read and write it</b>: all designs together, ±9,700 lines of text</li>
+    </ul></div>
+  </div>
+  <div class="term fragment scad-diff" data-fragment-index="0"><span class="dim">$ git diff antweight_chassis.scad</span>
+<span class="del">- pcb_clear = 0.2;</span>
+<span class="ok">+ pcb_clear = 0.3;   // PCB fit was too tight</span></div>
+  <p class="bridge">For developers: it's just code — version control, review and tests work here too.</p>
+  <p class="src">Free and open source · Windows, macOS and Linux · Download: <a href="https://openscad.org/downloads.html">openscad.org/downloads.html</a></p>
+  <aside class="notes">[3.5.5 · chassis] Not a competition between CAD tools: a text model helps my workflow with diffs, review and AI assistance. Asserts guard only the constraints you write down; test prints are still needed.</aside>
+</section>
+
+<section class="scad-walkthrough">
+  <p class="kicker">Chassis as code · OpenSCAD</p>
+  <div class="scad-stage">
+    <div class="scad-intro">
+      <h2>One project, many different designs</h2>
+      <p>10 design families · 24 images · a new code insight with every click.</p>
+      <img src="img/chassis-v04-openscad.png" alt="Example of the final chassis">
+      <p class="smaller">Click to begin →</p>
+    </div>
+  </div>
+  <aside class="notes">
+    [3.5.5 · design gallery, about two minutes] 10 clicks, one per design family; all 24 images remain visible within their family. Versions appear side by side with the correct model name and source link. The Nordic Racer series is deliberately omitted here.
+    Mesh conversions and exports of identical geometry are not additional designs; disc_geometry.scad is a helper library.
+    Different design lines, not one linear version history. Don't read every detail: name the families and click briskly through the versions.
+    Renders are not to the same scale; prototype geometry does not prove fit or function.
+    One lesson per family: reuse a mesh → parameters → subtract and revolve a profile → derive dimensions → loop → include → combinations of loops → STL import → assert → assembly. Source excerpts are selected and rewrapped, not standalone scripts. Mostly Harmless is explicitly an import example.
+    Allow about two minutes for the sequence with code explanations; keep other chassis context brief.
+    Explicitly mention for the Disc Spinner family: design studies, not allowed at Roboktober 2026 — no active weapons there, pushers/wedges only.
+  </aside>
+</section>
+
+<section>
+  <p class="kicker">Same PCB, different chassis</p>
+  <div class="cols c3">
+    <figure><img src="img/chassis-render.png" alt="Basic chassis"><figcaption>v0.2 basic — "hello world"</figcaption></figure>
+    <figure><img src="img/chassis-v04-openscad.png" alt="Chassis v0.4 integrated"><figcaption>v0.4 integrated — integrated enclosure</figcaption></figure>
+    <figure><img src="img/racer-nordic.png" alt="Racer nordic"><figcaption>Racer nordic — multicolour design</figcaption></figure>
+  </div>
+  <p class="center">Shared PCB outline, holes, motor and wheel dimensions → every chassis fits the same board.</p>
+  <p class="bridge">A standard interface, like LEGO studs.</p>
+  <aside class="notes">
+    [3.5.5 · end of chassis section] PHYSICAL MOMENT: show the printed variants. Don't wait until everything has been passed around.
+    Wrap up: from command to motion, with safe stopping in the firmware; now everything also fits inside a robot. → audience drives.
+  </aside>
+</section>
+
+
+
+
+
+<section class="chapter" data-transition="zoom-in fade-out" data-background-gradient="radial-gradient(circle at 80% 20%, #4a2410 0%, #1a1208 45%, #0b0f19 100%)">
+  <p class="num">AFTER THE TECH</p>
+  <h2>Demo &amp; journey</h2>
+  <p class="question">Try driving — and how did this project come together?</p>
+  <aside class="notes">[3.6 start]</aside>
+</section>
+
+<section>
+  <p class="kicker">Now you know what happens</p>
+  <div class="flow" data-hl="1,2,3,4,5"></div>
+  <p class="big center">Who wants to drive?</p>
+  <aside class="notes">[3.5 end · ±36 min] Repeat the route in one sentence: input → processing → PWM → H-bridge → motor. Then put it into practice.</aside>
+</section>
+
+<!-- ============================================================ -->
+<!-- 3.6 Live demo (4 min)                                         -->
+<!-- ============================================================ -->
+
+<section>
+  <p class="kicker">Live demo · you drive</p>
+  <div class="cols wr">
+    <img class="phone" src="img/webui-joystick.jpg" alt="WebUI">
+    <ol>
+      <li>Select your demo robot's WiFi network</li>
+      <li>Use the password on the card next to the robot</li>
+      <li>Browser: <code>http://192.168.4.1</code></li>
+      <li>Pushing match! 🥊</li>
+    </ol>
+  </div>
+  <p class="failsafe-line fragment"><b>One driver per robot.</b> Switch only when the robot is stationary.</p>
+  <aside class="notes">
+    [3.6 · 4 min] Two robots, one driver per robot. Failsafe already demonstrated: here, just drive and apply what we've learned.
+    Prepare cards with the actual configured SSID and password; test connections. Bounded driving area, no active weapons.
+  </aside>
+</section>
+
+<!-- ============================================================ -->
+<!-- 3.7 Zijpad: de website (2 min)                                -->
+<!-- ============================================================ -->
+
+<section data-topic="Detour: the PHP part">
+  <p class="kicker">Detour · the PHP part</p>
+  <h2>roboktober.nl</h2>
+  <div class="cols wl top">
+    <ul class="smaller">
+      <li>API-first: <b>Laravel API + Filament admin</b>, <b>Vue 3 + Vite</b></li>
+      <li><b>Build Hub</b>: parts list, 3D files, firmware and build guide</li>
+      <li>The site as a distribution channel for a physical building project</li>
+      <li class="muted">Same workflow: version control, static analysis and tests</li>
+    </ul>
+    <figure><img src="img/bouwavond.jpg" alt="Participants building their robots"><figcaption>From instructions on the site to building at the table</figcaption></figure>
+  </div>
+  <div class="gh-open fragment">
+    <div class="gh-head"><b>Website and build files on GitHub</b> <code>github.com/Hackerspace-drenthe/www.roboktober.nl</code></div>
+    <ul class="gh-tags">
+      <li>🌐 Laravel + Vue</li><li>🔌 KiCad PCB</li><li>📦 OpenSCAD chassis</li>
+      <li>📌 Pin contracts</li><li>🗺️ Design decisions</li><li>🧾 Parts list</li>
+    </ul>
+    <p>Not just the final result: the plans, iterations and mistakes too. Fork it, build it, improve it.</p>
+    <p class="smaller">ESP-NOW firmware: WallieOnline. WebUI source code is still to follow.</p>
+  </div>
+  <aside class="notes">[3.7 · 2 min] Bridge: "Participants needed somewhere to get all these files, firmware and build instructions." Not a second architecture talk. Explicitly distinguish public ESP-NOW firmware from the WebUI source, which is not yet public.</aside>
+</section>
+
+<!-- ============================================================ -->
+<!-- 3.8 Traject en AI-ondersteuning (2 min)                       -->
+<!-- ============================================================ -->
+
+<section data-topic="The journey">
+  <p class="kicker">From first commit to kickoff · July–October</p>
+  <div class="timeline">
+    <div class="when">2 Jul</div><div class="what c-web"><span class="tag c-web">web</span>Plan frozen + first Laravel API + Vue commit</div>
+    <div class="when">Jul–Aug</div><div class="what c-pcb"><span class="tag c-pcb">PCB</span>Design, review and order parts</div>
+    <div class="when">late Aug</div><div class="what c-pcb"><span class="tag c-pcb">production</span>v4 final — PCBWay sponsorship, 150 boards</div>
+    <div class="when">Sep–Oct</div><div class="what c-3d"><span class="tag c-3d">testing</span>Firmware, chassis and test prints</div>
+    <div class="when">7 Oct</div><div class="what c-event"><span class="tag c-event">kickoff</span>From preparation to building together</div>
+    <div class="when">14–28 Oct</div><div class="what c-event"><span class="tag c-event">event</span>Build nights, guidance and Battle Day</div>
+  </div>
+  <p class="smaller center" style="margin-top:.5em">About three months of preparation until kickoff; then build nights and Battle Day.</p>
+  <aside class="notes">
+    [3.8 · 1 min] Source: git history + purchasing docs. About three months from first commit to kickoff, not the entire event. Everything ran in parallel.
+    Be honest: I had tinkered with electronics before, but never designed a PCB that had to work first time and would be produced 150 times.
+  </aside>
+</section>
+
+<section>
+  <p class="kicker">How: AI-assisted development</p>
+  <div class="loop">
+    <div>Detailed plan<br><small>goals + constraints</small></div><span>→</span>
+    <div class="ai">AI implements iteratively</div><span>→</span>
+    <div>Test &amp; validate<br><small>against the plan</small></div><span>→</span>
+    <div>Adjust it myself<br><small>and refine</small></div><span>↺</span>
+  </div>
+  <div class="cols top" style="margin-top:.6em">
+    <ul class="smaller">
+      <li>One plan as the source of truth (<code>PLAN.md</code> + changelog)</li>
+      <li>Validation per domain: DRC/ERC · PHPStan + tests · test prints · code review</li>
+      <li>VS Code + GitHub Copilot, with custom instructions</li>
+    </ul>
+    <div class="card"><h3>My responsibility</h3><b>Set goals and limits.</b><br>Make design decisions, check results and correct mistakes.<br><small>And the physical work: ordering, soldering, helping participants. Wallie contributed robotics expertise and review.</small></div>
+  </div>
+  <div class="takeaway">AI gives one developer a broader reach — if the plan and tests are sound.</div>
+  <aside class="notes">[3.8 · 1 min] Optional anecdote: an AI mistake caught by validation.</aside>
+</section>
+
+<!-- ============================================================ -->
+<!-- 3.9 Terugblik (2 min)                                         -->
+<!-- ============================================================ -->
+
+<section class="chapter" data-transition="zoom-in fade-out" data-background-gradient="radial-gradient(circle at 80% 20%, #4a2410 0%, #1a1208 45%, #0b0f19 100%)">
+  <p class="num">TO WRAP UP</p>
+  <h2>Closing</h2>
+  <p class="question">How did it go — and how can you get started?</p>
+  <aside class="notes">[3.9 start]</aside>
+</section>
+
+<section>
+  <p class="kicker">How did it go? · Battle Day, 28 October</p>
+  <div class="stats">
+    <div class="stat"><b>30+</b><span>visitors · packed house</span></div>
+    <div class="stat"><b>18</b><span>robots initially</span></div>
+    <div class="stat"><b>12</b><span>robots in the competition</span></div>
+  </div>
+  <div class="cols">
+    <figure><img src="img/robots-werkbank.jpg" alt="Robots on the workbench"><figcaption>Robots during the building phase</figcaption></figure>
+    <ul class="smaller">
+      <li>Not every robot reached the arena: from 18 to 12</li>
+      <li>I brought 5 working robots</li>
+      <li>I lent them to children without a working robot — so everyone could still take part</li>
+      <li>The shared platform made lending and quick swaps possible</li>
+    </ul>
+  </div>
+  <aside class="notes">[3.9 · 2 min] Over 30 visitors, a packed house. Initially 18 robots, eventually 12 in the competition. I lent my 5 working robots to children who wanted to battle but had no working robot. Lesson: not every build is ready on time; spare hardware keeps everyone in the game. Don't name a winner unless confirmed. The photo is from the building phase, not Battle Day.</aside>
+</section>
+
+<!-- ============================================================ -->
+<!-- 3.10 Afsluiting (1 min)                                       -->
+<!-- ============================================================ -->
+
+<section>
+  <p class="kicker">What happens when you push the joystick forward?</p>
+  <div class="flow" data-hl="1,2,3,4,5"></div>
+  <ol class="smaller">
+    <li><b>Phone → robot</b> is an API call over an open WebSocket.</li>
+    <li><b>Mixing</b> validates and maps input, like a controller in your PHP app.</li>
+    <li><b>Failsafe</b> is a timeout: no fresh commands → stop, like an expired session.</li>
+    <li><b>In practice:</b> DRC and asserts catch a lot, but physical testing is still needed — 25 of 30 worked.</li>
+  </ol>
+  <div class="takeaway fragment" style="font-size:1em;text-align:center;padding:.5em .8em">
+    <div style="font-size:1.35em;line-height:1.15">If you can program, you can build robots too.</div>
+    <div style="font-size:.6em;font-weight:400;color:var(--robo-muted);margin-top:.35em">Electronics, 3D designs, websites, robots: all can be created, controlled and validated with code.</div>
+  </div>
+  <p class="bridge fragment">You're still a developer — only now your bug drives away.</p>
+  <aside class="notes">[3.10 · recap] Answer the opening question using the full diagram. Three points relate the chain to familiar PHP concepts (API call, controller, session timeout); the fourth is the practical lesson (25 of 30 assembled PCBs worked; failures from unusual ESP32s and assembly errors). Click: the core message — if you can program, you can build robots too. KiCad + DRC for electronics, OpenSCAD for 3D, PHP for the website, firmware for the robot — always code, version control, review and tests. Let it land. Click: closing joke.</aside>
+</section>
+
+<section>
+  <p class="kicker">How do you get started tomorrow?</p>
+  <div class="cols c3">
+    <div class="card"><h3>🧰 Kit</h3>Parts list + build guide at <b>roboktober.nl</b></div>
+    <div class="card"><h3>💾 Firmware</h3>WallieOnline on GitHub or the web flasher</div>
+    <div class="card"><h3>🖨️ Chassis</h3>Edit a <code>.scad</code> file and print it</div>
+  </div>
+  <div class="cols top" style="margin-top:.6em">
+    <ul class="smaller">
+      <li><b>Hackerspace Drenthe</b> (Coevorden): come visit!</li>
+      <li>Next Roboktober edition · Boeliebots (Groningen)</li>
+    </ul>
+    <ul class="smaller">
+      <li><a href="https://roboktober.nl">roboktober.nl</a> · <a href="https://hackerspace-drenthe.nl">hackerspace-drenthe.nl</a></li>
+      <li><a href="https://wallieonline.nl">wallieonline.nl</a> · <a href="https://github.com/wallieonline">github.com/wallieonline</a></li>
+      <li>Kickoff + Wallie: <a href="https://www.youtube.com/live/qtz0UkJw4DU">youtube.com/live/qtz0UkJw4DU</a></li>
+    </ul>
+  </div>
+  <p class="center" style="display:flex;align-items:center;justify-content:center;gap:1.2em"><span><img class="plain" src="img/qr-roboktober.svg" alt="QR code for roboktober.nl" style="height:110px;vertical-align:middle"> <small>roboktober.nl</small></span><span><img class="plain" src="img/hackermakerspacelogo.svg" alt="Hackerspace Drenthe" style="background:#fff;border-radius:12px;padding:6px;height:80px;vertical-align:middle"> <small>Hackerspace Drenthe · come visit!</small></span><span><img class="plain" src="img/PCBWay.svg" alt="PCBWay" style="height:40px;vertical-align:middle"> <small>PCBs sponsored by PCBWay</small></span></p>
+  <aside class="notes">[3.10 · call to action] QR code points to https://roboktober.nl — leave it on screen so people can scan it.</aside>
+</section>
+
+<section class="title">
+  <img class="logo plain" src="img/logo-roboktober.png" alt="Roboktober">
+  <h1>Questions?</h1>
+  <p class="muted">The robots keep moving — come and try driving.</p>
+  <p class="center"><img class="plain" src="img/hackermakerspacelogo.svg" alt="Hackerspace Drenthe" style="background:#fff;border-radius:12px;padding:6px;height:90px"></p>
+  <aside class="notes">[Q&amp;A · 11 min] Keep passing the robots around / driving them.</aside>
+</section>
+
+</div>
+</div>
+
+<script src="js/wallie-video.js"></script>
+<script src="js/scad-designs.js"></script>
+<script src="js/visuals.js"></script>
+<script src="vendor/reveal.js/dist/reveal.js"></script>
+<script src="vendor/reveal.js/plugin/highlight/highlight.js"></script>
+<script src="vendor/reveal.js/plugin/notes/notes.js"></script>
+<script>
+  if (!window.Reveal) {
+    const cdn = 'https://cdn.jsdelivr.net/npm/reveal.js@5';
+    document.write(`<script src="${cdn}/dist/reveal.js"><\/script><script src="${cdn}/plugin/highlight/highlight.js"><\/script><script src="${cdn}/plugin/notes/notes.js"><\/script>`);
+  }
+</script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    width: 1280,
+    height: 720,
+    margin: 0.05,
+    center: false,
+    slideNumber: 'c/t',
+    transition: 'fade',
+    transitionSpeed: 'fast',
+    plugins: [RevealHighlight, RevealNotes],
+  });
+  roboPcbFlow(Reveal);
+  roboPcbMini(Reveal);
+  (function () {
+    const bar = document.createElement('nav');
+    bar.className = 'robo-crumbs';
+    document.querySelector('.reveal').appendChild(bar);
+    const txt = el => el ? el.textContent.replace(/\s+/g, ' ').trim() : '';
+    let chapter = 'Intro';
+    const info = Reveal.getSlides().map(sl => {
+      const isChapter = sl.classList.contains('chapter');
+      if (sl.dataset.chapter) chapter = sl.dataset.chapter;
+      else if (isChapter) chapter = txt(sl.querySelector('h1, h2'));
+      const topic = sl.dataset.topic || (isChapter ? '' :
+        txt(sl.querySelector('.kicker')).split(' · ')[0] || txt(sl.querySelector('h1, h2')));
+      return { chapter, topic };
+    });
+    const update = () => {
+      const i = Reveal.getSlides().indexOf(Reveal.getCurrentSlide());
+      const c = info[i] || { chapter: '', topic: '' };
+      const parts = ['Roboktober', c.chapter, c.topic].filter(Boolean);
+      bar.innerHTML = parts.map((p, n) =>
+        `<span class="${n === parts.length - 1 ? 'cur' : ''}">${p.replace(/</g, '&lt;')}</span>`
+      ).join('<i>›</i>');
+    };
+    const chapters = Reveal.getSlides().filter(sl => sl.classList.contains('chapter'));
+    chapters.forEach((sl, n) => {
+      const ol = document.createElement('ol');
+      ol.className = 'roadmap';
+      ol.innerHTML = chapters.map((c, m) =>
+        `<li class="${m < n ? 'done' : m === n ? 'cur' : ''}">${txt(c.querySelector('h1, h2')).replace(/</g, '&lt;')}</li>`
+      ).join('');
+      sl.insertBefore(ol, sl.querySelector('aside.notes'));
+    });
+    Reveal.on('ready', update);
+    Reveal.on('slidechanged', update);
+    if (Reveal.isReady()) update();
+  })();
+</script>
+</body>
+</html>

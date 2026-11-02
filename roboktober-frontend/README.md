@@ -92,6 +92,44 @@ npm run format
 
 ## Notes for contributors
 
+### Presentations (direct URLs only)
+
+The Dutch and English PHP Meetup decks live in
+[`../presentaties/`](../presentaties/). No navigation/menu link is added.
+The production build automatically generates and checks their standalone
+resources and full ZIP downloads:
+
+```bash
+npm run build
+```
+
+For the development server, run `npm run presentations:generate` once before
+`npm run dev`, and again after editing the decks. You can run
+`npm run presentations:check` separately to verify generated resources and ZIPs.
+
+The generator requires Node, Bash, `zip`, `unzip`, and Python 3 with the
+`markdown` module (also required by the presentation package builders).
+It builds both full packages from source, including videos, 3D files,
+speaker notes and reviewer instructions. It leaves the source decks unchanged.
+Generated output in `public/presentaties/` is deliberately not committed
+(each ZIP exceeds GitHub's file size limit). The `prebuild-only` hook regenerates
+both versions from source, including on a fresh deployment checkout. Vite then
+copies this directory to Laravel's `public/app/presentaties/`. A failed package
+build or validation stops the website build rather than publishing broken links.
+
+Production URLs after publishing and deploying:
+
+- Overview + downloads: `https://www.roboktober.nl/app/presentaties/php-meetup-groningen-2026-11-05/index.html`
+- Dutch: `https://www.roboktober.nl/app/presentaties/php-meetup-groningen-2026-11-05/nl/presentatie/index.html`
+- English: `https://www.roboktober.nl/app/presentaties/php-meetup-groningen-2026-11-05/en/presentatie/index.html`
+- Full NL ZIP: `https://www.roboktober.nl/app/presentaties/php-meetup-groningen-2026-11-05/roboktober-nl-full.zip`
+- Full EN ZIP: `https://www.roboktober.nl/app/presentaties/php-meetup-groningen-2026-11-05/roboktober-en-full.zip`
+
+These are static files, not SPA routes. Keep the explicit `index.html` in
+shared links; no router or menu changes are needed. Direct URLs are public,
+not access control: speaker notes and packaged sources are available to
+anyone with the URL. Confirm permission to publish the videos before deploying.
+
 ### Event photo and video gallery
 
 The gallery at the bottom of `/nieuws` uses the originals in the repository-root

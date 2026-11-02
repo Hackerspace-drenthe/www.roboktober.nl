@@ -28,6 +28,9 @@ coverage
 
 .eslintcache
 
+# Generated presentation assets and full ZIPs (>100 MB); rebuild before deployment.
+/public/presentaties/
+
 # Cypress
 /cypress/videos/
 /cypress/screenshots/

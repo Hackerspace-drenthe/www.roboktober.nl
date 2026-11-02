@@ -1,33 +1,39 @@
-# Slides — PHP Meetup Groningen, 5 november 2026
+# Roboktober — van joystick tot wiel · reviewpakket
 
-Versie 1 (prototype) van de slides bij [PLAN.md](../PLAN.md). reveal.js, statische HTML, geen build-stap.
+Talk voor de PHP Meetup Groningen, 5 november 2026 (±47 min + vragen).
+Centrale vraag: wat gebeurt er als je op je telefoon de joystick naar voren duwt?
 
 ## Openen
 
-- Open `index.html` in de browser (werkt vanaf `file://`).
-- Zonder `vendor/reveal.js` laadt reveal.js van de CDN (internet nodig). Voor offline gebruik eenmalig:
+1. Pak de ZIP volledig uit (niet openen vanuit de ZIP-preview).
+2. Open `presentatie/index.html` in Chrome, Edge of Firefox.
+3. Alles werkt offline; er is geen internet of webserver nodig.
 
-  ```bash
-  ./scripts/vendor-reveal.sh
-  ```
+## Bediening
 
-## Tijdens de talk
+| Toets | Actie |
+|---|---|
+| → / spatie | volgende stap (veel dia's bouwen in klikken op) |
+| ← | vorige stap |
+| `S` | sprekersnotities in een apart venster (staat de pop-up toe) |
+| `Esc` / `O` | overzicht van alle dia's |
+| `F` | volledig scherm |
 
-| Toets | Functie |
-| --- | --- |
-| `S` | Speaker view (notities + timer) |
-| `F` | Volledig scherm |
-| `Esc` / `O` | Overzicht |
-| `B` | Scherm zwart |
+- Dia 8 bevat een video van Wallie met geluid; klik op play.
+- Dia 32 is een galerij van 10 klikken. De modelnamen linken naar de
+  bronbestanden in de map `3dprinter/` van dit pakket.
 
-## PDF-backup
+## Inhoud
 
-Open `index.html?print-pdf` in Chrome → Afdrukken → Opslaan als PDF.
+- `presentatie/` — de dia's (reveal.js, lokaal meegeleverd)
+- `3dprinter/` — OpenSCAD- en STL-bronnen van de ontwerpgalerij
+- `PLAN.md` — opbouw, tijdsindeling en uitgangspunten van de talk
 
-## Structuur
+## Waar ik feedback op zoek
 
-- `index.html` — alle slides; sprekersnotities in `<aside class="notes">` met sectie + timing uit het plan.
-- `css/roboktober.css` — donker thema in Roboktober-huisstijl.
-- `js/visuals.js` — terugkerend commando-schema, PWM- en H-brugdiagrammen.
-- `img/` — beelden (kopieën uit `fotos/` en `roboktober-frontend/src/assets/`).
-- Ontbrekende beelden/gegevens staan als oranje **TODO**-vlakken op de slides.
+- Is de rode draad (één joystickcommando van telefoon tot wiel) te volgen?
+- Klopt het niveau voor PHP-developers zonder hardware-ervaring?
+- Taal, tempo, te volle dia's, onduidelijke of onjuiste claims.
+- De sprekersnotities (`S`) geven per dia de bedoeling en timing.
+
+Reacties graag per dianummer (rechtsonder in beeld).

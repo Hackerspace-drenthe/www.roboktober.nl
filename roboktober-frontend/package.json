@@ -6,8 +6,11 @@
   "scripts": {
     "designs:generate": "node scripts/generate-design-gallery.mjs",
     "media:generate": "node scripts/generate-event-media.mjs",
+    "presentations:generate": "node scripts/generate-presentations.mjs",
+    "presentations:check": "node --test scripts/check-presentations.test.mjs",
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
+    "prebuild-only": "npm run presentations:generate && npm run presentations:check",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",

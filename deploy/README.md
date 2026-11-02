@@ -62,6 +62,31 @@ cd /var/www/www.roboktober.nl
 bash deploy/deploy.sh
 ```
 
+### Presentaties publiceren (NL/EN, zonder menu-link)
+
+De presentatiebestanden en ZIP-downloads worden gegenereerd, niet gecommit.
+De frontendbuild genereert en controleert ze automatisch:
+
+```bash
+cd roboktober-frontend
+npm run build
+```
+
+Dit vereist Bash, `zip`, `unzip` en Python 3 met de module `markdown`, naast
+de normale frontendvereisten. Neem de gegenereerde map
+`roboktober-api/public/app/presentaties/` mee bij het publiceren van de build.
+Ook een serverbuild via `BUILD_FRONTEND=true` neemt de presentaties automatisch
+mee. Bij `BUILD_FRONTEND=false` moet de hierboven gemaakte build inclusief
+presentaties op de server worden geplaatst; alleen git pull is niet voldoende.
+
+De overzichtspagina is daarna bereikbaar via
+`/app/presentaties/php-meetup-groningen-2026-11-05/index.html`.
+Daar staan directe NL/EN-links, reviewinstructies en de volledige ZIP's.
+De website krijgt geen menu-link. Video, notities en bronbestanden zijn publiek
+toegankelijk; bevestig toestemming voor de video vóór publicatie.
+Zie de [frontendinstructies](../roboktober-frontend/README.md#presentations-direct-urls-only)
+voor de afzonderlijke URL's.
+
 ## Deploy vanaf je lokale machine (staging/productie)
 
 0. Optioneel: werk met een vast env-bestand

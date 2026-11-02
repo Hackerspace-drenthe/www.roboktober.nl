@@ -1,5 +1,62 @@
 // Builds the recurring diagrams before reveal.js initialises.
 (function () {
+  const scadStage = document.querySelector('.scad-stage');
+  if (scadStage) {
+    SCAD_DESIGN_GROUPS.forEach(({title, description, lesson, designs}, index) => {
+      const panel = document.createElement('div');
+      panel.className = 'scad-panel fragment current-visible';
+      panel.dataset.fragmentIndex = index;
+      const label = document.createElement('p');
+      label.className = 'scad-step-label';
+      label.textContent = `${index + 1} / ${SCAD_DESIGN_GROUPS.length} · Ontwerpgalerij`;
+      const heading = document.createElement('h2');
+      heading.textContent = title;
+      const takeaway = document.createElement('p');
+      takeaway.className = 'scad-group-description';
+      takeaway.textContent = description;
+      const grid = document.createElement('div');
+      grid.className = 'scad-design-grid';
+      grid.style.setProperty('--design-count', designs.length);
+      designs.forEach(([name, source, lesson]) => {
+        const figure = document.createElement('figure');
+        const image = document.createElement('img');
+        image.src = `img/scad-steps/${source}.png`;
+        image.alt = name;
+        image.title = lesson;
+        const caption = document.createElement('figcaption');
+        const link = document.createElement('a');
+        link.href = `../../../3dprinter/${source}`;
+        link.textContent = name;
+        caption.append(link);
+        figure.append(image, caption);
+        grid.append(figure);
+      });
+      const education = document.createElement('div');
+      education.className = 'scad-education';
+      const teaching = document.createElement('div');
+      const point = document.createElement('h3');
+      point.textContent = lesson.point;
+      const detail = document.createElement('p');
+      detail.textContent = lesson.detail;
+      const source = document.createElement('a');
+      source.className = 'src';
+      source.href = `../../../3dprinter/${lesson.source}`;
+      source.textContent = `${lesson.example ? 'Importvoorbeeld' : 'Bronfragment'} · ${lesson.source.split('/').pop()}`;
+      teaching.append(point, detail, source);
+      const pre = document.createElement('pre');
+      const code = document.createElement('code');
+      code.className = 'language-cpp';
+      code.textContent = lesson.code;
+      pre.append(code);
+      education.append(teaching, pre);
+      const scale = document.createElement('p');
+      scale.className = 'src';
+      scale.textContent = 'Beelden niet op gelijke schaal · klik op de modelnaam voor de bron';
+      panel.append(label, heading, takeaway, grid, education, scale);
+      scadStage.append(panel);
+    });
+  }
+
   const FLOW = [
     ['📱 / 🎮', 'Telefoon of remote', 'WebSocket of ESP-NOW'],
     ['ESP32-C3', 'Ontvangen', 'valideren · mixen'],

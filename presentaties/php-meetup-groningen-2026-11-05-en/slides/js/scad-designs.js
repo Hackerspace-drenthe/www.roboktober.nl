@@ -1,0 +1,98 @@
+const SCAD_DESIGNS = [
+  ['Wallie · original chassis', 'Wallieonline+Mini+Robot+chassis/wallieonline-mini-robot.STL', 'The original chassis as an STL model.'],
+  ['Wallie · original top plate', 'Wallieonline+Mini+Robot+chassis/wallieonline-mini-robot-top.STL', 'The matching top plate as a separate part.'],
+  ['Wallie · parametric variant', 'Wallieonline+Mini+Robot+chassis/wallieonline-mini-robot-parametric.scad', 'The same mesh with adjustable outer dimensions; not a new chassis design.'],
+  ['Wallie · built from primitives', 'Wallieonline+Mini+Robot+chassis/wallieonline-mini-robot-primitives.scad', 'A reconstruction using geometric primitives, alongside the original mesh.'],
+  ['Chassis v0.2 · the basics', 'reinsdesigns/antweight_chassis.scad', 'The foundation of the parametric chassis series.'],
+  ['Chassis v0.3 · styling', 'reinsdesigns/antweight_chassis_v0.3_design.scad', 'The functional base gains rounded shapes and design details.'],
+  ['Chassis v0.4 · integrated', 'reinsdesigns/antweight_chassis_v0.4_integrated.scad', 'An integrated nose and a different internal design.'],
+  ['Disc v0.1 · round', 'reinsdesigns/antweight_disc_v0.1.scad', 'A round body: a very different shape around the components.'],
+  ['Disc Mini v0.1 · compact', 'reinsdesigns/antweight_disc_mini_v0.1.scad', 'The compact variant of the round design line.'],
+  ['Disc Wedge v0.1', 'reinsdesigns/antweight_disc_wedge_v0.1.scad', 'A round base with a flattened front.', 'disc_assembly'],
+  ['Disc Spinner v0.1', 'reinsdesigns/antweight_disc_spinner_v0.1.scad', 'The first version of this separate Disc design line.'],
+  ['Disc Spinner v0.2', 'reinsdesigns/antweight_disc_spinner_v0.2.scad', 'The next design iteration; compare silhouette and layout.'],
+  ['Disc Spinner v0.3', 'reinsdesigns/antweight_disc_spinner_v0.3.scad', 'A new version within the same family.'],
+  ['Disc Spinner v0.4', 'reinsdesigns/antweight_disc_spinner_v0.4.scad', 'A more compact core and smaller round outer shape.'],
+  ['Disc Spinner v0.5', 'reinsdesigns/antweight_disc_spinner_v0.5.scad', 'The latest available version in this series.'],
+  ['Rhomboid v0.1 · angular', 'reinsdesigns/antweight_rhomboid_v0.1.scad', 'A parallelogram side profile rather than a round shape.'],
+  ['Limulus v0.1 · biomimicry', 'reinsdesigns/antweight_limulus_v0.1.scad', 'A design inspired by a horseshoe crab.'],
+  ['Limulus v0.2 · refinement', 'reinsdesigns/antweight_limulus_v0.2.scad', 'A raised electronics canopy and a modified tail.'],
+  ['Passive Aggressive v0.1', 'reinsdesigns/antweight_passive_aggressive_v0.1.scad', 'A distinct body family with an expressive face.'],
+  ['Passive Aggressive · 4WD', 'reinsdesigns/antweight_passive_aggressive_4wd_v0.1.scad', 'Four wheels instead of two: same family, different layout.'],
+  ['Mostly Harmless · chassis', 'reinsdesigns/mostlyharmless.stl', 'Existing STL designs belong in the overview too, not just OpenSCAD sources.'],
+  ['Mostly Harmless · roof', 'reinsdesigns/mopstlyharmlessroof.stl', 'The separate roof from the same file set.'],
+  ['Aurora v0.1 · 50 grams', 'reinsdesigns/aurora_50g_rc_v0.1.scad', 'A small radio-controlled demonstration robot in a different weight class.'],
+  ['DuoBot v0.1 · modular', 'reinsdesigns/duobot_v0.1.scad', 'A modular robot concept. Geometry is a design proposal, not proof of operation.'],
+];
+
+if (typeof module !== 'undefined') module.exports = SCAD_DESIGNS;
+
+const SCAD_DESIGN_GROUPS = [
+  ['Wallie', 'Original, top plate and reconstructions; not four historical versions.', {
+    point: '1. Reuse: an existing mesh can be wrapped in a module.',
+    code: 'use <wallieonline-mini-robot.scad>\n\nMAIN_BBOX_SIZE = [94, 20, 105];\nmain_size = MAIN_BBOX_SIZE;',
+    source: 'Wallieonline+Mini+Robot+chassis/wallieonline-mini-robot-parametric.scad',
+    detail: 'use imports modules and functions, not top-level geometry.',
+  }, 'wallieonline-'],
+  ['Chassis · v0.2 to v0.4', 'Compare the basic, styled and integrated versions.', {
+    point: '2. Parameters: name dimensions and clearances.',
+    code: 'pcb_w = 78;\npcb_l = 56;\npcb_t = 1.6;\npcb_clear = 0.3;',
+    source: 'reinsdesigns/antweight_chassis.scad',
+    detail: 'Nominal PCB dimensions and extra fitting clearance are separate parameters.',
+  }, 'antweight_chassis'],
+  ['Disc · variants', 'Round, compact and with a flattened front.', {
+    point: '3. Geometry: subtract a profile and revolve it into a hollow shape.',
+    code: 'module shell() translate(C) rotate_extrude()\n  difference() {\n    polygon([[0, 0], [R, 0], [R_top, H], [0, H]]);\n    polygon([[-1, floor_t], [r_in(floor_t), floor_t],\n      [r_in(H-top_t), H-top_t], [-1, H-top_t]]);\n  }',
+    source: 'reinsdesigns/disc_geometry.scad',
+    detail: 'The shared Disc library: outer profile minus inner profile, then a revolution.',
+  }, 'antweight_disc_v', 'antweight_disc_mini_', 'antweight_disc_wedge_'],
+  ['Disc Spinner · v0.1 to v0.5', 'Five versions of one design line side by side · design study: active weapons are not allowed at Roboktober 2026.', {
+    point: '4. Derive: calculate dimensions from geometry, not by hand.',
+    code: 'pcb_r = max([\n  for (p = pcb_pts) norm(p - [cx, cy])\n]);',
+    source: 'reinsdesigns/antweight_disc_spinner_v0.5.scad',
+    detail: 'norm gives the distance to the centre; max selects the furthest PCB corner.',
+  }, 'antweight_disc_spinner_'],
+  ['Rhomboid', 'An angular side profile rather than a round shape.', {
+    point: '5. Repeat: one loop places all the standoffs.',
+    code: 'for (p = pcb_holes)\n  translate([p[0], p[1], 0])\n    cylinder(d = standoff_d, h = pcb_z);',
+    source: 'reinsdesigns/antweight_rhomboid_v0.1.scad',
+    detail: 'The hole list is the source; translate places the same shape at each coordinate.',
+  }, 'antweight_rhomboid_'],
+  ['Limulus · v0.1 and v0.2', 'Biomimicry and refinement side by side.', {
+    point: '6. Extend: include uses an existing design as a foundation.',
+    code: 'include <antweight_limulus_v0.1.scad>\n\nesp_stack_h = 17;\nesp_margin = 0.8;\ncanopy_wall = 1.2;',
+    source: 'reinsdesigns/antweight_limulus_v0.2.scad',
+    detail: 'Unlike use, include also imports top-level code; v0.2 builds on v0.1.',
+  }, 'antweight_limulus_'],
+  ['Passive Aggressive · 2WD and 4WD', 'Two variants within the same design family.', {
+    point: '7. Combine: a loop over sides and axles creates four positions.',
+    code: 'for (m = [0, 1], a = axles)\n  mirror_x(m) motor_cradle(a);',
+    source: 'reinsdesigns/antweight_passive_aggressive_4wd_v0.1.scad',
+    detail: 'Two sides × two axles; mirror_x is a custom helper, not a built-in function.',
+  }, 'antweight_passive_aggressive_'],
+  ['Mostly Harmless', 'Chassis and matching roof; two parts, not two versions.', {
+    point: '8. Import: an STL without parametric source can be used too.',
+    code: 'import("mostlyharmless.stl");\nimport("mopstlyharmlessroof.stl");',
+    source: 'reinsdesigns/mostlyharmless.stl',
+    example: true,
+    detail: 'Import example in the same folder; a mesh does not recover the original parameters.',
+  }, 'mostlyharmless.', 'mopstlyharmlessroof.'],
+  ['Aurora · 50 grams', 'A radio-controlled demonstration robot in a different weight class.', {
+    point: '9. Check: assert guards an explicit dimensional constraint.',
+    code: 'assert(\n  wheel_x - wheel_w / 2 > body_w / 2,\n  "wheel overlaps the chassis side wall"\n);',
+    source: 'reinsdesigns/aurora_50g_rc_v0.1.scad',
+    detail: 'This checks wheel clearance in the model, not the actual fit or weight.',
+  }, 'aurora_'],
+  ['DuoBot · modular', 'A modular robot concept; geometry is not proof of operation.', {
+    point: '10. Assemble: the same module produces multiple robot variants.',
+    code: 'if (part == "assembly") {\n  robot("attack");\n  translate([0, pair_pitch, 0]) robot("defend");\n}',
+    source: 'reinsdesigns/duobot_v0.1.scad',
+    detail: 'An argument selects the variant; translate places the second robot in the assembly.',
+  }, 'duobot_'],
+].map(([title, description, lesson, ...prefixes]) => ({
+  title,
+  description,
+  lesson,
+  designs: SCAD_DESIGNS.filter(([, source]) =>
+    prefixes.some(prefix => source.split('/').pop().startsWith(prefix))),
+}));
