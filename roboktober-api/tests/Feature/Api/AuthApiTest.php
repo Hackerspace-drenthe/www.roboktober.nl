@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Enums\UserRole;
 use App\Models\User;
 use App\Security\TotpService;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Password;
 
 describe('API auth', function (): void {
@@ -68,6 +69,74 @@ describe('API auth', function (): void {
             ->assertOk()
             ->assertJsonPath('data.email', $user->email)
             ->assertJsonPath('data.role', UserRole::TeamCaptain->value);
+    });
+
+    it('allows a correct code after an incorrect code without starting a new login', function (): void {
+        $secret = 'JBSWY3DPEHPK3PXP';
+        $user = User::factory()->create([
+            'password' => 'SterkWachtwoord123',
+            'two_factor_secret' => $secret,
+            'two_factor_confirmed_at' => now(),
+        ]);
+        $login = $this->postJson('/api/v1/auth/login', [
+            'email' => $user->email,
+            'password' => 'SterkWachtwoord123',
+        ])->assertOk();
+        $challengeId = (string) $login->json('two_factor_challenge_id');
+        $totp = app(TotpService::class);
+        $invalidCode = '000000';
+        while ($totp->verifyCode($secret, $invalidCode)) {
+            $invalidCode = str_pad((string) ((int) $invalidCode + 1), 6, '0', STR_PAD_LEFT);
+        }
+
+        $this->postJson('/api/v1/auth/2fa/challenge', [
+            'challenge_id' => $challengeId,
+            'code' => $invalidCode,
+        ])->assertUnprocessable()
+            ->assertJsonPath('message', 'Ongeldige twee-factor code.');
+
+        $this->assertSame($user->id, Cache::get('auth:2fa:challenge:'.$challengeId));
+        $this->assertSame(0, $user->tokens()->count());
+
+        $payload = ['challenge_id' => $challengeId, 'code' => $totp->currentCode($secret)];
+        $this->postJson('/api/v1/auth/2fa/challenge', $payload)
+            ->assertOk()->assertJsonStructure(['token']);
+        $this->postJson('/api/v1/auth/2fa/challenge', $payload)
+            ->assertUnprocessable()
+            ->assertJsonPath('message', 'Twee-factor challenge is verlopen of ongeldig.');
+        $this->assertSame(1, $user->tokens()->count());
+    });
+
+    it('does not extend the challenge expiry after an incorrect code', function (): void {
+        $secret = 'JBSWY3DPEHPK3PXP';
+        $user = User::factory()->create([
+            'password' => 'SterkWachtwoord123',
+            'two_factor_secret' => $secret,
+            'two_factor_confirmed_at' => now(),
+        ]);
+        $login = $this->postJson('/api/v1/auth/login', [
+            'email' => $user->email,
+            'password' => 'SterkWachtwoord123',
+        ])->assertOk();
+        $challengeId = (string) $login->json('two_factor_challenge_id');
+        $totp = app(TotpService::class);
+        $invalidCode = '000000';
+        while ($totp->verifyCode($secret, $invalidCode)) {
+            $invalidCode = str_pad((string) ((int) $invalidCode + 1), 6, '0', STR_PAD_LEFT);
+        }
+
+        $this->travel(4)->minutes();
+        $this->postJson('/api/v1/auth/2fa/challenge', [
+            'challenge_id' => $challengeId,
+            'code' => $invalidCode,
+        ])->assertUnprocessable();
+        $this->travel(2)->minutes();
+        $this->postJson('/api/v1/auth/2fa/challenge', [
+            'challenge_id' => $challengeId,
+            'code' => $totp->currentCode($secret),
+        ])->assertUnprocessable()
+            ->assertJsonPath('message', 'Twee-factor challenge is verlopen of ongeldig.');
+        $this->assertSame(0, $user->tokens()->count());
     });
 
     it('returns 2fa setup required for users without confirmed 2fa', function (): void {

@@ -106,6 +106,8 @@ Map: `roboktober-frontend`
 - Minimaal noodzakelijke rechten per endpoint
 - Account-first registratie en beheerflows; mutaties lopen via het ingelogde account.
 - Verplichte TOTP 2FA voor accounts met bevestigde setup, inclusief bootstrap/challenge-flow.
+- TOTP gebruikt Unix-tijd (30 seconden, 6 cijfers, ±1 tijdvak); zomer-/wintertijd verandert de codes niet. Server en authenticator moeten een gesynchroniseerde klok hebben.
+- Een onjuiste 2FA-code verbruikt de loginchallenge niet. De oorspronkelijke vervaltijd van 5 minuten en de endpointlimiet van 12 pogingen per minuut blijven gelden; na succesvolle verificatie wordt de challenge verbruikt. De UI onderscheidt onjuiste codes, verlopen challenges, rate limiting en overige inlogfouten.
 
 ### 5.2 Input en output beveiliging
 - Alle write-endpoints gebruiken FormRequest-validatie

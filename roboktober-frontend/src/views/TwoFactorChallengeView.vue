@@ -3,6 +3,7 @@ import { completeTwoFactorChallenge, setAuthToken } from '@/api'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
+import { isAxiosError } from 'axios'
 
 const route = useRoute()
 const router = useRouter()
@@ -42,8 +43,18 @@ async function handleSubmit(): Promise<void> {
     await auth.refreshMe()
 
     await router.push(redirectTarget)
-  } catch {
-    error.value = 'Ongeldige of verlopen 2FA code. Probeer opnieuw in te loggen.'
+  } catch (cause: unknown) {
+    if (isAxiosError<unknown>(cause) && cause.response?.status === 422) {
+      const data = cause.response.data
+      error.value = data !== null && typeof data === 'object' &&
+        'message' in data && typeof data.message === 'string'
+        ? data.message
+        : 'Controleer je 2FA code en probeer opnieuw.'
+    } else if (isAxiosError(cause) && cause.response?.status === 429) {
+      error.value = 'Te veel pogingen. Wacht een minuut en probeer opnieuw.'
+    } else {
+      error.value = 'Inloggen afronden mislukt. Controleer je verbinding en probeer opnieuw.'
+    }
   } finally {
     loading.value = false
   }
@@ -55,6 +66,7 @@ async function handleSubmit(): Promise<void> {
     <header class="mb-8">
       <h1 class="text-3xl font-black">2FA verificatie</h1>
       <p class="mt-2 text-slate-300">Voer de 6-cijferige code uit je authenticator app in om in te loggen.</p>
+      <p class="mt-2 text-sm text-slate-300">Werkt de code niet? Gebruik de juiste Roboktober-vermelding en zet datum en tijd op je telefoon op automatisch.</p>
     </header>
 
     <form class="space-y-5 rounded-xl border border-white/10 bg-robo-dark/60 p-6" @submit.prevent="handleSubmit">
@@ -76,6 +88,9 @@ async function handleSubmit(): Promise<void> {
       <p v-if="error" class="rounded-md border border-red-400/40 bg-red-950/30 px-3 py-2 text-sm text-red-200">
         {{ error }}
       </p>
+      <RouterLink v-if="error" :to="{ path: '/login', query: { redirect: redirectTarget } }" class="inline-block text-robo-orange underline">
+        Opnieuw inloggen
+      </RouterLink>
 
       <button
         type="submit"

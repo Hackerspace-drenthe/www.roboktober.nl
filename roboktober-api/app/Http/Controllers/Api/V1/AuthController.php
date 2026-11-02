@@ -97,7 +97,7 @@ class AuthController extends Controller
         $validated = $request->validated();
 
         $cacheKey = $this->challengeCacheKey($validated['challenge_id']);
-        $userId = Cache::pull($cacheKey);
+        $userId = Cache::get($cacheKey);
 
         if (! is_int($userId)) {
             return response()->json([
@@ -116,6 +116,12 @@ class AuthController extends Controller
         if (! $this->totpService->verifyCode($user->two_factor_secret, $validated['code'])) {
             return response()->json([
                 'message' => 'Ongeldige twee-factor code.',
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        if (Cache::pull($cacheKey) !== $userId) {
+            return response()->json([
+                'message' => 'Twee-factor challenge is verlopen of ongeldig.',
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
