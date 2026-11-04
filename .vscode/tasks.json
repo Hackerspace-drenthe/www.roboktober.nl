@@ -1,0 +1,88 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "SSH productie",
+			"type": "shell",
+			"command": "ssh",
+			"args": [
+				"-o",
+				"ControlMaster=auto",
+				"-o",
+				"ControlPath=/home/rein/.ssh/roboktober-deploy-%C",
+				"-o",
+				"ControlPersist=15m",
+				"rein@192.168.1.10"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Productie controle",
+			"type": "shell",
+			"command": "ssh",
+			"args": [
+				"rein@192.168.1.10",
+				"cd /var/www/www.roboktober.nl && git status --short && git log -1 --oneline && test -f deploy/deploy.sh && echo PRODUCTION_PREFLIGHT_OK"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Deploy productie",
+			"type": "shell",
+			"command": "env",
+			"args": [
+				"PRODUCTION_CONFIRM=deploy-production",
+				"PRODUCTION_HOST=rein@192.168.1.10",
+				"DEPLOY_RUN_MIGRATIONS=false",
+				"DEPLOY_BUILD_FRONTEND=false",
+				"bash",
+				"deploy/deploy-production.sh"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Clean approved old headers, caches and Bambu logs",
+			"type": "shell",
+			"command": "bash",
+			"args": [
+				"/home/rein/.copilot/session-state/bd1f8018-af33-4723-8e4d-cdd3ae023d72/files/cleanup-approved.sh"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Mount existing DATA partition and check free space",
+			"type": "shell",
+			"command": "bash",
+			"args": [
+				"/home/rein/.copilot/session-state/bd1f8018-af33-4723-8e4d-cdd3ae023d72/files/mount-data-check.sh"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Back up Windows Users to DATA and verify checksums",
+			"type": "shell",
+			"command": "bash",
+			"args": [
+				"/home/rein/.copilot/session-state/bd1f8018-af33-4723-8e4d-cdd3ae023d72/files/backup-windows-users.sh"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Prepare approved Windows partition for Linux home and initial copy",
+			"type": "shell",
+			"command": "sudo",
+			"args": [
+				"bash",
+				"/home/rein/.copilot/session-state/bd1f8018-af33-4723-8e4d-cdd3ae023d72/files/prepare-linux-home.sh"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		}
+	]
+}
