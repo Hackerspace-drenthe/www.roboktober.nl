@@ -388,6 +388,17 @@
 .reveal .scad-education p { font-size: .5em; line-height: 1.35; margin: 0 0 .4em; }
 .reveal .scad-education pre { width: 100%; margin: 0; font-size: .42em; }
 .reveal .scad-education .src { display: block; overflow-wrap: anywhere; }
+.reveal .scad-with-result { display: grid; grid-template-rows: 20px 36px 38px 201px 275px 20px; }
+.reveal .scad-with-result > .scad-step-label,
+.reveal .scad-with-result > h2,
+.reveal .scad-with-result > .scad-group-description,
+.reveal .scad-with-result > .src { margin: 0; }
+.reveal .scad-with-result .scad-design-grid img { height: 170px; }
+.reveal .scad-with-result .scad-education { grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr; gap: 6px 20px; align-items: start; margin-top: 8px; }
+.reveal .scad-with-result .scad-education > div { grid-column: 1 / -1; }
+.reveal .scad-with-result .scad-education pre { font-size: 13px; }
+.reveal .scad-with-result .scad-education pre code { padding: 8px 12px; line-height: 1.25; }
+.reveal .scad-result img { display: block; width: 100%; height: 135px; object-fit: contain; background: #f8f8f8; }
 @media print {
   .reveal .scad-stage .scad-intro { display: none; }
   .reveal .scad-panel.fragment { opacity: 0 !important; visibility: hidden !important; }

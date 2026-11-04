@@ -29,22 +29,24 @@ if (typeof module !== 'undefined') module.exports = SCAD_DESIGNS;
 
 const SCAD_DESIGN_GROUPS = [
   ['Wallie', 'Original, top plate and reconstructions; not four historical versions.', {
-    point: '1. Reuse: an existing mesh can be wrapped in a module.',
+    point: '1. Reuse: modules are building blocks, like functions.',
     code: 'use <wallieonline-mini-robot.scad>\n\nMAIN_BBOX_SIZE = [94, 20, 105];\nmain_size = MAIN_BBOX_SIZE;',
     source: 'Wallieonline+Mini+Robot+chassis/wallieonline-mini-robot-parametric.scad',
-    detail: 'use imports modules and functions, not top-level geometry.',
+    detail: 'OpenSCAD describes shapes, not mouse-drawing steps. use loads modules and functions from .scad without top-level geometry; import loads a model file.',
   }, 'wallieonline-'],
   ['Chassis · v0.2 to v0.4', 'Compare the basic, styled and integrated versions.', {
-    point: '2. Parameters: name dimensions and clearances.',
-    code: 'pcb_w = 78;\npcb_l = 56;\npcb_t = 1.6;\npcb_clear = 0.3;',
+    point: '2. One source of dimensions: change a value, the design follows.',
+    code: 'pcb_w = 78;\npcb_l = 56;\nclearance = 0.3;\ninner_size = [pcb_w + 2*clearance, pcb_l + 2*clearance];\ncube([inner_size[0], inner_size[1], 2]);',
     source: 'reinsdesigns/antweight_chassis.scad',
-    detail: 'Nominal PCB dimensions and extra fitting clearance are separate parameters.',
+    example: true,
+    detail: 'We use millimetres: [x, y, z] is width, length, height. Name PCB dimensions and clearance, then derive other dimensions from them; avoid copying magic numbers.',
   }, 'antweight_chassis'],
   ['Disc · variants', 'Round, compact and with a flattened front.', {
-    point: '3. Geometry: subtract a profile and revolve it into a hollow shape.',
-    code: 'module shell() translate(C) rotate_extrude()\n  difference() {\n    polygon([[0, 0], [R, 0], [R_top, H], [0, H]]);\n    polygon([[-1, floor_t], [r_in(floor_t), floor_t],\n      [r_in(H-top_t), H-top_t], [-1, H-top_t]]);\n  }',
+    point: '3. Add and subtract: union and difference.',
+    code: 'difference() {\n  union() {\n    cube([40, 30, 2]);\n    translate([20, 15, 2]) cylinder(d=10, h=6);\n  }\n  translate([20, 15, -1]) cylinder(d=3, h=10);\n}',
     source: 'reinsdesigns/disc_geometry.scad',
-    detail: 'The shared Disc library: outer profile minus inner profile, then a revolution.',
+    example: true,
+    detail: 'cube makes a block, cylinder a cylinder; translate moves the shape that follows. union joins shapes. difference subtracts all following shapes from the first: here a plate with a boss and through-hole.',
   }, 'antweight_disc_v', 'antweight_disc_mini_', 'antweight_disc_wedge_'],
   ['Disc Spinner · v0.1 to v0.5', 'Five versions of one design line side by side · design study: active weapons are not allowed at Roboktober 2026.', {
     point: '4. Derive: calculate dimensions from geometry, not by hand.',
@@ -53,10 +55,11 @@ const SCAD_DESIGN_GROUPS = [
     detail: 'norm gives the distance to the centre; max selects the furthest PCB corner.',
   }, 'antweight_disc_spinner_'],
   ['Rhomboid', 'An angular side profile rather than a round shape.', {
-    point: '5. Repeat: one loop places all the standoffs.',
-    code: 'for (p = pcb_holes)\n  translate([p[0], p[1], 0])\n    cylinder(d = standoff_d, h = pcb_z);',
+    point: '5. Standoffs: one module, four positions.',
+    code: 'module standoff(h=6, d=6, hole=2.2) {\n  difference() {\n    cylinder(h=h, d=d);\n    translate([0,0,-1]) cylinder(h=h+2, d=hole);\n  } }\nfor (p = [[5,5], [35,5], [5,25], [35,25]])\n  translate([p[0], p[1], 0]) standoff();',
     source: 'reinsdesigns/antweight_rhomboid_v0.1.scad',
-    detail: 'The hole list is the source; translate places the same shape at each coordinate.',
+    example: true,
+    detail: 'A module is a reusable shape with parameters. Outer minus inner cylinder makes a standoff with a screw hole. The loop places four copies; extend the cutting cylinder slightly beyond both ends for a through-hole.',
   }, 'antweight_rhomboid_'],
   ['Limulus · v0.1 and v0.2', 'Biomimicry and refinement side by side.', {
     point: '6. Extend: include uses an existing design as a foundation.',
@@ -71,17 +74,17 @@ const SCAD_DESIGN_GROUPS = [
     detail: 'Two sides × two axles; mirror_x is a custom helper, not a built-in function.',
   }, 'antweight_passive_aggressive_'],
   ['Mostly Harmless', 'Chassis and matching roof; two parts, not two versions.', {
-    point: '8. Import: an STL without parametric source can be used too.',
-    code: 'import("mostlyharmless.stl");\nimport("mopstlyharmlessroof.stl");',
+    point: '8. Import: reuse a 3D mesh or a 2D profile.',
+    code: '// 3D mesh: import("mostlyharmless.stl");\n// Here: a 2D profile with 2 mm thickness\nlinear_extrude(height=2)\n  import("profile.dxf");',
     source: 'reinsdesigns/mostlyharmless.stl',
     example: true,
-    detail: 'Import example in the same folder; a mesh does not recover the original parameters.',
+    detail: 'STL/3MF supplies a 3D mesh, DXF/SVG a 2D profile. Here the included DXF profile gets 2 mm thickness. The file sits beside the example script. Check scale/units; import does not recover original parameters.',
   }, 'mostlyharmless.', 'mopstlyharmlessroof.'],
   ['Aurora · 50 grams', 'A radio-controlled demonstration robot in a different weight class.', {
     point: '9. Check: assert guards an explicit dimensional constraint.',
     code: 'assert(\n  wheel_x - wheel_w / 2 > body_w / 2,\n  "wheel overlaps the chassis side wall"\n);',
     source: 'reinsdesigns/aurora_50g_rc_v0.1.scad',
-    detail: 'This checks wheel clearance in the model, not the actual fit or weight.',
+    detail: 'Like an assert in program code: false stops the model with this error message. Here the inner wheel edge must clear the side wall. This does not prove real fit or weight: measure and test-print as well.',
   }, 'aurora_'],
   ['DuoBot · modular', 'A modular robot concept; geometry is not proof of operation.', {
     point: '10. Assemble: the same module produces multiple robot variants.',

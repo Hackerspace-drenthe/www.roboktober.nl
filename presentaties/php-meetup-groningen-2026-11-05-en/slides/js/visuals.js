@@ -5,6 +5,7 @@
     SCAD_DESIGN_GROUPS.forEach(({title, description, lesson, designs}, index) => {
       const panel = document.createElement('div');
       panel.className = 'scad-panel fragment current-visible';
+      if (lesson.example) panel.classList.add('scad-with-result');
       panel.dataset.fragmentIndex = index;
       const label = document.createElement('p');
       label.className = 'scad-step-label';
@@ -41,7 +42,7 @@
       const source = document.createElement('a');
       source.className = 'src';
       source.href = `../../../3dprinter/${lesson.source}`;
-      source.textContent = `${lesson.example ? 'Import example' : 'Source excerpt'} · ${lesson.source.split('/').pop()}`;
+      source.textContent = `${lesson.example ? 'Teaching example · related source' : 'Source excerpt'} · ${lesson.source.split('/').pop()}`;
       teaching.append(point, detail, source);
       const pre = document.createElement('pre');
       const code = document.createElement('code');
@@ -49,6 +50,26 @@
       code.textContent = lesson.code;
       pre.append(code);
       education.append(teaching, pre);
+      if (lesson.example) {
+        const figure = document.createElement('figure');
+        figure.className = 'scad-result';
+        const image = document.createElement('img');
+        image.src = `img/scad-examples/example-${index + 1}.png`;
+        image.alt = `Teaching example result: ${lesson.point}`;
+        const caption = document.createElement('figcaption');
+        const link = document.createElement('a');
+        link.href = `img/scad-examples/example-${index + 1}.scad`;
+        link.textContent = 'Exact result · example source';
+        caption.append(link);
+        if (index === 7) {
+          const dxf = document.createElement('a');
+          dxf.href = 'img/scad-examples/profile.dxf';
+          dxf.textContent = ' · DXF profile';
+          caption.append(dxf);
+        }
+        figure.append(image, caption);
+        education.append(figure);
+      }
       const scale = document.createElement('p');
       scale.className = 'src';
       scale.textContent = 'Images not to the same scale · click the model name for its source';

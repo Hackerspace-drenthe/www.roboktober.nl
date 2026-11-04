@@ -104,6 +104,24 @@ for (const language of ['nl', 'en']) {
       assert.ok(existsSync(resolve(slides, '../3dprinter', source)), `Missing gallery source: ${source}`)
     }
     assert.match(readFileSync(join(slides, 'js/visuals.js'), 'utf8'), /\.\.\/3dprinter\//)
+    const gallery = runInNewContext(`${readFileSync(join(slides, 'js/scad-designs.js'), 'utf8')}\nSCAD_DESIGN_GROUPS`)
+    assert.equal(gallery.length, 10)
+    assert.equal(gallery.reduce((sum, group) => sum + group.designs.length, 0), 24)
+    for (const index of [1, 2, 4, 7]) assert.equal(gallery[index].lesson.example, true)
+    for (const index of [1, 2, 4, 7]) {
+      const base = join(slides, `img/scad-examples/example-${index + 1}`)
+      assert.equal(readFileSync(`${base}.scad`, 'utf8'), `${gallery[index].lesson.code}\n`,
+        'Rendered example must match the displayed code')
+      const png = readFileSync(`${base}.png`)
+      assert.equal(png.readUInt32BE(16), 900)
+      assert.equal(png.readUInt32BE(20), 600)
+    }
+    assert.match(readFileSync(join(slides, 'img/scad-examples/profile.dxf'), 'utf8'), /ENTITIES/)
+    assert.match(gallery[1].lesson.code, /pcb_w \+ 2\*/)
+    assert.match(gallery[2].lesson.code, /difference\(\)[\s\S]*union\(\)/)
+    assert.match(gallery[4].lesson.code, /module [\s\S]*difference\(\)[\s\S]*for \(p =/)
+    assert.match(gallery[7].lesson.code, /linear_extrude\(height=2\)[\s\S]*import\("[^"]+\.dxf"\)/)
+    assert.match(gallery[8].lesson.code, /assert\(/)
     assert.doesNotMatch(readFileSync(join(slides, 'js/visuals.js'), 'utf8'), /\.\.\/\.\.\/\.\.\/3dprinter\//)
     assert.ok(readFileSync(join(slides, 'js/wallie-video.js'), 'utf8').includes('data:video/mp4;base64,'))
     assert.equal(readdirSync(join(slides, 'video')).filter((file) => file.endsWith('.mp4')).length, 2)

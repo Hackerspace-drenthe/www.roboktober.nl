@@ -29,22 +29,24 @@ if (typeof module !== 'undefined') module.exports = SCAD_DESIGNS;
 
 const SCAD_DESIGN_GROUPS = [
   ['Wallie', 'Origineel, topplaat en reconstructies; geen vier historische versies.', {
-    point: '1. Hergebruik: een bestaand meshmodel kan achter een module zitten.',
+    point: '1. Hergebruik: modules zijn bouwstenen, zoals functies.',
     code: 'use <wallieonline-mini-robot.scad>\n\nMAIN_BBOX_SIZE = [94, 20, 105];\nmain_size = MAIN_BBOX_SIZE;',
     source: 'Wallieonline+Mini+Robot+chassis/wallieonline-mini-robot-parametric.scad',
-    detail: 'use importeert modules en functies, niet de geometrie op het hoogste niveau.',
+    detail: 'OpenSCAD beschrijft vormen, geen tekenstappen met de muis. use laadt modules en functies uit .scad, zonder toplevel-geometrie; import laadt een modelbestand.',
   }, 'wallieonline-'],
   ['Chassis · v0.2 tot v0.4', 'Vergelijk de basis, vormgeving en geïntegreerde uitvoering.', {
-    point: '2. Parameters: geef maten en speling een naam.',
-    code: 'pcb_w = 78;\npcb_l = 56;\npcb_t = 1.6;\npcb_clear = 0.3;',
+    point: '2. Eén maatbron: wijzig een maat, het ontwerp volgt.',
+    code: 'pcb_w = 78;\npcb_l = 56;\nspeling = 0.3;\nbinnenmaat = [pcb_w + 2*speling, pcb_l + 2*speling];\ncube([binnenmaat[0], binnenmaat[1], 2]);',
     source: 'reinsdesigns/antweight_chassis.scad',
-    detail: 'Nominale printplaatmaten en extra pasruimte zijn verschillende parameters.',
+    example: true,
+    detail: 'Wij gebruiken millimeters: [x, y, z] is breedte, lengte, hoogte. Geef PCB-maten en speling namen en leid andere maten daarvan af; kopieer geen losse getallen.',
   }, 'antweight_chassis'],
   ['Disc · varianten', 'Rond, compact en met een afgevlakte voorkant.', {
-    point: '3. Geometrie: snij een profiel uit en draai het tot een holle vorm.',
-    code: 'module shell() translate(C) rotate_extrude()\n  difference() {\n    polygon([[0, 0], [R, 0], [R_top, H], [0, H]]);\n    polygon([[-1, floor_t], [r_in(floor_t), floor_t],\n      [r_in(H-top_t), H-top_t], [-1, H-top_t]]);\n  }',
+    point: '3. Optellen en aftrekken: union en difference.',
+    code: 'difference() {\n  union() {\n    cube([40, 30, 2]);\n    translate([20, 15, 2]) cylinder(d=10, h=6);\n  }\n  translate([20, 15, -1]) cylinder(d=3, h=10);\n}',
     source: 'reinsdesigns/disc_geometry.scad',
-    detail: 'De gedeelde Disc-bibliotheek: buitenprofiel min binnenprofiel, daarna een omwenteling.',
+    example: true,
+    detail: 'cube maakt een blok, cylinder een cilinder; translate verplaatst de vorm erachter. union voegt samen. difference trekt alle volgende vormen van de eerste af: hier een plaat met busje en doorgaand gat.',
   }, 'antweight_disc_v', 'antweight_disc_mini_', 'antweight_disc_wedge_'],
   ['Disc Spinner · v0.1 tot v0.5', 'Vijf versies van dezelfde ontwerplijn naast elkaar · ontwerpstudie: actieve wapens zijn bij Roboktober 2026 niet toegestaan.', {
     point: '4. Afleiden: bereken maten uit de geometrie, niet met de hand.',
@@ -53,10 +55,11 @@ const SCAD_DESIGN_GROUPS = [
     detail: 'norm geeft de afstand tot het middelpunt; max kiest de verste PCB-hoek.',
   }, 'antweight_disc_spinner_'],
   ['Rhomboid', 'Een hoekig zijprofiel in plaats van een ronde vorm.', {
-    point: '5. Herhalen: één lus plaatst alle afstandhouders.',
-    code: 'for (p = pcb_holes)\n  translate([p[0], p[1], 0])\n    cylinder(d = standoff_d, h = pcb_z);',
+    point: '5. Afstandsbusjes: één module, vier posities.',
+    code: 'module busje(h=6, d=6, gat=2.2) {\n  difference() {\n    cylinder(h=h, d=d);\n    translate([0,0,-1]) cylinder(h=h+2, d=gat);\n  } }\nfor (p = [[5,5], [35,5], [5,25], [35,25]])\n  translate([p[0], p[1], 0]) busje();',
     source: 'reinsdesigns/antweight_rhomboid_v0.1.scad',
-    detail: 'De gatenlijst is de bron; translate plaatst dezelfde vorm op elke coördinaat.',
+    example: true,
+    detail: 'Een module is een herbruikbare vorm met parameters. Buitenste cilinder min binnenste cilinder = busje met schroefgat. De lus plaatst vier busjes; laat de snijcilinder iets uitsteken voor een doorgaand gat.',
   }, 'antweight_rhomboid_'],
   ['Limulus · v0.1 en v0.2', 'Biomimicry en doorontwikkeling naast elkaar.', {
     point: '6. Doorbouwen: include neemt een bestaand ontwerp als basis.',
@@ -71,17 +74,17 @@ const SCAD_DESIGN_GROUPS = [
     detail: 'Twee kanten × twee assen; mirror_x is een eigen helper, geen ingebouwde functie.',
   }, 'antweight_passive_aggressive_'],
   ['Mostly Harmless', 'Chassis en bijbehorend dak; twee onderdelen, geen twee versies.', {
-    point: '8. Importeren: ook een STL zonder parametrische bron kan meedoen.',
-    code: 'import("mostlyharmless.stl");\nimport("mopstlyharmlessroof.stl");',
+    point: '8. Importeren: 3D-mesh of 2D-profiel hergebruiken.',
+    code: '// 3D-mesh: import("mostlyharmless.stl");\n// Hier: een 2D-profiel met 2 mm dikte\nlinear_extrude(height=2)\n  import("profile.dxf");',
     source: 'reinsdesigns/mostlyharmless.stl',
     example: true,
-    detail: 'Importvoorbeeld in dezelfde map; een mesh geeft niet de oorspronkelijke parameters terug.',
+    detail: 'STL/3MF levert een 3D-mesh, DXF/SVG een 2D-profiel. Hier krijgt het meegeleverde DXF-profiel 2 mm dikte. Het bestand staat naast het voorbeeldscript. Controleer schaal/eenheden; import herstelt geen oorspronkelijke parameters.',
   }, 'mostlyharmless.', 'mopstlyharmlessroof.'],
   ['Aurora · 50 gram', 'Een radiografisch bestuurde demonstratierobot in een andere gewichtsklasse.', {
     point: '9. Controleren: assert bewaakt een expliciete maatvoorwaarde.',
     code: 'assert(\n  wheel_x - wheel_w / 2 > body_w / 2,\n  "wheel overlaps the chassis side wall"\n);',
     source: 'reinsdesigns/aurora_50g_rc_v0.1.scad',
-    detail: 'Dit controleert wielvrijloop in het model, niet de werkelijke passing of het gewicht.',
+    detail: 'Zoals een assert in programmacode: bij false stopt het model met deze foutmelding. Hier moet de binnenkant van het wiel buiten de zijwand liggen. Geen bewijs voor echte passing of gewicht: nameten en proefprinten blijven nodig.',
   }, 'aurora_'],
   ['DuoBot · modulair', 'Een modulair robotconcept; geometrie is geen bewijs van werking.', {
     point: '10. Samenstellen: dezelfde module levert meerdere robotvarianten.',

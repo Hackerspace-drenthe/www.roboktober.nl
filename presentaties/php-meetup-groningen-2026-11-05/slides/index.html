@@ -933,7 +933,8 @@ updateMotors();
   <div class="scad-stage">
     <div class="scad-intro">
       <h2>Eén project, veel verschillende ontwerpen</h2>
-      <p>10 ontwerpfamilies · 24 beelden · bij elke klik een nieuw code-inzicht.</p>
+      <p>OpenSCAD: beschrijf vormen met code, niet met de muis.</p>
+      <p class="smaller">Maten → vormen optellen/aftrekken → busjes → import → asserts</p>
       <img src="img/chassis-v04-openscad.png" alt="Voorbeeld van het uiteindelijke chassis">
       <p class="smaller">Klik om te beginnen →</p>
     </div>
@@ -943,7 +944,9 @@ updateMotors();
     Meshconversies en exportbestanden met dezelfde geometrie zijn geen extra ontwerpen; disc_geometry.scad is een hulpbibliotheek.
     Verschillende ontwerplijnen, niet één lineaire versiegeschiedenis. Niet elk detail voorlezen: benoem de families en klik vlot door de versies.
     Renders zijn niet op dezelfde schaal; prototypegeometrie bewijst geen pasvorm of werking.
-    Per familie één leerpunt: mesh hergebruiken → parameters → profiel uitsnijden en roteren → maten berekenen → lus → include → combinaties van lussen → STL-import → assert → samenstelling. Bronfragmenten zijn geselecteerd en opnieuw afgebroken, geen zelfstandige scripts. Mostly Harmless is expliciet een importvoorbeeld.
+    Voor programmeurs zonder OpenSCAD-ervaring: vormen zijn het resultaat van de code. Een module levert geometrie, een functie levert een waarde. Wij werken in millimeters; [x,y,z] geeft positie of afmetingen. Parameters zijn definities, geen imperatieve variabelen die je in een lus ophoogt.
+    Per familie één leerpunt: use versus import → herbruikbare maten en speling → cube/cylinder, translate, union en difference → maten berekenen → busjes als module en lus → include → combinaties van lussen → STL/3MF en DXF/SVG met linear_extrude → assert → samenstelling.
+    Stap 2, 3, 5 en 8 tonen vereenvoudigde lesvoorbeelden met hun exacte OpenSCAD-resultaat naast de code. De robotgalerij erboven is kleiner en toont verwante ontwerpen, niet het resultaat van de lescode. Via het resultaat open je het volledige voorbeeldscript; profile.dxf is meegeleverd bij het importvoorbeeld. Overige code is geselecteerd uit de gekoppelde bronnen, niet altijd zelfstandig uitvoerbaar.
     Reken circa twee minuten voor de reeks met de code-uitleg; houd de overige chassiscontext kort.
     Bij de Disc Spinner-familie expliciet zeggen: ontwerpstudies, niet toegestaan bij Roboktober 2026 — daar geen actieve wapens, alleen duwen/wedges.
   </aside>

@@ -34,6 +34,7 @@ else
   find "$SLIDES/img" -maxdepth 1 -type f -exec cp {} "$PKG/presentatie/img/" \;
   mkdir -p "$PKG/presentatie/img/scad-steps"
   cp -r "$SLIDES/img/scad-steps/"*/ "$PKG/presentatie/img/scad-steps/"
+  cp -r "$SLIDES/img/scad-examples" "$PKG/presentatie/img/"
 fi
 
 # Gallery links point to ../../../3dprinter in the repository and ../3dprinter in the package.
