@@ -32,8 +32,8 @@ window.RoboStepNotes = {
       7: {
         context: ['Wallie · circa 2 min inclusief videofragment', 'Wallie · about 2 min including the video clip'],
         steps: [
-          ['Stel Wallie kort voor. Hij brengt de robotkennis mee. Het videofragment is offline beschikbaar; controleer toestemming voor vertoning.',
-            'Briefly introduce Wallie. He brings the robot expertise. The video clip is available offline; check permission to show it.'],
+          ['Stel Wallie kort voor. Hij brengt de robotkennis mee: 1e op de INDI Robot Games 2020, waar ook Master Milo meedeed, en 2e op Boeliebots 2026 in Groningen. Het videofragment is offline beschikbaar; controleer toestemming voor vertoning.',
+            'Briefly introduce Wallie. He brings the robot expertise: 1st at INDI Robot Games 2020, where Master Milo also competed, and 2nd at Boeliebots 2026 in Groningen. The video clip is available offline; check permission to show it.'],
           ['Wallie komt in de hackerspace onderdelen maken met de frees en CNC. Zo kwamen onze werelden bij elkaar.',
             'Wallie visits the hackerspace to make parts with the mill and CNC equipment. That brought our worlds together.'],
           ['Daaruit ontstond het idee voor een gezamenlijk evenement: mensen enthousiast maken voor techniek en de hackerspace.',

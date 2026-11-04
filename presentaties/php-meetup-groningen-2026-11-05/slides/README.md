@@ -9,6 +9,14 @@ Centrale vraag: wat gebeurt er als je op je telefoon de joystick naar voren duwt
 2. Open `presentatie/index.html` in Chrome, Edge of Firefox.
 3. Alles werkt offline; er is geen internet of webserver nodig.
 
+Alle weergave-assets zijn lokaal meegeleverd: afbeeldingen en productfoto's,
+video, reveal.js, code-highlighting, scripts en CSS. Lettertypen gebruiken de
+lokale systeemfonts; er wordt geen webfont gedownload. Er is geen CDN-terugval.
+AliExpress- en andere externe links zijn alleen aanklikbare bronvermeldingen,
+geen afbeeldingsbronnen. Alleen het openen van externe websites en de pagina
+achter de QR-code vereist internet. Pak het pakket altijd volledig uit,
+inclusief `vendor/`, `js/` en `img/`.
+
 ## Bediening
 
 | Toets | Actie |

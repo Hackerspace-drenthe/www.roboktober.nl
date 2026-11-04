@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { execFileSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
-import { join, resolve } from 'node:path'
+import { dirname, extname, join, resolve } from 'node:path'
 import test from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { runInNewContext } from 'node:vm'
@@ -10,6 +10,41 @@ import { JSDOM } from 'jsdom'
 import QRCode from 'qrcode'
 
 const root = fileURLToPath(new URL('../public/presentaties/php-meetup-groningen-2026-11-05/', import.meta.url))
+
+function checkLocalAssets(document, file, visited = new Set()) {
+  const checkReference = (reference, parent = file) => {
+    if (!reference || reference.startsWith('#') || reference.startsWith('data:') || reference.startsWith('blob:')) return
+    assert.doesNotMatch(reference, /^(?:[a-z][a-z\d+.-]*:|\/\/)/i, `External asset in ${file}: ${reference}`)
+    const asset = resolve(dirname(parent), decodeURIComponent(reference.split(/[?#]/)[0]))
+    assert.ok(existsSync(asset), `Missing asset: ${asset}`)
+    if (visited.has(asset)) return
+    visited.add(asset)
+    if (extname(asset) === '.css') checkStyles(readFileSync(asset, 'utf8'), asset)
+    if (extname(asset) === '.svg') {
+      const svg = new JSDOM(readFileSync(asset, 'utf8'), { contentType: 'image/svg+xml' })
+      checkLocalAssets(svg.window.document, asset, visited)
+      svg.window.close()
+    }
+  }
+  const checkStyles = (css, parent = file) => {
+    for (const match of css.matchAll(/url\(\s*["']?([^"')\s]+)["']?\s*\)|@import\s+["']([^"']+)["']/g)) {
+      checkReference(match[1] || match[2], parent)
+    }
+  }
+  for (const element of document.querySelectorAll('img, image, script[src], link[href], video, audio, source, track, iframe, object, embed, use')) {
+    if (element.matches('link') && !element.matches('[rel="stylesheet"], [rel="preload"], [rel="icon"]')) continue
+    for (const attribute of ['src', 'href', 'xlink:href', 'poster', 'data', 'data-src']) {
+      checkReference(element.getAttribute(attribute))
+    }
+    assert.ok(!element.hasAttribute('srcset'), 'Audit srcset candidates before using them in the offline deck')
+  }
+  for (const template of document.querySelectorAll('template')) checkLocalAssets(template.content, file, visited)
+  for (const element of document.querySelectorAll('[style]')) checkStyles(element.getAttribute('style'))
+  for (const element of document.querySelectorAll('style')) checkStyles(element.textContent)
+  for (const element of document.querySelectorAll('[data-background-image], [data-background-video], [data-background-iframe]')) {
+    for (const attribute of ['data-background-image', 'data-background-video', 'data-background-iframe']) checkReference(element.getAttribute(attribute))
+  }
+}
 
 test('overview links to both decks, review instructions and full downloads', () => {
   const html = readFileSync(join(root, 'index.html'), 'utf8')
@@ -28,6 +63,13 @@ for (const language of ['nl', 'en']) {
     const scripts = ['scad-designs', 'visuals', 'firmware-source', 'step-notes']
       .map((name) => readFileSync(join(slides, `js/${name}.js`), 'utf8')).join('\n')
     dom.window.eval(scripts)
+    assert.doesNotMatch(html, /cdn\.jsdelivr\.net|document\.write|onerror=/)
+    checkLocalAssets(dom.window.document, join(slides, 'index.html'))
+    const externalImage = dom.window.document.createElement('img')
+    externalImage.src = 'https://ae-pic-a1.aliexpress-media.com/product.jpg'
+    dom.window.document.body.append(externalImage)
+    assert.throws(() => checkLocalAssets(dom.window.document, join(slides, 'index.html')), /External asset/)
+    externalImage.remove()
     const sections = [...dom.window.document.querySelectorAll('.slides > section')]
     const untouched = sections.filter((section) => !section.querySelector('.fragment, code[data-line-numbers*="|"]'))
       .map((section) => [section, section.querySelector('aside.notes')?.innerHTML])
@@ -114,6 +156,9 @@ for (const language of ['nl', 'en']) {
     assert.match(html, /Rein Velt/)
     assert.match(html, /drenthenoodnetwerk\.nl/)
     assert.equal([...html.matchAll(/<section(?:\s|>)/g)].length, 48)
+    const wallie = html.split(/<section(?:\s[^>]*)?>/)[7].split('</section>')[0]
+    assert.match(wallie, language === 'nl' ? /1e op INDI Robot Games 2020/ : /1st at INDI Robot Games 2020/)
+    assert.match(wallie, /Master Milo/)
     const finalSlide = new JSDOM(html).window.document.querySelector('.slides > section:last-child')
     assert.ok(finalSlide.classList.contains('presentation-download'))
     const presentationUrl = 'https://www.roboktober.nl/app/presentaties/php-meetup-groningen-2026-11-05/'

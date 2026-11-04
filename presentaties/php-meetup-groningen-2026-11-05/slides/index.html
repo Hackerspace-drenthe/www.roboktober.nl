@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Roboktober — van joystick tot wiel · PHP Meetup Groningen</title>
 
-  <!-- reveal.js: lokaal uit vendor/ (zie scripts/vendor-reveal.sh), anders CDN-fallback -->
-  <link rel="stylesheet" href="vendor/reveal.js/dist/reveal.css" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css'">
-  <link rel="stylesheet" href="vendor/reveal.js/plugin/highlight/monokai.css" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/monokai.css'">
+  <!-- reveal.js: lokaal uit vendor/ (zie scripts/vendor-reveal.sh) -->
+  <link rel="stylesheet" href="vendor/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="vendor/reveal.js/plugin/highlight/monokai.css">
   <link rel="stylesheet" href="css/roboktober.css">
 </head>
 <body>
@@ -173,7 +173,7 @@
     <ul>
       <li>Al heel lang bezig met <b>antweight</b>-robots</li>
       <li>Team captain <b>Team Upstart</b> — o.a. Cookiemonster, TLC, Kecil</li>
-      <li>🏆 <b>Veel prijzen gewonnen</b> — o.a. <b>2e plaats</b> op Boeliebots 2026 (Groningen)</li>
+      <li>🏆 <b>1e op INDI Robot Games 2020</b> — ook Master Milo deed mee; <b>2e op Boeliebots 2026</b> (Groningen)</li>
       <li class="fragment">Komt vaak naar de hackerspace om robotonderdelen te maken met de freesbank en CNC-apparatuur</li>
       <li class="fragment"><b>Idee:</b> samen een event maken → mensen enthousiast maken voor techniek <em>én</em> voor de hackerspace</li>
     </ul>
@@ -1209,8 +1209,7 @@ updateMotors();
 <script src="vendor/reveal.js/plugin/notes/notes.js"></script>
 <script>
   if (!window.Reveal) {
-    const cdn = 'https://cdn.jsdelivr.net/npm/reveal.js@5';
-    document.write(`<script src="${cdn}/dist/reveal.js"><\/script><script src="${cdn}/plugin/highlight/highlight.js"><\/script><script src="${cdn}/plugin/notes/notes.js"><\/script>`);
+    throw new Error('Lokale reveal.js-bestanden ontbreken. Pak het volledige presentatiepakket uit, inclusief vendor/.');
   }
 </script>
 <script>

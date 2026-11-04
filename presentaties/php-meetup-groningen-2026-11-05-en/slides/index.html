@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Roboktober — from joystick to wheel · PHP Meetup Groningen</title>
 
-  <!-- reveal.js: lokaal uit vendor/ (zie scripts/vendor-reveal.sh), anders CDN-fallback -->
-  <link rel="stylesheet" href="vendor/reveal.js/dist/reveal.css" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css'">
-  <link rel="stylesheet" href="vendor/reveal.js/plugin/highlight/monokai.css" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/highlight/monokai.css'">
+  <!-- reveal.js: local from vendor/ (see scripts/vendor-reveal.sh) -->
+  <link rel="stylesheet" href="vendor/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="vendor/reveal.js/plugin/highlight/monokai.css">
   <link rel="stylesheet" href="css/roboktober.css">
 </head>
 <body>
@@ -173,7 +173,7 @@
     <ul class="smaller">
       <li>Has been building <b>antweight</b> robots for many years</li>
       <li>Team captain of <b>Team Upstart</b> — including Cookiemonster, TLC and Kecil</li>
-      <li>🏆 <b>Many awards</b> — including <b>2nd place</b> at Boeliebots 2026 (Groningen)</li>
+      <li>🏆 <b>1st at INDI Robot Games 2020</b> — Master Milo also competed; <b>2nd at Boeliebots 2026</b> (Groningen)</li>
       <li class="fragment">Often visits the hackerspace to make robot parts using the milling machine and CNC equipment</li>
       <li class="fragment"><b>The idea:</b> organise an event together → get people excited about technology <em>and</em> the hackerspace</li>
     </ul>
@@ -1209,8 +1209,7 @@ updateMotors();
 <script src="vendor/reveal.js/plugin/notes/notes.js"></script>
 <script>
   if (!window.Reveal) {
-    const cdn = 'https://cdn.jsdelivr.net/npm/reveal.js@5';
-    document.write(`<script src="${cdn}/dist/reveal.js"><\/script><script src="${cdn}/plugin/highlight/highlight.js"><\/script><script src="${cdn}/plugin/notes/notes.js"><\/script>`);
+    throw new Error('Local reveal.js files are missing. Extract the complete presentation package, including vendor/.');
   }
 </script>
 <script>

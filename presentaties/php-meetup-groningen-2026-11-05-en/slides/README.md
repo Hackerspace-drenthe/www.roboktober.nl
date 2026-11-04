@@ -11,6 +11,13 @@ Central question: what happens when you push the joystick forward on your phone?
 
 ## Controls
 
+All display assets are bundled locally: images and product photos, video,
+reveal.js, code highlighting, scripts and CSS. Fonts use the local system font
+stack; no webfonts are downloaded. There is no CDN fallback. AliExpress and other
+external links are clickable source credits, not image sources. Only opening
+external websites or the page behind the QR code requires internet. Extract the
+entire package, including `vendor/`, `js/` and `img/`.
+
 | Key | Action |
 |---|---|
 | → / space | Next step (many slides build up with each click) |

@@ -11,6 +11,12 @@ Central question: what happens when you push the joystick forward on your phone?
 
 ## Controls
 
+All display assets (including product photos), video, scripts and CSS are local
+to the package; there are no external fonts or CDN fallbacks. AliExpress and
+other source links do not load images. Only opening external websites or the
+page behind the QR code requires internet. Extract the entire package, including
+`vendor/`, `js/` and `img/`.
+
 | Key | Action |
 |---|---|
 | → / space | Next step (many slides build up with each click) |

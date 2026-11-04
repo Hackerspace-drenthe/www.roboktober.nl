@@ -11,6 +11,12 @@ Centrale vraag: wat gebeurt er als je op je telefoon de joystick naar voren duwt
 
 ## Bediening
 
+Alle weergave-assets (ook de productfoto's), video, scripts en CSS staan lokaal
+in het pakket; er zijn geen externe lettertypen of CDN-terugval. De AliExpress-
+en andere bronlinks downloaden geen afbeeldingen. Alleen het openen van externe
+websites of de pagina achter de QR-code vereist internet. Pak het volledige
+pakket uit, inclusief `vendor/`, `js/` en `img/`.
+
 | Toets | Actie |
 |---|---|
 | → / spatie | volgende stap (veel dia's bouwen in klikken op) |
