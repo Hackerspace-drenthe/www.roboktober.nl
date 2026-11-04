@@ -6,6 +6,7 @@ import { join, resolve } from 'node:path'
 import test from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { runInNewContext } from 'node:vm'
+import { JSDOM } from 'jsdom'
 
 const root = fileURLToPath(new URL('../public/presentaties/php-meetup-groningen-2026-11-05/', import.meta.url))
 
@@ -18,6 +19,75 @@ test('overview links to both decks, review instructions and full downloads', () 
 })
 
 for (const language of ['nl', 'en']) {
+  test(`${language}: speaker notes cover each click, including generated and grouped fragments`, () => {
+    const slides = join(root, language, 'presentatie')
+    const html = readFileSync(join(slides, 'index.html'), 'utf8')
+    assert.match(html, /plugins: \[RevealHighlight, RoboStepNotes, RevealNotes\]/)
+    const dom = new JSDOM(html, { runScripts: 'outside-only' })
+    const scripts = ['scad-designs', 'visuals', 'firmware-source', 'step-notes']
+      .map((name) => readFileSync(join(slides, `js/${name}.js`), 'utf8')).join('\n')
+    dom.window.eval(scripts)
+    const sections = [...dom.window.document.querySelectorAll('.slides > section')]
+    const untouched = sections.filter((section) => !section.querySelector('.fragment, code[data-line-numbers*="|"]'))
+      .map((section) => [section, section.querySelector('aside.notes')?.innerHTML])
+    // Reproduce highlight.js's fragment clones before Reveal assigns group indices.
+    for (const section of sections) {
+      for (const code of section.querySelectorAll('code[data-line-numbers*="|"]')) {
+        const [first, ...steps] = code.dataset.lineNumbers.split('|')
+        const start = code.hasAttribute('data-fragment-index') ? Number(code.dataset.fragmentIndex) : null
+        code.dataset.lineNumbers = first
+        code.removeAttribute('data-fragment-index')
+        steps.forEach((range, index) => {
+          const clone = code.cloneNode(true)
+          clone.classList.add('fragment')
+          clone.dataset.lineNumbers = range
+          if (start !== null) clone.dataset.fragmentIndex = start + index
+          code.parentNode.append(clone)
+        })
+      }
+      const fragments = [...section.querySelectorAll('.fragment')]
+      const explicit = fragments.filter((fragment) => fragment.hasAttribute('data-fragment-index'))
+      let next = explicit.length ? Math.max(...explicit.map((fragment) => Number(fragment.dataset.fragmentIndex))) + 1 : 0
+      for (const fragment of fragments) {
+        if (!fragment.hasAttribute('data-fragment-index')) fragment.dataset.fragmentIndex = next++
+      }
+    }
+    let ready
+    dom.window.RoboStepNotes.init({
+      on: (event, callback) => {
+        assert.equal(event, 'ready')
+        ready = callback
+      },
+      getSlides: () => sections,
+    })
+    ready()
+    const firstFirmwareNote = sections[19].querySelector('aside.notes')
+    assert.ok([...firstFirmwareNote.children].some((paragraph) => paragraph.textContent === (language === 'nl' ? 'Welke hardware gebruiken we?' : 'Which hardware are we using?')))
+    let stepCount = 0
+    for (const [index, section] of sections.entries()) {
+      const fragments = [...section.querySelectorAll('.fragment')]
+      if (!fragments.length) continue
+      const notes = new Map()
+      assert.match(section.querySelector('aside.notes').textContent, /Start \//)
+      for (const fragment of fragments) {
+        const step = Number(fragment.dataset.fragmentIndex)
+        assert.ok(fragment.dataset.notes?.length > 80, `Missing notes on slide ${index + 1}`)
+        assert.match(fragment.dataset.notes, new RegExp(`${language === 'nl' ? 'Klik' : 'Click'} ${step + 1} /`))
+        if (notes.has(step)) assert.equal(fragment.dataset.notes, notes.get(step), 'Grouped fragments share notes')
+        notes.set(step, fragment.dataset.notes)
+      }
+      stepCount += notes.size
+    }
+    assert.equal(stepCount, 81)
+    for (const [section, original] of untouched) assert.equal(section.querySelector('aside.notes')?.innerHTML, original)
+    const unexpected = dom.window.document.createElement('span')
+    unexpected.className = 'fragment'
+    unexpected.dataset.fragmentIndex = '999'
+    sections[2].append(unexpected)
+    assert.throws(ready, /Speaker notes do not match click steps on slide 3/)
+    dom.window.close()
+  })
+
   test(`${language}: deck, video, gallery sources and complete archive`, () => {
     const slides = join(root, language, 'presentatie')
     const html = readFileSync(join(slides, 'index.html'), 'utf8')
@@ -35,11 +105,18 @@ for (const language of ['nl', 'en']) {
     const recap = html.split(/<section(?:\s[^>]*)?>/)[43].split('</section>')[0]
     assert.equal([...recap.matchAll(/<li>/g)].length, 4)
     for (const point of language === 'nl'
-      ? ['open software en standaarden', 'definities, grenzen en testprocedures', 'zelf blijven valideren en veel testen', 'PCB en chassis ontwerpen met code']
-      : ['open software and standards', 'definitions, constraints and test procedures', 'keep validating and testing', 'PCB and chassis designed with code']) {
+      ? ['Van joystick tot wiel', 'Open software en standaarden als basis.', 'Toetsbare eisen als contract.', 'Code als gereedschap — óók voor hardware.', 'Tests als bewijs — óók in het echt.', 'AI helpt bij elke stap. Jij bepaalt, controleert en valideert.']
+      : ['From joystick to wheel', 'Open software and standards as foundations.', 'Testable requirements as contracts.', 'Code as a tool — for hardware too.', 'Tests as proof — in the real world too.', 'AI assists at every step. You define, check and validate.']) {
       assert.ok(recap.includes(point), `Missing recap lesson: ${point}`)
     }
     assert.match(html, /class="cols firmware-full"/)
+    const resources = new JSDOM(html).window.document.querySelector('.getting-started')
+    assert.equal(resources.querySelectorAll('.cols.c3 .card').length, 3)
+    assert.equal(resources.querySelectorAll('.resource-brands > figure').length, 3)
+    for (const brand of resources.querySelectorAll('.resource-brands > figure')) {
+      assert.ok(brand.querySelector('.resource-image img[alt]'))
+      assert.ok(brand.querySelector('figcaption').textContent.trim())
+    }
     const ranges = '19-30|32-50|51-73|152-167|170-189|129-150|93-105|106-127|191-205'
     assert.ok(html.includes(`data-line-numbers="${ranges}"`))
     const explanations = [...html.matchAll(/<article class="([^"]*firmware-explanation[^"]*)"([^>]*)>([\s\S]*?)<\/article>/g)]

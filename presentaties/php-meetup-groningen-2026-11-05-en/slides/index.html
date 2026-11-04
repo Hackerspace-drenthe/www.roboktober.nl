@@ -1111,30 +1111,31 @@ updateMotors();
 <!-- ============================================================ -->
 
 <section>
-  <p class="kicker">What happens when you push the joystick forward?</p>
+  <p class="kicker">From joystick to wheel — the same software principles</p>
   <div class="flow" data-hl="1,2,3,4,5"></div>
   <ol class="smaller">
-    <li><b>Open foundations:</b> open software and standards.</li>
-    <li><b>A clear plan first:</b> definitions, constraints and test procedures.</li>
-    <li><b>AI lends a hand:</b> keep validating and testing, including physically.</li>
-    <li><b>Even hardware is “programmed”:</b> PCB and chassis designed with code.</li>
+    <li><b>Open software and standards as foundations.</b></li>
+    <li><b>Testable requirements as contracts.</b></li>
+    <li><b>Code as a tool — for hardware too.</b></li>
+    <li><b>Tests as proof — in the real world too.</b></li>
   </ol>
+  <p style="font-size:.65em;margin:.3em 0"><b>AI assists at every step. You define, check and validate.</b></p>
   <div class="takeaway fragment" style="font-size:1em;text-align:center;padding:.5em .8em">
     <div style="font-size:1.35em;line-height:1.15">If you can program, you can build robots too.</div>
-    <div style="font-size:.6em;font-weight:400;color:var(--robo-muted);margin-top:.35em">Electronics, 3D designs, websites, robots: all can be created, controlled and validated with code.</div>
+    <div style="font-size:.6em;font-weight:400;color:var(--robo-muted);margin-top:.35em">The same principles. Now it moves.</div>
   </div>
   <p class="bridge fragment">You're still a developer — only now your bug drives away.</p>
-  <aside class="notes">[3.10 · recap] Briefly answer the opening question using the full diagram. Four project lessons: build on open software and standards; start with a clear plan, definitions, constraints and test procedures; use AI as assistance, not a substitute for your own validation and extensive testing; even hardware engineering is “programming”, with code for the PCB and parametric chassis. Open foundations does not mean every component or protocol is open: the WebUI source is not yet public and ESP-NOW is a vendor protocol. DRC and asserts do not replace physical testing: 25 of 30 assembled PCBs worked. Click: the core message — if you can program, you can build robots too. KiCad + DRC for electronics, OpenSCAD for 3D, PHP for the website, firmware for the robot — always code, version control, review and tests. Let it land. Click: closing joke.</aside>
+  <aside class="notes">[3.10 · recap] We followed one command from joystick to wheel. The entire chain uses principles you already know as a developer: open software and standards as foundations; testable requirements as contracts; code as a tool, including PCB and chassis design; tests as proof, digitally and physically. AI assists at every step, but you define, check and validate. AI output is not proof. Open foundations does not mean everything is open: ESP-NOW is a vendor protocol. Click: if you can program, you can build robots too. The same principles. Now it moves. Let it land. Click: closing joke.</aside>
 </section>
 
-<section>
+<section class="getting-started">
   <p class="kicker">How do you get started tomorrow?</p>
   <div class="cols c3">
     <div class="card"><h3>🧰 Kit</h3>Parts list + build guide at <b>roboktober.nl</b></div>
     <div class="card"><h3>💾 Firmware</h3>WallieOnline on GitHub or the web flasher</div>
     <div class="card"><h3>🖨️ Chassis</h3>Edit a <code>.scad</code> file and print it</div>
   </div>
-  <div class="cols top" style="margin-top:.6em">
+  <div class="cols top resource-links">
     <ul class="smaller">
       <li><b>Hackerspace Drenthe</b> (Coevorden): come visit!</li>
       <li>Next Roboktober edition · Boeliebots (Groningen)</li>
@@ -1145,7 +1146,11 @@ updateMotors();
       <li>Kickoff + Wallie: <a href="https://www.youtube.com/live/qtz0UkJw4DU">youtube.com/live/qtz0UkJw4DU</a></li>
     </ul>
   </div>
-  <p class="center" style="display:flex;align-items:center;justify-content:center;gap:1.2em"><span><img class="plain" src="img/qr-roboktober.svg" alt="QR code for roboktober.nl" style="height:110px;vertical-align:middle"> <small>roboktober.nl</small></span><span><img class="plain" src="img/hackermakerspacelogo.svg" alt="Hackerspace Drenthe" style="background:#fff;border-radius:12px;padding:6px;height:80px;vertical-align:middle"> <small>Hackerspace Drenthe · come visit!</small></span><span><img class="plain" src="img/PCBWay.svg" alt="PCBWay" style="height:40px;vertical-align:middle"> <small>PCBs sponsored by PCBWay</small></span></p>
+  <div class="resource-brands">
+    <figure><div class="resource-image"><img class="plain resource-qr" src="img/qr-roboktober.svg" alt="QR code for roboktober.nl"></div><figcaption>roboktober.nl</figcaption></figure>
+    <figure><div class="resource-image"><img class="resource-hackerspace" src="img/hackermakerspacelogo.svg" alt="Hackerspace Drenthe"></div><figcaption>Hackerspace Drenthe · come visit!</figcaption></figure>
+    <figure><div class="resource-image"><img class="plain resource-sponsor" src="img/PCBWay.svg" alt="PCBWay"></div><figcaption>PCBs sponsored by PCBWay</figcaption></figure>
+  </div>
   <aside class="notes">[3.10 · call to action] QR code points to https://roboktober.nl — leave it on screen so people can scan it.</aside>
 </section>
 
@@ -1164,6 +1169,7 @@ updateMotors();
 <script src="js/scad-designs.js"></script>
 <script src="js/visuals.js"></script>
 <script src="js/firmware-source.js"></script>
+<script src="js/step-notes.js"></script>
 <script src="vendor/reveal.js/dist/reveal.js"></script>
 <script src="vendor/reveal.js/plugin/highlight/highlight.js"></script>
 <script src="vendor/reveal.js/plugin/notes/notes.js"></script>
@@ -1183,7 +1189,7 @@ updateMotors();
     slideNumber: 'c/t',
     transition: 'fade',
     transitionSpeed: 'fast',
-    plugins: [RevealHighlight, RevealNotes],
+    plugins: [RevealHighlight, RoboStepNotes, RevealNotes],
   });
   roboPcbFlow(Reveal);
   roboPcbMini(Reveal);

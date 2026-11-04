@@ -15,7 +15,7 @@ Centrale vraag: wat gebeurt er als je op je telefoon de joystick naar voren duwt
 |---|---|
 | → / spatie | volgende stap (veel dia's bouwen in klikken op) |
 | ← | vorige stap |
-| `S` | sprekersnotities in een apart venster (staat de pop-up toe) |
+| `S` | sprekersnotities in een apart venster; wisselen automatisch per klik (sta de pop-up toe) |
 | `Esc` / `O` | overzicht van alle dia's |
 | `F` | volledig scherm |
 
@@ -57,6 +57,6 @@ vóór verdere openbare verspreiding.
 - Is de rode draad (één joystickcommando van telefoon tot wiel) te volgen?
 - Klopt het niveau voor PHP-developers zonder hardware-ervaring?
 - Taal, tempo, te volle dia's, onduidelijke of onjuiste claims.
-- De sprekersnotities (`S`) geven per dia de bedoeling en timing.
+- De sprekersnotities (`S`) geven per dia de bedoeling en timing. Bij klikstappen zie je alleen de actuele spreektekst, ook bij terugklikken of rechtstreeks naar een stap springen. Dia's zonder klikstappen houden hun volledige notities.
 
 Reacties graag per dianummer (rechtsonder in beeld).

@@ -47,6 +47,10 @@ By the end, attendees should be able to:
 
 These timings are a rehearsal target, not a measured duration. Rehearse with the 84-second video, slide fragments, demo transitions, and audience control included.
 
+Shorter remains the goal. Only if the explanation truly needs it may the talk run up to an absolute maximum of 60 minutes; this uses buffer/Q&A time, not an extra hour. For deeper OpenSCAD explanation (target 2 min, up to 5 min), watch the clock and shorten side paths and repeated explanations.
+
+On every slide with click steps, the S speaker window automatically follows the current step: initial notes, then only that step's speaking text plus brief context/timing. This uses reveal.js's native fragment notes, including code highlights, simultaneous fragments and the generated gallery. Stepping backwards and jumping directly to a step show the same notes. Slides without click steps retain their original notes. `slides/js/step-notes.js` checks that every click group has notes; update them when fragments change.
+
 | Section | Minutes | Cumulative | Question |
 | --- | ---: | ---: | --- |
 | 3.1 Cold open, Rein, and audience poll | 3 | 3 | Why is there a robot driving here? |
@@ -192,7 +196,7 @@ Show the actual PCB, but do not explain pins or power-supply variations yet.
 
 ### 3.10 Closing
 
-- Slide 43 summarizes four project lessons: open software and standards as foundations; a clear plan with definitions, constraints and test procedures; AI assistance alongside your own validation and extensive testing; PCB and chassis design with code too. Keep the command chain and existing core message.
+- Slide 43 closes the common thread: from joystick to wheel, using the same software principles. Four short lessons: open software and standards as foundations; testable requirements as contracts; code as a tool, including hardware; tests as proof, including physical tests. AI assists at every step; the user defines, checks and validates. Keep the command chain and existing core message.
 - Answer the opening question in this order: controller → firmware → PWM/H-bridge → motor.
 - Explicitly mention safe stopping.
 - Closing line: **you’re still a developer — now your bug drives away.**

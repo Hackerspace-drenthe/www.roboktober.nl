@@ -1111,30 +1111,31 @@ updateMotors();
 <!-- ============================================================ -->
 
 <section>
-  <p class="kicker">Wat gebeurt er als je de joystick naar voren duwt?</p>
+  <p class="kicker">Van joystick tot wiel — dezelfde softwareprincipes</p>
   <div class="flow" data-hl="1,2,3,4,5"></div>
   <ol class="smaller">
-    <li><b>Open als basis:</b> open software en standaarden.</li>
-    <li><b>Eerst een helder plan:</b> definities, grenzen en testprocedures.</li>
-    <li><b>AI helpt mee:</b> zelf blijven valideren en veel testen, ook fysiek.</li>
-    <li><b>Ook hardware is ‘geprogrammeerd’:</b> PCB en chassis ontwerpen met code.</li>
+    <li><b>Open software en standaarden als basis.</b></li>
+    <li><b>Toetsbare eisen als contract.</b></li>
+    <li><b>Code als gereedschap — óók voor hardware.</b></li>
+    <li><b>Tests als bewijs — óók in het echt.</b></li>
   </ol>
+  <p style="font-size:.65em;margin:.3em 0"><b>AI helpt bij elke stap. Jij bepaalt, controleert en valideert.</b></p>
   <div class="takeaway fragment" style="font-size:1em;text-align:center;padding:.5em .8em">
     <div style="font-size:1.35em;line-height:1.15">Als je kunt programmeren, kun je ook robots bouwen.</div>
-    <div style="font-size:.6em;font-weight:400;color:var(--robo-muted);margin-top:.35em">Elektronica, 3D-ontwerpen, websites, robots: allemaal te maken, aan te sturen en te valideren met code.</div>
+    <div style="font-size:.6em;font-weight:400;color:var(--robo-muted);margin-top:.35em">Dezelfde principes. Nu beweegt het.</div>
   </div>
   <p class="bridge fragment">Je blijft developer — alleen rijdt je bug nu weg.</p>
-  <aside class="notes">[3.10 · recap] Beantwoord de rode-draadvraag kort met het hele schema. Vier projectlessen: bouwen op open software en standaarden; beginnen met een helder plan, definities, grenzen en testprocedures; AI gebruiken als hulp, niet als vervanging voor eigen validatie en veel testen; ook hardware-engineering is ‘programmeren’, met code voor PCB en parametrisch chassis. Open als basis betekent niet dat elk onderdeel of protocol open is: de WebUI-broncode is nog niet openbaar en ESP-NOW is een leveranciersprotocol. DRC en asserts vervangen fysiek testen niet: 25 van 30 gemonteerde printplaten werkten. Klik: de kernboodschap — als je kunt programmeren, kun je ook robots bouwen. KiCad + DRC voor elektronica, OpenSCAD voor 3D, PHP voor de website, firmware voor de robot — telkens code, versiebeheer, review en tests. Even laten landen. Klik: grap als afsluiter.</aside>
+  <aside class="notes">[3.10 · recap] We volgden één commando van joystick tot wiel. De hele keten werkt met principes die je als developer al kent: open software en standaarden als basis; toetsbare eisen als contract; code als gereedschap, ook voor PCB en chassis; tests als bewijs, digitaal én fysiek. AI helpt bij elke stap, maar jij bepaalt, controleert en valideert. AI-output is geen bewijs. Open als basis betekent niet dat alles open is: ESP-NOW is een leveranciersprotocol. Klik: als je kunt programmeren, kun je ook robots bouwen. Dezelfde principes. Nu beweegt het. Laat dat landen. Klik: grap als afsluiter.</aside>
 </section>
 
-<section>
+<section class="getting-started">
   <p class="kicker">Hoe begin je morgen?</p>
   <div class="cols c3">
     <div class="card"><h3>🧰 Kit</h3>Onderdelenlijst + bouwgids via <b>roboktober.nl</b></div>
     <div class="card"><h3>💾 Firmware</h3>WallieOnline op GitHub of de web flasher</div>
     <div class="card"><h3>🖨️ Chassis</h3>Pas een <code>.scad</code>-bestand aan en print</div>
   </div>
-  <div class="cols top" style="margin-top:.6em">
+  <div class="cols top resource-links">
     <ul class="smaller">
       <li><b>Hackerspace Drenthe</b> (Coevorden): kom langs!</li>
       <li>Volgende editie Roboktober · Boeliebots (Groningen)</li>
@@ -1145,7 +1146,11 @@ updateMotors();
       <li>Kickoff + Wallie: <a href="https://www.youtube.com/live/qtz0UkJw4DU">youtube.com/live/qtz0UkJw4DU</a></li>
     </ul>
   </div>
-  <p class="center" style="display:flex;align-items:center;justify-content:center;gap:1.2em"><span><img class="plain" src="img/qr-roboktober.svg" alt="QR-code naar roboktober.nl" style="height:110px;vertical-align:middle"> <small>roboktober.nl</small></span><span><img class="plain" src="img/hackermakerspacelogo.svg" alt="Hackerspace Drenthe" style="background:#fff;border-radius:12px;padding:6px;height:80px;vertical-align:middle"> <small>Hackerspace Drenthe · kom langs!</small></span><span><img class="plain" src="img/PCBWay.svg" alt="PCBWay" style="height:40px;vertical-align:middle"> <small>PCB's gesponsord door PCBWay</small></span></p>
+  <div class="resource-brands">
+    <figure><div class="resource-image"><img class="plain resource-qr" src="img/qr-roboktober.svg" alt="QR-code naar roboktober.nl"></div><figcaption>roboktober.nl</figcaption></figure>
+    <figure><div class="resource-image"><img class="resource-hackerspace" src="img/hackermakerspacelogo.svg" alt="Hackerspace Drenthe"></div><figcaption>Hackerspace Drenthe · kom langs!</figcaption></figure>
+    <figure><div class="resource-image"><img class="plain resource-sponsor" src="img/PCBWay.svg" alt="PCBWay"></div><figcaption>PCB's gesponsord door PCBWay</figcaption></figure>
+  </div>
   <aside class="notes">[3.10 · call to action] QR-code wijst naar https://roboktober.nl — even laten staan zodat mensen kunnen scannen.</aside>
 </section>
 
@@ -1164,6 +1169,7 @@ updateMotors();
 <script src="js/scad-designs.js"></script>
 <script src="js/visuals.js"></script>
 <script src="js/firmware-source.js"></script>
+<script src="js/step-notes.js"></script>
 <script src="vendor/reveal.js/dist/reveal.js"></script>
 <script src="vendor/reveal.js/plugin/highlight/highlight.js"></script>
 <script src="vendor/reveal.js/plugin/notes/notes.js"></script>
@@ -1183,7 +1189,7 @@ updateMotors();
     slideNumber: 'c/t',
     transition: 'fade',
     transitionSpeed: 'fast',
-    plugins: [RevealHighlight, RevealNotes],
+    plugins: [RevealHighlight, RoboStepNotes, RevealNotes],
   });
   roboPcbFlow(Reveal);
   roboPcbMini(Reveal);

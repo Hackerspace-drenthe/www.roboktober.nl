@@ -15,7 +15,7 @@ Central question: what happens when you push the joystick forward on your phone?
 |---|---|
 | → / space | Next step (many slides build up with each click) |
 | ← | Previous step |
-| `S` | Speaker notes in a separate window (allow the pop-up) |
+| `S` | Speaker notes in a separate window; automatically follow each click (allow the pop-up) |
 | `Esc` / `O` | Overview of all slides |
 | `F` | Full screen |
 
@@ -34,6 +34,6 @@ Central question: what happens when you push the joystick forward on your phone?
 - Is the through-line (one joystick command from phone to wheel) easy to follow?
 - Is the level right for PHP developers without hardware experience?
 - Language, pacing, crowded slides, unclear or inaccurate claims.
-- The speaker notes (`S`) explain the purpose and timing of each slide.
+- The speaker notes (`S`) explain the purpose and timing of each slide. On slides with click steps, only the current step's speaking text is shown, including when stepping backwards or jumping directly to a step. Slides without click steps retain their complete notes.
 
 Please refer to slide numbers (bottom-right corner) in your feedback.

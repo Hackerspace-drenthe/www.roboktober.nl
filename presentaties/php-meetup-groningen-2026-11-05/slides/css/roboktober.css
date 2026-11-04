@@ -83,6 +83,15 @@
 .reveal .card.ok { border-color: var(--robo-green); }
 .reveal .card.bad { border-color: var(--robo-red); }
 
+.reveal .getting-started .cols.c3 { align-items: stretch; }
+.reveal .getting-started .resource-links { margin-top: 0.6em; }
+.reveal .getting-started .resource-links ul { font-size: 0.6em; margin: 0 0 0 1em; }
+.reveal .getting-started .resource-brands { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.1em; margin-top: 0.7em; }
+.reveal .getting-started .resource-image { height: 122px; display: flex; align-items: center; justify-content: center; }
+.reveal .getting-started .resource-qr { height: 110px; }
+.reveal .getting-started .resource-hackerspace { height: 80px; padding: 6px; background: #fff; border-radius: 12px; }
+.reveal .getting-started .resource-sponsor { height: 40px; }
+
 /* Stats */
 .reveal .stats { display: flex; gap: 0.8em; justify-content: center; flex-wrap: wrap; margin: 0.5em 0; }
 .reveal .stat { text-align: center; background: var(--robo-gray); border: 1px solid var(--robo-line); border-radius: 14px; padding: 0.45em 0.8em; min-width: 4.6em; }

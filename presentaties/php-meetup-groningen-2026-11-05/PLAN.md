@@ -47,6 +47,10 @@ Na afloop kan iemand:
 
 De tijden zijn een repetitiedoel, geen gemeten duur. Repetitie inclusief 84 seconden video, fragmentstappen, demo-overgangen en publieksbesturing.
 
+Korter blijft het doel. Alleen als de uitleg dit echt nodig heeft mag het verhaal uitlopen tot maximaal 60 minuten; dit gaat ten koste van uitloop/Q&A, niet boven op het uur. Houd bij extra OpenSCAD-uitleg (richttijd 2 min, maximaal 5 min) de klok bij en kort zijpaden en herhaalde uitleg in.
+
+Bij alle dia's met klikstappen wisselt het S-sprekersvenster automatisch mee: startnotitie, daarna alleen de spreektekst voor de huidige stap plus korte context/timing. Dit gebruikt de standaard fragmentnotities van reveal.js, ook bij code-highlights, gelijktijdige fragmenten en de gegenereerde galerij. Terugklikken en rechtstreeks naar een stap springen geven dezelfde notitie. Dia's zonder klikstappen houden hun bestaande notities. `slides/js/step-notes.js` bewaakt dat iedere klikgroep een tekst heeft; bij gewijzigde fragmenten moeten de notities mee worden aangepast.
+
 | Sectie | Minuten | Cumulatief | Vraag |
 | --- | ---: | ---: | --- |
 | 3.1 Cold open, Rein en publiekspeiling | 3 | 3 | Waarom rijdt hier een robot? |
@@ -192,7 +196,7 @@ Laat de echte print zien, maar leg pinnen en voedingsvarianten nog niet uit.
 
 ### 3.10 Afsluiting
 
-- Slide 43 vat vier projectlessen samen: open software en standaarden als basis; een helder plan met definities, grenzen en testprocedures; AI als hulp naast eigen validatie en veel testen; ook PCB en chassis ontwerpen met code. De commandoketen en bestaande kernboodschap blijven staan.
+- Slide 43 sluit de rode draad af: van joystick tot wiel, met dezelfde softwareprincipes. Vier korte lessen: open software en standaarden als basis; toetsbare eisen als contract; code als gereedschap, ook voor hardware; tests als bewijs, ook fysiek. AI helpt bij elke stap; de gebruiker bepaalt, controleert en valideert. De commandoketen en bestaande kernboodschap blijven staan.
 - Beantwoord de openingsvraag in de volgorde controller → firmware → PWM/H-brug → motor.
 - Benoem veilig stoppen expliciet.
 - Afsluitzin: **je blijft developer — alleen rijdt je bug nu weg.**
