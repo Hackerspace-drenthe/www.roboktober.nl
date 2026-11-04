@@ -3,6 +3,11 @@
 Talk for PHP Meetup Groningen, November 5, 2026 (about 47 minutes + questions).
 Central question: what happens when you push the joystick forward on your phone?
 
+**Status — 4 November 2026:** review complete and approved; all comments,
+including Wallie's, have been addressed. Rein confirms that all necessary
+usage rights, licence conditions and permissions for this presentation have
+been satisfied. Credits and licences remain in place.
+
 ## Getting started
 
 1. Extract the ZIP completely (do not open it from the ZIP preview).
@@ -47,22 +52,20 @@ Attribution and the license also appear directly below the photo.
 
 The photo `img/drv8833-module-photo.jpg` is the
 [AliExpress product photo supplied by Rein](https://ae-pic-a1.aliexpress-media.com/kf/S74f2a70c6db24777afee9bef22fa2001N.jpg?width=1000&height=1000&hash=2000),
-included locally without changes. No open license has been established for it;
-attribution does not grant reuse permission. Check usage rights before further
-public distribution.
+included locally without changes. Rein has confirmed the necessary usage rights
+for this presentation; this does not grant an open licence to third parties.
 
 The [N20 motor](https://ae-pic-a1.aliexpress-media.com/kf/He59f980f66ec4a4baa1d3b447724f1e0S.jpg)
 and [wheel](https://ae-pic-a1.aliexpress-media.com/kf/S4df94380f31f496cb5fecc3295f65284O.jpg)
 product photos were also supplied by Rein. Local files: `img/n20-motor-photo.jpg`
 (cropped to one complete motor) and `img/n20-wheel-photo.jpg` (unchanged).
-No open license has been established for these either; check usage rights
-before further public distribution.
+Rein has also confirmed the necessary usage rights for these photos in this
+presentation; this does not grant an open licence to third parties.
 
-## Feedback wanted
+## Review complete
 
-- Is the through-line (one joystick command from phone to wheel) easy to follow?
-- Is the level right for PHP developers without hardware experience?
-- Language, pacing, crowded slides, unclear or inaccurate claims.
+- The through-line, level for PHP developers, language, pacing and content have been reviewed and approved.
+- Wallie's comments and all other review feedback have been addressed.
 - The speaker notes (`S`) explain the purpose and timing of each slide. On slides with click steps, only the current step's speaking text is shown, including when stepping backwards or jumping directly to a step. Slides without click steps retain their complete notes.
 
-Please refer to slide numbers (bottom-right corner) in your feedback.
+No review actions remain open.

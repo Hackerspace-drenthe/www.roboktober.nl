@@ -35,11 +35,10 @@ page behind the QR code requires internet. Extract the entire package, including
 - `3dprinter/` — OpenSCAD and STL sources for the design gallery
 - `PLAN.md` — talk structure, timing, and assumptions
 
-## Feedback wanted
+## Review complete
 
-- Is the through-line (one joystick command from phone to wheel) easy to follow?
-- Is the level right for PHP developers without hardware experience?
-- Language, pacing, crowded slides, unclear or inaccurate claims.
+- Review complete and approved on 4 November 2026; Wallie's comments and all other review feedback have been addressed.
+- Rein confirms that all necessary usage rights, licence conditions and permissions for this presentation have been satisfied. Credits and licences remain in place; this does not grant an open licence to third parties.
 - The speaker notes (`S`) explain the purpose and timing of each slide. On slides with click steps, only the current step's speaking text is shown, including when stepping backwards or jumping directly to a step. Slides without click steps retain their complete notes.
 
-Please refer to slide numbers (bottom-right corner) in your feedback.
+No review actions remain open.

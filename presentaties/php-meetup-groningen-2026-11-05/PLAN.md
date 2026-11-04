@@ -1,6 +1,6 @@
 # Plan: Roboktober-presentatie, PHP Meetup Groningen
 
-> Status: inhoud en slides op elkaar afgestemd; reviewpakket klaar voor meelezers. Reviewfeedback, Battle Day-winnaar en een getimede repetitie staan nog open.
+> Status (4 november 2026): review afgerond en akkoord. Alle reviewfeedback, inclusief Wallies opmerkingen, is verwerkt. Rein bevestigt dat alle benodigde auteursrechten, licentievoorwaarden en toestemmingen voor gebruik in deze presentatie zijn geregeld. Bronvermeldingen en licenties blijven behouden. De praktische voorbereidingen voor de presentatie staan hieronder apart.
 
 ## 1. Basisgegevens
 
@@ -196,7 +196,7 @@ Laat de echte print zien, maar leg pinnen en voedingsvarianten nog niet uit.
 - Bevestigde Battle Day-cijfers: ruim 30 bezoekers (volle bak), 18 robots in eerste instantie, 12 robots in de competitie.
 - Concrete tegenslag en les: niet elke robot werkte op tijd. Rein had 5 werkende robots meegenomen en leende die uit aan kinderen zonder werkende robot, zodat zij toch konden meedoen.
 - Printplaatresultaat (25 van 30 werkend) staat al bij de validatie (3.5) en wordt hier niet herhaald.
-- Foto uit het bouwtraject met correct onderschrift; geen verzonnen winnaar (uitslag alleen noemen na bevestiging).
+- Bevestigde uitslag uit het door Rein aangeleverde double-elimination-schema (12 deelnemers): 1. TurfTyrant; 2. Princess Peach; 3. Lief Monster (Disc Spinner v0.5); 4. angry pumpkin car (Limulus v0.1, koppeling bevestigd door Rein). TurfTyrant won de finale van Princess Peach. Top 4 op de bestaande Battle Day-dia; geen extra dia. Foto blijft correct aangeduid als bouwtraject, niet Battle Day.
 
 ### 3.10 Afsluiting
 
@@ -224,12 +224,13 @@ Niet schrappen: openingsvraag, complete commandoroute, failsafe en afsluiting.
 
 - [ ] Getimede repetitie: doel 47 minuten inclusief video, fragmenten en demo; chassisreeks met leerpunten vlot in circa twee minuten.
 - [x] Definitieve eventcijfers en concreet leermoment verzameld (30+ bezoekers, 18 → 12 robots, 5 uitgeleende robots).
-- [ ] Battle Day-uitslag/winnaar bevestigen (optioneel).
+- [x] Battle Day-uitslag bevestigd uit het aangeleverde wedstrijdschema: TurfTyrant, Princess Peach, Lief Monster en angry pumpkin car (plaatsen 1–4).
 - [ ] Reglement, kitprijs en de cijfers op de slides nogmaals controleren.
-- [ ] Toestemming Wallie en hoorbaarheid van de video controleren.
+- [x] Review afgerond; Wallies opmerkingen en overige reviewfeedback verwerkt en akkoord.
+- [x] Benodigde gebruiksrechten, licentievoorwaarden en toestemmingen geregeld, bevestigd door Rein op 4 november 2026; bronvermeldingen en licenties behouden.
+- [ ] Hoorbaarheid van de video op de locatie controleren.
 - [x] Offline reviewpakket gecontroleerd: 48 dia's; afbeeldingen, video en galerijlinks zijn lokaal aanwezig. De volledige firmwaredia laadt ook vanaf `file://`, met alle 205 bronregels en negen uitlichtstappen. Op de avond de map inclusief `vendor/` en `js/wallie-video.js` meenemen.
 - [x] Reviewpakket voor meelezers in `review/` (niet in git): `bash slides/scripts/build-review-package.sh [--full] review`. Compact (±12 MB) of volledig met video's en alle 3D-bronnen (±112 MB). Begint met `00-LEES-MIJ-EERST.html`; tekst in `slides/scripts/LEESMIJ-review.md`.
-- [ ] Feedback van reviewers verwerken.
 - [ ] Na wijziging van de MP4: `bash slides/scripts/embed-wallie-video.sh`.
 - [ ] Demo-robots, kaartjes, één bestuurder per robot en drukke WiFi-omgeving testen.
 - [ ] Begrensd rijvlak, reserve-robot, vooraf verbonden telefoon, accu's en laadmiddelen.

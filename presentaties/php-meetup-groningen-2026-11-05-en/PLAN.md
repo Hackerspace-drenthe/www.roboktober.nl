@@ -1,6 +1,6 @@
 # Plan: Roboktober talk, PHP Meetup Groningen
 
-> Status: content and slides are aligned; the review package is ready for reviewers. Review feedback, the Battle Day winner, and a timed rehearsal are still pending.
+> Status (4 November 2026): review complete and approved. All review feedback, including Wallie's comments, has been addressed. Rein confirms that all necessary copyright permissions, licence conditions and consents for use in this presentation have been satisfied. Credits and licences remain in place. Practical presentation preparations are tracked separately below.
 
 ## 1. Essentials
 
@@ -196,7 +196,7 @@ Show the actual PCB, but do not explain pins or power-supply variations yet.
 - Confirmed Battle Day figures: more than 30 visitors (a full house), initially 18 robots, 12 robots in the competition.
 - Concrete setback and lesson: not every robot worked in time. Rein had brought 5 working robots and lent them to children whose robots were not working, so they could still take part.
 - The PCB result (25 of 30 working) is already covered under validation (3.5) and is not repeated here.
-- Use a photo from the build process with an accurate caption; do not invent a winner (only mention the result once confirmed).
+- Confirmed results from the 12-player double-elimination bracket supplied by Rein: 1. TurfTyrant; 2. Princess Peach; 3. Lief Monster (Disc Spinner v0.5); 4. angry pumpkin car (Limulus v0.1, mapping confirmed by Rein). TurfTyrant beat Princess Peach in the final. Top four on the existing Battle Day slide; no additional slide. Keep the photo accurately labelled as the building phase, not Battle Day.
 
 ### 3.10 Closing
 
@@ -224,12 +224,13 @@ Do not cut: the opening question, the complete command route, the failsafe, or t
 
 - [ ] Timed rehearsal: target 47 minutes including video, fragments, and demo; move briskly through the chassis sequence and its takeaways in about two minutes.
 - [x] Final event figures and a concrete lesson collected (30+ visitors, 18 → 12 robots, 5 robots lent out).
-- [ ] Confirm the Battle Day result/winner (optional).
+- [x] Battle Day results confirmed from the supplied bracket: TurfTyrant, Princess Peach, Lief Monster and angry pumpkin car (places 1–4).
 - [ ] Recheck the rules, kit price, and figures on the slides.
-- [ ] Confirm Wallie's permission and check that the video is audible.
+- [x] Review complete; Wallie's comments and all other review feedback addressed and approved.
+- [x] Necessary usage rights, licence conditions and permissions satisfied, confirmed by Rein on 4 November 2026; credits and licences retained.
+- [ ] Check video audibility at the venue.
 - [x] Offline review package checked: 48 slides; images, video, and gallery links are present locally. The complete firmware slide also loads from `file://`, with all 205 source lines and nine highlighting stages. Bring the folder, including `vendor/` and `js/wallie-video.js`, on the day.
 - [x] Build the reviewer package into `review/` (not in git): `bash slides/scripts/build-review-package.sh [--full] review`. Compact (±12 MB) or full, with videos and all 3D sources (±112 MB). It starts with `00-READ-ME-FIRST.html`; text is in `slides/scripts/LEESMIJ-review.md`.
-- [ ] Process reviewer feedback.
 - [ ] After changing the MP4: `bash slides/scripts/embed-wallie-video.sh`.
 - [ ] Test demo robots, cards, one driver per robot, and a busy WiFi environment.
 - [ ] Bounded driving area, backup robot, pre-connected phone, batteries, and chargers.

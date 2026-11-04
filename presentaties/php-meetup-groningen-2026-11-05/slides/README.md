@@ -3,6 +3,11 @@
 Talk voor de PHP Meetup Groningen, 5 november 2026 (±47 min + vragen).
 Centrale vraag: wat gebeurt er als je op je telefoon de joystick naar voren duwt?
 
+**Status — 4 november 2026:** review afgerond en akkoord; alle opmerkingen,
+inclusief die van Wallie, zijn verwerkt. Rein bevestigt dat alle benodigde
+gebruiksrechten, licentievoorwaarden en toestemmingen voor deze presentatie
+zijn geregeld. Bronvermeldingen en licenties blijven behouden.
+
 ## Openen
 
 1. Pak de ZIP volledig uit (niet openen vanuit de ZIP-preview).
@@ -49,22 +54,20 @@ Bronvermelding en licentie staan ook direct onder de foto.
 
 De foto `img/drv8833-module-photo.jpg` is de door Rein aangeleverde
 [AliExpress-productfoto](https://ae-pic-a1.aliexpress-media.com/kf/S74f2a70c6db24777afee9bef22fa2001N.jpg?width=1000&height=1000&hash=2000),
-ongewijzigd lokaal opgenomen. Hiervoor is geen vrije licentie vastgesteld;
-bronvermelding is geen hergebruikstoestemming. Controleer de gebruiksrechten
-vóór verdere openbare verspreiding.
+ongewijzigd lokaal opgenomen. Rein heeft de benodigde gebruiksrechten voor
+deze presentatie bevestigd; dit verleent geen vrije licentie aan derden.
 
 De productfoto's van de [N20-motor](https://ae-pic-a1.aliexpress-media.com/kf/He59f980f66ec4a4baa1d3b447724f1e0S.jpg)
 en het [wiel](https://ae-pic-a1.aliexpress-media.com/kf/S4df94380f31f496cb5fecc3295f65284O.jpg)
 zijn eveneens door Rein aangeleverd. Lokaal: `img/n20-motor-photo.jpg` (uitsnede
 tot één complete motor) en `img/n20-wheel-photo.jpg` (ongewijzigd).
-Ook hiervoor is geen vrije licentie vastgesteld; controleer de gebruiksrechten
-vóór verdere openbare verspreiding.
+Rein heeft ook hiervoor de benodigde gebruiksrechten voor deze presentatie
+bevestigd; dit verleent geen vrije licentie aan derden.
 
-## Waar ik feedback op zoek
+## Review afgerond
 
-- Is de rode draad (één joystickcommando van telefoon tot wiel) te volgen?
-- Klopt het niveau voor PHP-developers zonder hardware-ervaring?
-- Taal, tempo, te volle dia's, onduidelijke of onjuiste claims.
+- Rode draad, niveau voor PHP-developers, taal, tempo en inhoud zijn gereviewd en akkoord.
+- Wallies opmerkingen en alle overige reviewfeedback zijn verwerkt.
 - De sprekersnotities (`S`) geven per dia de bedoeling en timing. Bij klikstappen zie je alleen de actuele spreektekst, ook bij terugklikken of rechtstreeks naar een stap springen. Dia's zonder klikstappen houden hun volledige notities.
 
-Reacties graag per dianummer (rechtsonder in beeld).
+Er staan geen reviewacties meer open.

@@ -61,7 +61,7 @@ const SCAD_DESIGN_GROUPS = [
     example: true,
     detail: 'Een module is een herbruikbare vorm met parameters. Buitenste cilinder min binnenste cilinder = busje met schroefgat. De lus plaatst vier busjes; laat de snijcilinder iets uitsteken voor een doorgaand gat.',
   }, 'antweight_rhomboid_'],
-  ['Limulus · v0.1 en v0.2', 'Biomimicry en doorontwikkeling · v0.1: 4e plaats bij Roboktober.', {
+  ['Limulus · v0.1 en v0.2', 'Biomimicry en doorontwikkeling · v0.1 reed als ‘angry pumpkin car’ naar de 4e plaats bij Roboktober.', {
     point: '6. Doorbouwen: include neemt een bestaand ontwerp als basis.',
     code: 'include <antweight_limulus_v0.1.scad>\n\nesp_stack_h = 17;\nesp_margin = 0.8;\ncanopy_wall = 1.2;',
     source: 'reinsdesigns/antweight_limulus_v0.2.scad',

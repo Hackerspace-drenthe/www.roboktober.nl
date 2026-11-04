@@ -159,6 +159,16 @@ for (const language of ['nl', 'en']) {
     const wallie = html.split(/<section(?:\s[^>]*)?>/)[7].split('</section>')[0]
     assert.match(wallie, language === 'nl' ? /1e op INDI Robot Games 2020/ : /1st at INDI Robot Games 2020/)
     assert.match(wallie, /Master Milo/)
+    const rankingDocument = new JSDOM(html).window.document
+    const ranking = [...rankingDocument.querySelectorAll('.battle-ranking tbody tr')].map(row =>
+      [...row.querySelectorAll('td')].map(cell => cell.textContent))
+    assert.deepEqual(ranking, [
+      ['1', 'TurfTyrant'],
+      ['2', 'Princess Peach'],
+      ['3', 'Lief Monster · Disc Spinner v0.5'],
+      ['4', 'angry pumpkin car · Limulus v0.1'],
+    ])
+    assert.doesNotMatch(rankingDocument.querySelector('.battle-results').textContent, /Geen winnaar noemen|Don't name a winner/)
     const finalSlide = new JSDOM(html).window.document.querySelector('.slides > section:last-child')
     assert.ok(finalSlide.classList.contains('presentation-download'))
     const presentationUrl = 'https://www.roboktober.nl/app/presentaties/php-meetup-groningen-2026-11-05/'
@@ -268,6 +278,7 @@ for (const language of ['nl', 'en']) {
       ? /50 g voor het geprinte chassis.*te dun.*kleiner, dikker en sterker.*minder spikes/
       : /printed chassis within 50 g.*too thin.*smaller, thicker and stronger.*fewer spikes/)
     assert.match(gallery[5].description, /v0\.1.*4/)
+    assert.match(gallery[5].description, /angry pumpkin car/)
     assert.match(gallery[6].description, language === 'nl' ? /zwakke schakel/ : /weak link/)
     assert.match(gallery[7].description, language === 'nl'
       ? /Mijn favoriet.*complete robot: 140 g.*Wedge.*duwer achterop.*oersterk/

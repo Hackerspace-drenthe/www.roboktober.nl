@@ -61,7 +61,7 @@ const SCAD_DESIGN_GROUPS = [
     example: true,
     detail: 'A module is a reusable shape with parameters. Outer minus inner cylinder makes a standoff with a screw hole. The loop places four copies; extend the cutting cylinder slightly beyond both ends for a through-hole.',
   }, 'antweight_rhomboid_'],
-  ['Limulus · v0.1 and v0.2', 'Biomimicry and refinement · v0.1: 4th place at Roboktober.', {
+  ['Limulus · v0.1 and v0.2', 'Biomimicry and refinement · v0.1 competed as ‘angry pumpkin car’ and placed 4th at Roboktober.', {
     point: '6. Extend: include uses an existing design as a foundation.',
     code: 'include <antweight_limulus_v0.1.scad>\n\nesp_stack_h = 17;\nesp_margin = 0.8;\ncanopy_wall = 1.2;',
     source: 'reinsdesigns/antweight_limulus_v0.2.scad',

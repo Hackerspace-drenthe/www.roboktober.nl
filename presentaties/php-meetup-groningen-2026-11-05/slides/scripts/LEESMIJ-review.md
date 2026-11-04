@@ -36,11 +36,10 @@ pakket uit, inclusief `vendor/`, `js/` en `img/`.
 - `3dprinter/` — OpenSCAD- en STL-bronnen van de ontwerpgalerij
 - `PLAN.md` — opbouw, tijdsindeling en uitgangspunten van de talk
 
-## Waar ik feedback op zoek
+## Review afgerond
 
-- Is de rode draad (één joystickcommando van telefoon tot wiel) te volgen?
-- Klopt het niveau voor PHP-developers zonder hardware-ervaring?
-- Taal, tempo, te volle dia's, onduidelijke of onjuiste claims.
+- Review afgerond en akkoord op 4 november 2026; Wallies opmerkingen en alle overige reviewfeedback zijn verwerkt.
+- Rein bevestigt dat alle benodigde gebruiksrechten, licentievoorwaarden en toestemmingen voor deze presentatie zijn geregeld. Bronvermeldingen en licenties blijven behouden; dit verleent geen vrije licentie aan derden.
 - De sprekersnotities (`S`) geven per dia de bedoeling en timing. Bij klikstappen zie je alleen de actuele spreektekst, ook bij terugklikken of rechtstreeks naar een stap springen. Dia's zonder klikstappen houden hun volledige notities.
 
-Reacties graag per dianummer (rechtsonder in beeld).
+Er staan geen reviewacties meer open.
