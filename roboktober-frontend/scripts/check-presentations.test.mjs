@@ -7,6 +7,7 @@ import test from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { runInNewContext } from 'node:vm'
 import { JSDOM } from 'jsdom'
+import QRCode from 'qrcode'
 
 const root = fileURLToPath(new URL('../public/presentaties/php-meetup-groningen-2026-11-05/', import.meta.url))
 
@@ -78,7 +79,21 @@ for (const language of ['nl', 'en']) {
       }
       stepCount += notes.size
     }
-    assert.equal(stepCount, 81)
+    assert.equal(stepCount, 85)
+    const codeSlide = sections[33]
+    const designSlide = sections[34]
+    assert.ok(codeSlide.classList.contains('scad-code-walkthrough'))
+    assert.ok(designSlide.classList.contains('scad-walkthrough'))
+    assert.equal(codeSlide.querySelectorAll('.scad-code-panel.fragment').length, 2)
+    assert.equal(codeSlide.querySelectorAll('.scad-education').length, 4)
+    assert.equal(codeSlide.querySelectorAll('.scad-result img').length, 4)
+    for (const example of codeSlide.querySelectorAll('.scad-education')) {
+      const source = example.querySelector('.scad-result a').getAttribute('href')
+      assert.equal(readFileSync(join(slides, source), 'utf8'), `${example.querySelector('pre code').textContent}\n`)
+    }
+    assert.equal(codeSlide.querySelectorAll('.scad-design-grid').length, 0)
+    assert.equal(designSlide.querySelectorAll('pre, code, .scad-education, .scad-result').length, 0)
+    assert.equal(designSlide.querySelectorAll('.scad-design-grid img').length, 24)
     for (const [section, original] of untouched) assert.equal(section.querySelector('aside.notes')?.innerHTML, original)
     const unexpected = dom.window.document.createElement('span')
     unexpected.className = 'fragment'
@@ -88,13 +103,26 @@ for (const language of ['nl', 'en']) {
     dom.window.close()
   })
 
-  test(`${language}: deck, video, gallery sources and complete archive`, () => {
+  test(`${language}: deck, video, gallery sources and complete archive`, async () => {
     const slides = join(root, language, 'presentatie')
     const html = readFileSync(join(slides, 'index.html'), 'utf8')
     assert.match(html, new RegExp(`<html lang="${language}">`))
     assert.match(html, /Rein Velt/)
     assert.match(html, /drenthenoodnetwerk\.nl/)
-    assert.equal([...html.matchAll(/<section(?:\s|>)/g)].length, 45)
+    assert.equal([...html.matchAll(/<section(?:\s|>)/g)].length, 48)
+    const finalSlide = new JSDOM(html).window.document.querySelector('.slides > section:last-child')
+    assert.ok(finalSlide.classList.contains('presentation-download'))
+    const presentationUrl = 'https://www.roboktober.nl/app/presentaties/php-meetup-groningen-2026-11-05/'
+    for (const link of finalSlide.querySelectorAll('a')) assert.equal(link.href, presentationUrl)
+    assert.equal(finalSlide.querySelector('img').getAttribute('src'), 'img/qr-presentations.svg')
+    const qr = readFileSync(join(slides, 'img/qr-presentations.svg'), 'utf8')
+    assert.equal(qr.slice(qr.indexOf('<svg')).trim(),
+      (await QRCode.toString(presentationUrl, { type: 'svg', errorCorrectionLevel: 'M', margin: 4 })).trim())
+    const poll = html.split(/<section(?:\s[^>]*)?>/)[32].split('</section>')[0]
+    assert.match(poll, language === 'nl' ? /Wie heeft al eens iets in 3D ontworpen\?/ : /Who has designed something in 3D before\?/)
+    assert.match(poll, language === 'nl' ? /Wie kent OpenSCAD\?/ : /Who knows OpenSCAD\?/)
+    assert.equal([...poll.matchAll(/class="fragment"/g)].length, 2)
+    assert.match(poll, language === 'nl' ? /class="fragment">Wie heeft er al iets mee ontworpen\?/ : /class="fragment">Who has designed something with it\?/)
     const webui = html.split(/<section(?:\s[^>]*)?>/)[16].split('</section>')[0]
     assert.match(webui, /href="https:\/\/github\.com\/wallieonline"/)
     assert.match(webui, language === 'nl' ? /5 november 2026/ : /5 November 2026/)
@@ -102,7 +130,7 @@ for (const language of ['nl', 'en']) {
     const validation = html.split(/<section(?:\s[^>]*)?>/)[30].split('</section>')[0]
     assert.match(validation, /ESP32-C3 Super Mini Plus V2/)
     assert.match(validation, language === 'nl' ? /externe antenne — dezelfde footprint, iets duurder/ : /external antenna — same footprint, slightly more expensive/)
-    const recap = html.split(/<section(?:\s[^>]*)?>/)[43].split('</section>')[0]
+    const recap = html.split(/<section(?:\s[^>]*)?>/)[45].split('</section>')[0]
     assert.equal([...recap.matchAll(/<li>/g)].length, 4)
     for (const point of language === 'nl'
       ? ['Van joystick tot wiel', 'Open software en standaarden als basis.', 'Toetsbare eisen als contract.', 'Code als gereedschap — óók voor hardware.', 'Tests als bewijs — óók in het echt.', 'AI helpt bij elke stap. Jij bepaalt, controleert en valideert.']
@@ -183,6 +211,11 @@ for (const language of ['nl', 'en']) {
     assert.match(readFileSync(join(slides, 'js/visuals.js'), 'utf8'), /\.\.\/3dprinter\//)
     const gallery = runInNewContext(`${readFileSync(join(slides, 'js/scad-designs.js'), 'utf8')}\nSCAD_DESIGN_GROUPS`)
     assert.equal(gallery.length, 10)
+    assert.match(gallery[3].description, /v0\.5.*Lief Monster.*3/)
+    assert.match(gallery[5].description, /v0\.1.*4/)
+    for (const index of [6, 7]) {
+      assert.match(gallery[index].description, language === 'nl' ? /zwakke schakel/ : /weak link/)
+    }
     assert.equal(gallery.reduce((sum, group) => sum + group.designs.length, 0), 24)
     for (const index of [1, 2, 4, 7]) assert.equal(gallery[index].lesson.example, true)
     for (const index of [1, 2, 4, 7]) {

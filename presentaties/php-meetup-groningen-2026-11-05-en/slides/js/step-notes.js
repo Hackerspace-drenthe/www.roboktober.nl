@@ -214,6 +214,17 @@ window.RoboStepNotes = {
         ],
       },
       32: {
+        context: ['3D-ontwerp en OpenSCAD · publiekspeiling · circa 20 s', '3D design and OpenSCAD · audience poll · about 20 s'],
+        steps: [
+          ['Wie heeft al eens iets in 3D ontworpen? Laat handen opsteken, ongeacht het programma. Houd het kort; deze peiling valt binnen de tijd voor het chassisblok.',
+            'Who has designed something in 3D before? Invite a show of hands, regardless of the tool. Keep it brief; this poll is part of the chassis section budget.'],
+          ['Wie kent OpenSCAD? Laat opnieuw handen opsteken. Maak onderscheid tussen het programma kennen en er zelf mee gewerkt hebben.',
+            'Who knows OpenSCAD? Invite another show of hands. Distinguish knowing the tool from having used it yourself.'],
+          ['Wie heeft er al iets mee ontworpen? Gebruik de reacties om het niveau te kiezen, zonder uitgebreide verhalen. Brug: een 3D-model kan ook code zijn.',
+            'Who has designed something with it? Use the responses to pitch the explanation, without lengthy stories. Bridge: a 3D model can be code too.'],
+        ],
+      },
+      33: {
         context: ['Waarom OpenSCAD · kort; geen wedstrijd tussen CAD-tools', 'Why OpenSCAD · brief; not a contest between CAD tools'],
         steps: [
           ['Voor mijn workflow is het chassis een tekstmodel. Programmeerkennis helpt, ook zonder eerdere CAD-ervaring.',
@@ -228,7 +239,18 @@ window.RoboStepNotes = {
             'AI can help read and write text models. About 9,700 lines are not proof of quality: you remain responsible for dimensions and testing.'],
         ],
       },
-      37: {
+      34: {
+        context: ['OpenSCAD-code · circa 2 min; ontwerpen volgen op de volgende dia', 'OpenSCAD code · about 2 min; designs follow on the next slide'],
+        steps: [
+          ['Eerst leren we de code lezen, zonder robotontwerpen ernaast. Twee stappen met vereenvoudigde, uitvoerbare voorbeelden en hun exacte resultaat. Een module levert geometrie, een functie een waarde. Wij werken in millimeters; parameters zijn definities.',
+            'First we learn to read the code, without robot designs beside it. Two steps with simplified, runnable examples and their exact output. A module produces geometry, a function returns a value. We use millimetres; parameters are definitions.'],
+          ['Links: geef PCB-maten en speling een naam en leid de plaatmaat daarvan af. cube maakt een blok; [x,y,z] geeft breedte, lengte en hoogte. Rechts: union voegt plaat en cilinder samen; translate verplaatst de vorm. difference trekt de tweede cilinder af en maakt zo een doorgaand gat. De beelden tonen precies deze scripts, geen robotontwerpen.',
+            'Left: name PCB dimensions and clearance, then derive plate dimensions. cube creates a block; [x,y,z] gives width, length and height. Right: union combines plate and cylinder; translate moves a shape. difference subtracts the second cylinder to create a through-hole. The images show these exact scripts, not robot designs.'],
+          ['Links: een module maakt één busje met gat; de lus plaatst vier exemplaren. Rechts: import leest het meegeleverde DXF-profiel, linear_extrude geeft het dikte. STL/3MF zijn 3D-meshes; DXF/SVG zijn 2D-profielen. use laadt modules uit een SCAD-bestand, zonder toplevel-geometrie; include neemt die ook mee. De losse assert onderaan is een voorbeeld van een eiscontrole nadat wand is gedefinieerd; hij bewijst geen pasvorm. Volledige scripts en DXF zijn aanklikbaar en offline meegeleverd. Nu pas naar de robotontwerpen.',
+            'Left: a module creates one standoff with a hole; the loop places four copies. Right: import reads the included DXF profile, linear_extrude adds thickness. STL/3MF are 3D meshes; DXF/SVG are 2D profiles. use loads modules from a SCAD file without top-level geometry; include brings that in too. The separate assert below illustrates a requirement check after wall is defined; it does not prove fit. Complete scripts and DXF are linked and included offline. Now move on to robot designs.'],
+        ],
+      },
+      39: {
         context: ['Publiek stuurt · 4 min; begrensd rijvlak, geen actief wapen', 'Audience driving · 4 min; bounded area, no active weapon'],
         steps: [
           ['Twee robots, één bestuurder per robot. Verbindingskaartjes met de echte SSID en het wachtwoord liggen klaar; vooraf testen. De failsafe-demo is al geweest, hier alleen rijden.',
@@ -237,7 +259,7 @@ window.RoboStepNotes = {
             'Change drivers only while the robot is stationary. Let the audience drive and apply the explanation; watch the driving area and time.'],
         ],
       },
-      38: {
+      40: {
         context: ['Website als distributiekanaal · 2 min, geen tweede architectuurtalk', 'Website as distribution channel · 2 min, not a second architecture talk'],
         steps: [
           ['Deelnemers hebben één plek nodig voor onderdelen, firmware en bouwstappen. Daarom deze website; Laravel en Vue zijn het middel, niet het hoofdonderwerp.',
@@ -246,7 +268,7 @@ window.RoboStepNotes = {
             'The repository brings together website and build sources: KiCad, OpenSCAD, pin contracts, decisions and parts list. Firmware examples remain the existing ESP-NOW code. Wallie announced new firmware for 5 November on his GitHub; check the release.'],
         ],
       },
-      43: {
+      45: {
         context: ['Afsluiting · circa 1 min', 'Closing · about 1 min'],
         steps: [
           ['We volgden één commando van joystick tot wiel. De hele keten werkt met principes die je als developer al kent: open software en standaarden als basis; toetsbare eisen als contract; code als gereedschap, ook voor PCB en chassis; tests als bewijs, digitaal én fysiek. AI helpt bij elke stap, maar jij bepaalt, controleert en valideert. AI-output is geen bewijs. Open als basis betekent niet dat alles open is: ESP-NOW is een leveranciersprotocol.',
@@ -280,22 +302,18 @@ window.RoboStepNotes = {
         }),
       };
       scripts[slides.indexOf(gallery) + 1] = {
-        context: ['OpenSCAD-galerij · richttijd 2 min; bij noodzakelijke verdieping tot 5 min', 'OpenSCAD gallery · target 2 min; up to 5 min if deeper explanation is necessary'],
+        context: ['Ontwerpgalerij · richttijd 1 min; maximaal 2 min bij vragen', 'Design gallery · target 1 min; up to 2 min for questions'],
         steps: [
           [
-            'OpenSCAD maakt vormen uit code. Een module levert geometrie, een functie een waarde. Wij werken in millimeters. Tien families, geen lineaire versiegeschiedenis; modellen niet op gelijke schaal. Houd het overzicht kort, verdiep alleen bij vragen.',
-            'OpenSCAD makes shapes from code. A module produces geometry, a function returns a value. We use millimetres. Ten families, not one linear version history; models are not to the same scale. Keep the overview brief, go deeper only for questions.',
+            'De code hebben we gezien. Nu alleen de robotontwerpen vergelijken: tien families, geen lineaire versiegeschiedenis; modellen niet op gelijke schaal. Houd het overzicht kort. Rein bevestigt: Disc Spinner v0.5 (‘Lief Monster’) werd 3e, Limulus v0.1 werd 4e. Passive Aggressive en Mostly Harmless presteerden goed; de opmerking over bestuurders is een knipoog. Actieve wapens waren niet toegestaan; de ontwerpnaam Disc Spinner zegt niets over de wedstrijdconfiguratie.',
+            'We have covered the code. Now compare only robot designs: ten families, not one linear version history; models are not to the same scale. Keep the overview brief. Rein confirms: Disc Spinner v0.5 (‘Lief Monster’) placed 3rd, Limulus v0.1 placed 4th. Passive Aggressive and Mostly Harmless performed well; the comment about drivers is tongue-in-cheek. Active weapons were not allowed; the Disc Spinner design name does not establish its competition configuration.',
           ],
           ...[...gallery.querySelectorAll('.scad-panel')].map(panel => {
             const speech = [
               clean(panel.querySelector('h2')),
               clean(panel.querySelector('.scad-group-description')),
-              clean(panel.querySelector('.scad-education h3')),
-              clean(panel.querySelector('.scad-education p')),
-            ].join('\n\n') + (panel.classList.contains('scad-with-result') ? text([
-              '\n\nBoven: verwante robotontwerpen. Onder: de code en het exacte resultaat daarvan. Voorbeeldscript aanklikbaar en offline meegeleverd; bij import ook het DXF-profiel.',
-              '\n\nAbove: related robot designs. Below: the code and its exact output. The example script is linked and included offline; the import example includes its DXF profile too.',
-            ]) : '');
+              ...[...panel.querySelectorAll('.scad-design-grid img')].map(image => `${image.alt}: ${image.title}`),
+            ].join('\n\n');
             return [speech, speech];
           }),
         ],

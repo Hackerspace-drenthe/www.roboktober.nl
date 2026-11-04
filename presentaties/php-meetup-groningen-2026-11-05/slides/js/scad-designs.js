@@ -48,7 +48,7 @@ const SCAD_DESIGN_GROUPS = [
     example: true,
     detail: 'cube maakt een blok, cylinder een cilinder; translate verplaatst de vorm erachter. union voegt samen. difference trekt alle volgende vormen van de eerste af: hier een plaat met busje en doorgaand gat.',
   }, 'antweight_disc_v', 'antweight_disc_mini_', 'antweight_disc_wedge_'],
-  ['Disc Spinner · v0.1 tot v0.5', 'Vijf versies van dezelfde ontwerplijn naast elkaar · ontwerpstudie: actieve wapens zijn bij Roboktober 2026 niet toegestaan.', {
+  ['Disc Spinner · v0.1 tot v0.5', 'v0.5 reed als ‘Lief Monster’ naar de 3e plaats bij Roboktober.', {
     point: '4. Afleiden: bereken maten uit de geometrie, niet met de hand.',
     code: 'pcb_r = max([\n  for (p = pcb_pts) norm(p - [cx, cy])\n]);',
     source: 'reinsdesigns/antweight_disc_spinner_v0.5.scad',
@@ -61,19 +61,19 @@ const SCAD_DESIGN_GROUPS = [
     example: true,
     detail: 'Een module is een herbruikbare vorm met parameters. Buitenste cilinder min binnenste cilinder = busje met schroefgat. De lus plaatst vier busjes; laat de snijcilinder iets uitsteken voor een doorgaand gat.',
   }, 'antweight_rhomboid_'],
-  ['Limulus · v0.1 en v0.2', 'Biomimicry en doorontwikkeling naast elkaar.', {
+  ['Limulus · v0.1 en v0.2', 'Biomimicry en doorontwikkeling · v0.1: 4e plaats bij Roboktober.', {
     point: '6. Doorbouwen: include neemt een bestaand ontwerp als basis.',
     code: 'include <antweight_limulus_v0.1.scad>\n\nesp_stack_h = 17;\nesp_margin = 0.8;\ncanopy_wall = 1.2;',
     source: 'reinsdesigns/antweight_limulus_v0.2.scad',
     detail: 'Anders dan use neemt include ook toplevel-code mee; v0.2 bouwt voort op v0.1.',
   }, 'antweight_limulus_'],
-  ['Passive Aggressive · 2WD en 4WD', 'Twee varianten binnen dezelfde ontwerpfamilie.', {
+  ['Passive Aggressive · 2WD en 4WD', 'Sterke robots — de bestuurders waren de zwakke schakel.', {
     point: '7. Combineren: een lus over kanten én assen maakt vier posities.',
     code: 'for (m = [0, 1], a = axles)\n  mirror_x(m) motor_cradle(a);',
     source: 'reinsdesigns/antweight_passive_aggressive_4wd_v0.1.scad',
     detail: 'Twee kanten × twee assen; mirror_x is een eigen helper, geen ingebouwde functie.',
   }, 'antweight_passive_aggressive_'],
-  ['Mostly Harmless', 'Chassis en bijbehorend dak; twee onderdelen, geen twee versies.', {
+  ['Mostly Harmless', 'Sterke robot — de bestuurder was de zwakke schakel.', {
     point: '8. Importeren: 3D-mesh of 2D-profiel hergebruiken.',
     code: '// 3D-mesh: import("mostlyharmless.stl");\n// Hier: een 2D-profiel met 2 mm dikte\nlinear_extrude(height=2)\n  import("profile.dxf");',
     source: 'reinsdesigns/mostlyharmless.stl',

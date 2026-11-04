@@ -157,14 +157,17 @@ Laat de echte print zien, maar leg pinnen en voedingsvarianten nog niet uit.
 
 ### 3.5.5 Chassis als code
 
+- Slide 32: korte publiekspeiling, circa 20 seconden binnen het chassisblok. Eerst: wie heeft al eens iets in 3D ontworpen? Daarna per klik: wie kent OpenSCAD, en wie heeft er al iets mee ontworpen? Stem de uitleg af op de reacties.
+
 - Overgang: losse onderdelen zijn nog geen robot.
 - OpenSCAD past bij mijn tekstgebaseerde workflow: parameters, diffs, review en expliciete maatvoorwaarden.
 - Visuele CAD-tools kunnen óók parametrisch en automatiseerbaar zijn; geen karikatuur van Fusion/FreeCAD.
 - Een `assert` bewaakt alleen de geprogrammeerde voorwaarde. Testprints blijven nodig voor pasvorm en toleranties.
-- Slide 33: een ontwerpgalerij met 10 klikstappen en 24 beelden, circa twee minuten. Eén klik per ontwerpfamilie, met versies en onderdelen naast elkaar: Wallie (origineel, topplaat en reconstructies), chassis v0.2/v0.3/v0.4, Disc/Mini/Wedge, Disc Spinner v0.1–v0.5, Rhomboid, Limulus v0.1/v0.2, Passive Aggressive/4WD, Mostly Harmless met dak, Aurora en DuoBot. Nordic Racer is alleen uit deze galerij verwijderd; het voorbeeld op de volgende vergelijkingsslide blijft staan.
-- Elke klik leert één concept voor programmeurs zonder OpenSCAD-ervaring: modules/use, herbruikbare maten en afgeleide speling, basisvormen met translate/union/difference, berekeningen, busjes met schroefgaten via module en lus, include, luscombinaties, STL/3MF versus DXF/SVG met linear_extrude, asserts en samenstellingen. Stap 2, 3, 5 en 8 zijn gelabelde lesvoorbeelden naast verwante echte ontwerpen, niet de bron van de renders; de bovenste helft is voor grote robotontwerpen, de onderste helft voor compacte code met het exacte resultaat ernaast. Voorbeeldscripts en profile.dxf worden offline meegeleverd. Renders opnieuw maken met `xvfb-run -a node slides/scripts/render-scad-examples.mjs` (OpenSCAD vereist). De andere fragmenten komen uit gekoppelde bronmodellen. Circa twee minuten voor het overzicht; gebruik de notities voor verdieping en houd overige chassiscontext kort.
+- Slide 34: aparte code-dia met twee klikstappen, circa twee minuten. Eerst herbruikbare maten, basisvormen en translate/union/difference; daarna busjes met schroefgaten via module en lus, import met linear_extrude en asserts. Alleen code en de exacte voorbeeldresultaten, geen robotontwerpen. De vier bestaande voorbeeldscripts en profile.dxf blijven offline beschikbaar. Renders opnieuw maken met `xvfb-run -a node slides/scripts/render-scad-examples.mjs` (OpenSCAD vereist).
+- Slide 35: aparte ontwerpgalerij, zonder code, met 10 klikstappen en 24 beelden. Richttijd één minuut, maximaal twee minuten bij vragen. Eén klik per ontwerpfamilie, met versies en onderdelen naast elkaar: Wallie, chassis v0.2/v0.3/v0.4, Disc/Mini/Wedge, Disc Spinner v0.1–v0.5, Rhomboid, Limulus v0.1/v0.2, Passive Aggressive/4WD, Mostly Harmless met dak, Aurora en DuoBot. Nordic Racer blijft op de volgende vergelijkingsslide.
 - Verschillende ontwerplijnen expliciet benoemen, niet één lineaire versiegeschiedenis. Geen dubbele meshconversies, exportbestanden of hulpbibliotheken. Renders zijn niet op gelijke schaal en bewijzen geen pasvorm of werking.
-- Per stap een eigen render en kort geselecteerd codefragment. Bronbestanden blijven bereikbaar; vooruit én achteruit bladeren werkt met reveal.js-fragmenten.
+- Resultaten op dia 35, bevestigd door Rein: Disc Spinner v0.5 reed als ‘Lief Monster’ naar de 3e plaats; Limulus v0.1 werd 4e. Passive Aggressive en Mostly Harmless presteerden goed, met een luchtige opmerking dat de bestuurders de zwakke schakel waren. De naam Disc Spinner impliceert geen actief wapen in de wedstrijd; die waren niet toegestaan.
+- Bronbestanden blijven bereikbaar; vooruit én achteruit bladeren werkt op beide dia's met reveal.js-fragmenten.
 - Varianten laten zien: dezelfde printplaatmaten, andere behuizing.
 
 ### 3.6 Publiek stuurt
@@ -196,7 +199,9 @@ Laat de echte print zien, maar leg pinnen en voedingsvarianten nog niet uit.
 
 ### 3.10 Afsluiting
 
-- Slide 43 sluit de rode draad af: van joystick tot wiel, met dezelfde softwareprincipes. Vier korte lessen: open software en standaarden als basis; toetsbare eisen als contract; code als gereedschap, ook voor hardware; tests als bewijs, ook fysiek. AI helpt bij elke stap; de gebruiker bepaalt, controleert en valideert. De commandoketen en bestaande kernboodschap blijven staan.
+- Laatste dia (48), na Q&A: grote QR-code en klikbare URL naar https://www.roboktober.nl/app/presentaties/php-meetup-groningen-2026-11-05/ met beide talen en offline downloads. Laat staan om te scannen.
+
+- Slide 45 sluit de rode draad af: van joystick tot wiel, met dezelfde softwareprincipes. Vier korte lessen: open software en standaarden als basis; toetsbare eisen als contract; code als gereedschap, ook voor hardware; tests als bewijs, ook fysiek. AI helpt bij elke stap; de gebruiker bepaalt, controleert en valideert. De commandoketen en bestaande kernboodschap blijven staan.
 - Beantwoord de openingsvraag in de volgorde controller → firmware → PWM/H-brug → motor.
 - Benoem veilig stoppen expliciet.
 - Afsluitzin: **je blijft developer — alleen rijdt je bug nu weg.**
@@ -221,7 +226,7 @@ Niet schrappen: openingsvraag, complete commandoroute, failsafe en afsluiting.
 - [ ] Battle Day-uitslag/winnaar bevestigen (optioneel).
 - [ ] Reglement, kitprijs en de cijfers op de slides nogmaals controleren.
 - [ ] Toestemming Wallie en hoorbaarheid van de video controleren.
-- [x] Offline reviewpakket gecontroleerd: 45 dia's; afbeeldingen, video en galerijlinks zijn lokaal aanwezig. De volledige firmwaredia laadt ook vanaf `file://`, met alle 205 bronregels en negen uitlichtstappen. Op de avond de map inclusief `vendor/` en `js/wallie-video.js` meenemen.
+- [x] Offline reviewpakket gecontroleerd: 48 dia's; afbeeldingen, video en galerijlinks zijn lokaal aanwezig. De volledige firmwaredia laadt ook vanaf `file://`, met alle 205 bronregels en negen uitlichtstappen. Op de avond de map inclusief `vendor/` en `js/wallie-video.js` meenemen.
 - [x] Reviewpakket voor meelezers in `review/` (niet in git): `bash slides/scripts/build-review-package.sh [--full] review`. Compact (±12 MB) of volledig met video's en alle 3D-bronnen (±112 MB). Begint met `00-LEES-MIJ-EERST.html`; tekst in `slides/scripts/LEESMIJ-review.md`.
 - [ ] Feedback van reviewers verwerken.
 - [ ] Na wijziging van de MP4: `bash slides/scripts/embed-wallie-video.sh`.

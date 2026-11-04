@@ -48,7 +48,7 @@ const SCAD_DESIGN_GROUPS = [
     example: true,
     detail: 'cube makes a block, cylinder a cylinder; translate moves the shape that follows. union joins shapes. difference subtracts all following shapes from the first: here a plate with a boss and through-hole.',
   }, 'antweight_disc_v', 'antweight_disc_mini_', 'antweight_disc_wedge_'],
-  ['Disc Spinner · v0.1 to v0.5', 'Five versions of one design line side by side · design study: active weapons are not allowed at Roboktober 2026.', {
+  ['Disc Spinner · v0.1 to v0.5', 'v0.5 competed as ‘Lief Monster’ and took 3rd place at Roboktober.', {
     point: '4. Derive: calculate dimensions from geometry, not by hand.',
     code: 'pcb_r = max([\n  for (p = pcb_pts) norm(p - [cx, cy])\n]);',
     source: 'reinsdesigns/antweight_disc_spinner_v0.5.scad',
@@ -61,19 +61,19 @@ const SCAD_DESIGN_GROUPS = [
     example: true,
     detail: 'A module is a reusable shape with parameters. Outer minus inner cylinder makes a standoff with a screw hole. The loop places four copies; extend the cutting cylinder slightly beyond both ends for a through-hole.',
   }, 'antweight_rhomboid_'],
-  ['Limulus · v0.1 and v0.2', 'Biomimicry and refinement side by side.', {
+  ['Limulus · v0.1 and v0.2', 'Biomimicry and refinement · v0.1: 4th place at Roboktober.', {
     point: '6. Extend: include uses an existing design as a foundation.',
     code: 'include <antweight_limulus_v0.1.scad>\n\nesp_stack_h = 17;\nesp_margin = 0.8;\ncanopy_wall = 1.2;',
     source: 'reinsdesigns/antweight_limulus_v0.2.scad',
     detail: 'Unlike use, include also imports top-level code; v0.2 builds on v0.1.',
   }, 'antweight_limulus_'],
-  ['Passive Aggressive · 2WD and 4WD', 'Two variants within the same design family.', {
+  ['Passive Aggressive · 2WD and 4WD', 'Strong robots — the drivers were the weak link.', {
     point: '7. Combine: a loop over sides and axles creates four positions.',
     code: 'for (m = [0, 1], a = axles)\n  mirror_x(m) motor_cradle(a);',
     source: 'reinsdesigns/antweight_passive_aggressive_4wd_v0.1.scad',
     detail: 'Two sides × two axles; mirror_x is a custom helper, not a built-in function.',
   }, 'antweight_passive_aggressive_'],
-  ['Mostly Harmless', 'Chassis and matching roof; two parts, not two versions.', {
+  ['Mostly Harmless', 'Strong robot — the driver was the weak link.', {
     point: '8. Import: reuse a 3D mesh or a 2D profile.',
     code: '// 3D mesh: import("mostlyharmless.stl");\n// Here: a 2D profile with 2 mm thickness\nlinear_extrude(height=2)\n  import("profile.dxf");',
     source: 'reinsdesigns/mostlyharmless.stl',

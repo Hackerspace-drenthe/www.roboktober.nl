@@ -21,7 +21,7 @@ Centrale vraag: wat gebeurt er als je op je telefoon de joystick naar voren duwt
 
 - Dia 8 bevat een video van Wallie met geluid; klik op play.
 - Dia 20 bevat de volledige openbare ESP-NOW-firmware: acht klikken lichten de codeblokken uit met telkens eigen uitleg ernaast (wat, waarom en effect op de robot); scroll in het codevenster voor alle 205 regels. Bronversie `fb3afa886117`, © 2026 wallieonline, GPL-3.0-or-later; de licentie is lokaal meegeleverd. Dit is niet de WebUI-broncode.
-- Dia 33 is een galerij van 10 klikken. De modelnamen linken naar de
+- Dia 34 behandelt code in twee klikstappen met exacte voorbeeldresultaten. Dia 35 is daarna een aparte ontwerpgalerij van 10 klikken, zonder code. De modelnamen linken naar de
   bronbestanden in de map `3dprinter/` van dit pakket.
 
 ## Inhoud

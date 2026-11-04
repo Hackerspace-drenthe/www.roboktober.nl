@@ -903,6 +903,14 @@ updateMotors();
   <aside class="notes">[3.5.5 · chassis, totaal 4 min] OpenSCAD: het chassis is een parametrisch script. Circa twee minuten voor de ontwerpgalerij met leerpunten; de rest voor context, downloadlink en fysieke varianten.</aside>
 </section>
 
+<section class="openscad-poll">
+  <p class="kicker">Even handen omhoog</p>
+  <h2>Wie heeft al eens iets in 3D ontworpen?</h2>
+  <h2 class="fragment">Wie kent OpenSCAD?</h2>
+  <h2 class="fragment">Wie heeft er al iets mee ontworpen?</h2>
+  <aside class="notes">[3.5.5 · publiekspeiling · circa 20 s, binnen het chassisblok] Vraag wie al eens iets in 3D heeft ontworpen en laat handen opsteken, ongeacht het programma. Klik: wie kent OpenSCAD? Klik: wie heeft er zelf al iets mee ontworpen? Gebruik de reacties om het niveau van de uitleg te kiezen; geen uitgebreide verhalen. Brug: voor de programmeurs die het nog niet kennen, een 3D-model kan ook code zijn.</aside>
+</section>
+
 <section>
   <p class="kicker">Waarom OpenSCAD?</p>
   <p class="big" style="font-size:1.1em">Een 3D-model als <span class="accent">tekstbestand</span> — niet klikken, maar programmeren.</p>
@@ -928,13 +936,34 @@ updateMotors();
   <aside class="notes">[3.5.5 · chassis] Geen wedstrijd tussen CAD-tools: voor mijn workflow helpt een tekstmodel bij diff, review en AI-assistentie. Asserts bewaken alleen de voorwaarden die je opschrijft; testprints blijven nodig.</aside>
 </section>
 
+<section class="scad-code-walkthrough">
+  <p class="kicker">OpenSCAD · eerst de code</p>
+  <div class="scad-code-stage">
+    <div class="scad-code-intro">
+      <h2>Een 3D-model is de uitvoer van je code.</h2>
+      <p class="smaller">1. Maten, vormen en uitsnijden<br>2. Hergebruik, import en controles</p>
+      <p class="smaller">Twee klikken. Eerst de bouwstenen, daarna de robotontwerpen.</p>
+    </div>
+    <div class="scad-code-panel fragment current-visible" data-fragment-index="0">
+      <h2>1. Maten → vormen → uitsnijden</h2>
+      <div class="scad-code-examples" data-examples="1 2"></div>
+      <p class="scad-code-summary">Millimeters · [x, y, z] · translate verplaatst · difference trekt af</p>
+    </div>
+    <div class="scad-code-panel fragment current-visible" data-fragment-index="1">
+      <h2>2. Hergebruik → import → controle</h2>
+      <div class="scad-code-examples" data-examples="4 7"></div>
+      <p class="scad-code-summary"><code>assert(wand &gt; 0, "wand moet positief zijn");</code> bewaakt een eis, geen fysieke pasvorm.<br><code>use &lt;busjes.scad&gt;</code> laadt modules; <code>import()</code> laadt STL/3MF of DXF/SVG.</p>
+    </div>
+  </div>
+  <aside class="notes">[3.5.5 · codevoorbeelden · circa 2 min] Eerst alleen code en exacte voorbeeldresultaten; de robotontwerpen volgen op de volgende dia. Klik 1: herbruikbare maten, basisvormen, translate, union en difference. Klik 2: busjes als module en lus, importeren van een DXF-profiel met linear_extrude en asserts. Een module levert geometrie, een functie een waarde. Parameters zijn definities, geen imperatieve variabelen. De voorbeeldscripts en het DXF-profiel zijn offline meegeleverd. Asserts vervangen geen testprint.</aside>
+</section>
+
 <section class="scad-walkthrough">
   <p class="kicker">Chassis als code · OpenSCAD</p>
   <div class="scad-stage">
     <div class="scad-intro">
       <h2>Eén project, veel verschillende ontwerpen</h2>
-      <p>OpenSCAD: beschrijf vormen met code, niet met de muis.</p>
-      <p class="smaller">Maten → vormen optellen/aftrekken → busjes → import → asserts</p>
+      <p class="smaller">Nu de ontwerpen: tien families, versies naast elkaar.</p>
       <img src="img/chassis-v04-openscad.png" alt="Voorbeeld van het uiteindelijke chassis">
       <p class="smaller">Klik om te beginnen →</p>
     </div>
@@ -944,11 +973,8 @@ updateMotors();
     Meshconversies en exportbestanden met dezelfde geometrie zijn geen extra ontwerpen; disc_geometry.scad is een hulpbibliotheek.
     Verschillende ontwerplijnen, niet één lineaire versiegeschiedenis. Niet elk detail voorlezen: benoem de families en klik vlot door de versies.
     Renders zijn niet op dezelfde schaal; prototypegeometrie bewijst geen pasvorm of werking.
-    Voor programmeurs zonder OpenSCAD-ervaring: vormen zijn het resultaat van de code. Een module levert geometrie, een functie levert een waarde. Wij werken in millimeters; [x,y,z] geeft positie of afmetingen. Parameters zijn definities, geen imperatieve variabelen die je in een lus ophoogt.
-    Per familie één leerpunt: use versus import → herbruikbare maten en speling → cube/cylinder, translate, union en difference → maten berekenen → busjes als module en lus → include → combinaties van lussen → STL/3MF en DXF/SVG met linear_extrude → assert → samenstelling.
-    Stap 2, 3, 5 en 8 tonen vereenvoudigde lesvoorbeelden met hun exacte OpenSCAD-resultaat naast de code. De robotgalerij erboven is kleiner en toont verwante ontwerpen, niet het resultaat van de lescode. Via het resultaat open je het volledige voorbeeldscript; profile.dxf is meegeleverd bij het importvoorbeeld. Overige code is geselecteerd uit de gekoppelde bronnen, niet altijd zelfstandig uitvoerbaar.
-    Reken circa twee minuten voor de reeks met de code-uitleg; houd de overige chassiscontext kort.
-    Bij de Disc Spinner-familie expliciet zeggen: ontwerpstudies, niet toegestaan bij Roboktober 2026 — daar geen actieve wapens, alleen duwen/wedges.
+    De code is op de vorige dia behandeld. Hier alleen ontwerpen vergelijken, zonder codevoorbeelden. Klik vlot door; richttijd één minuut, maximaal twee minuten bij vragen.
+    Rein bevestigt: Disc Spinner v0.5 (‘Lief Monster’) werd 3e; Limulus v0.1 werd 4e. Passive Aggressive en Mostly Harmless presteerden goed; de opmerking over bestuurders is een knipoog. Actieve wapens waren niet toegestaan; de ontwerpnaam Disc Spinner zegt niets over de wedstrijdconfiguratie.
   </aside>
 </section>
 
@@ -1160,6 +1186,14 @@ updateMotors();
   <p class="muted">De robots blijven rijden — kom gerust sturen.</p>
   <p class="center"><img class="plain" src="img/hackermakerspacelogo.svg" alt="Hackerspace Drenthe" style="background:#fff;border-radius:12px;padding:6px;height:90px"></p>
   <aside class="notes">[Q&amp;A · 11 min] Robots blijven rondgaan/rijden.</aside>
+</section>
+
+<section class="title presentation-download">
+  <h1>Bekijk de presentatie</h1>
+  <p class="muted">Nederlands · English · offline downloads</p>
+  <a href="https://www.roboktober.nl/app/presentaties/php-meetup-groningen-2026-11-05/"><img class="plain" src="img/qr-presentations.svg" alt="QR-code naar het presentatieoverzicht op roboktober.nl"></a>
+  <p class="presentation-url"><a href="https://www.roboktober.nl/app/presentaties/php-meetup-groningen-2026-11-05/">roboktober.nl/app/presentaties/<br>php-meetup-groningen-2026-11-05/</a></p>
+  <aside class="notes">[Afsluiting · downloadlink] Laat deze dia staan zodat het publiek de QR-code kan scannen. De link opent het presentatieoverzicht met Nederlands, Engels en de volledige offlinepakketten. Geen extra uitleg nodig.</aside>
 </section>
 
 </div>

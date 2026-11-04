@@ -54,6 +54,8 @@
 .reveal section.title { text-align: center; }
 .reveal section.title h1 { font-size: 2.4em; margin-top: 0.2em; }
 .reveal section.title .logo { height: 170px; border-radius: 0; }
+.reveal .presentation-download > a img { width: 300px; height: 300px; margin: 0.3em 0; }
+.reveal .presentation-download .presentation-url { font-size: 0.65em; line-height: 1.4; }
 .reveal section.chapter .num { font-size: 0.6em; font-weight: 900; color: var(--robo-orange); }
 .reveal section.chapter h2 { font-size: 2.2em; margin: 0.1em 0 0.3em; }
 .reveal section.chapter .question { font-size: 1.05em; color: var(--robo-muted); }
@@ -390,28 +392,27 @@
 .reveal .scad-group-description { font-size: .6em; }
 .reveal .scad-design-grid { display: grid; grid-template-columns: repeat(var(--design-count), minmax(0, 1fr)); gap: 12px; align-items: start; }
 .reveal .scad-design-grid figure { margin: 0; min-width: 0; }
-.reveal .scad-design-grid img { display: block; width: 100%; height: 220px; margin: 0; object-fit: contain; background: #f8f8f8; }
+.reveal .scad-design-grid img { display: block; width: 100%; height: 360px; margin: 0; object-fit: contain; background: #f8f8f8; }
 .reveal .scad-design-grid figcaption { font-size: .46em; line-height: 1.3; margin-top: .5em; }
-.reveal .scad-education { display: grid; grid-template-columns: 1fr 1.15fr; gap: 20px; align-items: center; margin-top: 16px; }
+.reveal .scad-code-stage { position: relative; height: 590px; }
+.reveal .scad-code-panel { position: absolute; inset: 0; }
+.reveal .scad-code-stage:has(.fragment.visible) .scad-code-intro { visibility: hidden; }
+.reveal .scad-code-intro { padding-top: 100px; text-align: center; }
+.reveal .scad-code-panel > h2 { font-size: 1em; margin-bottom: 16px; }
+.reveal .scad-code-examples { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.reveal .scad-education { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: 165px 265px; gap: 12px; align-items: start; }
+.reveal .scad-education > div { grid-column: 1 / -1; }
 .reveal .scad-education h3 { font-size: .62em; color: var(--robo-orange); margin: 0 0 .4em; }
 .reveal .scad-education p { font-size: .5em; line-height: 1.35; margin: 0 0 .4em; }
-.reveal .scad-education pre { width: 100%; margin: 0; font-size: .42em; }
+.reveal .scad-education pre { width: 100%; margin: 0; font-size: 14px; }
+.reveal .scad-education pre code { padding: 8px; line-height: 1.3; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 265px; }
 .reveal .scad-education .src { display: block; overflow-wrap: anywhere; }
-.reveal .scad-with-result { display: grid; grid-template-rows: 20px 36px 38px 201px 275px 20px; }
-.reveal .scad-with-result > .scad-step-label,
-.reveal .scad-with-result > h2,
-.reveal .scad-with-result > .scad-group-description,
-.reveal .scad-with-result > .src { margin: 0; }
-.reveal .scad-with-result .scad-design-grid img { height: 170px; }
-.reveal .scad-with-result .scad-education { grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr; gap: 6px 20px; align-items: start; margin-top: 8px; }
-.reveal .scad-with-result .scad-education > div { grid-column: 1 / -1; }
-.reveal .scad-with-result .scad-education pre { font-size: 13px; }
-.reveal .scad-with-result .scad-education pre code { padding: 8px 12px; line-height: 1.25; }
-.reveal .scad-result img { display: block; width: 100%; height: 135px; object-fit: contain; background: #f8f8f8; }
+.reveal .scad-code-summary { font-size: .5em; line-height: 1.4; margin-top: 14px; }
+.reveal .scad-result img { display: block; width: 100%; height: 210px; object-fit: contain; background: #f8f8f8; }
 @media print {
-  .reveal .scad-stage .scad-intro { display: none; }
-  .reveal .scad-panel.fragment { opacity: 0 !important; visibility: hidden !important; }
-  .reveal .scad-panel.fragment:last-child { opacity: 1 !important; visibility: visible !important; }
+  .reveal .scad-stage .scad-intro, .reveal .scad-code-intro { display: none; }
+  .reveal .scad-panel.fragment, .reveal .scad-code-panel.fragment { opacity: 0 !important; visibility: hidden !important; }
+  .reveal .scad-panel.fragment:last-child, .reveal .scad-code-panel.fragment:last-child { opacity: 1 !important; visibility: visible !important; }
 }
 .reveal .term .del { color: #f87171; }
 

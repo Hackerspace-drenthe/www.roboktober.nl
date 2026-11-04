@@ -903,6 +903,14 @@ updateMotors();
   <aside class="notes">[3.5.5 · chassis, 4 min total] OpenSCAD: the chassis is a parametric script. About two minutes for the design gallery and lessons; the rest for context, download link and physical variants.</aside>
 </section>
 
+<section class="openscad-poll">
+  <p class="kicker">A quick show of hands</p>
+  <h2>Who has designed something in 3D before?</h2>
+  <h2 class="fragment">Who knows OpenSCAD?</h2>
+  <h2 class="fragment">Who has designed something with it?</h2>
+  <aside class="notes">[3.5.5 · audience poll · about 20 s, within the chassis section] Ask who has designed something in 3D before and invite a show of hands, regardless of the tool. Click: who knows OpenSCAD? Click: who has designed something with it? Use the responses to pitch the explanation; avoid lengthy stories. Bridge: for programmers who have not used it, a 3D model can be code too.</aside>
+</section>
+
 <section>
   <p class="kicker">Why OpenSCAD?</p>
   <p class="big" style="font-size:1.1em">A 3D model as a <span class="accent">text file</span> — program it instead of clicking.</p>
@@ -928,13 +936,34 @@ updateMotors();
   <aside class="notes">[3.5.5 · chassis] Not a competition between CAD tools: a text model helps my workflow with diffs, review and AI assistance. Asserts guard only the constraints you write down; test prints are still needed.</aside>
 </section>
 
+<section class="scad-code-walkthrough">
+  <p class="kicker">OpenSCAD · code first</p>
+  <div class="scad-code-stage">
+    <div class="scad-code-intro">
+      <h2>A 3D model is the output of your code.</h2>
+      <p class="smaller">1. Dimensions, shapes and subtraction<br>2. Reuse, imports and checks</p>
+      <p class="smaller">Two clicks. First the building blocks, then the robot designs.</p>
+    </div>
+    <div class="scad-code-panel fragment current-visible" data-fragment-index="0">
+      <h2>1. Dimensions → shapes → subtraction</h2>
+      <div class="scad-code-examples" data-examples="1 2"></div>
+      <p class="scad-code-summary">Millimetres · [x, y, z] · translate moves · difference subtracts</p>
+    </div>
+    <div class="scad-code-panel fragment current-visible" data-fragment-index="1">
+      <h2>2. Reuse → import → check</h2>
+      <div class="scad-code-examples" data-examples="4 7"></div>
+      <p class="scad-code-summary"><code>assert(wall &gt; 0, "wall must be positive");</code> guards a requirement, not physical fit.<br><code>use &lt;standoffs.scad&gt;</code> loads modules; <code>import()</code> loads STL/3MF or DXF/SVG.</p>
+    </div>
+  </div>
+  <aside class="notes">[3.5.5 · code examples · about 2 min] Only code and exact example results first; robot designs follow on the next slide. Click 1: reusable dimensions, basic shapes, translate, union and difference. Click 2: standoffs as a module and loop, importing a DXF profile with linear_extrude and asserts. A module produces geometry, a function returns a value. Parameters are definitions, not imperative variables. Example scripts and the DXF profile are included offline. Asserts do not replace a test print.</aside>
+</section>
+
 <section class="scad-walkthrough">
   <p class="kicker">Chassis as code · OpenSCAD</p>
   <div class="scad-stage">
     <div class="scad-intro">
       <h2>One project, many different designs</h2>
-      <p>OpenSCAD: describe shapes with code, not with the mouse.</p>
-      <p class="smaller">Dimensions → add/subtract shapes → standoffs → import → asserts</p>
+      <p class="smaller">Now the designs: ten families, versions side by side.</p>
       <img src="img/chassis-v04-openscad.png" alt="Example of the final chassis">
       <p class="smaller">Click to begin →</p>
     </div>
@@ -944,11 +973,8 @@ updateMotors();
     Mesh conversions and exports of identical geometry are not additional designs; disc_geometry.scad is a helper library.
     Different design lines, not one linear version history. Don't read every detail: name the families and click briskly through the versions.
     Renders are not to the same scale; prototype geometry does not prove fit or function.
-    For programmers new to OpenSCAD: shapes are the output of the code. A module produces geometry, a function returns a value. We use millimetres; [x,y,z] gives position or dimensions. Parameters are definitions, not imperative variables to increment inside a loop.
-    One lesson per family: use versus import → reusable dimensions and clearance → cube/cylinder, translate, union and difference → derive dimensions → standoffs as a module and loop → include → loop combinations → STL/3MF and DXF/SVG with linear_extrude → assert → assembly.
-    Steps 2, 3, 5 and 8 show simplified teaching examples with their exact OpenSCAD result beside the code. The smaller robot gallery above shows related designs, not the lesson code output. The result links to the complete example script; profile.dxf is included for the import example. Other code is selected from linked sources, not always standalone.
-    Allow about two minutes for the sequence with code explanations; keep other chassis context brief.
-    Explicitly mention for the Disc Spinner family: design studies, not allowed at Roboktober 2026 — no active weapons there, pushers/wedges only.
+    Code was covered on the previous slide. Here we only compare designs, without code examples. Move briskly; target one minute, up to two minutes for questions.
+    Rein confirms: Disc Spinner v0.5 (‘Lief Monster’) placed 3rd; Limulus v0.1 placed 4th. Passive Aggressive and Mostly Harmless performed well; the comment about drivers is tongue-in-cheek. Active weapons were not allowed; the Disc Spinner design name does not establish its competition configuration.
   </aside>
 </section>
 
@@ -1160,6 +1186,14 @@ updateMotors();
   <p class="muted">The robots keep moving — come and try driving.</p>
   <p class="center"><img class="plain" src="img/hackermakerspacelogo.svg" alt="Hackerspace Drenthe" style="background:#fff;border-radius:12px;padding:6px;height:90px"></p>
   <aside class="notes">[Q&amp;A · 11 min] Keep passing the robots around / driving them.</aside>
+</section>
+
+<section class="title presentation-download">
+  <h1>Get the presentation</h1>
+  <p class="muted">Nederlands · English · offline downloads</p>
+  <a href="https://www.roboktober.nl/app/presentaties/php-meetup-groningen-2026-11-05/"><img class="plain" src="img/qr-presentations.svg" alt="QR code for the presentation index on roboktober.nl"></a>
+  <p class="presentation-url"><a href="https://www.roboktober.nl/app/presentaties/php-meetup-groningen-2026-11-05/">roboktober.nl/app/presentaties/<br>php-meetup-groningen-2026-11-05/</a></p>
+  <aside class="notes">[Closing · download link] Leave this slide visible so the audience can scan the QR code. The link opens the presentation index with Dutch, English and complete offline packages. No additional explanation needed.</aside>
 </section>
 
 </div>

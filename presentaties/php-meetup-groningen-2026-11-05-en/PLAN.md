@@ -157,14 +157,17 @@ Show the actual PCB, but do not explain pins or power-supply variations yet.
 
 ### 3.5.5 Chassis as code
 
+- Slide 32: a brief audience poll, about 20 seconds within the chassis section. First: who has designed something in 3D before? Then one question per click: who knows OpenSCAD, and who has designed something with it? Pitch the explanation based on the responses.
+
 - Transition: separate parts are not a robot yet.
 - OpenSCAD fits my text-based workflow: parameters, diffs, review, and explicit dimensional constraints.
 - Visual CAD tools can also be parametric and automated; do not caricature Fusion/FreeCAD.
 - An `assert` only checks the condition that has been programmed. Test prints are still needed to check fit and tolerances.
-- Slide 33: a design gallery with 10 click steps and 24 images, about two minutes. One click per design family, with versions and parts side by side: Wallie (original, top plate, and reconstructions), chassis v0.2/v0.3/v0.4, Disc/Mini/Wedge, Disc Spinner v0.1–v0.5, Rhomboid, Limulus v0.1/v0.2, Passive Aggressive/4WD, Mostly Harmless with roof, Aurora, and DuoBot. Nordic Racer was removed only from this gallery; the example remains on the following comparison slide.
-- Each click teaches one concept for programmers new to OpenSCAD: modules/use, reusable dimensions and derived clearance, primitives with translate/union/difference, calculations, standoffs with screw holes using a module and loop, include, loop combinations, STL/3MF versus DXF/SVG with linear_extrude, asserts and assemblies. Steps 2, 3, 5 and 8 are labeled teaching examples alongside related real designs, not the source of the renders; the top half shows large robot designs; the bottom half shows compact code beside its exact result. Example scripts and profile.dxf are included offline. Regenerate renders with `xvfb-run -a node slides/scripts/render-scad-examples.mjs` (requires OpenSCAD). Other excerpts come from linked models. Allow about two minutes for the overview; use notes for detail and keep other chassis context brief.
+- Slide 34: a separate code slide with two click steps, about two minutes. First reusable dimensions, primitives and translate/union/difference; then standoffs with screw holes using a module and loop, imports with linear_extrude and asserts. Only code and exact example results, no robot designs. The four existing example scripts and profile.dxf remain available offline. Regenerate renders with `xvfb-run -a node slides/scripts/render-scad-examples.mjs` (requires OpenSCAD).
+- Slide 35: a separate design gallery, without code, with 10 click steps and 24 images. Target one minute, up to two minutes for questions. One click per design family, versions and parts side by side: Wallie, chassis v0.2/v0.3/v0.4, Disc/Mini/Wedge, Disc Spinner v0.1–v0.5, Rhomboid, Limulus v0.1/v0.2, Passive Aggressive/4WD, Mostly Harmless with roof, Aurora and DuoBot. Nordic Racer remains on the following comparison slide.
 - Explicitly name the different design lines rather than presenting them as one linear version history. No duplicate mesh conversions, export files, or helper libraries. Renders are not to scale and do not prove fit or functionality.
-- Give each step its own render and a short selected code excerpt. Source files remain accessible; reveal.js fragments work when navigating both forward and backward.
+- Results on slide 35, confirmed by Rein: Disc Spinner v0.5 competed as ‘Lief Monster’ and placed 3rd; Limulus v0.1 placed 4th. Passive Aggressive and Mostly Harmless performed well, with a tongue-in-cheek comment that the drivers were the weak link. The Disc Spinner name does not imply an active weapon in competition; active weapons were not allowed.
+- Source files remain accessible; reveal.js fragments work on both slides when navigating forward and backward.
 - Show variants: same PCB dimensions, different housing.
 
 ### 3.6 Audience takes control
@@ -196,7 +199,9 @@ Show the actual PCB, but do not explain pins or power-supply variations yet.
 
 ### 3.10 Closing
 
-- Slide 43 closes the common thread: from joystick to wheel, using the same software principles. Four short lessons: open software and standards as foundations; testable requirements as contracts; code as a tool, including hardware; tests as proof, including physical tests. AI assists at every step; the user defines, checks and validates. Keep the command chain and existing core message.
+- Final slide (48), after Q&A: large QR code and clickable URL to https://www.roboktober.nl/app/presentaties/php-meetup-groningen-2026-11-05/ with both languages and offline downloads. Leave it visible for scanning.
+
+- Slide 45 closes the common thread: from joystick to wheel, using the same software principles. Four short lessons: open software and standards as foundations; testable requirements as contracts; code as a tool, including hardware; tests as proof, including physical tests. AI assists at every step; the user defines, checks and validates. Keep the command chain and existing core message.
 - Answer the opening question in this order: controller → firmware → PWM/H-bridge → motor.
 - Explicitly mention safe stopping.
 - Closing line: **you’re still a developer — now your bug drives away.**
@@ -221,7 +226,7 @@ Do not cut: the opening question, the complete command route, the failsafe, or t
 - [ ] Confirm the Battle Day result/winner (optional).
 - [ ] Recheck the rules, kit price, and figures on the slides.
 - [ ] Confirm Wallie's permission and check that the video is audible.
-- [x] Offline review package checked: 45 slides; images, video, and gallery links are present locally. The complete firmware slide also loads from `file://`, with all 205 source lines and nine highlighting stages. Bring the folder, including `vendor/` and `js/wallie-video.js`, on the day.
+- [x] Offline review package checked: 48 slides; images, video, and gallery links are present locally. The complete firmware slide also loads from `file://`, with all 205 source lines and nine highlighting stages. Bring the folder, including `vendor/` and `js/wallie-video.js`, on the day.
 - [x] Build the reviewer package into `review/` (not in git): `bash slides/scripts/build-review-package.sh [--full] review`. Compact (±12 MB) or full, with videos and all 3D sources (±112 MB). It starts with `00-READ-ME-FIRST.html`; text is in `slides/scripts/LEESMIJ-review.md`.
 - [ ] Process reviewer feedback.
 - [ ] After changing the MP4: `bash slides/scripts/embed-wallie-video.sh`.
