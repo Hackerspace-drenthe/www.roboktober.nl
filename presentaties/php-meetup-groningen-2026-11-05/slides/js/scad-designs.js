@@ -48,13 +48,13 @@ const SCAD_DESIGN_GROUPS = [
     example: true,
     detail: 'cube maakt een blok, cylinder een cilinder; translate verplaatst de vorm erachter. union voegt samen. difference trekt alle volgende vormen van de eerste af: hier een plaat met busje en doorgaand gat.',
   }, 'antweight_disc_v', 'antweight_disc_mini_', 'antweight_disc_wedge_'],
-  ['Disc Spinner · v0.1 tot v0.5', 'v0.5 reed als ‘Lief Monster’ naar de 3e plaats bij Roboktober.', {
+  ['Disc Spinner · v0.1 tot v0.5', 'Eerst te groot: binnen 50 g voor het geprinte chassis werd het materiaal te dun. Uiteindelijk kleiner, dikker en sterker — met minder spikes. v0.5: ‘Lief Monster’, 3e bij Roboktober.', {
     point: '4. Afleiden: bereken maten uit de geometrie, niet met de hand.',
     code: 'pcb_r = max([\n  for (p = pcb_pts) norm(p - [cx, cy])\n]);',
     source: 'reinsdesigns/antweight_disc_spinner_v0.5.scad',
     detail: 'norm geeft de afstand tot het middelpunt; max kiest de verste PCB-hoek.',
   }, 'antweight_disc_spinner_'],
-  ['Rhomboid', 'Een hoekig zijprofiel in plaats van een ronde vorm.', {
+  ['Rhomboid', 'Effectieve vorm: wedge én duwer — aan beide kanten.', {
     point: '5. Afstandsbusjes: één module, vier posities.',
     code: 'module busje(h=6, d=6, gat=2.2) {\n  difference() {\n    cylinder(h=h, d=d);\n    translate([0,0,-1]) cylinder(h=h+2, d=gat);\n  } }\nfor (p = [[5,5], [35,5], [5,25], [35,25]])\n  translate([p[0], p[1], 0]) busje();',
     source: 'reinsdesigns/antweight_rhomboid_v0.1.scad',
@@ -73,19 +73,13 @@ const SCAD_DESIGN_GROUPS = [
     source: 'reinsdesigns/antweight_passive_aggressive_4wd_v0.1.scad',
     detail: 'Twee kanten × twee assen; mirror_x is een eigen helper, geen ingebouwde functie.',
   }, 'antweight_passive_aggressive_'],
-  ['Mostly Harmless', 'Sterke robot — de bestuurder was de zwakke schakel.', {
+  ['Mostly Harmless', 'Mijn favoriet · complete robot: 140 g. Wedge om te kantelen, duwer achterop — oersterk.', {
     point: '8. Importeren: 3D-mesh of 2D-profiel hergebruiken.',
     code: '// 3D-mesh: import("mostlyharmless.stl");\n// Hier: een 2D-profiel met 2 mm dikte\nlinear_extrude(height=2)\n  import("profile.dxf");',
     source: 'reinsdesigns/mostlyharmless.stl',
     example: true,
     detail: 'STL/3MF levert een 3D-mesh, DXF/SVG een 2D-profiel. Hier krijgt het meegeleverde DXF-profiel 2 mm dikte. Het bestand staat naast het voorbeeldscript. Controleer schaal/eenheden; import herstelt geen oorspronkelijke parameters.',
   }, 'mostlyharmless.', 'mopstlyharmlessroof.'],
-  ['Aurora · 50 gram', 'Een radiografisch bestuurde demonstratierobot in een andere gewichtsklasse.', {
-    point: '9. Controleren: assert bewaakt een expliciete maatvoorwaarde.',
-    code: 'assert(\n  wheel_x - wheel_w / 2 > body_w / 2,\n  "wheel overlaps the chassis side wall"\n);',
-    source: 'reinsdesigns/aurora_50g_rc_v0.1.scad',
-    detail: 'Zoals een assert in programmacode: bij false stopt het model met deze foutmelding. Hier moet de binnenkant van het wiel buiten de zijwand liggen. Geen bewijs voor echte passing of gewicht: nameten en proefprinten blijven nodig.',
-  }, 'aurora_'],
   ['DuoBot · modulair', 'Een modulair robotconcept; geometrie is geen bewijs van werking.', {
     point: '10. Samenstellen: dezelfde module levert meerdere robotvarianten.',
     code: 'if (part == "assembly") {\n  robot("attack");\n  translate([0, pair_pitch, 0]) robot("defend");\n}',

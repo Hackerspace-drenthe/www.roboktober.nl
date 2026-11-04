@@ -48,13 +48,13 @@ const SCAD_DESIGN_GROUPS = [
     example: true,
     detail: 'cube makes a block, cylinder a cylinder; translate moves the shape that follows. union joins shapes. difference subtracts all following shapes from the first: here a plate with a boss and through-hole.',
   }, 'antweight_disc_v', 'antweight_disc_mini_', 'antweight_disc_wedge_'],
-  ['Disc Spinner · v0.1 to v0.5', 'v0.5 competed as ‘Lief Monster’ and took 3rd place at Roboktober.', {
+  ['Disc Spinner · v0.1 to v0.5', 'Initially too large: keeping the printed chassis within 50 g made the material too thin. Finally smaller, thicker and stronger — with fewer spikes. v0.5: ‘Lief Monster’, 3rd at Roboktober.', {
     point: '4. Derive: calculate dimensions from geometry, not by hand.',
     code: 'pcb_r = max([\n  for (p = pcb_pts) norm(p - [cx, cy])\n]);',
     source: 'reinsdesigns/antweight_disc_spinner_v0.5.scad',
     detail: 'norm gives the distance to the centre; max selects the furthest PCB corner.',
   }, 'antweight_disc_spinner_'],
-  ['Rhomboid', 'An angular side profile rather than a round shape.', {
+  ['Rhomboid', 'An effective shape: wedge and pusher — on both sides.', {
     point: '5. Standoffs: one module, four positions.',
     code: 'module standoff(h=6, d=6, hole=2.2) {\n  difference() {\n    cylinder(h=h, d=d);\n    translate([0,0,-1]) cylinder(h=h+2, d=hole);\n  } }\nfor (p = [[5,5], [35,5], [5,25], [35,25]])\n  translate([p[0], p[1], 0]) standoff();',
     source: 'reinsdesigns/antweight_rhomboid_v0.1.scad',
@@ -73,19 +73,13 @@ const SCAD_DESIGN_GROUPS = [
     source: 'reinsdesigns/antweight_passive_aggressive_4wd_v0.1.scad',
     detail: 'Two sides × two axles; mirror_x is a custom helper, not a built-in function.',
   }, 'antweight_passive_aggressive_'],
-  ['Mostly Harmless', 'Strong robot — the driver was the weak link.', {
+  ['Mostly Harmless', 'My favourite · complete robot: 140 g. Wedge for flipping, rear pusher — very strong.', {
     point: '8. Import: reuse a 3D mesh or a 2D profile.',
     code: '// 3D mesh: import("mostlyharmless.stl");\n// Here: a 2D profile with 2 mm thickness\nlinear_extrude(height=2)\n  import("profile.dxf");',
     source: 'reinsdesigns/mostlyharmless.stl',
     example: true,
     detail: 'STL/3MF supplies a 3D mesh, DXF/SVG a 2D profile. Here the included DXF profile gets 2 mm thickness. The file sits beside the example script. Check scale/units; import does not recover original parameters.',
   }, 'mostlyharmless.', 'mopstlyharmlessroof.'],
-  ['Aurora · 50 grams', 'A radio-controlled demonstration robot in a different weight class.', {
-    point: '9. Check: assert guards an explicit dimensional constraint.',
-    code: 'assert(\n  wheel_x - wheel_w / 2 > body_w / 2,\n  "wheel overlaps the chassis side wall"\n);',
-    source: 'reinsdesigns/aurora_50g_rc_v0.1.scad',
-    detail: 'Like an assert in program code: false stops the model with this error message. Here the inner wheel edge must clear the side wall. This does not prove real fit or weight: measure and test-print as well.',
-  }, 'aurora_'],
   ['DuoBot · modular', 'A modular robot concept; geometry is not proof of operation.', {
     point: '10. Assemble: the same module produces multiple robot variants.',
     code: 'if (part == "assembly") {\n  robot("attack");\n  translate([0, pair_pitch, 0]) robot("defend");\n}',

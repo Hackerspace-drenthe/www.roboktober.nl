@@ -305,15 +305,19 @@ window.RoboStepNotes = {
         context: ['Ontwerpgalerij · richttijd 1 min; maximaal 2 min bij vragen', 'Design gallery · target 1 min; up to 2 min for questions'],
         steps: [
           [
-            'De code hebben we gezien. Nu alleen de robotontwerpen vergelijken: tien families, geen lineaire versiegeschiedenis; modellen niet op gelijke schaal. Houd het overzicht kort. Rein bevestigt: Disc Spinner v0.5 (‘Lief Monster’) werd 3e, Limulus v0.1 werd 4e. Passive Aggressive en Mostly Harmless presteerden goed; de opmerking over bestuurders is een knipoog. Actieve wapens waren niet toegestaan; de ontwerpnaam Disc Spinner zegt niets over de wedstrijdconfiguratie.',
-            'We have covered the code. Now compare only robot designs: ten families, not one linear version history; models are not to the same scale. Keep the overview brief. Rein confirms: Disc Spinner v0.5 (‘Lief Monster’) placed 3rd, Limulus v0.1 placed 4th. Passive Aggressive and Mostly Harmless performed well; the comment about drivers is tongue-in-cheek. Active weapons were not allowed; the Disc Spinner design name does not establish its competition configuration.',
+            'De code hebben we gezien. Nu alleen de robotontwerpen vergelijken: negen families, geen lineaire versiegeschiedenis; modellen niet op gelijke schaal. Houd het overzicht kort. Rein bevestigt: Disc Spinner v0.5 (‘Lief Monster’) werd 3e, Limulus v0.1 werd 4e. Passive Aggressive presteerde goed; de opmerking over bestuurders is een knipoog. Mostly Harmless is mijn favoriet. Actieve wapens waren niet toegestaan; de ontwerpnaam Disc Spinner zegt niets over de wedstrijdconfiguratie.',
+            'We have covered the code. Now compare only robot designs: nine families, not one linear version history; models are not to the same scale. Keep the overview brief. Rein confirms: Disc Spinner v0.5 (‘Lief Monster’) placed 3rd, Limulus v0.1 placed 4th. Passive Aggressive performed well; the comment about drivers is tongue-in-cheek. Mostly Harmless is my favourite. Active weapons were not allowed; the Disc Spinner design name does not establish its competition configuration.',
           ],
           ...[...gallery.querySelectorAll('.scad-panel')].map(panel => {
-            const speech = [
+            let speech = [
               clean(panel.querySelector('h2')),
               clean(panel.querySelector('.scad-group-description')),
               ...[...panel.querySelectorAll('.scad-design-grid img')].map(image => `${image.alt}: ${image.title}`),
             ].join('\n\n');
+            if (clean(panel.querySelector('h2')) === 'Mostly Harmless') speech += text([
+              '\n\nDit is mijn favoriet. De complete robot weegt 140 gram, niet alleen het chassis. De wedge kantelt tegenstanders; de achterkant gebruik ik om te duwen. Mijn ervaring: hij nam het zelfs op tegen Wallies bewapende robot met cirkelzaag en kwam er zonder schade uit. Dat is één ervaring, geen algemene garantie op sterkte of veiligheid. Dit verandert niets aan het verbod op actieve wapens bij Roboktober 2026.',
+              '\n\nThis is my favourite. The complete robot weighs 140 grams, not just the chassis. The wedge flips opponents; I use the rear to push. My experience: it even faced Wallie’s armed robot with a circular saw and came away without damage. That is one experience, not a general guarantee of strength or safety. It does not change the ban on active weapons at Roboktober 2026.',
+            ]);
             return [speech, speech];
           }),
         ],

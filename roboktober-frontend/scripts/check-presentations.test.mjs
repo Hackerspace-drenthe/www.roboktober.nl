@@ -79,7 +79,7 @@ for (const language of ['nl', 'en']) {
       }
       stepCount += notes.size
     }
-    assert.equal(stepCount, 85)
+    assert.equal(stepCount, 84)
     const codeSlide = sections[33]
     const designSlide = sections[34]
     assert.ok(codeSlide.classList.contains('scad-code-walkthrough'))
@@ -93,7 +93,11 @@ for (const language of ['nl', 'en']) {
     }
     assert.equal(codeSlide.querySelectorAll('.scad-design-grid').length, 0)
     assert.equal(designSlide.querySelectorAll('pre, code, .scad-education, .scad-result').length, 0)
-    assert.equal(designSlide.querySelectorAll('.scad-design-grid img').length, 24)
+    assert.equal(designSlide.querySelectorAll('.scad-design-grid img').length, 23)
+    assert.doesNotMatch(designSlide.textContent, /Aurora/i)
+    const favouriteNotes = designSlide.querySelector('.scad-panel[data-fragment-index="7"]').dataset.notes
+    assert.match(favouriteNotes, /140/)
+    assert.match(favouriteNotes, language === 'nl' ? /cirkelzaag.*zonder schade/ : /circular saw.*without damage/)
     for (const [section, original] of untouched) assert.equal(section.querySelector('aside.notes')?.innerHTML, original)
     const unexpected = dom.window.document.createElement('span')
     unexpected.className = 'fragment'
@@ -210,13 +214,20 @@ for (const language of ['nl', 'en']) {
     }
     assert.match(readFileSync(join(slides, 'js/visuals.js'), 'utf8'), /\.\.\/3dprinter\//)
     const gallery = runInNewContext(`${readFileSync(join(slides, 'js/scad-designs.js'), 'utf8')}\nSCAD_DESIGN_GROUPS`)
-    assert.equal(gallery.length, 10)
+    assert.equal(gallery.length, 9)
     assert.match(gallery[3].description, /v0\.5.*Lief Monster.*3/)
+    assert.match(gallery[4].description, language === 'nl'
+      ? /wedge én duwer.*beide kanten/
+      : /wedge and pusher.*both sides/)
+    assert.match(gallery[3].description, language === 'nl'
+      ? /50 g voor het geprinte chassis.*te dun.*kleiner, dikker en sterker.*minder spikes/
+      : /printed chassis within 50 g.*too thin.*smaller, thicker and stronger.*fewer spikes/)
     assert.match(gallery[5].description, /v0\.1.*4/)
-    for (const index of [6, 7]) {
-      assert.match(gallery[index].description, language === 'nl' ? /zwakke schakel/ : /weak link/)
-    }
-    assert.equal(gallery.reduce((sum, group) => sum + group.designs.length, 0), 24)
+    assert.match(gallery[6].description, language === 'nl' ? /zwakke schakel/ : /weak link/)
+    assert.match(gallery[7].description, language === 'nl'
+      ? /Mijn favoriet.*complete robot: 140 g.*Wedge.*duwer achterop.*oersterk/
+      : /My favourite.*complete robot: 140 g.*Wedge.*rear pusher.*very strong/)
+    assert.equal(gallery.reduce((sum, group) => sum + group.designs.length, 0), 23)
     for (const index of [1, 2, 4, 7]) assert.equal(gallery[index].lesson.example, true)
     for (const index of [1, 2, 4, 7]) {
       const base = join(slides, `img/scad-examples/example-${index + 1}`)
@@ -231,7 +242,7 @@ for (const language of ['nl', 'en']) {
     assert.match(gallery[2].lesson.code, /difference\(\)[\s\S]*union\(\)/)
     assert.match(gallery[4].lesson.code, /module [\s\S]*difference\(\)[\s\S]*for \(p =/)
     assert.match(gallery[7].lesson.code, /linear_extrude\(height=2\)[\s\S]*import\("[^"]+\.dxf"\)/)
-    assert.match(gallery[8].lesson.code, /assert\(/)
+    assert.match(html, /assert\((?:wand|wall) &gt; 0/)
     assert.doesNotMatch(readFileSync(join(slides, 'js/visuals.js'), 'utf8'), /\.\.\/\.\.\/\.\.\/3dprinter\//)
     assert.ok(readFileSync(join(slides, 'js/wallie-video.js'), 'utf8').includes('data:video/mp4;base64,'))
     assert.equal(readdirSync(join(slides, 'video')).filter((file) => file.endsWith('.mp4')).length, 2)
