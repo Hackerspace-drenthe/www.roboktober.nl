@@ -116,7 +116,8 @@ Laat de echte print zien, maar leg pinnen en voedingsvarianten nog niet uit.
 - Telefoon: de robot biedt een eigen WiFi-netwerk en webinterface op `192.168.4.1`; geen app of externe router.
 - WebSocket: berichten over een open verbinding. Joystick of tankbesturing met twee sliders.
 - Remote: tweede ESP32, analoge stick, ESP-NOW. Beide routes leveren gas en sturen.
-- **Overgang hardop:** de WebUI-broncode is nog niet openbaar; de codevoorbeelden komen uit de openbare ESP-NOW-firmware. Mixing en motorcode zijn hetzelfde, het transport verschilt.
+- Dia 16 vermeldt Wallies aangekondigde nieuwe firmwarerelease op **5 november 2026**, de presentatiedag, met een link naar [zijn GitHub-profiel](https://github.com/wallieonline). Controleer op de dag zelf de beschikbaarheid.
+- **Overgang hardop:** de codevoorbeelden blijven afkomstig uit de bestaande openbare ESP-NOW-firmware, niet uit de aangekondigde nieuwe release. Mixing en motorcode zijn hetzelfde, het transport verschilt.
 - Alleen gedeelde struct, twee kanaaltoewijzingen, verzenden en lengtecheck tonen. Volledige broncode via links.
 - Takeaway: een vast gegevensformaat is een interface, net als `pack()`/`unpack()`.
 

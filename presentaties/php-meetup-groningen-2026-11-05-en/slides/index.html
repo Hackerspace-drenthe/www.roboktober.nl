@@ -467,12 +467,12 @@
       <li><b>WebSocket:</b> one open connection, rather than reconnecting → low latency</li>
       <li>Choose: <b>joystick</b> or <b>tank</b> (two sliders)</li>
       <li>Mix throttle and steering, reverse direction: change settings, not code</li>
-      <li class="muted">Wallie's firmware (with our fix) — source code to follow in Wallie's repo</li>
+      <li class="muted">Wallie's new firmware: release on <b>5 November 2026</b> — today · <a href="https://github.com/wallieonline">Wallie's GitHub</a></li>
     </ul>
   </div>
   <p class="bridge">Just like your home router's settings page.</p>
   <aside class="notes">
-    [3.5.2 · 1.5–3 min] NO code on this slide: the WebUI source is not public yet. Do not promise a date.
+    [3.5.2 · 1.5–3 min] No code on this slide: this is the WebUI overview. Wallie has announced his new firmware release for 5 November 2026, the day of this presentation. Link to his GitHub profile; check on the day whether the release is available.
     Same mixing/motor code as the ESP-NOW firmware, just a different transport.
   </aside>
 </section>
@@ -882,7 +882,8 @@ updateMotors();
   </div>
   <div class="fragment val-done center" data-fragment-index="7">
     <p style="margin:0">25 of the 30 assembled PCBs work. <span class="accent">What a relief.</span></p>
-    <p class="smaller" style="margin:.1em 0 0;font-size:.6em">Failures: some unusual ESP32s with poor WiFi · some assembly errors</p>
+    <p class="smaller" style="margin:.1em 0 0;font-size:.6em">Failures: ESP32-C3 SuperMini antenna/WiFi issues · assembly errors</p>
+    <p class="smaller" style="margin:.2em 0 0;font-size:.6em"><b>Recommended:</b> ESP32-C3 Super Mini Plus V2 with external antenna — same footprint, slightly more expensive.</p>
   </div>
   <aside class="notes">[3.5.4 · ±1 min] For developers: automated checks like CI. PDCA for each revision.
     Click: Plan → Do → copper clearance → trace width → unconnected pads → result/Act → human review → production.
@@ -891,6 +892,7 @@ updateMotors();
     Also compare connections with the pin contract, get human review and run physical tests. AI review is not a deterministic test.
     Be honest: ERC reports 3 messages (unused alternative connector J4_ALT, label REG_5V_OUT) — intentional, but you must be able to explain them.
     Wallie provides human review. Pause after "What a relief."
+    Hardware advice from Rein: this ESP32-C3 SuperMini type is known for antenna/range issues. The recommended replacement is the ESP32-C3 Super Mini Plus V2 with an external antenna: same footprint, slightly more expensive. This is a recommendation for the next build, not an already completed replacement or measured range improvement. Check the supplied variant, pinout and antenna clearance, then test range in the assembled robot.
     150 bare PCBs produced (without components); 30 assembled so far, of which 25 work. The 5 failures: some have unusual ESP32s with poor WiFi, others were assembled incorrectly. No design fault found. The comparison: green DRC does not guarantee successful manufacturing and assembly.</aside>
 </section>
 

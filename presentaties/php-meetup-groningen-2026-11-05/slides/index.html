@@ -467,12 +467,12 @@
       <li><b>WebSocket:</b> één open lijn i.p.v. steeds opnieuw verbinden → weinig vertraging</li>
       <li>Kies: <b>joystick</b> of <b>tank</b> (twee sliders)</li>
       <li>Gas en sturen mixen, draairichting omkeren: instellen i.p.v. code wijzigen</li>
-      <li class="muted">Firmware van Wallie (met onze fix) — broncode volgt in Wallie's repo</li>
+      <li class="muted">Nieuwe firmware van Wallie: release op <b>5 november 2026</b> — vandaag · <a href="https://github.com/wallieonline">Wallies GitHub</a></li>
     </ul>
   </div>
   <p class="bridge">Net als de instellingenpagina van je router thuis.</p>
   <aside class="notes">
-    [3.5.2 · 1,5–3 min] GEEN code op deze slide: WebUI is nog niet openbaar. Geen datum noemen.
+    [3.5.2 · 1,5–3 min] Geen code op deze slide: dit is het WebUI-overzicht. Wallie heeft de release van zijn nieuwe firmware aangekondigd voor 5 november 2026, de dag van deze presentatie. Link naar zijn GitHub-profiel; controleer op de dag zelf of de release beschikbaar is.
     Zelfde mixing/motorcode als de ESP-NOW-firmware, alleen ander transport.
   </aside>
 </section>
@@ -882,7 +882,8 @@ updateMotors();
   </div>
   <div class="fragment val-done center" data-fragment-index="7">
     <p style="margin:0">25 van de 30 gemonteerde printplaten werken. <span class="accent">Wat een opluchting.</span></p>
-    <p class="smaller" style="margin:.1em 0 0;font-size:.6em">Uitval: een paar afwijkende ESP32's met slechte wifi · een paar montagefouten</p>
+    <p class="smaller" style="margin:.1em 0 0;font-size:.6em">Uitval: ESP32-C3 SuperMini met antenne-/WiFi-problemen · montagefouten</p>
+    <p class="smaller" style="margin:.2em 0 0;font-size:.6em"><b>Aanbevolen:</b> ESP32-C3 Super Mini Plus V2 met externe antenne — dezelfde footprint, iets duurder.</p>
   </div>
   <aside class="notes">[3.5.4 · ±1 min] Voor developers: geautomatiseerde controles zoals in CI. PDCA per revisie.
     Klik: Plan → Do → koperafstand → baanbreedte → niet-verbonden aansluitingen → resultaat/Act → menselijke review → productie.
@@ -891,6 +892,7 @@ updateMotors();
     Daarnaast aansluitingen tegen het pincontract controleren, menselijke review en fysieke tests. Een AI-review is geen deterministische test.
     Eerlijk: ERC geeft 3 meldingen (alternatieve connector J4_ALT niet aangesloten, label REG_5V_OUT) — bewust, maar je moet ze kunnen uitleggen.
     Wallie als menselijke review. Na "Wat een opluchting." even stilte laten vallen.
+    Hardwareadvies van Rein: dit type ESP32-C3 SuperMini staat bekend om antenne-/bereikproblemen. Aanbevolen vervanging is de ESP32-C3 Super Mini Plus V2 met externe antenne: dezelfde footprint, iets duurder. Dit is een aanbeveling voor de volgende bouw, geen al uitgevoerde vervanging of gemeten bereikverbetering. Controleer de geleverde variant, pinout en antenneruimte en test het bereik in de gemonteerde robot.
     150 kale printplaten geproduceerd (zonder onderdelen); tot nu toe 30 gemonteerd, daarvan werken er 25. De 5 uitvallers: sommige hebben een afwijkende ESP32 met slechte wifi, andere zijn niet goed in elkaar gezet (montagefout). Geen ontwerpfout gevonden. Vergelijk: DRC groen is geen garantie voor de productie- en bouwstap.</aside>
 </section>
 

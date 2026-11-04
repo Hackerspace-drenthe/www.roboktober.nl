@@ -116,7 +116,8 @@ Show the actual PCB, but do not explain pins or power-supply variations yet.
 - Phone: the robot provides its own WiFi network and web interface at `192.168.4.1`; no app or external router is needed.
 - WebSocket: messages sent over an open connection. Joystick or tank-style control with two sliders.
 - Remote: a second ESP32, analog stick, and ESP-NOW. Both routes provide throttle and steering.
-- **Say this transition out loud:** the WebUI source code is not yet public; the code examples come from the public ESP-NOW firmware. Mixing and motor code are the same; the transport differs.
+- Slide 16 mentions Wallie's announced new firmware release on **5 November 2026**, presentation day, with a link to [his GitHub profile](https://github.com/wallieonline). Check availability on the day.
+- **Say this transition out loud:** the code examples still come from the existing public ESP-NOW firmware, not the announced new release. Mixing and motor code are the same; the transport differs.
 - Show only the shared struct, two channel assignments, sending, and the length check. Link to the full source code.
 - Takeaway: a fixed data format is an interface, just like `pack()`/`unpack()`.
 

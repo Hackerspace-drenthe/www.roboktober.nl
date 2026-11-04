@@ -25,6 +25,13 @@ for (const language of ['nl', 'en']) {
     assert.match(html, /Rein Velt/)
     assert.match(html, /drenthenoodnetwerk\.nl/)
     assert.equal([...html.matchAll(/<section(?:\s|>)/g)].length, 45)
+    const webui = html.split(/<section(?:\s[^>]*)?>/)[16].split('</section>')[0]
+    assert.match(webui, /href="https:\/\/github\.com\/wallieonline"/)
+    assert.match(webui, language === 'nl' ? /5 november 2026/ : /5 November 2026/)
+    assert.doesNotMatch(webui, /Geen datum noemen|Do not promise a date/)
+    const validation = html.split(/<section(?:\s[^>]*)?>/)[30].split('</section>')[0]
+    assert.match(validation, /ESP32-C3 Super Mini Plus V2/)
+    assert.match(validation, language === 'nl' ? /externe antenne — dezelfde footprint, iets duurder/ : /external antenna — same footprint, slightly more expensive/)
     const recap = html.split(/<section(?:\s[^>]*)?>/)[43].split('</section>')[0]
     assert.equal([...recap.matchAll(/<li>/g)].length, 4)
     for (const point of language === 'nl'
