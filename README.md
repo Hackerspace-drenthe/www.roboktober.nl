@@ -52,7 +52,6 @@ De repository combineert **robotbouw**, **software**, **presentaties** en **beel
 ├── 3dprinter/                  Chassis en 3D-printonderdelen
 │   ├── Wallieonline+Mini+Robot+chassis/
 │   └── reinsdesigns/           Eigen ontwerpen en varianten
-├── webgui/                     Lokale bedieningssimulator
 ├── presentaties/               Presentatiebronnen per editie en taal
 ├── fotos/                      Foto's en video per onderwerp
 ├── roboktober-api/             Website-backend en beheer
@@ -93,18 +92,6 @@ Binnen firmware vind je:
 
 Versienummers in bestandsnamen maken ontwerpevolutie zichtbaar; ze betekenen niet automatisch dat elke variant is gebouwd of gevalideerd. Controleer vóór het printen de afmetingen, beschikbare onderdelen en de passing van jouw combinatie van chassis en elektronica.
 
-### 3. Bediening oefenen: WebGUI
-
-[webgui](./webgui/README.md) is een zelfstandige, mobiel-eerst simulator in HTML, CSS, JavaScript en SVG. Je kunt [index.html](./webgui/index.html) lokaal in een browser openen, zonder installatie, build of backend.
-
-De vier schermen zijn:
-
-- **Besturen:** joystick/tank en aanpasbare actieknoppen voor rijmanoeuvres, zoals Attack en Escape.
-- **Moves:** herbruikbare stappen met snelheid, richting en tijd; uitvoering normaal of achteruit.
-- **Dansen:** meerdere moves in volgorde afspelen.
-- **Config:** robotprofielen, vermogenslimiet, deadband, motoromkering en JSON-back-up.
-
-De interface is Nederlands/Engels en bewaart instellingen lokaal. **Dit is geen verbinding met een echte robot en geen echte telemetrie.** Gebruik de simulator om bediening en bewegingen uit te proberen; de firmware staat apart onder elektronica.
 
 ### 4. Presentaties en uitleg
 
