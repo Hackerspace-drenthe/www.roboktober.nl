@@ -29,6 +29,7 @@ Dit is de startpagina voor alle projectdocumentatie. De root-README blijft het p
 
 ## Uitvoering en operaties
 
+- [Website en server](SERVER.md) - Laravel/Vue-stack, lokale ontwikkeling, Docker en Apache/deploy.
 - [Deploy checklist](DEPLOY-CHECKLIST.md) - actuele deploy- en verificatiestappen.
 - [SOLID/security test execution](PLAN-SOLID-SECURITY-TESTS-EXECUTION.md) - implementatie- en hardeninglog.
 - [Testmatrix CTA-funnel](TESTMATRIX-CTA-FUNNEL.md) - verificatie van de publieke CTA-flow.
