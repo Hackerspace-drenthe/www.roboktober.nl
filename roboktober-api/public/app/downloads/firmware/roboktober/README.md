@@ -2,6 +2,11 @@
 
 Reviewed derivative of the MIT-licensed WORC ESP32-C3/DRV8833 firmware. The exact upstream snapshot and license are stored in `../upstream/worc-robot-controller-esp32c3/`.
 
+The user confirmed on 2026-11-05 that the v4 electronics works and approved
+it, and that the 2026 project is complete. This broad acceptance is not a new
+firmware build or hardware-test result, and it does not constitute
+certification.
+
 ## Hardware contract
 
 | Function | ESP32-C3 GPIO | DRV8833 signal | PWM channel |
@@ -60,6 +65,8 @@ arduino-cli compile \
 	electronics/firmware/roboktober-controller-v2
 ```
 
-The resulting build used 909632 bytes of flash and 33844 bytes of dynamic memory. The upstream project documents core 2.0.14; compile that compatibility branch in CI or before declaring support for the older toolchain.
+The resulting build used 909632 bytes of flash and 33844 bytes of dynamic memory. The upstream project documents core 2.0.14. The build recorded here used core
+3.0.7; this compile record does not independently verify the 2.x compatibility
+branch or claim a CI build with that older toolchain.
 
 Test with wheels raised and a current-limited supply. Verify loss-of-link shutdown before placing the robot in an arena.

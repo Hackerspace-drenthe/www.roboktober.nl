@@ -1,6 +1,6 @@
 # Release notes
 
-Deze map bevat release notes en korte functionele updates. De huidige notitie is cumulatief opgebouwd in [2026-07-08.md](2026-07-08.md).
+Deze map bevat gedateerde release notes en korte functionele updates: historische momentopnamen, geen actuele statusverklaring of certificering van tests. Roboktober 2026 is per 2026-11-05 afgerond. Beoordeel een notitie op de daarin genoemde datum; herhaal tests of operationele controles als actuele verificatie nodig is.
 
 ## Overzicht
 

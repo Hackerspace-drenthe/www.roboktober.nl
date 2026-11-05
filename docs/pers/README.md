@@ -1,12 +1,12 @@
 # Perspakket
 
-Deze map bevat het actuele perspakket voor herpublicatie.
+Dit is het perspakket dat vóór Roboktober 2026 is opgesteld. Het evenement is per 2026-11-05 afgerond; de teksten en beelden zijn historisch materiaal en geen actuele uitnodiging of evenementinformatie. Controleer data, CTA's en eventuele toekomstige edities voordat materiaal opnieuw wordt gepubliceerd.
 
 ## Inhoud
 
-- `persbericht-2026-08-31.md` - meest recente persberichttekst.
-- `radio-cta-kickoff-2026-08-31.md` - korte radiospots met extra kickoff-CTA.
-- `afbeeldingen/` - actuele beeldset met v4-assets en root-herobeeld.
+- `persbericht-2026-08-31.md` - persberichttekst van vóór de editie.
+- `radio-cta-kickoff-2026-08-31.md` - radiospots met kickoff-CTA, opgesteld vóór de editie.
+- `afbeeldingen/` - beeldset die bij dit historische perspakket hoort.
 
 ## Selectiebeleid beelden
 

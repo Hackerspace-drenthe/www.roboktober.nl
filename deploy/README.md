@@ -2,6 +2,10 @@
 
 Deze map bevat een eenvoudige deploy-opzet voor de server op 192.168.1.10.
 
+## Operationele status — 5 november 2026
+
+De website is volgens Rein al enkele maanden operationeel en stabiel; het project voor editie 2026 is afgerond. De eenmalige setup hieronder is referentie voor een nieuwe server of herstel, geen open taak op de bestaande productieomgeving. Beheer, back-ups en gecontroleerde updates blijven nodig.
+
 ## Bestanden
 
 - deploy.sh: Pull + composer install + artisan optimize + mysql backup + migrate
@@ -83,7 +87,7 @@ De overzichtspagina is daarna bereikbaar via
 `/app/presentaties/php-meetup-groningen-2026-11-05/index.html`.
 Daar staan directe NL/EN-links, reviewinstructies en de volledige ZIP's.
 De website krijgt geen menu-link. Video, notities en bronbestanden zijn publiek
-toegankelijk; bevestig toestemming voor de video vóór publicatie.
+toegankelijk. Rein heeft de benodigde toestemmingen voor de bestaande presentatie op 4 november 2026 bevestigd. Behoud credits/licenties en controleer rechten opnieuw bij nieuw of gewijzigd materiaal.
 Zie de [frontendinstructies](../roboktober-frontend/README.md#presentations-direct-urls-only)
 voor de afzonderlijke URL's.
 

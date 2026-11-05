@@ -2,6 +2,8 @@
 
 > **PLAN.md is bevroren** (commit `140f157`). Dit bestand bevat alle wijzigingen ten opzichte van dat origineel.
 > Voeg wijzigingen toe als genummerde secties met datum, reden en het gewijzigde onderdeel.
+>
+> **Historische status per 2026-11-05:** dit is een gedateerd wijzigingslog, niet de actuele backlog of een volledige release-verificatie. Roboktober 2026 is afgerond; de website is al maanden operationeel en stabiel en electronics v4 werkt en is goedgekeurd. Behoud elke wijziging als oorspronkelijk bewijs; gebruik voor actuele status de actuele projectdocumentatie.
 
 ---
 

@@ -3,6 +3,8 @@
 Datum: 2026-07-22
 Scope: volledige functionele audit van auth, registratie, teambeheer, contentbeheer, moderatie en rollen/rechten.
 
+> **Historische momentopname:** dit auditdocument beschrijft bevindingen, testresultaten en gewenste richting zoals vastgelegd op 2026-07-22. De resultaten (waaronder 41 geslaagde tests en 155 assertions) zijn bewijs van die regressierun, geen actuele testcertificering. Roboktober 2026 is inmiddels afgerond; de genoemde vervolgsporen zijn mogelijke technische verbeteringen en geen event- of releaseblockers. Openstaande punten zijn niet als uitgevoerd aangemerkt.
+
 ## 0. Huidige stand
 
 De belangrijkste keuzes uit deze audit zijn inmiddels in code geborgd. De resterende waarde van dit document zit vooral in het vastleggen van de huidige risico's, de gewenste eindrichting en de open governance-vragen.
@@ -165,14 +167,16 @@ De implementatiedetails van account ownership, policies en 2FA-bescherming staan
 
 ## 8. Vervolgsporen
 
-Deze punten zijn de uitkomst van de audit en horen inhoudelijk bij de roadmap, niet bij de uitvoeringslog:
+Deze punten zijn aanbevelingen uit de audit van 2026-07-22, niet een actueel uitvoeringsplan of blockers voor de afgeronde Roboktober-editie:
 - Centraliseer autorisatie verder in services en policies.
 - Maak content- en moderatiestatussen explicieter in model of policy.
 - Verklaar nog niet-uniforme media- en targetregels op één plek.
 - Verlaag controller-bloat waar dezelfde beslissingen nog op meerdere plekken terugkomen.
 - Houd observability en regressietests in lijn met de huidige account-first baseline.
 
-## 9. Acceptatiecriteria
+## 9. Historische acceptatiecriteria uit de audit
+
+Deze criteria documenteren de beoogde richting van de audit. Dit document stelt niet vast dat elk criterium op dit moment is geverifieerd.
 - Geen ad-hoc role checks meer in controllers (policy/service only).
 - Alle muterende endpoints hebben eenduidige owner/moderator/admin regels.
 - Content lifecycle is expliciet en afdwingbaar.
@@ -183,8 +187,8 @@ Deze punten zijn de uitkomst van de audit en horen inhoudelijk bij de roadmap, n
 ## 9.1 Wat al gehaald is
 De huidige baseline is gerealiseerd; de samenvatting daarvan staat in [PLAN-SOLID-SECURITY-TESTS-EXECUTION.md](PLAN-SOLID-SECURITY-TESTS-EXECUTION.md).
 
-## 10. Directe next actions (kort)
+## 10. Mogelijke vervolgacties (historische audit)
 1. Houd policy- en route-matrix synchroon met nieuwe admin modules.
 2. Breng content lifecycle en moderatiestatus explicieter in model of policy.
-3. Houd documentatie en release notes in sync met de huidige account-first baseline.
-4. Gebruik dit document als checklist voor resterende auditpunten, niet als uitvoeringsplan.
+3. Houd documentatie en release notes in sync met de account-first baseline.
+4. Gebruik deze punten alleen als context voor toekomstige verbeteringen, niet als actieve checklist of uitvoeringsplan.

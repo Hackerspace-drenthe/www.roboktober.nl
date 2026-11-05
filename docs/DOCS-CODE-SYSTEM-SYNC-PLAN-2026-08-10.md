@@ -2,6 +2,8 @@
 
 Doel: alle documentatie in lijn brengen met de huidige code en de actuele productie-operatie.
 
+> **Historische status per 2026-11-05:** dit plan en de verificaties/inventaris hieronder zijn een momentopname van 2026-08-10, niet een actuele audit of bewijs dat alle voorgestelde fasen zijn uitgevoerd. Roboktober 2026 is afgerond, de website is al maanden operationeel en stabiel, en electronics v4 werkt en is goedgekeurd. De v4-status vervangt de eerdere kwalificatie van de KiCad-wijzigingen als niet-werkend development-werk. Resterende documentatieverbeteringen zijn geen blockers voor het evenement.
+
 ## Scope
 
 Deze planupdate dekt:
@@ -17,6 +19,8 @@ Niet in scope:
 - nieuwe infra-opzet
 
 ## Huidige feiten (geverifieerd)
+
+> De onderstaande feiten en testresultaten zijn vastgelegd als geverifieerd op 2026-08-10; ze zijn geen nieuwe verificatie per 2026-11-05. De huidige event-, website- en electronics-status staat in de statusregel hierboven.
 
 Code en gedrag:
 - Frontend heeft geen site-brede wachtwoordgate meer in root app shell.
@@ -112,6 +116,8 @@ Teststatus:
 - Actualiseer testmatrix op basis van huidige suites en resultaten.
 
 ## Uitvoering in 3 fasen
+
+De fasen hieronder zijn het oorspronkelijke werkvoorstel. Er is hier geen actuele afronding per actiepunt vastgelegd; voer niets als voltooid op uitsluitend basis van dit plan.
 
 Fase 1 - Feitvalidatie (0.5 dag)
 - Command-validatie van alle runbook commands.

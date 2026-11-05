@@ -4,6 +4,12 @@ Dit is de centrale repository voor Roboktober van Hackerspace Drenthe: de websit
 
 Roboktober is een oktober-evenement rond combat robots, met focus op bouwen, leren en community.
 
+## Status: editie 2026 afgerond
+
+**Bevestigd door Rein op 5 november 2026:** Roboktober 2026 is afgerond en klaar. De website is al enkele maanden operationeel en stabiel. De elektronica v4 werkt en is akkoord.
+
+Deze repository bewaart het resultaat: website, robotbouwinformatie, firmware, ontwerpen, presentaties en beeldmateriaal. Historische plannen, audits en revisies blijven beschikbaar, maar zijn geen open opleverlijst voor 2026. Ideeën voor uitbreiding horen bij eventuele volgende edities. Normaal beheer, back-ups en veiligheidscontroles blijven van toepassing; projectafronding is geen nieuwe verklaring dat iedere afzonderlijke test of ontwerpvariant is gevalideerd.
+
 ## Wallie: website, uitleg en oorspronkelijke code
 
 **Wallies werk is een belangrijke basis en inspiratiebron voor de robotbesturing, het mini-robotchassis en de presentatie.** Bezoek zijn eigen website en GitHub voor de oorspronkelijke uitleg, projecten en actuele ontwikkelingen:
@@ -93,7 +99,7 @@ Binnen firmware vind je:
 Versienummers in bestandsnamen maken ontwerpevolutie zichtbaar; ze betekenen niet automatisch dat elke variant is gebouwd of gevalideerd. Controleer vóór het printen de afmetingen, beschikbare onderdelen en de passing van jouw combinatie van chassis en elektronica.
 
 
-### 4. Presentaties en uitleg
+### 3. Presentaties en uitleg
 
 [presentaties](./presentaties/) bevat de presentatiebronnen per bijeenkomst en taal. Voor PHP Meetup Groningen op **5 november 2026** zijn er twee versies:
 
@@ -102,7 +108,7 @@ Versienummers in bestandsnamen maken ontwerpevolutie zichtbaar; ze betekenen nie
 
 Elke versie heeft een `PLAN.md` en een `slides/`-map met de presentatie, stijlen, scripts, lokale afbeeldingen/video en speaker notes. De bijbehorende README beschrijft het openen en verpakken van de slides. De presentatie volgt de keten van joystick tot wiel en verbindt software, elektronica en chassisontwerp.
 
-### 5. Foto's en video
+### 4. Foto's en video
 
 [fotos](./fotos/) bewaart lokaal beeldmateriaal uit de bouw en het evenement:
 
@@ -115,15 +121,15 @@ Elke versie heeft een `PLAN.md` en een `slides/`-map met de presentatie, stijlen
 
 Presentaties hebben daarnaast hun eigen lokale slide-assets. Een bestand in deze repository betekent niet automatisch dat het vrij herpubliceerbaar is: behoud bronvermeldingen en controleer de toepasselijke rechten en toestemmingen.
 
-### 6. Website, API en server
+### 5. Website, API en server
 
 - [roboktober-api](./roboktober-api/README.md): Laravel-backend, API en Filament-beheer.
 - [roboktober-frontend](./roboktober-frontend/README.md): Vue-frontend voor de publieke website.
 - [deploy](./deploy/README.md): deploymentinstructies en configuratie voor Apache en systemd.
 
-Deze onderdelen vormen het webplatform, niet de robotfirmware of de zelfstandige WebGUI-simulator. Architectuur, lokale ontwikkeling, Docker en deployment zijn uitgewerkt in [docs/SERVER.md](./docs/SERVER.md).
+Deze onderdelen vormen het operationele webplatform, niet de robotfirmware. Architectuur, lokale ontwikkeling, Docker en deployment zijn uitgewerkt in [docs/SERVER.md](./docs/SERVER.md).
 
-### 7. Plannen en projectdocumentatie
+### 6. Plannen en projectdocumentatie
 
 [docs](./docs/README.md) is de ingang naar de verdiepende documentatie:
 
@@ -139,7 +145,6 @@ Deze onderdelen vormen het webplatform, niet de robotfirmware of de zelfstandige
 | --- | --- |
 | Een robot bouwen of aansluiten | [Elektronica](./electronics/README.md), daarna [bedrading](./electronics/wiring/) en [firmware](./electronics/firmware/roboktober-controller-v2/README.md). |
 | Een chassis kiezen, aanpassen of printen | [3D-printontwerpen](./3dprinter/) en de [printinstructies](./3dprinter/README.md). |
-| Bediening en moves lokaal uitproberen | [WebGUI-handleiding](./webgui/README.md) of direct de [simulator](./webgui/index.html). |
 | De presentatie bekijken of voorbereiden | [Nederlandse](./presentaties/php-meetup-groningen-2026-11-05/slides/README.md) of [Engelse presentatie](./presentaties/php-meetup-groningen-2026-11-05-en/slides/README.md). |
 | Beeldmateriaal zoeken | [Foto's en video](./fotos/); voor persgebruik het [perspakket](./docs/pers/README.md). |
 | De website lokaal draaien of deployen | [Website en server](./docs/SERVER.md). |

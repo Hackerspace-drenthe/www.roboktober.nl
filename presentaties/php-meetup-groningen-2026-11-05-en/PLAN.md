@@ -1,6 +1,6 @@
 # Plan: Roboktober talk, PHP Meetup Groningen
 
-> Status (4 November 2026): review complete and approved. All review feedback, including Wallie's comments, has been addressed. Rein confirms that all necessary copyright permissions, licence conditions and consents for use in this presentation have been satisfied. Credits and licences remain in place. Practical presentation preparations are tracked separately below.
+> Status (5 November 2026): Rein confirms Roboktober 2026 is complete. The website has been operational and stable for several months; electronics v4 works and is approved. This presentation plan is retained as a runbook and history, not an open delivery checklist. Review and usage rights were confirmed on 4 November 2026; Wallie's comments have been addressed and credits/licences remain in place. This does not assert that the meetup or every individual preparation has already taken place.
 
 ## 1. Essentials
 
@@ -101,9 +101,9 @@ On every slide with click steps, the S speaker window automatically follows the 
 
 ### 3.5.1 Overview: from thumb to wheel
 
-The existing overview slide shows seven parts one at a time, each with a large image and its own purpose: chassis → battery → on/off → bare PCB → ESP32 → motor driver → motors/wheels. The chassis appears immediately; six clicks show the other parts. On/off shows a switch or removable link plug/jumper cap that physically interrupts battery power, not the software failsafe. Choose a component accessible from outside and rated for the motor current; disconnect other power sources before working on the robot. PCB and ESP32 are separate steps: the board connects parts, the microcontroller runs code. Chassis and PCB use existing renders; battery and power disconnect are schematic. N20 motor and wheel appear as separate product photos alongside each other within the seventh step, with attribution (AliExpress, supplied by Rein; usage rights still to be checked). Also point out the parts on the opened, powered-off robot. Allow about 60 seconds within the existing 2 minutes.
+The existing overview slide shows seven parts one at a time, each with a large image and its own purpose: chassis → battery → on/off → bare PCB → ESP32 → motor driver → motors/wheels. The chassis appears immediately; six clicks show the other parts. On/off shows a switch or removable link plug/jumper cap that physically interrupts battery power, not the software failsafe. Choose a component accessible from outside and rated for the motor current; disconnect other power sources before working on the robot. PCB and ESP32 are separate steps: the board connects parts, the microcontroller runs code. Chassis and PCB use existing renders; battery and power disconnect are schematic. N20 motor and wheel appear as separate product photos alongside each other within the seventh step, with attribution (AliExpress, supplied by Rein; usage rights for this presentation confirmed on 4 November 2026). Also point out the parts on the opened, powered-off robot. Allow about 60 seconds within the existing 2 minutes.
 
-The ESP32-C3 SuperMini is shown with a real photo (Tobias Weltner, done.land, CC BY-ND 4.0; unchanged and included locally). The DRV8833 uses the AliExpress product photo supplied by Rein, also included locally; check usage rights before further public distribution.
+The ESP32-C3 SuperMini is shown with a real photo (Tobias Weltner, done.land, CC BY-ND 4.0; unchanged and included locally). The DRV8833 uses the AliExpress product photo supplied by Rein, also included locally. Rein confirmed rights for this presentation on 4 November 2026; recheck the conditions for other uses or further distribution outside that permission.
 
 The next click shows the overview with the first command step on the same slide; four more clicks complete the existing five animation steps. Eleven clicks in total, no extra slide. Bridge: "What happens when you push forward on your phone?"
 
@@ -186,7 +186,7 @@ Show the actual PCB, but do not explain pins or power-supply variations yet.
 
 ### 3.8 Project journey and AI
 
-- **About three months of preparation:** first commit on July 2 through the October 7 kickoff. Build nights and Battle Day follow later in October.
+- **About three months of preparation:** first commit on July 2 through the October 7 kickoff. Build nights and Battle Day took place later in October.
 - Show a few milestones rather than a purchasing log: website, PCB design/production, firmware/chassis, kickoff.
 - AI helped with iteration; Rein remained responsible for goals, decisions, validation, and corrections. Wallie contributed robot expertise and review.
 - Takeaway: AI helps you explore more broadly, but does not take over responsibility or physical testing.
@@ -220,7 +220,9 @@ If running late:
 
 Do not cut: the opening question, the complete command route, the failsafe, or the closing.
 
-## 5. Final preparation
+## 5. Historical runbook and checks when reusing
+
+The checklist below preserves the recorded preparation status. Unchecked rehearsals, venue checks and exports are not retrospectively claimed as performed and are not outstanding delivery blockers for Roboktober 2026. Applicable practical checks remain necessary for a new presentation.
 
 - [ ] Timed rehearsal: target 47 minutes including video, fragments, and demo; move briskly through the chassis sequence and its takeaways in about two minutes.
 - [x] Final event figures and a concrete lesson collected (30+ visitors, 18 → 12 robots, 5 robots lent out).

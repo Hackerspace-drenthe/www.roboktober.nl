@@ -1,12 +1,12 @@
 # AliExpress Components Order - 2026-08-13
 
 ## Status
-- Order status: In verwerking
+- Order status recorded on 2026-08-13: In verwerking (current fulfillment status not re-verified)
 - Order date: 2026-08-13
 - Purpose: Components for antweight controller and robot builds
-- Current build policy (v4): minimal 1S setup is default for new builds.
-- Current cost target (v4): complete 1S kit purchase price is about EUR 25 per robot.
-- Note: this order list remains historical intake documentation.
+- Build policy recorded for v4: minimal 1S setup is default for new builds.
+- Cost target recorded for v4: complete 1S kit purchase price is about EUR 25 per robot.
+- Note: this is historical purchasing/intake documentation. The v4 electronics is confirmed working and approved as of 2026-11-05; this list does not establish current stock, delivery, or acceptance-test status.
 
 ## Financial Summary
 - Number of orders: 9
@@ -38,7 +38,9 @@
 | 3076006398607964 | Shop1100369141 Store | SPDT slide switch, 3-pin | 20pcs pack | 2 packs | EUR 8.33 | [Product](https://www.aliexpress.com/item/1005009344796225.html) | [Details](https://www.aliexpress.com/p/order/detail.html?orderId=3076006398607964) |
 | 3076006398647964 | SZHJW Technology Store | DD4012SA Buck converter module | 3.3V, 10pcs | 4 packs | EUR 26.79 | [Product](https://www.aliexpress.com/item/1005009774585983.html) | [Details](https://www.aliexpress.com/p/order/detail.html?orderId=3076006398647964) |
 
-## Receiving Checklist
+## Historical Receiving Checklist
+
+The checklist below was written for intake at the time of this order. Its presence does not assert that the checks were performed.
 - Verify per-order quantities against this document and AliExpress details page.
 - For ESP32-C3 boards, separate by supplier/batch (Estardyn Official vs Estardyn Choice).
 - For DRV8833 and buck modules, do a quick random sample power-up test before full stock intake.

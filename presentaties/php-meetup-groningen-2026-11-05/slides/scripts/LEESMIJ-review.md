@@ -1,5 +1,7 @@
 # Roboktober — van joystick tot wiel · reviewpakket
 
+**Projectstatus — 5 november 2026:** Rein bevestigt dat Roboktober 2026 is afgerond. Website operationeel en stabiel; elektronica v4 werkt en is akkoord. Dit is het gereviewde presentatiepakket, beschikbaar voor hergebruik, niet een open reviewverzoek.
+
 Talk voor de PHP Meetup Groningen, 5 november 2026 (±47 min + vragen).
 Centrale vraag: wat gebeurt er als je op je telefoon de joystick naar voren duwt?
 

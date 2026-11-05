@@ -8,6 +8,13 @@ Deze map bevat de v4-variant van de antweight-controllerprint. Het uitgangspunt 
 - de DRV8833 sleep/control pin zit op GPIO5
 - 2S is alleen een expliciete optionele route, niet de default
 
+## Projectstatus
+
+Op 2026-11-05 heeft de gebruiker bevestigd dat de v4-elektronica werkt en
+goedgekeurd is; het 2026-project is afgerond. Dit is geen nieuw testresultaat
+of certificering en stelt niet vast dat elke optionele voedingsroute
+afzonderlijk is getest.
+
 ## 1. Wat is de v4 in praktijk?
 
 De v4 is geen volledig custom power-design. Het is een compacte carrier board voor bestaande modules:
@@ -46,13 +53,13 @@ Dit betekent:
 - makkelijk te reproduceren
 - het werkt het beste voor een kleine antweight-bouw met N20-motoren
 
-### 2.2 Kosten: minimale 1S-kit
+### 2.2 Historische kostenindicatie: minimale 1S-kit
 
-Voor planning en inkoop hanteren we voor de actieve v4-build een praktische
-richtprijs van ongeveer EUR 25 voor een complete minimale 1S-kit per robot.
+In de oorspronkelijke v4-planning werd een praktische richtprijs van ongeveer
+EUR 25 voor een complete minimale 1S-kit per robot gehanteerd.
 
-Deze prijs is een inkoopindicatie en kan variëren door voorraad, leverancier,
-verzendkosten en batchgrootte.
+Dit is een historische inkoopindicatie, geen actuele offerte; de prijs kan
+variëren door voorraad, leverancier, verzendkosten en batchgrootte.
 
 ### 2.3 Optionele 2S-route
 
@@ -170,6 +177,11 @@ Voor een veilige eerste test: batterij loskoppelen, dan USB-5V gebruiken, daarna
 
 ## 9. Belangrijkste opmerking
 
-Deze print is de werkelijke bron van waarheid. De v4 is een duidelijke, compacte carrier-board-variant op basis van de bewezen v3-fix layout, met 1S LiPo als standaard en GPIO5 als DRV8833 sleep/control line.
+Deze print is de werkelijke bron van waarheid. De v4 is een compacte
+carrier-board-variant op basis van de v3-fix-layout, met 1S LiPo als standaard
+en GPIO5 als DRV8833 sleep/control line. De oorspronkelijke beschrijving noemt
+de v3-fix-layout bewezen; dit document voegt daar geen nieuwe fysieke
+testresultaten aan toe.
 
-De huidige PCB is opnieuw gecontroleerd en is clean volgens de DRC: 0 violations, 0 unconnected items.
+De eerder vastgelegde DRC-controle van de PCB rapporteerde 0 violations en
+0 unconnected items. Dit is het bestaande resultaat, geen nieuwe DRC-run.

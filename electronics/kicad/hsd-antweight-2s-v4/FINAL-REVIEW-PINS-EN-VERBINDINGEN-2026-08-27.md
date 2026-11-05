@@ -1,5 +1,14 @@
 # Final Review Rapport: Pins en Verbindingen (v4)
 
+## Historisch reviewrecord
+
+Dit rapport legt de pin- en verbindingsreview van 2026-08-27 vast. De
+PCB-niveauchecks en het onderstaande eindoordeel zijn observaties uit die
+review, geen nieuwe tests. Op 2026-11-05 heeft de gebruiker bevestigd dat de
+v4-elektronica werkt en goedgekeurd is en dat het 2026-project is afgerond.
+Dat brede akkoord verandert deze review niet in een certificering of
+fysieke-continuïteitstest van een specifieke gebouwde module.
+
 ## Scope en besluit
 
 Dit is de samengevoegde en verbeterde eindreview van pinplaatsing en verbindingen voor de v4 PCB.
@@ -92,4 +101,4 @@ De echte PCB-connectiviteit is nu leidend gevalideerd.
 - Verbindingen: akkoord
 - Pinvolgorde: akkoord volgens geactualiseerde contracten
 
-Status: GO voor final review.
+Historische status zoals vastgelegd op 2026-08-27: GO voor final review.

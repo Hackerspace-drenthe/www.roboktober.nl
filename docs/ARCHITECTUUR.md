@@ -1,5 +1,7 @@
 # Architectuurdocument Roboktober
 
+> **Status per 2026-11-05:** Roboktober 2026 is afgerond. De website is operationeel en stabiel sinds maanden. De electronics v4 is werkend en goedgekeurd. Dit document beschrijft de technische baseline en governance; voorgestelde vervolgstappen zijn onderhouds- of verbeterideeën, geen open voorwaarden voor het afgeronde evenement.
+
 ## 1. Doel en Scope
 Dit document beschrijft de huidige en gewenste architectuur van het Roboktober-platform.
 
@@ -200,11 +202,11 @@ Een change is gereed als:
 - Account-first auth en 2FA vormen de huidige baseline voor publieke en beheerflows.
 
 Hardware/KiCad status:
-- KiCad-updates mogen gepubliceerd worden voor samenwerking en review.
-- Deze updates staan momenteel in development stage en zijn nog niet werkend.
-- De huidige KiCad-wijzigingen gelden daarom niet als vrijgegeven productie- of releaseontwerp.
+- De electronics v4 is per 2026-11-05 werkend en goedgekeurd.
+- De eerdere omschrijving van KiCad-updates als niet-werkend development-werk is een historische status en geldt niet meer voor v4.
 
 ### 10.2 Aanbevolen vervolgstappen
+Deze aanbevelingen zijn mogelijke onderhouds- en architectuurverbeteringen. Ze zijn geen blockers voor Roboktober 2026, dat is afgerond.
 1. Leg Architecture Decision Records (ADR) vast voor grotere keuzes in `docs/adr`.
   - Reeds vastgelegd: ADR 0001 (service-layer), ADR 0002 (API-versiebeleid), ADR 0003 (deployment safety policy), ADR 0004 (security baseline policy), ADR 0005 (test strategy governance), ADR 0006 (observability policy), ADR 0007 (data governance policy), ADR 0008 (change management policy), ADR 0009 (access governance policy), ADR 0010 (dependency governance policy), ADR 0011 (incident management policy), ADR 0012 (business continuity policy) en ADR 0013 (documentation governance policy).
 2. Introduceer expliciete application services voor complexe controllerflows.

@@ -1,7 +1,11 @@
 # Roboktober Website Plan 2026+
 
+> **Status per 2026-11-05:** dit is het oorspronkelijke product-/ontwikkelplan en de bijbehorende backlog, geen actuele lijst met vereisten voor het evenement. Roboktober 2026 is afgerond; de website is al maanden operationeel en stabiel en electronics v4 werkt en is goedgekeurd. De oorspronkelijke plannen, open vragen en actie-items hieronder blijven bewaard als historische context. Ze zijn niet automatisch uitgevoerd of geverifieerd en openstaande verbeterideeën zijn geen blockers voor 2026.
+
 ## 1. Context en eigenaarschap
 Roboktober is een evenement in oktober bij Hackerspace Drenthe, georganiseerd door Hackerspace Drenthe en Walter.
+
+> Historische context: onderstaande eerste-editie- en evenementplanningsregels zijn opgesteld vóór de editie van oktober 2026 en beschrijven de toenmalige bedoeling, niet een nog aankomend evenement.
 
 **Evenement:**
 - **Kickoff**: begin oktober (zaterdag of woensdagavond)
@@ -2223,7 +2227,9 @@ class AppServiceProvider extends ServiceProvider
     - Monitor first 24 hours closely
     - On-call developer beschikbaar
 
-## 14. Open vragen (graag beslissen)
+## 14. Historische open vragen (momentopname van het plan)
+
+De vragen hieronder zijn bewaard uit de planningsfase. Ze zijn geen actuele besluitverzoeken of releasecriteria; dit document maakt geen uitspraak over de huidige afhandeling van elk afzonderlijk punt.
 
 ### ✅ Beantwoord:
 - Frontend: Vue 3 + Vite (definitief)
@@ -2272,7 +2278,9 @@ class AppServiceProvider extends ServiceProvider
 16. **Tone of voice Wallie tips**: technisch strak, of speels met humor?
 17. **Voorbeeldcontent**: heb je referentiesites die qua toon/niveau goed zijn?
 
-## 15. Actie-items (voor start)
+## 15. Historische actie-items (opgesteld vóór de start)
+
+Deze lijst is de oorspronkelijke start-backlog. De opname hier bewijst niet dat ieder item is uitgevoerd; de lijst is geen actieve blokkade- of lanceringschecklist voor 2026.
 1. **Server-specificaties controleren** (hackerspace server):
    - PHP 8.2+ beschikbaar?
    - MySQL 8.0+ of PostgreSQL 13+ beschikbaar?

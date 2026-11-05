@@ -1,5 +1,7 @@
 # Radio CTA - Kickoff Roboktober (7 oktober 2026)
 
+> **Historische radiospot, opgesteld vóór het evenement.** Roboktober 2026 is per 2026-11-05 afgerond. De datum, tijden, prijzen, locatie en aanmeld-CTA hieronder zijn bewaard als oorspronkelijk materiaal, niet als actuele aankondiging.
+
 Deze teksten zijn gebaseerd op de actuele programmadetails op roboktober.nl/programma.
 
 ## Spot 20 seconden (primair)

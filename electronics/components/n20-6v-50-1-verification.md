@@ -1,5 +1,9 @@
 # N20 6 V 50:1 reference verification
 
+Historical supplier-reference check, performed online on 2026-08-03. It
+documents published motor variants and design assumptions; it does not identify
+or validate a specific motor subsequently purchased for a build.
+
 Verified online on 2026-08-03 for the controller's N20-compatible micro-metal gearmotor assumption.
 
 `N20` is a form-factor label, not a complete electrical specification. The exact winding, brushes, gearbox and shaft options must be confirmed from the purchased motor's listing or datasheet before manufacture.
@@ -35,10 +39,17 @@ Use the conservative design envelope below until the exact purchased motors are 
 | 8.4 V direct-2S extrapolated stall current | Approximately 2.10-2.24 A per motor |
 | Mechanical footprint basis | 10 x 12 mm gearbox, 3 mm D-shaft |
 
-Before releasing a motor mount or placing N20 footprints, compare the purchased motor's drawing against this envelope and confirm terminal orientation, motor-can length, threaded-face holes and shaft geometry. The controller retains J5 and J6 as the motor connectors; use a detachable two-wire harness and solder its motor-side ends directly to each N20 terminal.
+For a purchased motor used with a mount or N20 footprint, compare its drawing
+against this envelope and confirm terminal orientation, motor-can length,
+threaded-face holes and shaft geometry. The controller retains J5 and J6 as
+the motor connectors; use a detachable two-wire harness and solder its
+motor-side ends directly to each N20 terminal.
 
 ## PCB mounting provision
 
 The KiCad panel includes M1/M2 N20 footprints centered on the left and right wheel axes. Each footprint provides four 3.0 mm plated pads with 1.2 mm drills for two hand-bent, approximately 1.0 mm steel-wire brackets. Bend each wire into a U-shape that sits tightly over the motor body, insert its two legs through one pad pair, then solder both legs on the underside of the outer PCB. The two U-brackets are separated by 5 mm along the motor axis.
 
-This provision uses the verified 10 x 12 mm gearbox envelope and presents the 3 mm D-shaft through its wheel recess. It is a hand-fit retention method: test the actual paperclip/wire diameter and the purchased motor before release. Do not use the mechanical pads as electrical motor connections.
+This provision uses the published 10 x 12 mm gearbox envelope and presents
+the 3 mm D-shaft through its wheel recess. It is a hand-fit retention method:
+check the actual wire diameter and purchased motor during assembly. Do not use
+the mechanical pads as electrical motor connections.

@@ -2,6 +2,12 @@
 
 Dit document beschrijft de Roboktober website en API, lokale ontwikkeling en deployment. Het algemene projectoverzicht staat in de [root-README](../README.md).
 
+## Operationele status — 5 november 2026
+
+Rein bevestigt dat de website en het project voor de editie 2026 zijn opgeleverd: de website is al enkele maanden operationeel en stabiel, de elektronica v4 werkt en is akkoord. De onderstaande installatie-instructies zijn bedoeld voor lokale ontwikkeling, nieuwe omgevingen of herstel, niet als nog uit te voeren productie-installatie.
+
+De afronding van de editie beëindigt niet het reguliere beheer: back-ups, beveiligingsupdates en gecontroleerde deployments blijven nodig. Eventuele nieuwe functionaliteit valt buiten de afgeronde 2026-scope.
+
 ## Architectuur
 
 De stack is API-first headless:
@@ -14,7 +20,7 @@ Deze scheiding maakt het mogelijk om frontend en backend onafhankelijk te ontwik
 
 Teamregistratie is account-first: een ingelogde gebruiker maakt en beheert een eigen team.
 
-## Huidige scope (MVP richting)
+## Opgeleverde websitefunctionaliteit (2026)
 
 - Publieke pagina's voor home, programma, aanmelden, teams, nieuws en build-hub
 - Teamregistratie via API (auth vereist)

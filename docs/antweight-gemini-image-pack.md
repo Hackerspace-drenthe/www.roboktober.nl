@@ -1,5 +1,7 @@
 # Antweight Page - Gemini Image Pack
 
+> Dit is een creatief beeldbriefing- en promptpakket, geen actuele publicatiechecklist. Roboktober 2026 is afgerond; de voorgestelde beelden of workflow zijn niet als event-blockers bedoeld. Behoud de prompts als optionele bron voor latere contentverbeteringen.
+
 Dit document helpt je om met Google Gemini sterke visuals te genereren voor de antweight pagina.
 
 ## 1) Doel van de beeldset

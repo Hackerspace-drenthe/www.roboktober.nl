@@ -4,6 +4,8 @@ Datum: 2026-07-15
 Versie live: 7d85b80
 Doel: valideren dat publieke bezoekers naar registreren gaan en ingelogde bezoekers naar aanmelden.
 
+> **Historische verificatie:** de `PASS`-resultaten hieronder zijn de productie-observaties voor versie `7d85b80` op 2026-07-15. Ze bewijzen niet dat de routes op 2026-11-05 opnieuw zijn getest. De stappen onderaan zijn een herhaalbare procedure; voer ze opnieuw uit wanneer actuele verificatie nodig is.
+
 ## Verwachte funnel
 
 - Anoniem: CTA-link naar /app/registreren

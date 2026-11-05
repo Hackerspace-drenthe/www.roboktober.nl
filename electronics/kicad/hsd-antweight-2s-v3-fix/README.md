@@ -14,6 +14,13 @@ Voor nieuwe builds geldt:
 - minimale 1S setup is de standaard
 - richtprijs complete 1S-kit is ongeveer EUR 25 per robot
 
+Op 2026-11-05 heeft de gebruiker bevestigd dat de v4-elektronica werkt en
+goedgekeurd is en dat het 2026-project is afgerond. De onderstaande
+voedingskeuzes, testbeschrijvingen en observaties horen bij deze gearchiveerde
+v3-fix; ze zijn geen nieuwe testresultaten voor v4 en geen algemene
+voedingsspecificatie voor andere modules. Deze archiefinformatie is geen
+openstaand project-go/no-go.
+
 Deze pagina is bedoeld voor mensen die de print voor het eerst willen gebruiken of bouwen. De informatie hier is geschreven voor beginners, maar wel gebaseerd op de werkelijke, geteste print.
 
 Belangrijk: bij twijfel geldt de print als bron van waarheid. Als een label, schema of document iets anders zegt dan de PCB, dan is de print zelf het juiste referentiepunt.

@@ -1,5 +1,7 @@
 # Deploy Checklist Roboktober
 
+> **Gebruik:** dit is een operationele checklist voor toekomstige site-onderhouds- en deploymomenten, geen verslag van een recente deploy of test. Per 2026-11-05 is Roboktober 2026 afgerond en is de website al maanden operationeel en stabiel. Voer de hieronder beschreven controles uit wanneer een wijziging dit vereist; deze statusmelding certificeert geen afzonderlijke checkliststap.
+
 Deze checklist is gericht op de huidige repository-structuur:
 - Backend: Laravel in roboktober-api
 - Frontend: Vue/Vite in roboktober-frontend

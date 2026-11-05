@@ -6,14 +6,15 @@ This app provides the public site pages and consumes the Laravel API.
 
 ## Current status
 
-- Router includes all planned public pages, including dynamic page and 404 routes.
+**5 November 2026 — confirmed by Rein:** the 2026 project is complete. The website has been operational and stable for several months. Installation and build instructions below are for development, maintenance and recovery.
+
+- Router includes the delivered public pages, including dynamic page and 404 routes.
 - API integration uses Axios through a single client module.
 - During development, `/api` calls are proxied to `http://localhost:8000`.
 - Production build output is written to `../roboktober-api/public/app`.
 - Account-first routes are active for registration edit/account/password flows.
 - Team detail includes lidmaatschapsaanvraag voor ingelogde gebruikers.
-- Dependency audit status:
-  - `npm audit --omit=dev`: no known vulnerabilities.
+- Dependency audit results are time-sensitive. Run `npm audit --omit=dev` during maintenance; completion is not a fresh dependency audit.
 
 ## Requirements
 
@@ -117,7 +118,7 @@ both versions from source, including on a fresh deployment checkout. Vite then
 copies this directory to Laravel's `public/app/presentaties/`. A failed package
 build or validation stops the website build rather than publishing broken links.
 
-Production URLs after publishing and deploying:
+Published production URLs for the completed 2026 edition:
 
 - Overview + downloads: `https://www.roboktober.nl/app/presentaties/php-meetup-groningen-2026-11-05/index.html`
 - Dutch: `https://www.roboktober.nl/app/presentaties/php-meetup-groningen-2026-11-05/nl/presentatie/index.html`
@@ -128,7 +129,7 @@ Production URLs after publishing and deploying:
 These are static files, not SPA routes. Keep the explicit `index.html` in
 shared links; no router or menu changes are needed. Direct URLs are public,
 not access control: speaker notes and packaged sources are available to
-anyone with the URL. Confirm permission to publish the videos before deploying.
+anyone with the URL. Rein confirmed the required permissions for this presentation on 4 November 2026. Retain credits and licences; any new or changed media needs its own permission check.
 
 ### Event photo and video gallery
 

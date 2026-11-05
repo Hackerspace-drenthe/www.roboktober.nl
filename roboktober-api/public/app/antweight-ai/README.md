@@ -1,6 +1,8 @@
-Plaats hier de door Gemini gegenereerde afbeeldingen voor de antweight pagina.
+# Beeldmateriaal antweight-pagina
 
-Vereiste bestandsnamen:
+De zes PNG-afbeeldingen voor de operationele antweight-pagina zijn aanwezig. Rein bevestigt op 5 november 2026 dat de website stabiel draait en editie 2026 is afgerond; dit is geen open afbeeldingsproductietaak.
+
+Bestandsnamen:
 - hero-combat.png
 - workbench-build.png
 - styles-collage.png
@@ -8,5 +10,4 @@ Vereiste bestandsnamen:
 - battle-beauty.png
 - community-lab.png
 
-Tijdelijke placeholders staan als .svg met dezelfde basisnaam.
-Je kunt ze vervangen met echte .png bestanden; de pagina gebruikt eerst .png en valt terug op .svg.
+SVG-bestanden blijven bewaard als ondersteunend/alternatief materiaal. Dit is de backend-publicatiemap; wijzig bronassets in `roboktober-frontend/public/antweight-ai/` en publiceer via de websitebuild. Eventuele vervanging is onderhoud of werk voor een volgende editie, met behoud van gebruiksrechten.

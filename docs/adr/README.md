@@ -50,3 +50,5 @@ Gebruik oplopende nummers met een korte titel:
 ## Huidige rol
 
 De ADR's vormen de beleidslaag onder de actuele baseline in [../ARCHITECTUUR.md](../ARCHITECTUUR.md). Raadpleeg ook [../DEPLOY-CHECKLIST.md](../DEPLOY-CHECKLIST.md) voor operationele uitvoering.
+
+De datum bij een ADR markeert de context waarin de beslissing is vastgelegd. Een geaccepteerde ADR blijft van kracht totdat een latere ADR deze expliciet vervangt; de afgeronde Roboktober-editie wijzigt de governance-afspraken niet.

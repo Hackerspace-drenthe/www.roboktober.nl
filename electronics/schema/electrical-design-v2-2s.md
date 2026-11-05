@@ -1,12 +1,22 @@
 # Electrical design v2-2S
 
+## Historical status
+
+This is the historical design record for the optional 2S route; the active
+reference is v4 with the minimal 1S setup documented as its default. On
+2026-11-05, the user confirmed that the v4 electronics works and approved it,
+and that the 2026 project is complete. This broad confirmation does not
+establish that every 2S-specific test below was performed or certify the
+optional 2S configuration. The original design notes, measured/reference
+values, and validation instructions are retained as recorded.
+
 ## Status
 
 This document describes the optional 2S route and is retained for historical and
 advanced-build comparison. The lead design for new builds is the v4 revision
 under `electronics/kicad/hsd-antweight-2s-v4/` with the minimal 1S setup as default.
 
-Implementation status:
+Implementation status recorded in the original design snapshot:
 
 - Lead design path: `electronics/kicad/hsd-antweight-2s-v4/`
 - Layout state: board-level power rule established; source-of-truth design follows the PCB
@@ -98,7 +108,13 @@ PCB branding silk currently reads `HACKERSPACE` / `DRENTHE` on the logo area.
 
 The DRV8833 IC accepts 8.4 V because its operating motor-supply range extends to 10.8 V. The design intentionally uses the existing breakout without an external current limiter. Its approximately 1.5 A RMS and 2 A peak output capability is close to the extrapolated 2.10-2.24 A motor stall current, so simultaneous stall may activate the driver's internal over-current or thermal shutdown.
 
-Release requires bench validation of simultaneous startup, reversal and a brief controlled stall on the exact motors and breakout. The driver protection must operate without PCB, connector or wire overheating. Persistent stall testing must use a current-limited bench supply because the driver may automatically retry after a fault. Do not claim continuous stall capability or increased continuous motor torque.
+For any future build using this optional 2S path, validate simultaneous startup,
+reversal and a brief controlled stall on the exact motors and breakout. The
+driver protection must operate without PCB, connector or wire overheating.
+Persistent stall testing must use a current-limited bench supply because the
+driver may automatically retry after a fault. Do not claim continuous stall
+capability or increased continuous motor torque. These are route-specific
+safety conditions, not claims that the user's v4 approval included these tests.
 
 ## Capacitors and wiring
 
@@ -120,4 +136,10 @@ Release requires bench validation of simultaneous startup, reversal and a brief 
 8. Confirm link loss stops both motors within 200 ms at full battery voltage.
 9. Record driver, converter, switch, connector and capacitor temperatures at 8.4 V and near pack cutoff.
 
-This variant remains blocked from manufacture until the exact external converter variant and pinout, exact battery connector, protected 2S pack and full-load DRV8833 behavior are verified.
+Original release gate recorded for this 2S variant: manufacture was blocked
+until the exact external converter variant and pinout, exact battery connector,
+protected 2S pack and full-load DRV8833 behavior were verified. This is a
+historical project-status statement, not an open go/no-go for the completed
+2026 project. It does not document that these optional-2S-specific checks were
+subsequently completed; apply the route-specific safety conditions above to
+any future 2S build.

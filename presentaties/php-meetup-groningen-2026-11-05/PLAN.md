@@ -1,6 +1,6 @@
 # Plan: Roboktober-presentatie, PHP Meetup Groningen
 
-> Status (4 november 2026): review afgerond en akkoord. Alle reviewfeedback, inclusief Wallies opmerkingen, is verwerkt. Rein bevestigt dat alle benodigde auteursrechten, licentievoorwaarden en toestemmingen voor gebruik in deze presentatie zijn geregeld. Bronvermeldingen en licenties blijven behouden. De praktische voorbereidingen voor de presentatie staan hieronder apart.
+> Status (5 november 2026): Roboktober 2026 is afgerond, bevestigd door Rein. De website is al enkele maanden operationeel en stabiel; elektronica v4 werkt en is akkoord. Dit presentatieplan blijft bewaard als draaiboek en historiek, niet als open opleverlijst. Review en gebruiksrechten zijn op 4 november 2026 bevestigd; Wallies opmerkingen zijn verwerkt en bronvermeldingen/licenties blijven behouden. Dit zegt niet dat de meetup of elke praktische voorbereiding afzonderlijk al is uitgevoerd.
 
 ## 1. Basisgegevens
 
@@ -101,9 +101,9 @@ Bij alle dia's met klikstappen wisselt het S-sprekersvenster automatisch mee: st
 
 ### 3.5.1 Overzicht: van duim naar wiel
 
-De bestaande overzichtsslide toont zeven onderdelen één voor één, elk met een groot beeld en een eigen functie: chassis → accu → aan/uit → kale PCB → ESP32 → motordriver → motoren/wielen. Chassis staat direct in beeld, zes klikken tonen de andere onderdelen. Aan/uit toont een schakelaar of uitneembare plug/pincap die de accuvoeding fysiek onderbreekt, niet de softwarematige failsafe. Kies een van buiten bereikbare uitvoering geschikt voor de motorstroom; ontkoppel ook andere voedingen vóór werkzaamheden. PCB en ESP32 zijn afzonderlijke stappen: de print verbindt, de microcontroller voert code uit. Chassis en PCB gebruiken bestaande renders; accu en voedingsonderbreking zijn schematisch. N20-motor en wiel staan als afzonderlijke productfoto's naast elkaar binnen de zevende stap, met bronvermelding (AliExpress, aangeleverd door Rein; gebruiksrechten nog te controleren). Wijs de onderdelen ook op de uitgeschakelde, geopende robot aan. Reserveer ongeveer 60 seconden binnen de bestaande 2 minuten.
+De bestaande overzichtsslide toont zeven onderdelen één voor één, elk met een groot beeld en een eigen functie: chassis → accu → aan/uit → kale PCB → ESP32 → motordriver → motoren/wielen. Chassis staat direct in beeld, zes klikken tonen de andere onderdelen. Aan/uit toont een schakelaar of uitneembare plug/pincap die de accuvoeding fysiek onderbreekt, niet de softwarematige failsafe. Kies een van buiten bereikbare uitvoering geschikt voor de motorstroom; ontkoppel ook andere voedingen vóór werkzaamheden. PCB en ESP32 zijn afzonderlijke stappen: de print verbindt, de microcontroller voert code uit. Chassis en PCB gebruiken bestaande renders; accu en voedingsonderbreking zijn schematisch. N20-motor en wiel staan als afzonderlijke productfoto's naast elkaar binnen de zevende stap, met bronvermelding (AliExpress, aangeleverd door Rein; gebruiksrechten voor deze presentatie bevestigd op 4 november 2026). Wijs de onderdelen ook op de uitgeschakelde, geopende robot aan. Reserveer ongeveer 60 seconden binnen de bestaande 2 minuten.
 
-De ESP32-C3 SuperMini wordt met een echte foto getoond (Tobias Weltner, done.land, CC BY-ND 4.0; ongewijzigd en lokaal meegeleverd). De DRV8833 gebruikt de door Rein aangeleverde AliExpress-productfoto, eveneens lokaal meegeleverd; controleer de gebruiksrechten vóór verdere openbare verspreiding.
+De ESP32-C3 SuperMini wordt met een echte foto getoond (Tobias Weltner, done.land, CC BY-ND 4.0; ongewijzigd en lokaal meegeleverd). De DRV8833 gebruikt de door Rein aangeleverde AliExpress-productfoto, eveneens lokaal meegeleverd. Rein bevestigde de rechten voor deze presentatie op 4 november 2026; controleer de voorwaarden opnieuw bij ander gebruik of verdere verspreiding buiten die toestemming.
 
 De volgende klik toont op dezelfde slide het overzicht met de eerste commandostap; nog vier klikken voltooien de bestaande vijf animatiestappen. Totaal elf klikken, geen extra slide. Brug: "Wat gebeurt er als je op je telefoon vooruit duwt?"
 
@@ -186,7 +186,7 @@ Laat de echte print zien, maar leg pinnen en voedingsvarianten nog niet uit.
 
 ### 3.8 Traject en AI
 
-- **Ongeveer drie maanden voorbereiding:** eerste commit 2 juli tot kickoff 7 oktober. Bouwavonden en Battle Day volgen daarna in oktober.
+- **Ongeveer drie maanden voorbereiding:** eerste commit 2 juli tot kickoff 7 oktober. Bouwavonden en Battle Day vonden daarna in oktober plaats.
 - Enkele mijlpalen in plaats van een inkooplog: website, printontwerp/productie, firmware/chassis, kickoff.
 - AI hielp itereren; Rein bleef verantwoordelijk voor doelen, keuzes, validatie en correcties. Wallie leverde robotkennis en review.
 - Takeaway: AI helpt verbreden, maar neemt verantwoordelijkheid en fysieke tests niet over.
@@ -220,7 +220,9 @@ Bij uitloop:
 
 Niet schrappen: openingsvraag, complete commandoroute, failsafe en afsluiting.
 
-## 5. Laatste voorbereiding
+## 5. Historisch draaiboek en controles bij hergebruik
+
+De onderstaande afvinklijst bewaart de vastgelegde voorbereidingsstatus. Niet-afgevinkte repetities, locatiechecks en exports worden niet achteraf als uitgevoerd aangemerkt en zijn geen open opleverblokkades voor Roboktober 2026. Bij een nieuwe presentatie blijven de toepasselijke praktische controles nodig.
 
 - [ ] Getimede repetitie: doel 47 minuten inclusief video, fragmenten en demo; chassisreeks met leerpunten vlot in circa twee minuten.
 - [x] Definitieve eventcijfers en concreet leermoment verzameld (30+ bezoekers, 18 → 12 robots, 5 uitgeleende robots).

@@ -2,6 +2,8 @@
 
 Datum: 2026-08-31
 
+> **Historisch persbericht, opgesteld vóór het evenement.** Roboktober 2026 is per 2026-11-05 afgerond. Data, tijden, inschrijflinks, voorraad-/prijsindicaties en oproepen hieronder beschrijven de aankondiging van 2026 en mogen niet als actuele uitnodiging worden hergebruikt zonder controle.
+
 Hackerspace Drenthe organiseert samen met WallieOnline het evenement Roboktober: een toegankelijke maand vol bouwen, testen en robot-actie. Iedereen kan meedoen: alleen, of als team met je kinderen, vrienden, familie, buren of collega's.
 
 Wallie (WallieOnline) is een gerenommeerd robot-combat-veteraan en deelt tijdens Roboktober zijn praktijkkennis uit wedstrijden en bouwprojecten.

@@ -2,7 +2,7 @@
 
 ## Status
 
-Alle gemelde issues zijn opgelost in de huidige `v4`-revisie.
+Alle gemelde issues zijn opgelost in de `v4`-revisie. Per 2026-11-05 is electronics v4 bevestigd als werkend en goedgekeurd.
 
 ## Beslissing
 
@@ -13,7 +13,7 @@ Alle gemelde issues zijn opgelost in de huidige `v4`-revisie.
 - Geen raw batterij op de ESP `3.3V`-pin.
 - `VIN -> VOUT` bypass is niet toegestaan.
 - Richtprijs complete 1S-kit: ongeveer EUR 25 per robot (inkoopindicatie).
-- `v4` PCB is de bron van waarheid; oudere docs zijn archief.
+- De goedgekeurde `v4` PCB is de bron van waarheid; oudere ontwerpdocumentatie is archief.
 
 ## Gefixed
 
@@ -29,3 +29,4 @@ Alle gemelde issues zijn opgelost in de huidige `v4`-revisie.
 - De PCB in `electronics/kicad/hsd-antweight-2s-v4/` is leidend.
 - De 5V-architectuur is consistent met de module en de gerealiseerde board-route.
 - De eerder genoemde power- en routingproblemen zijn opgelost.
+- De werkende en goedgekeurde status van v4 per 2026-11-05 is bevestigd; deze notitie voegt geen aanvullende testresultaten of metingen toe.

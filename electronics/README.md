@@ -21,60 +21,32 @@ Het leidende actieve ontwerp in deze repository is nu:
 - v4 PCB: `kicad/hsd-antweight-2s-v4/`
 - v4 power rule: minimale 1S setup is de standaard; 2S via regulator is optioneel
 - v4 design notes: `docs/WALLIE-DESIGN-ISSUES.md`
-- richtprijs complete 1S-kit: ongeveer EUR 25 per robot (inkoopindicatie)
+- historische inkoopindicatie complete 1S-kit: ongeveer EUR 25 per robot
+
+## Projectstatus
+
+Op 2026-11-05 heeft de gebruiker bevestigd dat de v4-elektronica werkt en
+goedgekeurd is; het 2026-project is afgerond. Dit is een brede
+gebruikersbevestiging, geen nieuw testresultaat, certificering of verklaring
+dat elke optionele voedingsconfiguratie afzonderlijk is getest.
 
 De PCB in `kicad/hsd-antweight-2s-v4/` is de bron van waarheid voor het actuele ontwerp.
 Legacy 3.3V-only en oudere 2S-documenten blijven alleen als archiefreferentie
 bestaan voor vergelijking; ze zijn niet meer leidend voor bouw-, validatie- of
 release-werk.
 
-Deze vrijgave is bedoeld voor prototypes en validatie,
-niet voor massaproductie.
-
-## Fallback scenario bij PCB-vertraging
-
-Als de PCB niet op tijd vrijgegeven en getest is,
-schakelt het project over op handmatige bedrading en solderen.
-
-Go/no-go beslismoment:
-
-- 1 maand voor het event.
-
-Go-criterium (PCB-pad blijft actief):
-
-- PCB is elektrisch en mechanisch gevalideerd.
-- Kritieke DRC/ERC blockers zijn opgelost.
-- Minimaal een werkend praktijkprototype is stabiel onder belasting.
-
-No-go-criterium (fallback activeren):
-
-- Geen stabiel praktijkprototype beschikbaar.
-- Open kritieke blockers op voeding, motorsturing of connector-layout.
-- Productie- of levertijd van PCB haalt de eventplanning niet.
-
-Fallback-uitvoering (handmatige wiring):
-
-1. Gebruik de actuele pin-definitions en wiring-docs als bron van waarheid.
-2. Bouw volgens de actieve v4 1S-minimum bedradingsinstructies (2S alleen optioneel).
-3. Soldeer en test modulair: voeding, MCU, driver, dan motoruitgangen.
-4. Test eerst met stroombegrensde voeding en zonder gemonteerde motoren.
-5. Leg afwijkingen of workarounds direct vast in de wiring-documentatie.
-
-Minimale materialen-check voor fallback:
-
-- ESP32-C3 modules
-- DRV8833 modules
-- bekabeling, connectoren, krimpkous
-- zekeringen/stroombegrenzing voor bench-test
-- reservecomponenten voor rework
-
 Publicatiestatus:
 
-- KiCad updates mogen gepubliceerd worden voor review/samenwerking.
-- De actuele v4-print is proto-ready en mag voor proefseries worden
-  gebruikt.
-- Massaproductie blijft geblokkeerd totdat footprints en thermische
-  validatie definitief zijn vastgelegd.
+- De actieve v4-elektronica is door de gebruiker goedgekeurd zoals hierboven
+  beschreven; er staat geen 2026 go/no-go- of prototypebesluit meer open.
+- Die goedkeuring is geen certificering of bewijs van massaproductiegeschiktheid.
+- Eerdere projectnotities beschreven de v4-print als proto-ready voor
+  proefseries en hielden massaproductie tegen totdat footprints en thermische
+  validatie definitief waren. Dat is een historische statusnotitie, geen
+  openstaand projectbesluit; de huidige gebruikersbevestiging beweert niet dat
+  die voorwaarden later zijn afgerond of dat massaproductie is vrijgegeven.
+- De eerder genoemde circa EUR 25 per complete 1S-kit is een historische
+  inkoopindicatie, geen actuele offerte.
 
 ## Reference design
 
@@ -88,7 +60,6 @@ Belangrijkste actuele regels:
 - optionele route: `2S -> 5V-regelaar -> ESP_5V_IN`;
 - `VIN -> VOUT` bypass naar de ESP 3.3V rail blijft verboden;
 - de v4 PCB en schematic zijn de bron van waarheid, niet de legacy 2S docs.
-- richtprijs complete 1S-kit blijft ongeveer EUR 25 per robot.
 
 De oudere 2S/3.3V-only documenten in deze map blijven alleen als historische referentie
 bestaan en mogen niet meer als actieve power-contract gelden.
@@ -98,7 +69,7 @@ Zie `docs/WALLIE-DESIGN-ISSUES.md` voor de definitieve design rules en
 
 ## KiCad
 
-Status van recente KiCad-updates:
+Ontwerpstatus:
 
 - v4 is het leidende ontwerp voor nieuwe hardware en validatie.
 - De PCB en het schema in `kicad/hsd-antweight-2s-v4/` zijn de source-of-truth.
@@ -106,11 +77,10 @@ Status van recente KiCad-updates:
 
 Open `kicad/hsd-antweight-2s-v4/hsd-antweight-2s-v4.kicad_pro` met KiCad 9 of nieuwer.
 
-Voor review/validatie moet de actuele power-path altijd controleren.
-Dit houdt het pincontract controleerbaar zolang de definitieve
-leveranciersfootprint nog niet is gekozen.
+Controleer bij een nieuwe revisie of onafhankelijke herhaling de actuele
+power-path aan de hand van de PCB en het pincontract.
 
-Voer voor een release minimaal uit:
+Voer voor een nieuwe revisie of onafhankelijke release-validatie minimaal uit:
 
 ```bash
 kicad-cli sch erc --severity-error \
@@ -118,6 +88,6 @@ kicad-cli sch erc --severity-error \
 kicad-cli pcb drc kicad/hsd-antweight-2s-v4/hsd-antweight-2s-v4.kicad_pcb
 ```
 
-Het ontwerp is een technisch startpunt, geen gecertificeerd product.
-Test eerst met een stroombegrensde voeding en zonder gemonteerde
-motoren.
+Het ontwerp is geen gecertificeerd product. De bevestiging van de gebruiker
+hierboven verandert dat niet. Test bij een nieuwe bouw eerst met een
+stroombegrensde voeding en zonder gemonteerde motoren.

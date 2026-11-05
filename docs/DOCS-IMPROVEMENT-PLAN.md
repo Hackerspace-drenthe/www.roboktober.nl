@@ -3,6 +3,8 @@
 Datum: 2026-07-22
 Doel: de documentatie onder `docs/` vereenvoudigen, beter vindbaar maken en minder dubbelzinnig maken voor maintainers en nieuwe bijdragers.
 
+> **Historisch verbeterplan:** dit document legt observaties en aanbevelingen vast per 2026-07-22. Het is geen actuele audit en de prioriteiten zijn geen blockers voor Roboktober 2026, dat per 2026-11-05 is afgerond. De status van afzonderlijke aanbevelingen is hier niet geverifieerd; behoud ze als optionele verbeterideeën.
+
 ## 1. Huidige observaties
 
 ### Sterk

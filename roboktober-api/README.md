@@ -11,12 +11,13 @@ This project provides:
 
 ## Current status
 
+**5 November 2026 — confirmed by Rein:** the 2026 project is complete. The website and API have been operational and stable for several months. This README remains a setup and maintenance reference, not a pending launch checklist.
+
 - API v1 routes are active under `/api/v1`.
 - Public frontend assets are served from `public/app`.
 - Registration endpoint has validation, throttling, and privacy-safe output.
 - Account endpoints include password reset and account/password updates.
-- Dependency audits are currently clean:
-	- `composer audit`: no known advisories.
+- Dependency audit results are time-sensitive. Run `composer audit` during maintenance; project completion does not assert a fresh clean audit.
 
 ## Security baseline
 

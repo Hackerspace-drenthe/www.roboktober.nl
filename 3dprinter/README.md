@@ -2,6 +2,11 @@
 
 Deze map bevat 3D-print onderdelen voor de antweight robotbehuizing.
 
+De hieronder beschreven PCB-/STL-vergelijking is een historisch CAD-fit-check
+record, geen vastgelegde fysieke proefmontage. De gebruikersbevestiging van
+2026-11-05 betreft de v4-elektronica en stelt op zichzelf geen mechanische
+fit-check vast.
+
 ## Bestanden
 
 - `Wallieonline+Mini+Robot+chassis/wallieonline-mini-robot.STL`

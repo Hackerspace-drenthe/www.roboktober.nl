@@ -2,6 +2,8 @@
 
 Dit document is het uitvoerplan na de audit en bevat zowel roadmap als directe uitvoering.
 
+> **Status per 2026-11-05:** de in dit document beschreven technische baseline is als gerealiseerd vastgelegd in de gedateerde werklog. Roboktober 2026 is afgerond; resterende roadmap- en onderhoudsideeën zijn geen blockers voor het evenement. Resultaten blijven gebonden aan de datum en scope waarop ze zijn vastgelegd; de notitie over ontbrekende PHP/Composer-tooling hieronder is uitsluitend de workspace-status van 2026-07-22 en zegt niets over de huidige testomgeving.
+
 ## 0. Huidige status
 
 De kern van dit uitvoerplan is inmiddels gerealiseerd en vormt de huidige technische baseline:
@@ -137,11 +139,11 @@ Mitigatie: fasegewijze aanpak met contract-behoud en tests per stap.
 3. Risico: Frontend test-infra kost initieel tijd.
 Mitigatie: starten met beperkte smoke + composable unit tests.
 
-## 5. Werklog
+## 5. Historische werklog en verificatie
 
 1. Commit baseline gemaakt voor huidige status.
 2. Fase 1 gestart in deze wijzigingsronde.
 3. De beschreven security- en testmaatregelen zijn nu de operationele standaard.
 4. De roadmap dient vanaf nu vooral als onderhouds- en uitbreidingslog in plaats van als open implementatieplan.
 5. Frontend testverificatie op 2026-07-22: Vitest + Playwright slagen na installatie van frontend dependencies en Chromium-browsers.
-6. Backend testverificatie op 2026-07-22 kon niet worden uitgevoerd in deze workspace, omdat PHP/composer en sudo-gestuurde installatie niet beschikbaar zijn.
+6. Backend testverificatie op 2026-07-22 kon niet worden uitgevoerd in deze workspace, omdat PHP/composer en sudo-gestuurde installatie niet beschikbaar waren. Dit is een historische toolingbeperking, geen actuele uitspraak over de backend-teststatus.

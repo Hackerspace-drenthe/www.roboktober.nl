@@ -1,5 +1,7 @@
 # Roboktober — from joystick to wheel · review package
 
+**Project status — 5 November 2026:** Rein confirms Roboktober 2026 is complete. The website is operational and stable and electronics v4 works and is approved. This package remains available for presentation and reuse; review is complete. Practical checks for a subsequent screening remain necessary.
+
 Talk for PHP Meetup Groningen, November 5, 2026 (about 47 minutes + questions).
 Central question: what happens when you push the joystick forward on your phone?
 
